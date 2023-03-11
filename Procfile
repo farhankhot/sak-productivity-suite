@@ -1,2 +1,2 @@
-web: gunicorn wsgi:app && npm run build
+web: gunicorn wsgi:app
 worker: python worker.py
