@@ -26,7 +26,8 @@ function LinkedInCookie() {
 				},
 				body: JSON.stringify({
 					cookie: cookie
-				})
+				}),
+				credentials: 'include'
 			})
 			.then((response) => response.json())
 			.then((data) => {
