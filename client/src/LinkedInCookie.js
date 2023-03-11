@@ -15,9 +15,9 @@ function LinkedInCookie() {
 		
 	const handleLinkedInCookie = () => {
 		
-		chrome.cookies.getAll({ url: "https://www.linkedin.com/feed/" }, (cookie) => {
+		chrome.cookies.getAll({ url: "https://www.linkedin.com/feed/" }, (linkedInCookie) => {
 			
-			console.log(cookie);
+			console.log(linkedInCookie);
 			
 			fetch("https://sak-productivity-suite.herokuapp.com/save-cookie", {
 				method: "POST",
@@ -25,14 +25,13 @@ function LinkedInCookie() {
 					"Content-Type": "application/json",
 				},
 				body: JSON.stringify({
-					cookie: cookie
-				}),
-				credentials: 'include'
+					cookie: linkedInCookie
+				})
 			})
 			.then((response) => response.json())
 			.then((data) => {
 				
-				setCookie(cookie);
+				setCookie(linkedInCookie);
 				
 			});
 		});
