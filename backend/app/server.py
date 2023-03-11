@@ -491,6 +491,7 @@ def save_cookie():
     # TODO: TRY CATCH HERE
     # api = Linkedin(email, password, cookies=cookie_dict)
     api = Linkedin(cookies=cookie_dict)
+    print(api)
 
     # ================== NOT NEEDED, SAVING IN LOCAL STORAGE ==================
     # Save cookie_dict
