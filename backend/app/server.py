@@ -1,6 +1,7 @@
 from linkedin_api import Linkedin
 import json
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 # from bertopic import BERTopic
 import emoji
 import re
@@ -16,6 +17,8 @@ import pickle
 q = Queue(connection=conn)
 
 app = Flask(__name__)
+
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 async def UseBingAI(prompt):
     
