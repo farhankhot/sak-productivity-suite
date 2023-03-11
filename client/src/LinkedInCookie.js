@@ -5,12 +5,12 @@ function LinkedInCookie() {
 	
 	const [cookie, setCookie] = useState("")
 	
-	useEffect( () => {
-		chrome.storage.local.set({
-			'LinkedInCookie': cookie
-		});
+	// useEffect( () => {
+		// chrome.storage.local.set({
+			// 'LinkedInCookie': cookie
+		// });
 	
-	}, [cookie]);
+	// }, [cookie]);
 	
 		
 	const handleLinkedInCookie = () => {
