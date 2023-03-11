@@ -479,8 +479,8 @@ def send_message():
 @app.route('/save-cookie', methods=['POST'])
 def save_cookie():
     
-    email = request.json['email']
-    password = request.json['password'] 
+    # email = request.json['email']
+    # password = request.json['password'] 
     cookies_list = request.json['cookie']    
     
     cookie_dict = {}
@@ -489,7 +489,8 @@ def save_cookie():
         cookie_dict[single_dict["name"]] = temp
     
     # TODO: TRY CATCH HERE
-    api = Linkedin(email, password, cookies=cookie_dict)
+    # api = Linkedin(email, password, cookies=cookie_dict)
+    api = Linkedin(cookies=cookie_dict)
 
     # ================== NOT NEEDED, SAVING IN LOCAL STORAGE ==================
     # Save cookie_dict

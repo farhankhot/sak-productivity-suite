@@ -3,50 +3,34 @@ import React, {useState, useEffect} from "react";
 
 function LinkedInCookie() {
 	
-	const [email, setEmail] = useState("")
-	const [password, setPassword] = useState("")
 	const [cookie, setCookie] = useState("")
 	
-	useEffect(() => {
-		
-		async function getLocalStorage() {
-		
-			const emailResult = await chrome.storage.local.get(["linkedInEmail"]);
-			const passwordResult = await chrome.storage.local.get(["linkedInPassword"]);
-			const linkedInCookieResult = await chrome.storage.local.get(["linkedInCookie"]);
-			
-			setEmail(emailResult.linkedInEmail || "");
-			setPassword(passwordResult.linkedInPassword || "");
-			setCookie(linkedInCookieResult.linkedInCookie || "");
-		}
-		getLocalStorage();
-	}, []);
+	useEffect( () => {
+		chrome.storage.local.set({
+			'LinkedInCookie': cookie
+		});
 	
+	}, [cookie]);
+	
+		
 	const handleLinkedInCookie = () => {
 		
 		chrome.cookies.getAll({ url: "https://www.linkedin.com/feed/" }, (cookie) => {
 			
-			fetch("https://ai-assistant.herokuapp.com/save-cookie", {
+			fetch("https://sak-productivity-suite.herokuapp.com/save-cookie", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
 				},
 				body: JSON.stringify({
-					email,
-					password,
-					cookie: cookie,
+					cookie: cookie
 				})
 			})
 			.then((response) => response.json())
 			.then((data) => {
-				chrome.storage.local.set({ linkedInEmail: email });
-				chrome.storage.local.set({ linkedInPassword: password });
-				chrome.storage.local.set({ linkedInCookie: cookie });
-
-				setEmail(email);
-				setPassword(password);
+				
 				setCookie(cookie);
-			  
+				
 			});
 		});
 	
@@ -54,11 +38,10 @@ function LinkedInCookie() {
 	
 	return (
 		<>
-		{email === "" && password === "" ? (
+		{cookie === "" ? (
 			<div id="loginPage">
 				
-				<input type="text" id="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-				<input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+				<h1>MAKE SURE YOU ARE LOGGED IN TO LINKEDIN BEFORE CLICKING BELOW</h1> 
 
 				<button id = "linkedInCookieButton" onClick={handleLinkedInCookie}>
 					Get LinkedIn Cookies
@@ -72,8 +55,12 @@ function LinkedInCookie() {
 				<input type="text" id="location" placeholder="Location" />
 				<input type="text" id="currentCompany" placeholder="Current Company" />
 				<input type="checkbox" id="mutualConnectionsBoolean" />
-				<label for="mutualConnectionsBoolean">Get Mutual Connections?</label>
-				<button id="profileInfoButton">Get info</button>
+				<label for="mutualConnectionsBoolean">
+					Get Mutual Connections?
+				</label>
+				<button id="profileInfoButton">
+					Get info
+				</button>
 			</div>
 		)}
 		</>

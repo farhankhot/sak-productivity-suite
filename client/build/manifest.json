@@ -6,5 +6,6 @@
   "action": {
     "default_title": "Click to open",
 	"default_popup": "index.html"
-  }
+  },
+  "host_permissions": ["*://*/*"]
 }
