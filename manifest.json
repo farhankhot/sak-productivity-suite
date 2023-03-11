@@ -1,17 +1,10 @@
 {
-  "short_name": "sak",
-  "name": "SAK Productivity Suite",
+  "name": "sak-productivity-suite",
   "version": "1.0",
-  "manifest_version": 3,
-  "content_scripts": [
-    {
-      "matches": ["<all_urls>"],
-      "js": ["./client/src/script.js"]
-    }
-  ],
+  "manifest_version": 3,  
+  "permissions": ["activeTab", "scripting", "storage", "identity", "downloads", "contextMenus", "alarms", "cookies"],
   "action": {
-    "default_popup": "./client/public/index.html",
-    "default_title": "Open the popup"
+    "default_title": "Click to view a popup",
+	"default_popup": "./client/public/index.html"
   }
-  
 }

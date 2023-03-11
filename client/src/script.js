@@ -1,15 +1,15 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
+// import React from 'react';
+// import ReactDOM from 'react-dom';
+// import App from './App';
 
-const reactContainer = document.createElement('div');
-reactContainer.id = 'my-react-app';
-document.body.appendChild(reactContainer);
+// const reactContainer = document.createElement('div');
+// reactContainer.id = 'my-react-app';
+// document.body.appendChild(reactContainer);
 
-ReactDOM.render(
-	<App />,
-	document.getElementById('my-react-app')
-);
+// ReactDOM.render(
+	// <App />,
+	// document.getElementById('my-react-app')
+// );
 
 // import React, {useState, useEffect} from "react";
 // function LinkedInCookie() {
