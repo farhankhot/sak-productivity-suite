@@ -5,7 +5,7 @@ from rq import Worker, Queue, Connection
 
 listen = ['high', 'default', 'low']
 
-redis_url = os.getenv('REDIS_URL', 'redis://ai-assistant.herokuapp.com')
+redis_url = os.getenv('REDIS_URL', 'redis://sak-productivity-suite.herokuapp.com')
 
 conn = redis.from_url(redis_url)
 
