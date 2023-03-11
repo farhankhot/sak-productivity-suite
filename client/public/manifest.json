@@ -4,7 +4,7 @@
   "manifest_version": 3,  
   "permissions": ["activeTab", "scripting", "storage", "identity", "downloads", "contextMenus", "alarms", "cookies"],
   "action": {
-    "default_title": "Click to view a popup",
+    "default_title": "Click to open",
 	"default_popup": "index.html"
   }
 }

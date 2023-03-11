@@ -54,7 +54,7 @@ function LinkedInCookie() {
 	
 	return (
 		<>
-		{email === "" || password === "" ? (
+		{email === "" && password === "" ? (
 			<div id="loginPage">
 				
 				<input type="text" id="email" value={email} onChange={(e) => setEmail(e.target.value)} />
