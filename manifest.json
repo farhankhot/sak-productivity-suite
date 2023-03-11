@@ -1,28 +1,17 @@
 {
   "short_name": "sak",
   "name": "SAK Productivity Suite",
+  "version": "1.0",
   "manifest_version": 3,
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["client/src/script.js"]
+      "js": ["./client/src/script.js"]
     }
-  ]
-  "icons": [
-    {
-      "src": "favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
-    },
-    {
-      "src": "logo192.png",
-      "type": "image/png",
-      "sizes": "192x192"
-    },
-    {
-      "src": "logo512.png",
-      "type": "image/png",
-      "sizes": "512x512"
-    }
-  ]
+  ],
+  "action": {
+    "default_popup": "./client/public/index.html",
+    "default_title": "Open the popup"
+  }
+  
 }
