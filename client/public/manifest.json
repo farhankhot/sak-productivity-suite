@@ -7,5 +7,8 @@
     "default_title": "Click to open",
 	"default_popup": "index.html"
   },
-  "host_permissions": ["*://*/*"]
+  "host_permissions": ["*://*/*"],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'; script-src-elem 'self' 'unsafe-inline' https://apis.google.com;"
+  }
 }
