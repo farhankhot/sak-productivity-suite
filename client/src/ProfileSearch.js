@@ -48,7 +48,7 @@ function ProfileSearch(props) {
 	
 	return (
 		<>
-		{jobFinished ? (
+		{jobFinished===true ? (
 
 			<DisplaySearchResults cookie={cookie} resultArray={resultArray} />
 

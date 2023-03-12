@@ -224,9 +224,9 @@ def GetPeopleInterests(cookie_dict, profile_urn):
     
     return final_people_the_profile_is_interested_in
     
-def GetCompanyInterests(email, password, cookie_dict, public_id, profile_urn):
+def GetCompanyInterests(cookie_dict, public_id, profile_urn):
     
-    api = Linkedin(email, password, cookies=cookie_dict)
+    api = Linkedin(cookies=cookie_dict)
     
     person_interests = api._fetch(f"/graphql?includeWebMetadata=True&variables=(profileUrn:urn%3Ali%3Afsd_profile%3A{profile_urn},sectionType:interests,tabIndex:1,locale:en_US)&&queryId=voyagerIdentityDashProfileComponents.38247e27f7b9b2ecbd8e8452e3c1a02c")
     person_interests = person_interests.json()
@@ -356,9 +356,6 @@ def get_people_interests():
 
 @app.route('/get-company-interests', methods=['POST'])
 def get_company_interests():
-
-    email = request.json['email']
-    password = request.json['password']
     
     cookies_list = request.json['cookie']
     cookie_dict = {}

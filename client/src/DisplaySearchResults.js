@@ -4,14 +4,18 @@ import {CheckJobStatus} from "./CheckJobStatus.js";
 import ProfileSearch from "./ProfileSearch.js";
 
 // TODO: Next button still clickable at the last page
+// When to move to full page?
 
 function DisplaySearchResults(props) {
+	
+	// Have jobFinished for peopleInterestsArray, companyInterestsArray and activityInterestsArray
 	
 	const {cookie, resultArray} = props;
 	
 	const [userProfile, setUserProfile] = useState([]);
 	const [pageArray, setPageArray] = useState([]);
 	const [pageIndex, setPageIndex] = useState(0);
+	
 	const [fullName, setFullName] = useState("");
 	const [latestTitle, setLatestTitle] = useState("");
 	const [profileId, setProfileId] = useState("");
@@ -22,9 +26,8 @@ function DisplaySearchResults(props) {
 	
 	const [noteTextArea, setNoteTextArea] = useState(""); 
 	
-	const [jobFinished, setJobFinished] = useState(false);
 	const [peopleInterestsArray, setPeopleInterestsArray] = useState([]);
-	const [companyInterestsArray, setCompanyInterestsArray] = useState([]);
+	const [companyInterestsArray, setCompanyInterestsArray] = useState([]);	
 	const [activityInterestsArray, setActivityInterestsArray] = useState([]);
 	
 	useEffect(() => {
@@ -52,6 +55,9 @@ function DisplaySearchResults(props) {
 			setPublicId(userProfile["public_id"]);
 			setProfileUrn(userProfile["profile_urn"]);
 			setNoteTextArea("");
+			setPeopleInterestsArray([]);
+			setCompanyInterestsArray([]);
+			setActivityInterestsArray([]);
 		}
 		
 	}, [pageIndex, pageArray]);
@@ -70,7 +76,8 @@ function DisplaySearchResults(props) {
 					"Content-Type": "application/json"
 				},
 				body: JSON.stringify({
-					cookie: cookie
+					cookie: cookie,
+					profileUrn: profileUrn
 				})
 			});
 
@@ -81,7 +88,6 @@ function DisplaySearchResults(props) {
 			
 			CheckJobStatus(jobId, (peopleInterestsArray) => {
 				setPeopleInterestsArray(peopleInterestsArray);	
-				setJobFinished(true);
 			});
 
 		} catch (error) {
@@ -89,11 +95,39 @@ function DisplaySearchResults(props) {
 		}
 	};
 	
-	const handleGettingCompanyInterests = () => {
-		// TODO
+	const handleGettingCompanyInterests = async () => {
+		try {
+			const response = await fetch("https://sak-productivity-suite.herokuapp.com/get-company-interests", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify({
+					cookie: cookie,
+					profileUrn: profileUrn,
+					publicId: publicId
+				})
+			});
+
+			const data = await response.json();
+			console.log(data);
+			
+			const jobId = data.message;
+			
+			CheckJobStatus(jobId, (companyInterestsArray) => {
+				setCompanyInterestsArray(companyInterestsArray);	
+			});
+
+		} catch (error) {
+			console.error(error);
+		}
 	};
 	
 	const handleGettingActivityInterests = () => {
+		// TODO
+	};
+	
+	const handleMakingConnectNote = () => {
 		// TODO
 	};
 	
@@ -109,7 +143,7 @@ function DisplaySearchResults(props) {
 		<div>
 			<div>{fullName}</div>
 			<div>{latestTitle}</div>
-			<textarea value={noteTextArea} onChange={handleNoteTextAreaChange} placeholder="The generated note will appear here"></textarea>
+			<textarea value={noteTextArea} onChange={handleNoteTextAreaChange} placeholder="The generated note will appear here"></textarea>		
 			<button onClick={handleGettingPeopleInterests}>
 				Get people interests
 			</button>
@@ -122,13 +156,25 @@ function DisplaySearchResults(props) {
 			<button onClick={handleNextPage}>
 				Next
 			</button>
+			<button onClick={handleMakingConnectNote}>
+				Make Connect Note
+			</button>
 			<button onClick={handleSendingConnectNote}>
 				Send Connect Note
 			</button>
 		
-			{jobFinished && (
+			{peopleInterestsArray.length > 0 && (
 				<select multiple>
 					{peopleInterestsArray.map( (interest) => (
+						<option key={interest}>{interest}</option>
+					))}
+
+				</select>
+			)}
+
+			{companyInterestsArray.length > 0 && (
+				<select multiple>
+					{companyInterestsArray.map( (interest) => (
 						<option key={interest}>{interest}</option>
 					))}
 
