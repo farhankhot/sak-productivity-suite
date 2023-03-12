@@ -96,7 +96,6 @@ def get_values_for_key(key, dictionary):
 def GetProfile(cookie_dict, search_params, location, mutual_connections_boolean):
 
     print("location", location)
-    print("title", title)
     
     api = Linkedin(cookies=cookie_dict)
     
