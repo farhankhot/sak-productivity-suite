@@ -23,8 +23,8 @@ CORS(app, resources={r"/*": {"origins": "*"}})
 
 async def UseBingAI(prompt):
     
-    # This is getting my own cookie.json
-    bot = Chatbot(cookiePath='./bing_cookie.json')
+    # This is getting my own bing cookies
+    bot = Chatbot(cookiePath='../bing_cookie.json')
 
     ans_json = await bot.ask(prompt=prompt)    
     ans = ans_json['item']['messages'][1]['text']
@@ -298,7 +298,6 @@ def receive_link():
     if location != '':
         location_geo_urn = get_geo_urn(api, location)
         data = q.enqueue(GetProfile, cookie_dict, title, location_geo_urn, mutual_connections_boolean)
-        # data = q.enqueue(GetProfile, api, title, location_geo_urn, mutual_connections_boolean)
 
     else:
         data = q.enqueue(GetProfile, cookie_dict, title, '', mutual_connections_boolean)

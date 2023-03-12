@@ -8,8 +8,6 @@ import ProfileSearch from "./ProfileSearch.js";
 
 function DisplaySearchResults(props) {
 	
-	// Have jobFinished for peopleInterestsArray, companyInterestsArray and activityInterestsArray
-	
 	const {cookie, resultArray} = props;
 	
 	const [userProfile, setUserProfile] = useState([]);
@@ -27,6 +25,8 @@ function DisplaySearchResults(props) {
 	const [noteTextArea, setNoteTextArea] = useState(""); 
 	
 	const [peopleInterestsArray, setPeopleInterestsArray] = useState([]);
+	const [selectedPeopleInterests, setSelectedPeopleInterests] = useState("");
+	
 	const [companyInterestsArray, setCompanyInterestsArray] = useState([]);	
 	const [activityInterestsArray, setActivityInterestsArray] = useState([]);
 	
@@ -47,6 +47,7 @@ function DisplaySearchResults(props) {
 		
 			const userProfile = pageArray[pageIndex][0];
 			setUserProfile(userProfile);
+			
 			setFullName(userProfile["firstName"] + " " + userProfile["lastName"]);
 			setLatestTitle(userProfile["headline"]);
 			setProfileId(userProfile["profile_id"]);
@@ -54,7 +55,9 @@ function DisplaySearchResults(props) {
 			setSkills(userProfile["skills"]);
 			setPublicId(userProfile["public_id"]);
 			setProfileUrn(userProfile["profile_urn"]);
+			
 			setNoteTextArea("");
+			
 			setPeopleInterestsArray([]);
 			setCompanyInterestsArray([]);
 			setActivityInterestsArray([]);
@@ -127,8 +130,38 @@ function DisplaySearchResults(props) {
 		// TODO
 	};
 	
+	const handlePeopleInterestsSelection = (event) => {
+		setSelectedPeopleInterests(event.target.value);
+	}
+	
 	const handleMakingConnectNote = () => {
-		// TODO
+		
+		const promptString = "This is the profile of a person: " + "\n" + fullName 
+		+ " This is their summary: " + summary +
+		" These are their interests: " + selectedPeopleInterests 
+		+ " Use the internet to get something useful about the interests and use it in the request. "
+		+ " Write a request to connect with them. Make it casual but eyecatching. The goal is to ask about their current Salesforce implementation. The length should be no more than 70 words.";
+		
+		// console.log(promptString);			
+						
+		fetch("https://ai-assistant.herokuapp.com/use-bingai", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json"
+			},
+			body: JSON.stringify({
+				prompt: promptString
+			})
+		})
+		.then(response => response.json())
+		.then(data => {
+			
+			console.log(data.message);
+			
+			setNoteTextArea(data.message);			
+
+		}).catch(error => console.error(error));
+
 	};
 	
 	const handleSendingConnectNote = () => {
@@ -164,7 +197,7 @@ function DisplaySearchResults(props) {
 			</button>
 		
 			{peopleInterestsArray.length > 0 && (
-				<select multiple>
+				<select multiple onChange={handlePeopleInterestsSelection} >
 					{peopleInterestsArray.map( (interest) => (
 						<option key={interest}>{interest}</option>
 					))}
@@ -175,7 +208,7 @@ function DisplaySearchResults(props) {
 			{companyInterestsArray.length > 0 && (
 				<select multiple>
 					{companyInterestsArray.map( (interest) => (
-						<option key={interest}>{interest}</option>
+						<option key={interest}>{ interest }</option>
 					))}
 
 				</select>
