@@ -96,13 +96,14 @@ def get_values_for_key(key, dictionary):
 def GetProfile(cookie_dict, search_params, location, mutual_connections_boolean):
 
     print("location", location)
+    print("title", search_params['title'])
     
     api = Linkedin(cookies=cookie_dict)
     
     list_of_people = api.search_people(keyword_title = search_params['title'],
-    regions = [location if location != '' else ''],
-    keyword_company = search_params['currentCompany'],
-    network_depth = "S" if mutual_connections_boolean == True else "O")
+                                        regions = [location if location != '' else ''],
+                                        keyword_company = search_params['currentCompany'],
+                                        network_depth = "S" if mutual_connections_boolean == True else "O")
     
     # print(list_of_people)
     
@@ -129,8 +130,6 @@ def get_geo_urn(api, location):
         
     res = api._fetch(f"/typeahead/hitsV2?keywords={location}&origin=OTHER&q=type&queryContext=List(geoVersion-%3E3,bingGeoSubTypeFilters-%3EMARKET_AREA%7CCOUNTRY_REGION%7CADMIN_DIVISION_1%7CCITY)&type=GEO")
 
-    # res = api._fetch(f"/me")
-    # print(res.json()['elements'][0]['targetUrn'])
     geo_urn = res.json()['elements'][0]['targetUrn'] # Output: urn:li:fs_geo:103644278
     geo_urn = re.search("\d+", geo_urn).group()
     return geo_urn
@@ -138,7 +137,6 @@ def get_geo_urn(api, location):
 def get_conversation_threads(email, password, cookie_dict):
     
     api = Linkedin(email, password, cookies=cookie_dict)
-    
     
     convo_list=[]
     yay = api.get_conversations()
@@ -154,16 +152,8 @@ def get_conversation_threads(email, password, cookie_dict):
         match = re.search(regex, profile_urn[0])
         if match:
             result = match.group(1)
-            # print(result)
-            # uu = api.get_conversation(result)
-            # print(uu)
-        
             convo_list.append([full_name, result])
-        
-        # for message_idx in range(0, len(yay['elements'][thread_idx]['events'])):
-            # cleaned_up_convo = get_values_for_key('text', yay['elements'][thread_idx]['events'][message_idx])
-            # print(cleaned_up_convo) 
-            
+                    
     return convo_list
 
 def get_conversation_messages(conversation_id):
