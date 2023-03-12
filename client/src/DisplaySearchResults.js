@@ -144,7 +144,7 @@ function DisplaySearchResults(props) {
 		
 		// console.log(promptString);			
 						
-		fetch("https://ai-assistant.herokuapp.com/use-bingai", {
+		fetch("https://sak-productivity-suite.herokuapp.com/use-bingai", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json"
