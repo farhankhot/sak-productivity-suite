@@ -34,7 +34,6 @@ function ProfileSearch(props) {
 			const data = await response.json();
 			console.log(data);
 			
-			// Change in server.py to data.jobId
 			const jobId = data.message;
 			
 			CheckJobStatus(jobId, (resultArray) => {
@@ -49,9 +48,9 @@ function ProfileSearch(props) {
 	
 	return (
 		<>
-		{jobFinished === true ? (
+		{jobFinished ? (
 
-			<DisplaySearchResults resultArray={resultArray} />
+			<DisplaySearchResults cookie={cookie} resultArray={resultArray} />
 
 		) : (
 			<div id="linkedinSearchPage">

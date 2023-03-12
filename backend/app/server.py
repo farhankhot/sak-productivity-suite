@@ -186,9 +186,9 @@ def get_conversation_messages(conversation_id):
             
     return convo_list
     
-def GetPeopleInterests(email, password, cookie_dict, profile_urn):
+def GetPeopleInterests(cookie_dict, profile_urn):
     
-    api = Linkedin(email, password, cookies=cookie_dict)
+    api = Linkedin(cookies=cookie_dict)
     
     # print(profile_urn)
 
@@ -337,8 +337,8 @@ def job_status():
 @app.route('/get-people-interests', methods=['POST'])
 def get_people_interests():
 
-    email = request.json['email']
-    password = request.json['password']
+    # email = request.json['email']
+    # password = request.json['password']
     
     cookies_list = request.json['cookie']
     cookie_dict = {}
@@ -348,7 +348,7 @@ def get_people_interests():
 
     profile_urn = request.json['profileUrn']
     
-    data = q.enqueue(GetPeopleInterests, email, password, cookie_dict, profile_urn)
+    data = q.enqueue(GetPeopleInterests, cookie_dict, profile_urn)
     
     job_id = data.get_id()
     

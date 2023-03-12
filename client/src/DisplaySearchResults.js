@@ -1,42 +1,59 @@
 /*global chrome*/
 import React, {useState, useEffect} from "react";
+import {CheckJobStatus} from "./CheckJobStatus.js";
 import ProfileSearch from "./ProfileSearch.js";
+
+// TODO: Next button still clickable at the last page
 
 function DisplaySearchResults(props) {
 	
-	const {resultArray} = props;
+	const {cookie, resultArray} = props;
+	
 	const [userProfile, setUserProfile] = useState([]);
-	const [fullName, setFullName] = useState("");
-	const [latestTitle, setLatestTitle] = useState("");
 	const [pageArray, setPageArray] = useState([]);
 	const [pageIndex, setPageIndex] = useState(0);
+	const [fullName, setFullName] = useState("");
+	const [latestTitle, setLatestTitle] = useState("");
+	const [profileId, setProfileId] = useState("");
+	const [summary, setSummary] = useState("");
+	const [skills, setSkills] = useState("");
+	const [publicId, setPublicId] = useState("");
+	const [profileUrn, setProfileUrn] = useState("");
+	
+	const [noteTextArea, setNoteTextArea] = useState(""); 
+	
+	const [jobFinished, setJobFinished] = useState(false);
+	const [peopleInterestsArray, setPeopleInterestsArray] = useState([]);
+	const [companyInterestsArray, setCompanyInterestsArray] = useState([]);
+	const [activityInterestsArray, setActivityInterestsArray] = useState([]);
 	
 	useEffect(() => {
 		// Divide the array into pages
 		const pageSize = 1;
-		const pages = [];
+		const pageArray = [];
 		for (let i = 0; i < resultArray.length; i += pageSize) {
-			pages.push(resultArray.slice(i, i + pageSize));
+			pageArray.push(resultArray.slice(i, i + pageSize));
 		}
-		setPageArray(pages);
+		setPageArray(pageArray);
 	}, [resultArray]);	
 	
-	// const userProfile = JSON.parse(JSON.stringify(pageArray[pageIndex]));
-	// const fullName = userProfile[0]["firstName"] + " " + userProfile[0]["lastName"];
-	// const latestTitle = userProfile[0]["headline"];
-	// const profileId = userProfile[0]["profile_id"];
-	// const summary = userProfile[0]["summary"];
-	// const skills = userProfile[0]["skills"];
-	// const publicId = userProfile[0]["public_id"];
-	// const profileUrn = userProfile[0]["profile_urn"];
 
 	useEffect(() => {
+		
 		if (pageArray[pageIndex]) {
+		
 			const userProfile = pageArray[pageIndex][0];
 			setUserProfile(userProfile);
 			setFullName(userProfile["firstName"] + " " + userProfile["lastName"]);
 			setLatestTitle(userProfile["headline"]);
+			setProfileId(userProfile["profile_id"]);
+			setSummary(userProfile["summary"]);
+			setSkills(userProfile["skills"]);
+			setPublicId(userProfile["public_id"]);
+			setProfileUrn(userProfile["profile_urn"]);
+			setNoteTextArea("");
 		}
+		
 	}, [pageIndex, pageArray]);
 
 	const handleNextPage = () => {
@@ -44,14 +61,80 @@ function DisplaySearchResults(props) {
 			setPageIndex(pageIndex + 1);
 		}
 	};
+		
+	const handleGettingPeopleInterests = async () => {
+		try {
+			const response = await fetch("https://sak-productivity-suite.herokuapp.com/get-people-interests", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify({
+					cookie: cookie
+				})
+			});
+
+			const data = await response.json();
+			console.log(data);
+			
+			const jobId = data.message;
+			
+			CheckJobStatus(jobId, (peopleInterestsArray) => {
+				setPeopleInterestsArray(peopleInterestsArray);	
+				setJobFinished(true);
+			});
+
+		} catch (error) {
+			console.error(error);
+		}
+	};
+	
+	const handleGettingCompanyInterests = () => {
+		// TODO
+	};
+	
+	const handleGettingActivityInterests = () => {
+		// TODO
+	};
+	
+	const handleSendingConnectNote = () => {
+		// TODO
+	};
+	
+	const handleNoteTextAreaChange = (event) => {
+		setNoteTextArea(event.target.value);
+	};
 
 	return (
 		<div>
 			<div>{fullName}</div>
 			<div>{latestTitle}</div>
+			<textarea value={noteTextArea} onChange={handleNoteTextAreaChange} placeholder="The generated note will appear here"></textarea>
+			<button onClick={handleGettingPeopleInterests}>
+				Get people interests
+			</button>
+			<button onClick={handleGettingCompanyInterests}>
+				Get company interests
+			</button>
+			<button onClick={handleGettingActivityInterests}>
+				Get interests from Linkedin activity
+			</button>
 			<button onClick={handleNextPage}>
 				Next
 			</button>
+			<button onClick={handleSendingConnectNote}>
+				Send Connect Note
+			</button>
+		
+			{jobFinished && (
+				<select multiple>
+					{peopleInterestsArray.map( (interest) => (
+						<option key={interest}>{interest}</option>
+					))}
+
+				</select>
+			)}
+			
 		</div>
 	);
 }
