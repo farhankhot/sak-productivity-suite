@@ -270,15 +270,6 @@ def use_bingai():
 
 @app.route('/receive-link', methods=['POST'])
 def receive_link():
-
-    # email = request.json['email']
-    # password = request.json['password']
-    
-    # print(email, password)
-    
-    # cookie_filename = "linkedin_cookies_{}.pickle".format(email)    
-    # with open(cookie_filename, "rb") as infile:
-        # cookie_dict = pickle.load(infile)
     
     cookies_list = request.json['cookie']
     cookie_dict = {}
@@ -286,12 +277,10 @@ def receive_link():
         temp = single_dict["value"].strip('"')
         cookie_dict[single_dict["name"]] = temp
     
-    # api = Linkedin(email, password, cookies=cookie_dict)
     api = Linkedin(cookies=cookie_dict)
+    print(api)
         
-    title = request.json
-    # print("title", title)
-    
+    title = request.json['title']
     location = request.json['location']
     mutual_connections_boolean = request.json['mutualConnections']
     
@@ -305,7 +294,6 @@ def receive_link():
     # print(data)
     
     job_id = data.get_id()
-    
     # print(job_id)
     
     return jsonify(success=True, message=job_id)

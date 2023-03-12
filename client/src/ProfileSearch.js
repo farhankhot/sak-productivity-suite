@@ -53,16 +53,18 @@ function ProfileSearch(props) {
 			<DisplaySearchResults cookie={cookie} resultArray={resultArray} />
 
 		) : (
-			<div id="linkedinSearchPage">
-				<input type="text" id="title" placeholder="Enter a title" />
-				<input type="text" id="location" placeholder="Location" />
-				<input type="text" id="currentCompany" placeholder="Current Company" />
-				<input type="checkbox" id="mutualConnectionsBoolean" />
+			<div>
+				<input type="text" placeholder="Enter a title" value={title} onChange={(e) => setTitle(e.target.value)}  />
+				<input type="text" placeholder="Location" value={location} onChange={(e) => setLocation(e.target.value)} />
+				<input type="text" placeholder="Current Company" value={currentCompany} onChange={(e) => setCurrentCompany(e.target.value)} />
+				
+				<input type="checkbox" value={mutualConnectionsBoolean} onChange={(e) => setMutualConnectionsBoolean(e.target.value)} />
 				<label for="mutualConnectionsBoolean">
 					Get Mutual Connections?
 				</label>
-				<button id="profileInfoButton" onClick={handleSearchRequest}>
-					Get info
+				
+				<button onClick={handleSearchRequest}>
+					Search
 				</button>
 			</div>
 		)}
