@@ -1,18 +1,19 @@
 /*global chrome*/
 import React, {useState, useEffect} from "react";
+import ProfileSearch from "./ProfileSearch.js";
 
-function LinkedInCookie() {
+function LinkedinCookie() {
 	
 	const [cookie, setCookie] = useState("");
 	
 	useEffect( () => {
 		chrome.storage.local.set({
-			'LinkedInCookie': cookie
+			'LinkedinCookie': cookie
 		});
 	
 	}, [cookie]);	
 		
-	const handleLinkedInCookie = () => {
+	const handleLinkedinCookie = () => {
 		
 		chrome.cookies.getAll({ url: "https://www.linkedin.com/feed/" }, (cookie) => {
 					
@@ -43,32 +44,23 @@ function LinkedInCookie() {
 				
 				<h1>MAKE SURE YOU ARE LOGGED IN TO LINKEDIN BEFORE CLICKING BELOW</h1> 
 
-				<button onClick={handleLinkedInCookie}>
-					Get LinkedIn Cookies
+				<button onClick={handleLinkedinCookie}>
+					Get Linkedin Cookies
 				</button>
 			
 			</div>
 			
 		) : (
-			<div id="linkedInSearchPage">
-				<input type="text" id="title" placeholder="Enter a title" />
-				<input type="text" id="location" placeholder="Location" />
-				<input type="text" id="currentCompany" placeholder="Current Company" />
-				<input type="checkbox" id="mutualConnectionsBoolean" />
-				<label for="mutualConnectionsBoolean">
-					Get Mutual Connections?
-				</label>
-				<button id="profileInfoButton">
-					Get info
-				</button>
-			</div>
+		
+			<ProfileSearch cookie={cookie} />
+		
 		)}
 		</>
 		
 	);
 
 }
-export default LinkedInCookie;
+export default LinkedinCookie;
 
 // window.onload = async function() {
 	

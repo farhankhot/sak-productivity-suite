@@ -1,27 +1,20 @@
 /*global chrome*/
 import React, {useState, useEffect} from "react";
-import {CheckJobStatus} from "CheckJobStatus.js";
+import {CheckJobStatus} from "./CheckJobStatus.js";
+import DisplaySearchResults from "./DisplaySearchResults.js";
 
-function ProfileSearch() {
+// TODO: Loading animation when waiting for a response
+
+function ProfileSearch(props) {
 	
-	const [cookie, setCookie] = useState("");
+	const {cookie} = props;
 	const [title, setTitle] = useState("");
 	const [location, setLocation] = useState("");
 	const [currentCompany, setCurrentCompany] = useState("");
 	const [mutualConnectionsBoolean, setMutualConnectionsBoolean] = useState(false);
 	const [jobFinished, setJobFinished] = useState(false);
-	
-	useEffect( () => {
+	const [resultArray, setResultArray] = useState([]);
 		
-		// TODO: MOVE THIS TO A FUNCTION WHERE IT CAN BE USED ANYWHERE
-		async function getLinkedInCookieFromLocalStorage() {
-			const linkedinCookieResult = await chrome.storage.local.get(['LinkedInCookie']);
-			const cookie = linkedinCookieResult.LinkedinCookie;	
-			setCookie(cookie);
-		}
-		
-	}, []);
-	
 	const handleLinkSubmit = async () => {
 		try {
 			const response = await fetch("https://sak-productivity-suite.herokuapp.com/receive-link", {
@@ -44,7 +37,8 @@ function ProfileSearch() {
 			// Change in server.py to data.jobId
 			const jobId = data.message;
 			
-			CheckJobStatus(jobId, () => {
+			CheckJobStatus(jobId, (resultArray) => {
+				setResultArray(resultArray);	
 				setJobFinished(true);
 			});
 
@@ -54,10 +48,27 @@ function ProfileSearch() {
 	};
 	
 	return (
+		<>
+		{jobFinished === true ? (
+
+			<DisplaySearchResults resultArray={resultArray} />
+
+		) : (
+			<div id="linkedInSearchPage">
+				<input type="text" id="title" placeholder="Enter a title" />
+				<input type="text" id="location" placeholder="Location" />
+				<input type="text" id="currentCompany" placeholder="Current Company" />
+				<input type="checkbox" id="mutualConnectionsBoolean" />
+				<label for="mutualConnectionsBoolean">
+					Get Mutual Connections?
+				</label>
+				<button id="profileInfoButton" onClick={handleLinkSubmit}>
+					Get info
+				</button>
+			</div>
+		)}
 	
-		<div>
-			{jobFinished && <p>Success!</p>}			
-		</div>
+		</>
 	);
 	
 }
