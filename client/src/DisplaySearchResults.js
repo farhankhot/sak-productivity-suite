@@ -136,7 +136,7 @@ function DisplaySearchResults(props) {
 	
 	const handleMakingConnectNote = () => {
 		
-		const promptString = "This is the profile of a person: " + "\n" + fullName 
+		const prompt = "This is the profile of a person: " + "\n" + fullName 
 		+ " This is their summary: " + summary +
 		" These are their interests: " + selectedInterests 
 		+ " Use the internet to get something useful about the interests and use it in the request. "
@@ -150,7 +150,7 @@ function DisplaySearchResults(props) {
 				"Content-Type": "application/json"
 			},
 			body: JSON.stringify({
-				prompt: promptString
+				prompt: prompt
 			})
 		})
 		.then(response => response.json())
