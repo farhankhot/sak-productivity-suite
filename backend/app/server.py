@@ -366,7 +366,7 @@ def get_company_interests():
     public_id = request.json
     profile_urn = request.json['profileUrn']
 
-    data = q.enqueue(GetCompanyInterests, email, password, cookie_dict, public_id, profile_urn)
+    data = q.enqueue(GetCompanyInterests, cookie_dict, public_id, profile_urn)
     
     job_id = data.get_id()
     
