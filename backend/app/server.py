@@ -93,14 +93,14 @@ def get_values_for_key(key, dictionary):
     
     # return final_topics
 
-def GetProfile(cookie_dict, title, location, mutual_connections_boolean):
+def GetProfile(cookie_dict, search_params, location, mutual_connections_boolean):
 
     print("location", location)
     print("title", title)
     
     api = Linkedin(cookies=cookie_dict)
     
-    list_of_people = api.search_people(keyword_title = title,
+    list_of_people = api.search_people(keyword_title = search_params['title'],
     regions = [location if location != '' else ''],
     keyword_company = search_params['currentCompany'],
     network_depth = "S" if mutual_connections_boolean == True else "O")
@@ -276,16 +276,16 @@ def receive_link():
     
     api = Linkedin(cookies=cookie_dict)
 
-    title = request.json['title']
+    search_params = request.json
     location = request.json['location']
     mutual_connections_boolean = request.json['mutualConnections']
     
     if location != '':
         location_geo_urn = get_geo_urn(api, location)
-        data = q.enqueue(GetProfile, cookie_dict, title, location_geo_urn, mutual_connections_boolean)
+        data = q.enqueue(GetProfile, cookie_dict, search_params, location_geo_urn, mutual_connections_boolean)
 
     else:
-        data = q.enqueue(GetProfile, cookie_dict, title, '', mutual_connections_boolean)
+        data = q.enqueue(GetProfile, cookie_dict, search_params, '', mutual_connections_boolean)
         
     # print(data)
     

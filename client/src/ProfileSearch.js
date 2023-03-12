@@ -32,8 +32,6 @@ function ProfileSearch(props) {
 			});
 
 			const data = await response.json();
-			console.log(data);
-			
 			const jobId = data.message;
 			
 			CheckJobStatus(jobId, (resultArray) => {
