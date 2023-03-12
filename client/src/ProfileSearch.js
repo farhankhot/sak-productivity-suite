@@ -15,7 +15,7 @@ function ProfileSearch(props) {
 	const [jobFinished, setJobFinished] = useState(false);
 	const [resultArray, setResultArray] = useState([]);
 		
-	const handleLinkSubmit = async () => {
+	const handleSearchRequest = async () => {
 		try {
 			const response = await fetch("https://sak-productivity-suite.herokuapp.com/receive-link", {
 				method: "POST",
@@ -62,7 +62,7 @@ function ProfileSearch(props) {
 				<label for="mutualConnectionsBoolean">
 					Get Mutual Connections?
 				</label>
-				<button id="profileInfoButton" onClick={handleLinkSubmit}>
+				<button id="profileInfoButton" onClick={handleSearchRequest}>
 					Get info
 				</button>
 			</div>

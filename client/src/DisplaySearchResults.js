@@ -8,16 +8,20 @@ function DisplaySearchResults(props) {
 	const [userProfile, setUserProfile] = useState([]);
 	const [fullName, setFullName] = useState("");
 	const [latestTitle, setLatestTitle] = useState("");
-	const [currentPage, setCurrentPage] = useState(0);
-	const pageSize = 1;
+	const [pageArray, setPageArray] = useState([]);
+	const [pageIndex, setPageIndex] = useState(0);
 	
-	// Divide the array into pages
-	const pages = [];
-	for (let i = 0; i < resultArray.length; i += pageSize) {
-		pages.push(resultArray.slice(i, i + pageSize));
-	}
-
-	// const userProfile = JSON.parse(JSON.stringify(pages[currentPage]));
+	useEffect(() => {
+		// Divide the array into pages
+		const pageSize = 1;
+		const pages = [];
+		for (let i = 0; i < resultArray.length; i += pageSize) {
+			pages.push(resultArray.slice(i, i + pageSize));
+		}
+		setPageArray(pages);
+	}, [resultArray]);	
+	
+	// const userProfile = JSON.parse(JSON.stringify(pageArray[pageIndex]));
 	// const fullName = userProfile[0]["firstName"] + " " + userProfile[0]["lastName"];
 	// const latestTitle = userProfile[0]["headline"];
 	// const profileId = userProfile[0]["profile_id"];
@@ -27,16 +31,17 @@ function DisplaySearchResults(props) {
 	// const profileUrn = userProfile[0]["profile_urn"];
 
 	useEffect(() => {
-	
-		setUserProfile( JSON.parse(JSON.stringify(pages[currentPage])) );
-		setFullName( userProfile[0]["firstName"] + " " + userProfile[0]["lastName"] );
-		setLatestTitle( userProfile[0]["headline"] );
-	
-	}, [currentPage, userProfile]);
+		if (pageArray[pageIndex]) {
+			const userProfile = pageArray[pageIndex][0];
+			setUserProfile(userProfile);
+			setFullName(userProfile["firstName"] + " " + userProfile["lastName"]);
+			setLatestTitle(userProfile["headline"]);
+		}
+	}, [pageIndex, pageArray]);
 
 	const handleNextPage = () => {
-		if (currentPage < pages.length - 1) {
-			setCurrentPage(currentPage + 1);
+		if (pageIndex < pageArray.length - 1) {
+			setPageIndex(pageIndex + 1);
 		}
 	};
 
@@ -49,10 +54,9 @@ function DisplaySearchResults(props) {
 			</button>
 		</div>
 	);
-	
-	
 }
-export default DisplaySearchResults
+
+export default DisplaySearchResults;
 
 // const resultArray = data.result;
 
