@@ -24,11 +24,11 @@ function DisplaySearchResults(props) {
 	
 	const [noteTextArea, setNoteTextArea] = useState(""); 
 	
-	const [peopleInterestsArray, setPeopleInterestsArray] = useState([]);
-	const [selectedPeopleInterests, setSelectedPeopleInterests] = useState("");
-	
+	const [peopleInterestsArray, setPeopleInterestsArray] = useState([]);	
 	const [companyInterestsArray, setCompanyInterestsArray] = useState([]);	
 	const [activityInterestsArray, setActivityInterestsArray] = useState([]);
+	
+	const [selectedInterests, setSelectedInterests] = useState("");
 	
 	useEffect(() => {
 		// Divide the array into pages
@@ -130,15 +130,15 @@ function DisplaySearchResults(props) {
 		// TODO
 	};
 	
-	const handlePeopleInterestsSelection = (event) => {
-		setSelectedPeopleInterests(event.target.value);
+	const handleInterestsSelection = (event) => {
+		setSelectedInterests(event.target.value);
 	}
 	
 	const handleMakingConnectNote = () => {
 		
 		const promptString = "This is the profile of a person: " + "\n" + fullName 
 		+ " This is their summary: " + summary +
-		" These are their interests: " + selectedPeopleInterests 
+		" These are their interests: " + selectedInterests 
 		+ " Use the internet to get something useful about the interests and use it in the request. "
 		+ " Write a request to connect with them. Make it casual but eyecatching. The goal is to ask about their current Salesforce implementation. The length should be no more than 70 words.";
 		
@@ -197,20 +197,22 @@ function DisplaySearchResults(props) {
 			</button>
 		
 			{peopleInterestsArray.length > 0 && (
-				<select multiple onChange={handlePeopleInterestsSelection} >
+			
+				<select multiple onChange={handleInterestsSelection} >
+				
 					{peopleInterestsArray.map( (interest) => (
 						<option key={interest}>{interest}</option>
 					))}
-
 				</select>
 			)}
 
 			{companyInterestsArray.length > 0 && (
-				<select multiple>
+			
+				<select multiple onChange={handleInterestsSelection} >
+				
 					{companyInterestsArray.map( (interest) => (
 						<option key={interest}>{ interest }</option>
 					))}
-
 				</select>
 			)}
 			
