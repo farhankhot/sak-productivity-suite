@@ -5,6 +5,7 @@ import ProfileSearch from "./ProfileSearch.js";
 function DisplaySearchResults(props) {
 	
 	const {resultArray} = props;
+	const [userProfile, setUserProfile] = useState([]);
 	const [fullName, setFullName] = useState("");
 	const [latestTitle, setLatestTitle] = useState("");
 	const [currentPage, setCurrentPage] = useState(0);
@@ -16,7 +17,7 @@ function DisplaySearchResults(props) {
 		pages.push(resultArray.slice(i, i + pageSize));
 	}
 
-	const userProfile = JSON.parse(JSON.stringify(pages[currentPage]));
+	// const userProfile = JSON.parse(JSON.stringify(pages[currentPage]));
 	// const fullName = userProfile[0]["firstName"] + " " + userProfile[0]["lastName"];
 	// const latestTitle = userProfile[0]["headline"];
 	// const profileId = userProfile[0]["profile_id"];
@@ -26,9 +27,12 @@ function DisplaySearchResults(props) {
 	// const profileUrn = userProfile[0]["profile_urn"];
 
 	useEffect(() => {
+	
+		setUserProfile( JSON.parse(JSON.stringify(pages[currentPage])) );
 		setFullName( userProfile[0]["firstName"] + " " + userProfile[0]["lastName"] );
 		setLatestTitle( userProfile[0]["headline"] );
-	}, [fullName, latestTitle]);
+	
+	}, [currentPage, userProfile]);
 
 	const handleNextPage = () => {
 		if (currentPage < pages.length - 1) {
@@ -38,9 +42,11 @@ function DisplaySearchResults(props) {
 
 	return (
 		<div>
-			<div id="name">{fullName}</div>
-			<div id="title">{latestTitle}</div>
-			<button id="next-button" onClick={handleNextPage}>Next</button>
+			<div>{fullName}</div>
+			<div>{latestTitle}</div>
+			<button onClick={handleNextPage}>
+				Next
+			</button>
 		</div>
 	);
 	

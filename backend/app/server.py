@@ -111,18 +111,14 @@ def GetProfile(cookie_dict, search_params, location, mutual_connections_boolean)
     # print(list_of_people)
     
     full_profile_list = []
-    for person in list_of_people[0:3]:
-        prof = api.get_profile(person['public_id'])
-        
-        print(prof)
-        
+    for person in list_of_people[0:1]:
+    # for person in list_of_people[0:3]:
+        prof = api.get_profile(person['public_id'])       
         prof_skills = api.get_profile_skills(person['public_id'])
         prof['skills'] = prof_skills
         prof['public_id'] = person['public_id']
         prof['profile_urn'] = person['urn_id']
-        
-        # Get mutual connections
-        
+       
         full_profile_list.append(prof)
         
     # print(full_profile_list)
