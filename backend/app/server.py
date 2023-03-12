@@ -24,7 +24,7 @@ CORS(app, resources={r"/*": {"origins": "*"}})
 async def UseBingAI(prompt):
     
     # This is getting my own cookie.json
-    bot = Chatbot(cookiePath='./cookie.json')
+    bot = Chatbot(cookiePath='./bing_cookie.json')
 
     ans_json = await bot.ask(prompt=prompt)    
     ans = ans_json['item']['messages'][1]['text']
@@ -496,12 +496,12 @@ def save_cookie():
     # api = Linkedin(email, password, cookies=cookie_dict)
     api = Linkedin(cookies=cookie_dict)
 
-    # ================== NOT NEEDED, SAVING IN LOCAL STORAGE ==================
+    # ================== NOT NEEDED, SAVING IN LOCAL STORAGE (FOR NOW) ==================
     # Save cookie_dict
     # cookie_filename = "linkedin_cookies_{}.pickle".format(email)
     # with open(cookie_filename, "wb") as f:
         # pickle.dump(cookie_dict, f)
-    # ================== NOT NEEDED, SAVING IN LOCAL STORAGE ==================
+    # ================== NOT NEEDED, SAVING IN LOCAL STORAGE (FOR NOW) ==================
         
     return jsonify(success=True, message="success")
     

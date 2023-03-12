@@ -3,37 +3,35 @@ import React, {useState, useEffect} from "react";
 
 function LinkedInCookie() {
 	
-	const [cookie, setCookie] = useState("")
+	const [cookie, setCookie] = useState("");
 	
-	// useEffect( () => {
-		// chrome.storage.local.set({
-			// 'LinkedInCookie': cookie
-		// });
+	useEffect( () => {
+		chrome.storage.local.set({
+			'LinkedInCookie': cookie
+		});
 	
-	// }, [cookie]);
-	
+	}, [cookie]);	
 		
 	const handleLinkedInCookie = () => {
 		
-		chrome.cookies.getAll({ url: "https://www.linkedin.com/feed/" }, (linkedInCookie) => {
-			
-			console.log(linkedInCookie);
-			
+		chrome.cookies.getAll({ url: "https://www.linkedin.com/feed/" }, (cookie) => {
+					
 			fetch("https://sak-productivity-suite.herokuapp.com/save-cookie", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
 				},
 				body: JSON.stringify({
-					cookie: linkedInCookie
+					cookie: cookie
 				})
 			})
 			.then((response) => response.json())
 			.then((data) => {
 				
-				setCookie(linkedInCookie);
+				setCookie(cookie);
 				
 			});
+
 		});
 	
 	};
@@ -45,7 +43,7 @@ function LinkedInCookie() {
 				
 				<h1>MAKE SURE YOU ARE LOGGED IN TO LINKEDIN BEFORE CLICKING BELOW</h1> 
 
-				<button id = "linkedInCookieButton" onClick={handleLinkedInCookie}>
+				<button onClick={handleLinkedInCookie}>
 					Get LinkedIn Cookies
 				</button>
 			
