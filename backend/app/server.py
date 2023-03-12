@@ -93,7 +93,7 @@ def get_values_for_key(key, dictionary):
     
     # return final_topics
 
-def GetProfile(email, password, cookie_dict, search_params, location, mutual_connections_boolean):
+def GetProfile(cookie_dict, search_params, location, mutual_connections_boolean):
 
     print("location", location)
     
@@ -101,7 +101,7 @@ def GetProfile(email, password, cookie_dict, search_params, location, mutual_con
     # with open(cookie_filename, "rb") as infile:
         # cookie_dict = pickle.load(infile)
     
-    api = Linkedin(email, password, cookies=cookie_dict)
+    api = Linkedin(cookies=cookie_dict)
     
     list_of_people = api.search_people(keyword_title = search_params['title'],
     regions = [location if location != '' else ''],
@@ -275,8 +275,8 @@ def use_bingai():
 @app.route('/receive-link', methods=['POST'])
 def receive_link():
 
-    email = request.json['email']
-    password = request.json['password']
+    # email = request.json['email']
+    # password = request.json['password']
     
     # print(email, password)
     
@@ -290,7 +290,8 @@ def receive_link():
         temp = single_dict["value"].strip('"')
         cookie_dict[single_dict["name"]] = temp
     
-    api = Linkedin(email, password, cookies=cookie_dict)
+    # api = Linkedin(email, password, cookies=cookie_dict)
+    api = Linkedin(cookies=cookie_dict)
         
     title = request.json
     # print("title", title)
@@ -300,11 +301,11 @@ def receive_link():
     
     if location != '':
         location_geo_urn = get_geo_urn(api, location)
-        data = q.enqueue(GetProfile, email, password, cookie_dict, title, location_geo_urn, mutual_connections_boolean)
+        data = q.enqueue(GetProfile, cookie_dict, title, location_geo_urn, mutual_connections_boolean)
         # data = q.enqueue(GetProfile, api, title, location_geo_urn, mutual_connections_boolean)
 
     else:
-        data = q.enqueue(GetProfile, email, password, cookie_dict, title, '', mutual_connections_boolean)
+        data = q.enqueue(GetProfile, cookie_dict, title, '', mutual_connections_boolean)
         
     # print(data)
     
