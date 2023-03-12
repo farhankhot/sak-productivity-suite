@@ -54,7 +54,7 @@ function ProfileSearch(props) {
 			<DisplaySearchResults resultArray={resultArray} />
 
 		) : (
-			<div id="linkedInSearchPage">
+			<div id="linkedinSearchPage">
 				<input type="text" id="title" placeholder="Enter a title" />
 				<input type="text" id="location" placeholder="Location" />
 				<input type="text" id="currentCompany" placeholder="Current Company" />
