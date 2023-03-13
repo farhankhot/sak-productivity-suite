@@ -100,12 +100,13 @@ def GetProfile(cookie_dict, search_params, location, mutual_connections_boolean)
     list_of_people = api.search_people(keyword_title = search_params['title'],
                                         regions = [location if location != '' else ''],
                                         keyword_company = search_params['currentCompany'],
-                                        network_depth = "S" if mutual_connections_boolean == True else "O")
+                                        network_depth = "S" if mutual_connections_boolean == True else "O",
+                                        limit=5)
     
-    print(list_of_people)
+    # print(list_of_people)
     
     full_profile_list = []
-    for person in list_of_people[0:2]:
+    for person in list_of_people[0:5]:
         prof = api.get_profile(person['public_id'])       
         prof_skills = api.get_profile_skills(person['public_id'])
         prof['skills'] = prof_skills
