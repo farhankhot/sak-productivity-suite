@@ -102,11 +102,10 @@ def GetProfile(cookie_dict, search_params, location, mutual_connections_boolean)
                                         keyword_company = search_params['currentCompany'],
                                         network_depth = "S" if mutual_connections_boolean == True else "O")
     
-    # print(list_of_people)
+    print(list_of_people)
     
     full_profile_list = []
     for person in list_of_people[0:2]:
-    # for person in list_of_people[0:3]:
         prof = api.get_profile(person['public_id'])       
         prof_skills = api.get_profile_skills(person['public_id'])
         prof['skills'] = prof_skills
@@ -119,11 +118,7 @@ def GetProfile(cookie_dict, search_params, location, mutual_connections_boolean)
     
     return full_profile_list
     
-def SendConnect(api, profile_id, text):
-    error_boolean = api.add_connection(profile_id, text)
-    print(error_boolean)
-
-def get_geo_urn(api, location):
+def GetGeoUrn(api, location):
         
     res = api._fetch(f"/typeahead/hitsV2?keywords={location}&origin=OTHER&q=type&queryContext=List(geoVersion-%3E3,bingGeoSubTypeFilters-%3EMARKET_AREA%7CCOUNTRY_REGION%7CADMIN_DIVISION_1%7CCITY)&type=GEO")
 
@@ -267,7 +262,7 @@ def receive_link():
     mutual_connections_boolean = request.json['mutualConnections']
     
     if location != '':
-        location_geo_urn = get_geo_urn(api, location)
+        location_geo_urn = GetGeoUrn(api, location)
         data = q.enqueue(GetProfile, cookie_dict, search_params, location_geo_urn, mutual_connections_boolean)
 
     else:
@@ -305,9 +300,6 @@ def job_status():
 
 @app.route('/get-people-interests', methods=['POST'])
 def get_people_interests():
-
-    # email = request.json['email']
-    # password = request.json['password']
     
     cookies_list = request.json['cookie']
     cookie_dict = {}
@@ -405,19 +397,17 @@ def get_convo_messages():
 @app.route('/send-connect', methods=['POST'])
 def send_connect():
 
-    email = request.json['email']
-    password = request.json['password']
     cookies_list = request.json['cookie']
     cookie_dict = {}
     for single_dict in cookies_list:
         temp = single_dict["value"].strip('"')
         cookie_dict[single_dict["name"]] = temp
 
-    api = Linkedin(email, password, cookies=cookie_dict)
+    api = Linkedin(cookies=cookie_dict)
 
     profile_id = request.json['profileId']
     text = request.json['text']
-    # data = SendConnect(api, profile_id, text)
+    
     error_boolean = api.add_connection(profile_id, text)
     return jsonify(success=True, message=error_boolean)
 
@@ -446,8 +436,6 @@ def send_message():
 @app.route('/save-cookie', methods=['POST'])
 def save_cookie():
     
-    # email = request.json['email']
-    # password = request.json['password'] 
     cookies_list = request.json['cookie']    
     
     cookie_dict = {}
@@ -456,7 +444,6 @@ def save_cookie():
         cookie_dict[single_dict["name"]] = temp
     
     # TODO: TRY CATCH HERE
-    # api = Linkedin(email, password, cookies=cookie_dict)
     api = Linkedin(cookies=cookie_dict)
 
     # ================== NOT NEEDED, SAVING IN LOCAL STORAGE (FOR NOW) ==================
