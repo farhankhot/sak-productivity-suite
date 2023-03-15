@@ -26,7 +26,7 @@ async def UseBingAI(prompt):
     # This is getting my own bing cookies
     bot = Chatbot(cookiePath='./cookie.json')
 
-    ans_json = await bot.ask(prompt=prompt)    
+    ans_json = await bot.ask(prompt=prompt)
     ans = ans_json['item']['messages'][1]['text']
     
     await bot.close()
@@ -241,6 +241,7 @@ def GetCompanyInterests(cookie_dict, public_id, profile_urn):
 def use_bingai():
 
     prompt = request.json['prompt']    
+    print(prompt)
     ans = asyncio.run(UseBingAI(prompt))
     
     # print(ans)
