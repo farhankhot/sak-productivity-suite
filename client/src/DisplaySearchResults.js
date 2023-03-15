@@ -5,6 +5,8 @@ import ProfileSearch from "./ProfileSearch.js";
 
 // TODO: 
 // Move peopleInterests, companyInterests and activityInterests to 3 separate components
+// Move making note to a separate component
+
 // Next button still clickable at the last page
 // When to move to full page?
 
@@ -25,6 +27,8 @@ function DisplaySearchResults(props) {
 	const [profileUrn, setProfileUrn] = useState("");
 	
 	const [noteTextArea, setNoteTextArea] = useState(""); 
+	
+	const [interests, setInterests] = useState(""); 
 	
 	const [peopleInterestsArray, setPeopleInterestsArray] = useState([]);	
 	const [companyInterestsArray, setCompanyInterestsArray] = useState([]);	
@@ -167,7 +171,6 @@ function DisplaySearchResults(props) {
 			});
 			
 			const data = await response.json();
-			console.log(data.message);	
 			setNoteTextArea(data.message);			
 
 		}catch(error){
@@ -206,7 +209,10 @@ function DisplaySearchResults(props) {
 		<div>
 			<div>{fullName}</div>
 			<div>{latestTitle}</div>
-			<textarea value={noteTextArea} onChange={handleNoteTextAreaChange} placeholder="The generated note will appear here"></textarea>		
+			<textarea value={noteTextArea} onChange={handleNoteTextAreaChange} placeholder="The generated note will appear here"></textarea>	
+			
+			<div>{interests}</div>
+			
 			<button onClick={handleGettingPeopleInterests}>
 				Get people interests
 			</button>

@@ -2,7 +2,7 @@
   "name": "sak-productivity-suite",
   "version": "1.0",
   "manifest_version": 3,  
-  "permissions": ["activeTab", "scripting", "storage", "identity", "downloads", "contextMenus", "alarms", "cookies"],
+  "permissions": ["activeTab", "scripting", "storage", "identity", "downloads", "contextMenus", "alarms", "cookies", "audioCapture", "tabCapture"],
   "action": {
     "default_title": "Click to open",
 	"default_popup": "index.html"
