@@ -2,6 +2,7 @@
 import React, {useState, useEffect} from "react";
 import {CheckJobStatus} from "./CheckJobStatus.js";
 import DisplaySearchResults from "./DisplaySearchResults.js";
+import DisplayConvos from "./DisplayConvos.js";
 
 // TODO: Loading animation when waiting for a response
 
@@ -44,6 +45,10 @@ function ProfileSearch(props) {
 		}
 	};
 	
+	const handleMessagesButton = async () => {
+		return <DisplayConvos cookie={cookie} />
+	};
+	
 	return (
 		<>
 		{jobFinished===true ? (
@@ -52,6 +57,9 @@ function ProfileSearch(props) {
 
 		) : (
 			<div>
+				<button onClick={handleMessagesButton}>
+					Messages
+				</button>
 				<input type="text" placeholder="Enter a title" value={title} onChange={(e) => setTitle(e.target.value)}  />
 				<input type="text" placeholder="Location" value={location} onChange={(e) => setLocation(e.target.value)} />
 				<input type="text" placeholder="Current Company" value={currentCompany} onChange={(e) => setCurrentCompany(e.target.value)} />

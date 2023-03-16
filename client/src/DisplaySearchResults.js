@@ -8,7 +8,6 @@ import ProfileSearch from "./ProfileSearch.js";
 // Move making note to a separate component
 
 // Next button still clickable at the last page
-// When to move to full page?
 
 function DisplaySearchResults(props) {
 	

@@ -4,21 +4,61 @@ import React, {useState, useEffect} from "react";
 function DisplayConvos(props) {
 	
 	const {cookie} = props;
-		
-	const handleConvoClick = async () => {
-		// TODO
+	
+	const [threadArray, setThreadArray] = useState([]);
+	const [selectedThread, setSelectedThread] = useState(null);
+	const [messageArray, setMessageArray] = useState([]);
+
+	const handleGetThreads = async () => {
+		const response = await fetch('https://sak-productivity-suite.herokuapp.com/get-convo-threads', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+				cookie: cookie,
+			})
+		});
+
+		const data = await response.json();
+		const thread = data.message;
+		setThreadArray(thread);
 	};
 	
 	return (
-		<>
 		<div>
-			
-		</div>	
-		</>
-	);
-	
+		
+			{threadArray.length > 0 && (
+				<>
+				{threadArray.map( (threadName) => (
+					<button>{threadName[0]}</button>
+				))}
+				</>
+			)}
+		</div>
+	)
+
 }
 export default DisplayConvos;
+
+	// const handleGetMessages = async (profileUrn) => {
+		// const response = await fetch('https://sak-productivity-suite.herokuapp.com/get-convo-messages', {
+			// method: 'POST',
+			// headers: {
+				// 'Content-Type': 'application/json',
+			// },
+			// body: JSON.stringify({
+				// cookie: cookie,
+				// profileUrn: profileUrn
+			// })
+		// });
+
+		// const data = await response.json();
+		// const message = data.message;
+		// setMessageArray(message);
+
+	// };
+
 
 // document.getElementById("MessagesButton").onclick = function() {
 

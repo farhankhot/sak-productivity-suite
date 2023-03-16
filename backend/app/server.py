@@ -127,10 +127,8 @@ def GetGeoUrn(api, location):
     geo_urn = re.search("\d+", geo_urn).group()
     return geo_urn
 
-def get_conversation_threads(email, password, cookie_dict):
-    
-    api = Linkedin(email, password, cookies=cookie_dict)
-    
+def GetConversationThreads(api):
+        
     convo_list=[]
     yay = api.get_conversations()
 
@@ -353,25 +351,15 @@ def get_company_interests():
 @app.route('/get-convo-threads', methods=['POST'])
 def get_convo_threads():
 
-    email = request.json['email']
-    password = request.json['password']
     cookies_list = request.json['cookie']
     
     cookie_dict = {}
     for single_dict in cookies_list:
         temp = single_dict["value"].strip('"')
         cookie_dict[single_dict["name"]] = temp
-    
-    # cookie_dict = dict(zip(range(len(cookie_dict)), cookie_dict))
-    
-    # print(cookie_dict)
-    # print(type(cookie_dict))
-    # print(email)
-    
-    # api = Linkedin(email, password)
-    # print("api", api)
-    data = get_conversation_threads(email, password, cookie_dict)
-    # print("get_convo_threads data: ", data)
+        
+    api = Linkedin(cookie=cookie_dict)
+    data = GetConversationThreads(api)
     
     return jsonify(success=True, message=data)
 
