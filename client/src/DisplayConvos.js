@@ -37,7 +37,7 @@ function DisplayConvos(props) {
 	
 	return (
 		<>
-		{threadName ? (
+		{ (threadName && threadId) ? (
 			<DisplayThread cookie={cookie} threadName={threadName} threadId={threadId} />
 		) : (
 			<div>

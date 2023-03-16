@@ -393,9 +393,6 @@ def send_connect():
 
 @app.route('/send-message', methods=['POST'])
 def send_message():
-
-    email = request.json['email']
-    password = request.json['password']
     
     cookies_list = request.json['cookie']
     cookie_dict = {}
@@ -403,14 +400,12 @@ def send_message():
         temp = single_dict["value"].strip('"')
         cookie_dict[single_dict["name"]] = temp
     
-    api = Linkedin(email, password, cookies=cookie_dict)
+    api = Linkedin(cookies=cookie_dict)
 
     profile_id = request.json['profileId']
-    print(profile_id)
     text = request.json['text']
-    print(text)
     data = api.send_message(message_body = text, recipients=[profile_id])
-    print(data)
+
     return jsonify(success=True, message='sent message')
 
 @app.route('/save-cookie', methods=['POST'])
