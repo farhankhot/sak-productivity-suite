@@ -328,22 +328,7 @@ def get_company_interests():
     job_id = data.get_id()
     
     return jsonify(success=True, message=job_id)
- 
-# @app.route('/get-interests-from-thread', methods=['POST'])
-# def get_interests_from_thread():
-    
-    
-    # email = request.json['email']
-    # password = request.json['password']
-    # api = Linkedin(email, password)
-
-    # profile_urn = request.json['publicId']
-    # # print("get_interests", public_id['publicId'])
-    # data = ModelAndReturnTopicList(api,profile_urn)
-    # # print(data)
-    
-    # return jsonify(success=True, message=data)
-    
+     
 @app.route('/get-convo-threads', methods=['POST'])
 def get_convo_threads():
 
