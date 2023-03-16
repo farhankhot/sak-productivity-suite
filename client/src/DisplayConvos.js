@@ -1,13 +1,14 @@
 /*global chrome*/
 import React, {useState, useEffect} from "react";
+import DisplayThread from "./DisplayThread.js";
 
 function DisplayConvos(props) {
 	
 	const {cookie} = props;
 	
 	const [threadArray, setThreadArray] = useState([]);
-	const [selectedThread, setSelectedThread] = useState(null);
-	const [messageArray, setMessageArray] = useState([]);
+	const [threadName, setThreadName] = useState(null);
+	const [threadId, setThreadId] = useState(null);
 
 	useEffect( () => {
 		const handleGetThreads = async () => {
@@ -27,19 +28,31 @@ function DisplayConvos(props) {
 		};	
 		handleGetThreads();
 	}, []);
+		
+		
+	const handleThreadClick = (threadName) => {
+		setThreadName(threadName[0]);
+		setThreadId(threadName[1]);
+	};
 	
 	return (
-		<div>
-			<h1>HI</h1>
-		
-			{threadArray.length > 0 && (
-				<>
-				{threadArray.map( (threadName) => (
-					<button>{threadName[0]}</button>
-				))}
-				</>
-			)}
-		</div>
+		<>
+		{threadName ? (
+			<DisplayThread cookie={cookie} threadName={threadName} threadId={threadId} />
+		) : (
+			<div>
+				<h1>Messages</h1>
+			
+				{threadArray.length > 0 && (
+					<>
+					{threadArray.map( (threadName) => (
+						<button onClick={() => handleThreadClick(threadName)}>{threadName[0]}</button>
+					))}
+					</>
+				)}
+			</div>
+		)}
+		</>
 	)
 
 }

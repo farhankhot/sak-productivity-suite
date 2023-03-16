@@ -147,11 +147,9 @@ def GetConversationThreads(api):
                     
     return convo_list
 
-def get_conversation_messages(conversation_id):
+def GetConversationMessages(cookie_dict, conversation_id):
     
-    email = request.json['email']
-    password = request.json['password']
-    api = Linkedin(email, password)
+    api = Linkedin(cookies=cookie_dict)
 
     convo_list=[]
     convo = api.get_conversation_details(conversation_id)
@@ -159,7 +157,6 @@ def get_conversation_messages(conversation_id):
     for message_idx in range(0, len(convo['events'])):
         cleaned_up_convo = get_values_for_key('text',convo['events'][message_idx])
         convo_list.append(cleaned_up_convo)
-        # print(cleaned_up_convo)
             
     return convo_list
     
@@ -364,9 +361,6 @@ def get_convo_threads():
 
 @app.route('/get-convo-messages', methods=['POST'])
 def get_convo_messages():
-
-    email = request.json['email']
-    password = request.json['password']
     
     cookies_list = request.json['cookie']
     cookie_dict = {}
@@ -374,13 +368,10 @@ def get_convo_messages():
         temp = single_dict["value"].strip('"')
         cookie_dict[single_dict["name"]] = temp
 
-    api = Linkedin(email, password, cookies=cookie_dict)
-
     profile_urn = request.json['profileUrn']
-    # print(profile_urn)
-    data = get_conversation_messages(profile_urn)
-    # print(data)
     
+    data = GetConversationMessages(cookie_dict, profile_urn)
+   
     return jsonify(success=True, message=data)
 
 @app.route('/send-connect', methods=['POST'])

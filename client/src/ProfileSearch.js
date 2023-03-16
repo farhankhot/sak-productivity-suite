@@ -52,33 +52,35 @@ function ProfileSearch(props) {
 	
 	return (
 		<>
-		{jobFinished===true ? (
-
+		{jobFinished === true ? (
 			<DisplaySearchResults cookie={cookie} resultArray={resultArray} />
-
 		) : (
+			<>
 			<div>
-				<div>
-					<button onClick={handleMessagesButton}>
-						Messages
-					</button>
-					{navigateToMessages && <DisplayConvos cookie={cookie} /> }
-				</div>
-				<input type="text" placeholder="Enter a title" value={title} onChange={(e) => setTitle(e.target.value)}  />
-				<input type="text" placeholder="Location" value={location} onChange={(e) => setLocation(e.target.value)} />
-				<input type="text" placeholder="Current Company" value={currentCompany} onChange={(e) => setCurrentCompany(e.target.value)} />
-				
-				<input type="checkbox" value={mutualConnectionsBoolean} onChange={(e) => setMutualConnectionsBoolean(e.target.value)} />
-				<label for="mutualConnectionsBoolean">
-					Get Mutual Connections?
-				</label>
-				
-				<button onClick={handleSearchRequest}>
-					Search
+				<button onClick={handleMessagesButton}>
+					Messages
 				</button>
+				{navigateToMessages && <DisplayConvos cookie={cookie} />}
 			</div>
-		)}
 			
+			{!navigateToMessages && (
+				<>
+					<input type="text" placeholder="Enter a title" value={title} onChange={(e) => setTitle(e.target.value)}  />
+					<input type="text" placeholder="Location" value={location} onChange={(e) => setLocation(e.target.value)} />
+					<input type="text" placeholder="Current Company" value={currentCompany} onChange={(e) => setCurrentCompany(e.target.value)} />
+					
+					<input type="checkbox" value={mutualConnectionsBoolean} onChange={(e) => setMutualConnectionsBoolean(e.target.value)} />
+					<label for="mutualConnectionsBoolean">
+						Get Mutual Connections?
+					</label>
+					
+					<button onClick={handleSearchRequest}>
+						Search
+					</button>
+				</>
+			)}
+			</>
+		)}		
 		</>
 	);
 	
