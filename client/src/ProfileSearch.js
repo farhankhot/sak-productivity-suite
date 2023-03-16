@@ -58,9 +58,12 @@ function ProfileSearch(props) {
 
 		) : (
 			<div>
-				<button onClick={handleMessagesButton}>
-					Messages
-				</button>
+				<div>
+					<button onClick={handleMessagesButton}>
+						Messages
+					</button>
+					{navigateToMessages && <DisplayConvos cookie={cookie} /> }
+				</div>
 				<input type="text" placeholder="Enter a title" value={title} onChange={(e) => setTitle(e.target.value)}  />
 				<input type="text" placeholder="Location" value={location} onChange={(e) => setLocation(e.target.value)} />
 				<input type="text" placeholder="Current Company" value={currentCompany} onChange={(e) => setCurrentCompany(e.target.value)} />

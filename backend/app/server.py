@@ -350,8 +350,6 @@ def get_company_interests():
 @app.route('/get-convo-threads', methods=['POST'])
 def get_convo_threads():
 
-    print("iran")
-
     cookies_list = request.json['cookie']
     
     cookie_dict = {}
@@ -359,7 +357,7 @@ def get_convo_threads():
         temp = single_dict["value"].strip('"')
         cookie_dict[single_dict["name"]] = temp
         
-    api = Linkedin(cookie=cookie_dict)
+    api = Linkedin(cookies=cookie_dict)
     data = GetConversationThreads(api)
     
     return jsonify(success=True, message=data)
