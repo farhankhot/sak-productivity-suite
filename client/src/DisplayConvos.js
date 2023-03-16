@@ -9,24 +9,28 @@ function DisplayConvos(props) {
 	const [selectedThread, setSelectedThread] = useState(null);
 	const [messageArray, setMessageArray] = useState([]);
 
-	const handleGetThreads = async () => {
-		const response = await fetch('https://sak-productivity-suite.herokuapp.com/get-convo-threads', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({
-				cookie: cookie,
-			})
-		});
+	useEffect( () => {
+		const handleGetThreads = async () => {
+			const response = await fetch('https://sak-productivity-suite.herokuapp.com/get-convo-threads', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({
+					cookie: cookie
+				})
+			});
 
-		const data = await response.json();
-		const thread = data.message;
-		setThreadArray(thread);
-	};
+			const data = await response.json();
+			const thread = data.message;
+			setThreadArray(thread);
+		};	
+		handleGetThreads();
+	}, []);
 	
 	return (
 		<div>
+			<h1>HI</h1>
 		
 			{threadArray.length > 0 && (
 				<>

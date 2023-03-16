@@ -234,7 +234,6 @@ def GetCompanyInterests(cookie_dict, public_id, profile_urn):
     
 
 # ================================================ ROUTES START =============================================
-
 @app.route('/use-bingai', methods=['POST'])
 def use_bingai():
 
@@ -350,6 +349,8 @@ def get_company_interests():
     
 @app.route('/get-convo-threads', methods=['POST'])
 def get_convo_threads():
+
+    print("iran")
 
     cookies_list = request.json['cookie']
     

@@ -15,6 +15,7 @@ function ProfileSearch(props) {
 	const [mutualConnectionsBoolean, setMutualConnectionsBoolean] = useState(false);
 	const [jobFinished, setJobFinished] = useState(false);
 	const [resultArray, setResultArray] = useState([]);
+	const [navigateToMessages, setNavigateToMessages] = useState(false);
 		
 	const handleSearchRequest = async () => {
 		try {
@@ -45,8 +46,8 @@ function ProfileSearch(props) {
 		}
 	};
 	
-	const handleMessagesButton = async () => {
-		return <DisplayConvos cookie={cookie} />
+	const handleMessagesButton = () => {
+		setNavigateToMessages(true);
 	};
 	
 	return (
@@ -74,7 +75,7 @@ function ProfileSearch(props) {
 				</button>
 			</div>
 		)}
-	
+			
 		</>
 	);
 	
