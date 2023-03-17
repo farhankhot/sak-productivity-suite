@@ -21,12 +21,12 @@ app = Flask(__name__)
 # Enables CORS (this is only needed when working with React.js, I don't know why)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
-def UseBingAI(prompt):
+async def UseBingAI(prompt):
     
     # This is getting my own bing cookies
     bot = Chatbot(cookiePath='./cookie.json')
 
-    ans_json = bot.ask(prompt=prompt)
+    ans_json = await bot.ask(prompt=prompt)
     ans = ans_json['item']['messages'][1]['text']
     
     bot.close()
