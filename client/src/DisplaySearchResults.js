@@ -175,7 +175,12 @@ function DisplaySearchResults(props) {
 			});
 			
 			const data = await response.json();
-			setNoteTextArea(data.message);			
+			const jobId = data.message;
+			
+			CheckJobStatus(jobId, (resultArray) => {
+				setIsLoading(false);	
+				setNoteTextArea(resultArray);	
+			});
 
 		}catch(error){
 			console.log(error);
@@ -206,7 +211,6 @@ function DisplaySearchResults(props) {
 	};
 	
 	const handleNoteTextAreaChange = (event) => {
-		setIsLoading(false);
 		setNoteTextArea(event.target.value);
 	};
 
