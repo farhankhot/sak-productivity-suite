@@ -82,6 +82,7 @@ function DisplaySearchResults(props) {
 	};
 		
 	const handleGettingPeopleInterests = async () => {
+		setIsLoading(true);
 		try {
 			const response = await fetch("https://sak-productivity-suite.herokuapp.com/get-people-interests", {
 				method: "POST",
@@ -94,22 +95,22 @@ function DisplaySearchResults(props) {
 				})
 			});
 			
-			setIsLoading(true);
+			
 			const data = await response.json();			
 			const jobId = data.message;
 			
 			CheckJobStatus(jobId, (peopleInterestsArray) => {
+				setIsLoading(false);
 				setPeopleInterestsArray(peopleInterestsArray);	
 			});
 
 		} catch (error) {
 			console.error(error);
-		} finally {
-			setIsLoading(false);
 		}
 	};
 	
 	const handleGettingCompanyInterests = async () => {
+		setIsLoading(true);
 		try {
 			const response = await fetch("https://sak-productivity-suite.herokuapp.com/get-company-interests", {
 				method: "POST",
@@ -123,18 +124,17 @@ function DisplaySearchResults(props) {
 				})
 			});
 			
-			setIsLoading(true);
+			
 			const data = await response.json();
 			const jobId = data.message;
 			
 			CheckJobStatus(jobId, (companyInterestsArray) => {
+				setIsLoading(false);
 				setCompanyInterestsArray(companyInterestsArray);	
 			});
 
 		} catch (error) {
 			console.error(error);
-		} finally {
-			setIsLoading(false);
 		}
 	};
 	
@@ -162,7 +162,7 @@ function DisplaySearchResults(props) {
 		" These are their interests: " + selectedInterests 
 		+ " Use the internet to get something useful about the interests and use it in the request. "
 		+ " Write a request to connect with them. Make it casual but eyecatching. The goal is to ask about their current Salesforce implementation. The length should be no more than 70 words.";
-		
+		setIsLoading(true);
 		try {
 			const response = await fetch("https://sak-productivity-suite.herokuapp.com/use-bingai", {
 				method: "POST",
@@ -206,6 +206,7 @@ function DisplaySearchResults(props) {
 	};
 	
 	const handleNoteTextAreaChange = (event) => {
+		setIsLoading(false);
 		setNoteTextArea(event.target.value);
 	};
 
