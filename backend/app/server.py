@@ -120,7 +120,7 @@ def GetProfile(cookie_dict, search_params, location, mutual_connections_boolean)
     return full_profile_list
     
 def GetGeoUrn(api, location):
-        
+
     res = api._fetch(f"/typeahead/hitsV2?keywords={location}&origin=OTHER&q=type&queryContext=List(geoVersion-%3E3,bingGeoSubTypeFilters-%3EMARKET_AREA%7CCOUNTRY_REGION%7CADMIN_DIVISION_1%7CCITY)&type=GEO")
 
     geo_urn = res.json()['elements'][0]['targetUrn'] # Output: urn:li:fs_geo:103644278
