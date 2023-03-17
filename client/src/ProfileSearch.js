@@ -3,8 +3,9 @@ import React, {useState, useEffect} from "react";
 import {CheckJobStatus} from "./CheckJobStatus.js";
 import DisplaySearchResults from "./DisplaySearchResults.js";
 import DisplayConvos from "./DisplayConvos.js";
+import loadingGif from "./loading.gif";
 
-// TODO: Loading animation when waiting for a response
+// TODO: Fix relative imports (loadingGif should be in /public/)
 
 function ProfileSearch(props) {
 	
@@ -16,6 +17,7 @@ function ProfileSearch(props) {
 	const [jobFinished, setJobFinished] = useState(false);
 	const [resultArray, setResultArray] = useState([]);
 	const [navigateToMessages, setNavigateToMessages] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
 		
 	const handleSearchRequest = async () => {
 		try {
@@ -32,7 +34,7 @@ function ProfileSearch(props) {
 					mutualConnections: mutualConnectionsBoolean
 				})
 			});
-
+			setIsLoading(true);
 			const data = await response.json();
 			const jobId = data.message;
 			
@@ -56,14 +58,15 @@ function ProfileSearch(props) {
 			<DisplaySearchResults cookie={cookie} resultArray={resultArray} />
 		) : (
 			<>
-			<div>
-				<button onClick={handleMessagesButton}>
-					Messages
-				</button>
-				{navigateToMessages && <DisplayConvos cookie={cookie} />}
-			</div>
-			
-			{!navigateToMessages && (
+			{!isLoading && (
+				<div>
+					<button onClick={handleMessagesButton}>
+						Messages
+					</button>
+					{navigateToMessages && <DisplayConvos cookie={cookie} />}
+				</div>
+			)}
+			{!navigateToMessages && !isLoading && (
 				<>
 					<input type="text" placeholder="Enter a title" value={title} onChange={(e) => setTitle(e.target.value)}  />
 					<input type="text" placeholder="Location" value={location} onChange={(e) => setLocation(e.target.value)} />
@@ -79,6 +82,7 @@ function ProfileSearch(props) {
 					</button>
 				</>
 			)}
+			{isLoading && <img src={loadingGif} alt="loading" />}
 			</>
 		)}		
 		</>

@@ -2,6 +2,7 @@
 import React, {useState, useEffect} from "react";
 import {CheckJobStatus} from "./CheckJobStatus.js";
 import ProfileSearch from "./ProfileSearch.js";
+import loadingGif from "./loading.gif";
 
 // TODO: 
 // Move peopleInterests, companyInterests and activityInterests to 3 separate components
@@ -34,6 +35,8 @@ function DisplaySearchResults(props) {
 	const [activityInterestsArray, setActivityInterestsArray] = useState([]);
 	
 	const [selectedInterests, setSelectedInterests] = useState("");
+	
+	const [isLoading, setIsLoading] = useState(false);
 	
 	useEffect(() => {
 		// Divide the array into pages
@@ -90,10 +93,9 @@ function DisplaySearchResults(props) {
 					profileUrn: profileUrn
 				})
 			});
-
-			const data = await response.json();
-			console.log(data);
 			
+			setIsLoading(true);
+			const data = await response.json();			
 			const jobId = data.message;
 			
 			CheckJobStatus(jobId, (peopleInterestsArray) => {
@@ -102,6 +104,8 @@ function DisplaySearchResults(props) {
 
 		} catch (error) {
 			console.error(error);
+		} finally {
+			setIsLoading(false);
 		}
 	};
 	
@@ -118,10 +122,9 @@ function DisplaySearchResults(props) {
 					publicId: publicId
 				})
 			});
-
-			const data = await response.json();
-			console.log(data);
 			
+			setIsLoading(true);
+			const data = await response.json();
 			const jobId = data.message;
 			
 			CheckJobStatus(jobId, (companyInterestsArray) => {
@@ -130,12 +133,14 @@ function DisplaySearchResults(props) {
 
 		} catch (error) {
 			console.error(error);
+		} finally {
+			setIsLoading(false);
 		}
 	};
 	
-	const handleGettingActivityInterests = () => {
-		// TODO
-	};
+	// const handleGettingActivityInterests = () => {
+		// // TODO
+	// };
 	
 	const handleInterestsSelection = (event) => {
 		
@@ -209,18 +214,20 @@ function DisplaySearchResults(props) {
 			<div>{fullName}</div>
 			<div>{latestTitle}</div>
 			<textarea value={noteTextArea} onChange={handleNoteTextAreaChange} placeholder="The generated note will appear here"></textarea>	
-			
+
 			<div>{interests}</div>
-			
+
+			{isLoading && <img src={loadingGif} alt="loading" />}
+
 			<button onClick={handleGettingPeopleInterests}>
 				Get people interests
 			</button>
 			<button onClick={handleGettingCompanyInterests}>
 				Get company interests
 			</button>
-			<button onClick={handleGettingActivityInterests}>
+			{/*<button onClick={handleGettingActivityInterests}>
 				Get interests from Linkedin activity
-			</button>
+			</button>*/}
 			<button onClick={handleNextPage}>
 				Next
 			</button>
@@ -232,21 +239,21 @@ function DisplaySearchResults(props) {
 			</button>
 		
 			{peopleInterestsArray.length > 0 && (
-			
+
 				<select multiple onChange={handleInterestsSelection} >
 				
 					{peopleInterestsArray.map( (interest) => (
-						<option key={interest}>{interest}</option>
+						<option key={interest}>{interest[0]}</option>
 					))}
 				</select>
 			)}
 
 			{companyInterestsArray.length > 0 && (
-			
+				
 				<select multiple onChange={handleInterestsSelection} >
 				
 					{companyInterestsArray.map( (interest) => (
-						<option key={interest}>{ interest }</option>
+						<option key={interest}>{ interest[0] }</option>
 					))}
 				</select>
 			)}
@@ -256,7 +263,7 @@ function DisplaySearchResults(props) {
 				<select multiple onChange={handleInterestsSelection} >
 				
 					{activityInterestsArray.map( (interest) => (
-						<option key={interest}>{ interest }</option>
+						<option key={interest}>{ interest[0] }</option>
 					))}
 				</select>
 			)}
@@ -264,5 +271,4 @@ function DisplaySearchResults(props) {
 		</div>
 	);
 }
-
 export default DisplaySearchResults;
