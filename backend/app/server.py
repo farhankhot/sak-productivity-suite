@@ -235,11 +235,11 @@ def GetCompanyInterests(cookie_dict, public_id, profile_urn):
 def use_bingai():
 
     prompt = request.json['prompt']    
-    ans = q.enqueue(UseBingAI, prompt)
-    
+    data = q.enqueue(UseBingAI, prompt)
+    job_id = data.get_id()
     # print(ans)
 
-    return jsonify(success=True, message=ans)
+    return jsonify(success=True, message=job_id)
 
 @app.route('/receive-link', methods=['POST'])
 def receive_link():
