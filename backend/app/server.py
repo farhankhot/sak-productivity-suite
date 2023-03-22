@@ -136,7 +136,7 @@ def GetProfile(cookie_dict, search_params, location, mutual_connections_boolean)
                                         network_depth = "S" if mutual_connections_boolean == True else "O",
                                         limit=5)
     
-    logging.log(list_of_people)
+    print(list_of_people)
     
     full_profile_list = []
     for person in list_of_people[0:5]:
@@ -148,8 +148,6 @@ def GetProfile(cookie_dict, search_params, location, mutual_connections_boolean)
        
         full_profile_list.append(prof)
         
-    # logging.log(full_profile_list)
-    
     return full_profile_list
     
 def GetGeoUrn(api, location):
@@ -197,7 +195,7 @@ def GetPeopleInterests(cookie_dict, profile_urn):
     
     api = Linkedin(cookies=cookie_dict)
     
-    logging.log(profile_urn)
+    print(profile_urn)
 
     person_interests = api._fetch(f"/graphql?includeWebMetadata=True&variables=(profileUrn:urn%3Ali%3Afsd_profile%3A{profile_urn},sectionType:interests,tabIndex:1,locale:en_US)&&queryId=voyagerIdentityDashProfileComponents.38247e27f7b9b2ecbd8e8452e3c1a02c")
     person_interests = person_interests.json()
@@ -210,7 +208,7 @@ def GetPeopleInterests(cookie_dict, profile_urn):
     people_the_profile_is_interested_in_set = set(matches)
     people_the_profile_is_interested_in = [s.split(':')[-1] for s in people_the_profile_is_interested_in_set]
 
-    logging.log(people_the_profile_is_interested_in)
+    print(people_the_profile_is_interested_in)
 
     # Get the profile urn, get the name and store in another list
     final_people_the_profile_is_interested_in = []
@@ -222,8 +220,8 @@ def GetPeopleInterests(cookie_dict, profile_urn):
         full_name = first_name + " " + last_name 
         final_people_the_profile_is_interested_in.append([full_name, profile_urn])
 
-    logging.log(final_people_the_profile_is_interested_in)
-    logging.log(len(final_people_the_profile_is_interested_in))
+    print(final_people_the_profile_is_interested_in)
+    print(len(final_people_the_profile_is_interested_in))
     # ============= Getting interests of People =============================
     
     return final_people_the_profile_is_interested_in
@@ -250,8 +248,8 @@ def GetCompanyInterests(cookie_dict, public_id, profile_urn):
         company_name = temp['universalName']
         final_companies_the_profile_is_interested_in.append([company_name, company_id])
 
-    logging.log(final_companies_the_profile_is_interested_in)
-    logging.log(len(final_companies_the_profile_is_interested_in))
+    print(final_companies_the_profile_is_interested_in)
+    print(len(final_companies_the_profile_is_interested_in))
     # ============= Getting first 20 interests of Companies =============================
     
     return final_companies_the_profile_is_interested_in
