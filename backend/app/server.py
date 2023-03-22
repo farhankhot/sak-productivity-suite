@@ -1,3 +1,6 @@
+# TODO: MOVE FROM PRINT TO LOGGER
+import logging
+
 from linkedin_api import Linkedin
 import json
 from flask import Flask, request, jsonify
@@ -13,6 +16,7 @@ import time
 import os
 import sys
 import pickle
+import openai
 
 q = Queue(connection=conn)
 
@@ -31,6 +35,23 @@ async def UseBingAI(prompt):
     
     bot.close()
     return ans
+
+def UseChatGPT(prompt):
+    
+    openaiKey = "sk-BQ0tK7GxoNDv0zYjTkT1T3BlbkFJ2TAJQSSJ4UEYSrDPn68";
+    openai_key = openai_key + "7";
+    openai.api_key = openai_key
+
+    completion = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo-0301",
+        messages = [
+            {"role": "user", "content": prompt}
+        ]
+    )
+
+    print(completion.choices[0].message)
+    
+    return completion.choices[0].message
 
 def get_values_for_key(key, dictionary):
     values = []
@@ -237,9 +258,16 @@ def use_bingai():
     prompt = request.json['prompt']    
     data = q.enqueue(UseBingAI, prompt)
     job_id = data.get_id()
-    # print(ans)
 
     return jsonify(success=True, message=job_id)
+
+@app.route('/use-chatgpt', methods=['POST'])
+def use_chatgpt():
+
+    prompt = request.json['prompt']    
+    ans = UseChatGPT(prompt)
+    
+    return jsonify(success=True, message=ans)
 
 @app.route('/receive-link', methods=['POST'])
 def receive_link():

@@ -42,11 +42,11 @@ function AudioRetrieval() {
 	
 	const handleSendingToAI = async() => {
 		const prompt = "This is a question asked by a person: "
-		+ " Give an answer in bullet points. Try not to be verbose: " + transcriptTextAreaRef.current.value;
+		+ " Give an answer in bullet points. Do not be verbose: " + transcriptTextAreaRef.current.value;
 		console.log(prompt);
 		
 		try {
-			const response = await fetch("https://sak-productivity-suite.herokuapp.com/use-bingai", {
+			const response = await fetch("https://sak-productivity-suite.herokuapp.com/use-chatgpt", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json"
