@@ -84,7 +84,7 @@ function DisplaySearchResults(props) {
 	const handleGettingPeopleInterests = async () => {
 		setIsLoading(true);
 		try {
-			const response = await fetch("https://sak-productivity-suite.herokuapp.com/get-people-interests", {
+			const response = await fetch("http://159.65.117.84:80/get-people-interests", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json"
@@ -112,7 +112,7 @@ function DisplaySearchResults(props) {
 	const handleGettingCompanyInterests = async () => {
 		setIsLoading(true);
 		try {
-			const response = await fetch("https://sak-productivity-suite.herokuapp.com/get-company-interests", {
+			const response = await fetch("http://159.65.117.84:80/get-company-interests", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json"
@@ -164,7 +164,7 @@ function DisplaySearchResults(props) {
 		+ " Write a request to connect with them. Make it casual but eyecatching. The goal is to ask about their current Salesforce implementation. The length should be no more than 70 words.";
 		setIsLoading(true);
 		try {
-			const response = await fetch("https://sak-productivity-suite.herokuapp.com/use-bingai", {
+			const response = await fetch("http://159.65.117.84:80/use-bingai", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json"
@@ -190,7 +190,7 @@ function DisplaySearchResults(props) {
 	const handleSendingConnectNote = async () => {
 		
 		try {
-			const response = await fetch("https://sak-productivity-suite.herokuapp.com/send-connect", {
+			const response = await fetch("http://159.65.117.84:80/send-connect", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json"

@@ -45,7 +45,7 @@ function AudioRetrieval() {
 		+ " Answer in a sentence or two. Do not be verbose: " + transcriptTextAreaRef.current.value;
 		
 		try {
-			const response = await fetch("https://sak-productivity-suite.herokuapp.com/use-chatgpt", {
+			const response = await fetch("http://159.65.117.84:80/use-chatgpt", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json"

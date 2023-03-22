@@ -16,35 +16,30 @@ from flask_cors import CORS
 # from bertopic import BERTopic
 import emoji
 
-from rq import Queue
-from worker import conn
-
 import openai
 from EdgeGPT import Chatbot
-
-q = Queue(connection=conn)
 
 app = Flask(__name__)
 
 # Enables CORS (this is only needed when working with React.js, I don't know why)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
-async def UseBingAI(prompt):
+async def UseBingAI(prompt: str) -> str:
     
     # This is getting my own bing cookies
-    bot = Chatbot(cookiePath='./cookie.json')
+    bot: Chatbot = Chatbot(cookiePath='./cookie.json')
 
-    ans_json = await bot.ask(prompt=prompt)
-    ans = ans_json['item']['messages'][1]['text']
+    ans_json: dict = await bot.ask(prompt=prompt)
+    ans: str = ans_json['item']['messages'][1]['text']
     
-    bot.close()
+    await bot.close()
     return ans
 
-def UseChatGPT(prompt):
+def UseChatGPT(prompt: str) -> str:
 
     # TODO: Check usage in the conversation, if token limit is near, start a new conversation
     
-    openai_key = "sk-BQ0tK7GxoNDv0zYjTkT1T3BlbkFJ2TAJQSSJ4UEYSrDPn68"
+    openai_key: str = "sk-BQ0tK7GxoNDv0zYjTkT1T3BlbkFJ2TAJQSSJ4UEYSrDPn68"
     openai_key = openai_key + "7"
     openai.api_key = openai_key
 
@@ -55,12 +50,12 @@ def UseChatGPT(prompt):
         ]
     )
     
-    print(completion['choices'][0]['message']['content'])
+    print(completion['choices'][0]['message']['content']) # type: ignore
     
-    return completion['choices'][0]['message']['content']
+    return completion['choices'][0]['message']['content'] # type: ignore
 
-def get_values_for_key(key, dictionary):
-    values = []
+def get_values_for_key(key: str, dictionary: dict) -> list:
+    values: list = []
     for k, v in dictionary.items():
         if k == key:
             values.append(v)
@@ -68,8 +63,8 @@ def get_values_for_key(key, dictionary):
             values.extend(get_values_for_key(key, v))
     return values    
 
-def cookies_list_to_cookie_dict(cookies_list):
-    cookie_dict = {}
+def cookies_list_to_cookie_dict(cookies_list: list) -> dict:
+    cookie_dict: dict = {}
     for single_dict in cookies_list:
         temp = single_dict["value"].strip('"')
         cookie_dict[single_dict["name"]] = temp
@@ -127,9 +122,9 @@ def cookies_list_to_cookie_dict(cookies_list):
     
     # return final_topics
 
-def GetProfile(cookie_dict, search_params, location, mutual_connections_boolean):
+def GetProfile(cookie_dict: dict, search_params: dict, location: str, mutual_connections_boolean: bool):
     
-    api = Linkedin(cookies=cookie_dict)
+    api: Linkedin = Linkedin(cookies=cookie_dict) # type: ignore
     
     list_of_people = api.search_people(keyword_title = search_params['title'],
                                         regions = [location if location != '' else ''],
@@ -156,7 +151,7 @@ def GetGeoUrn(api, location):
     res = api._fetch(f"/typeahead/hitsV2?keywords={location}&origin=OTHER&q=type&queryContext=List(geoVersion-%3E3,bingGeoSubTypeFilters-%3EMARKET_AREA%7CCOUNTRY_REGION%7CADMIN_DIVISION_1%7CCITY)&type=GEO")
 
     geo_urn = res.json()['elements'][0]['targetUrn'] # Output: urn:li:fs_geo:103644278
-    geo_urn = re.search("\d+", geo_urn).group()
+    geo_urn = re.search("\d+", geo_urn).group() # type: ignore
     return geo_urn
 
 def GetConversationThreads(api):
@@ -181,9 +176,9 @@ def GetConversationThreads(api):
 
 def GetConversationMessages(cookie_dict, conversation_id):
     
-    api = Linkedin(cookies=cookie_dict)
+    api: Linkedin = Linkedin(cookies=cookie_dict) # type: ignore
 
-    convo_list=[]
+    convo_list: list =[]
     convo = api.get_conversation_details(conversation_id)
         
     for message_idx in range(0, len(convo['events'])):
@@ -194,7 +189,7 @@ def GetConversationMessages(cookie_dict, conversation_id):
     
 def GetPeopleInterests(cookie_dict, profile_urn):
     
-    api = Linkedin(cookies=cookie_dict) # type: ignore
+    api: Linkedin = Linkedin(cookies=cookie_dict) # type: ignore
     
     print(profile_urn)
 
@@ -229,7 +224,7 @@ def GetPeopleInterests(cookie_dict, profile_urn):
     
 def GetCompanyInterests(cookie_dict, public_id, profile_urn):
     
-    api = Linkedin(cookies=cookie_dict) # type: ignore
+    api: Linkedin = Linkedin(cookies=cookie_dict) # type: ignore 
     
     person_interests = api._fetch(f"/graphql?includeWebMetadata=True&variables=(profileUrn:urn%3Ali%3Afsd_profile%3A{profile_urn},sectionType:interests,tabIndex:1,locale:en_US)&&queryId=voyagerIdentityDashProfileComponents.38247e27f7b9b2ecbd8e8452e3c1a02c")
     person_interests = person_interests.json()
@@ -260,16 +255,15 @@ def GetCompanyInterests(cookie_dict, public_id, profile_urn):
 @app.route('/use-bingai', methods=['POST'])
 def use_bingai():
 
-    prompt = request.json['prompt']    
-    data = q.enqueue(UseBingAI, prompt)
-    job_id = data.get_id()
+    prompt: str = request.json['prompt'] # type: ignore
+    ans = asyncio.run(UseBingAI(prompt)) 
 
-    return jsonify(success=True, message=job_id)
+    return jsonify(success=True, message=ans)
 
 @app.route('/use-chatgpt', methods=['POST'])
 def use_chatgpt():
 
-    prompt = request.json['prompt']    
+    prompt = request.json['prompt'] # type: ignore  
     ans = UseChatGPT(prompt)
     
     return jsonify(success=True, message=ans)
@@ -277,24 +271,21 @@ def use_chatgpt():
 @app.route('/receive-link', methods=['POST'])
 def receive_link():
     
-    cookies_list = request.json['cookie']
-    cookie_dict = cookies_list_to_cookie_dict(cookies_list)
-    api = Linkedin(cookies=cookie_dict) # type: ignore
+    cookies_list: list = request.json['cookie'] # type: ignore
+    cookie_dict: dict = cookies_list_to_cookie_dict(cookies_list)
+    api: Linkedin = Linkedin(cookies=cookie_dict) # type: ignore
 
-    search_params = request.json
-    location = request.json['location']
-    mutual_connections_boolean = request.json['mutualConnections']
+    search_params: dict = request.json # type: ignore
+    location: str = request.json['location'] # type: ignore
+    mutual_connections_boolean = request.json['mutualConnections'] # type: ignore
     
     if location != '':
         location_geo_urn = GetGeoUrn(api, location)
-        data = q.enqueue(GetProfile, cookie_dict, search_params, location_geo_urn, mutual_connections_boolean)
-
+        data = GetProfile(cookie_dict, search_params, location_geo_urn, mutual_connections_boolean)
     else:
-        data = q.enqueue(GetProfile, cookie_dict, search_params, '', mutual_connections_boolean)
-            
-    job_id = data.get_id()
-    
-    return jsonify(success=True, message=job_id)
+        data = GetProfile(cookie_dict, search_params, '', mutual_connections_boolean)
+                
+    return jsonify(success=True, message=data)
     
 # @app.route('/get-interests', methods=['POST'])
 # def get_interests():
@@ -310,100 +301,98 @@ def receive_link():
     
     # return jsonify(success=True, message=data)
 
-@app.route('/job-status', methods=['POST'])
-def job_status():
+# @app.route('/job-status', methods=['POST'])
+# def job_status():
 
-    job_id = request.json['jobId']
-    job = q.fetch_job(job_id)
-    job_status = job.get_status()
+#     job_id = request.json['jobId']
+#     job = q.fetch_job(job_id)
+#     job_status = job.get_status()
     
-    return jsonify(success=True, status=job_status, result=job.result)
+#     return jsonify(success=True, status=job_status, result=job.result)
 
 @app.route('/get-people-interests', methods=['POST'])
 def get_people_interests():
     
-    cookies_list = request.json['cookie']
-    cookie_dict = cookies_list_to_cookie_dict(cookies_list)
+    cookies_list: list = request.json['cookie'] # type: ignore
+    cookie_dict: dict = cookies_list_to_cookie_dict(cookies_list)
 
-    profile_urn = request.json['profileUrn']
+    profile_urn: str = request.json['profileUrn'] # type: ignore
     
-    data = q.enqueue(GetPeopleInterests, cookie_dict, profile_urn)
+    data = GetPeopleInterests(cookie_dict=cookie_dict, profile_urn=profile_urn)
     
-    job_id = data.get_id()
-    
-    return jsonify(success=True, message=job_id)
+    return jsonify(success=True, message=data)
 
 @app.route('/get-company-interests', methods=['POST'])
 def get_company_interests():
     
-    cookies_list = request.json['cookie']
-    cookie_dict = cookies_list_to_cookie_dict(cookies_list)
+    cookies_list: list = request.json['cookie'] # type: ignore
+    cookie_dict: dict = cookies_list_to_cookie_dict(cookies_list)
     
-    public_id = request.json
-    profile_urn = request.json['profileUrn']
+    public_id: dict = request.json # type: ignore
+    profile_urn: str = request.json['profileUrn'] # type: ignore
 
-    data = q.enqueue(GetCompanyInterests, cookie_dict, public_id, profile_urn)
+    data = GetCompanyInterests(cookie_dict=cookie_dict, public_id=public_id, profile_urn=profile_urn)
     
-    job_id = data.get_id()
-    
-    return jsonify(success=True, message=job_id)
+    return jsonify(success=True, message=data)
      
 @app.route('/get-convo-threads', methods=['POST'])
 def get_convo_threads():
 
-    cookies_list = request.json['cookie']
-    cookie_dict = cookies_list_to_cookie_dict(cookies_list)
-    api = Linkedin(cookies=cookie_dict) # type: ignore
+    cookies_list: list = request.json['cookie'] # type: ignore
+    cookie_dict: dict = cookies_list_to_cookie_dict(cookies_list)
+    api: Linkedin = Linkedin(cookies=cookie_dict) # type: ignore
     
-    data = GetConversationThreads(api)
+    data: list = GetConversationThreads(api)
     
     return jsonify(success=True, message=data)
 
 @app.route('/get-convo-messages', methods=['POST'])
 def get_convo_messages():
     
-    cookies_list = request.json['cookie']
-    cookie_dict = cookies_list_to_cookie_dict(cookies_list)
+    cookies_list: list = request.json['cookie'] # type: ignore
+    cookie_dict: dict = cookies_list_to_cookie_dict(cookies_list)
 
-    profile_urn = request.json['profileUrn']
+    profile_urn: str = request.json['profileUrn'] # type: ignore
     
-    data = GetConversationMessages(cookie_dict, profile_urn)
+    data: list = GetConversationMessages(cookie_dict, profile_urn)
    
     return jsonify(success=True, message=data)
 
 @app.route('/send-connect', methods=['POST'])
 def send_connect():
 
-    cookies_list = request.json['cookie']
-    cookie_dict = cookies_list_to_cookie_dict(cookies_list)
-    api = Linkedin(cookies=cookie_dict) # type: ignore
+    cookies_list: list = request.json['cookie'] # type: ignore
+    cookie_dict: dict = cookies_list_to_cookie_dict(cookies_list)
+    api: Linkedin = Linkedin(cookies=cookie_dict) # type: ignore
 
-    profile_id = request.json['profileId']
-    text = request.json['text']
+    profile_id: str = request.json['profileId'] # type: ignore
+    text: str = request.json['text'] # type: ignore
     
-    error_boolean = api.add_connection(profile_id, text)
+    error_boolean: bool = api.add_connection(profile_id, text)
     return jsonify(success=True, message=error_boolean)
 
 @app.route('/send-message', methods=['POST'])
 def send_message():
     
-    cookies_list = request.json['cookie']
-    cookie_dict = cookies_list_to_cookie_dict(cookies_list)
-    api = Linkedin(cookies=cookie_dict) # type: ignore
+    cookies_list: list = request.json['cookie'] # type: ignore
+    cookie_dict: dict = cookies_list_to_cookie_dict(cookies_list)
+    api: Linkedin = Linkedin(cookies=cookie_dict) # type: ignore
 
-    profile_id = request.json['profileId']
-    text = request.json['text']
-    data = api.send_message(message_body = text, recipients=[profile_id])
+    profile_id: str = request.json['profileId'] # type: ignore
+    text: str = request.json['text'] # type: ignore
+    data: bool = api.send_message(message_body = text, recipients=[profile_id])
 
     return jsonify(success=True, message='sent message')
 
 @app.route('/save-cookie', methods=['POST'])
 def save_cookie():
     
-    cookies_list = request.json['cookie']    
-    cookie_dict = cookies_list_to_cookie_dict(cookies_list)
-    api = Linkedin(cookies=cookie_dict) # type: ignore
+    cookies_list: list = request.json['cookie'] # type: ignore
+    cookie_dict: dict = cookies_list_to_cookie_dict(cookies_list)
+    api: Linkedin = Linkedin(cookies=cookie_dict) # type: ignore
         
     return jsonify(success=True, message="success")
     
-# ================================================ ROUTES END =============================================
+# ================================================ ROUTES END =============================================    
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=80, debug=True)

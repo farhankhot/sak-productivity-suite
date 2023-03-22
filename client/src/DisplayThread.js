@@ -11,7 +11,7 @@ function DisplayThread(props) {
 		
 		const handleGetSingleThread = async () => {
 		
-			const response = await fetch('https://sak-productivity-suite.herokuapp.com/get-convo-messages', {
+			const response = await fetch('http://159.65.117.84:80/get-convo-messages', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -33,7 +33,7 @@ function DisplayThread(props) {
 		const prompt = "Reply to this: " + convoArray;
 		
 		try {
-			const response = await fetch("https://sak-productivity-suite.herokuapp.com/use-bingai", {
+			const response = await fetch("http://159.65.117.84:80/use-bingai", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json"
@@ -54,7 +54,7 @@ function DisplayThread(props) {
 	const handleSendingMessage = async () => {
 		
 		try {
-			const response = await fetch("https://sak-productivity-suite.herokuapp.com/send-message", {
+			const response = await fetch("http://159.65.117.84:80/send-message", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json"

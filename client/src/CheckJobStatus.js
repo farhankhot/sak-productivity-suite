@@ -1,7 +1,7 @@
 export async function CheckJobStatus(jobId, onSuccess) {
 	try {
 		
-		const response = await fetch("https://sak-productivity-suite.herokuapp.com/job-status", {
+		const response = await fetch("http://159.65.117.84:80/job-status", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json"

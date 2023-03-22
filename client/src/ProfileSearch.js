@@ -21,7 +21,7 @@ function ProfileSearch(props) {
 		
 	const handleSearchRequest = async () => {
 		try {
-			const response = await fetch("https://sak-productivity-suite.herokuapp.com/receive-link", {
+			const response = await fetch("http://159.65.117.84:80/receive-link", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json"
