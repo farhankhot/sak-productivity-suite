@@ -49,9 +49,9 @@ def UseChatGPT(prompt):
         ]
     )
     
-    print(completion.choices[0].message)
+    print(completion['choices'][0]['message']['content'])
     
-    return completion.choices[0].message
+    return completion['choices'][0]['message']['content']
 
 def get_values_for_key(key, dictionary):
     values = []
