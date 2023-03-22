@@ -194,7 +194,7 @@ def GetConversationMessages(cookie_dict, conversation_id):
     
 def GetPeopleInterests(cookie_dict, profile_urn):
     
-    api = Linkedin(cookies=cookie_dict)
+    api = Linkedin(cookies=cookie_dict) # type: ignore
     
     print(profile_urn)
 
@@ -229,7 +229,7 @@ def GetPeopleInterests(cookie_dict, profile_urn):
     
 def GetCompanyInterests(cookie_dict, public_id, profile_urn):
     
-    api = Linkedin(cookies=cookie_dict)
+    api = Linkedin(cookies=cookie_dict) # type: ignore
     
     person_interests = api._fetch(f"/graphql?includeWebMetadata=True&variables=(profileUrn:urn%3Ali%3Afsd_profile%3A{profile_urn},sectionType:interests,tabIndex:1,locale:en_US)&&queryId=voyagerIdentityDashProfileComponents.38247e27f7b9b2ecbd8e8452e3c1a02c")
     person_interests = person_interests.json()
@@ -279,7 +279,7 @@ def receive_link():
     
     cookies_list = request.json['cookie']
     cookie_dict = cookies_list_to_cookie_dict(cookies_list)
-    api = Linkedin(cookies=cookie_dict)
+    api = Linkedin(cookies=cookie_dict) # type: ignore
 
     search_params = request.json
     location = request.json['location']
@@ -353,7 +353,7 @@ def get_convo_threads():
 
     cookies_list = request.json['cookie']
     cookie_dict = cookies_list_to_cookie_dict(cookies_list)
-    api = Linkedin(cookies=cookie_dict)
+    api = Linkedin(cookies=cookie_dict) # type: ignore
     
     data = GetConversationThreads(api)
     
@@ -376,7 +376,7 @@ def send_connect():
 
     cookies_list = request.json['cookie']
     cookie_dict = cookies_list_to_cookie_dict(cookies_list)
-    api = Linkedin(cookies=cookie_dict)
+    api = Linkedin(cookies=cookie_dict) # type: ignore
 
     profile_id = request.json['profileId']
     text = request.json['text']
@@ -389,7 +389,7 @@ def send_message():
     
     cookies_list = request.json['cookie']
     cookie_dict = cookies_list_to_cookie_dict(cookies_list)
-    api = Linkedin(cookies=cookie_dict)
+    api = Linkedin(cookies=cookie_dict) # type: ignore
 
     profile_id = request.json['profileId']
     text = request.json['text']
@@ -402,7 +402,7 @@ def save_cookie():
     
     cookies_list = request.json['cookie']    
     cookie_dict = cookies_list_to_cookie_dict(cookies_list)
-    api = Linkedin(cookies=cookie_dict)
+    api = Linkedin(cookies=cookie_dict) # type: ignore
         
     return jsonify(success=True, message="success")
     
