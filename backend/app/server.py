@@ -1,3 +1,4 @@
+# TODO: Move from print to logging
 import time
 import os
 import sys
@@ -54,7 +55,7 @@ def UseChatGPT(prompt):
         ]
     )
     
-    logging.log(completion['choices'][0]['message']['content'])
+    print(completion['choices'][0]['message']['content'])
     
     return completion['choices'][0]['message']['content']
 
