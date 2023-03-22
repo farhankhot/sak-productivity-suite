@@ -38,7 +38,7 @@ async def UseBingAI(prompt):
 
 def UseChatGPT(prompt):
     
-    openaiKey = "sk-BQ0tK7GxoNDv0zYjTkT1T3BlbkFJ2TAJQSSJ4UEYSrDPn68"
+    openai_key = "sk-BQ0tK7GxoNDv0zYjTkT1T3BlbkFJ2TAJQSSJ4UEYSrDPn68"
     openai_key = openai_key + "7"
     openai.api_key = openai_key
 
