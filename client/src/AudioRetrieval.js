@@ -41,9 +41,8 @@ function AudioRetrieval() {
 	};
 	
 	const handleSendingToAI = async() => {
-		const prompt = "This is a question asked by a person: "
-		+ " Give an answer in bullet points. Do not be verbose: " + transcriptTextAreaRef.current.value;
-		console.log(prompt);
+		const prompt = "This is a conversation with a person: "
+		+ " Answer in a sentence or two. Do not be verbose: " + transcriptTextAreaRef.current.value;
 		
 		try {
 			const response = await fetch("https://sak-productivity-suite.herokuapp.com/use-chatgpt", {

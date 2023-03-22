@@ -1,22 +1,25 @@
-# TODO: MOVE FROM PRINT TO LOGGER
-import logging
-
-from linkedin_api import Linkedin
-import json
-from flask import Flask, request, jsonify
-from flask_cors import CORS
-# from bertopic import BERTopic
-import emoji
-import re
-import asyncio
-from EdgeGPT import Chatbot
-from rq import Queue
-from worker import conn
 import time
 import os
 import sys
+import logging
 import pickle
+import re
+import asyncio
+import json
+
+from linkedin_api import Linkedin
+
+from flask import Flask, request, jsonify
+from flask_cors import CORS
+
+# from bertopic import BERTopic
+import emoji
+
+from rq import Queue
+from worker import conn
+
 import openai
+from EdgeGPT import Chatbot
 
 q = Queue(connection=conn)
 
@@ -37,6 +40,8 @@ async def UseBingAI(prompt):
     return ans
 
 def UseChatGPT(prompt):
+
+    # TODO: Check usage in the conversation, if token limit is near, start a new conversation
     
     openai_key = "sk-BQ0tK7GxoNDv0zYjTkT1T3BlbkFJ2TAJQSSJ4UEYSrDPn68"
     openai_key = openai_key + "7"
@@ -49,7 +54,7 @@ def UseChatGPT(prompt):
         ]
     )
     
-    print(completion['choices'][0]['message']['content'])
+    logging.log(completion['choices'][0]['message']['content'])
     
     return completion['choices'][0]['message']['content']
 
@@ -62,12 +67,19 @@ def get_values_for_key(key, dictionary):
             values.extend(get_values_for_key(key, v))
     return values    
 
+def cookies_list_to_cookie_dict(cookies_list):
+    cookie_dict = {}
+    for single_dict in cookies_list:
+        temp = single_dict["value"].strip('"')
+        cookie_dict[single_dict["name"]] = temp
+    return cookie_dict    
+
 # def GenerateCorpus(api, profile):
     
-    # yay = api.get_profile_posts(profile, post_count = 100)
+    # convos = api.get_profile_posts(profile, post_count = 100)
     
     # post_corpus = []
-    # for post in yay:
+    # for post in convos:
         # person_corpus = get_values_for_key("text", post)
         # # print("ii", person_corpus)
         # person_corpus = [item for item in person_corpus if isinstance(item, dict)]
@@ -124,7 +136,7 @@ def GetProfile(cookie_dict, search_params, location, mutual_connections_boolean)
                                         network_depth = "S" if mutual_connections_boolean == True else "O",
                                         limit=5)
     
-    # print(list_of_people)
+    logging.log(list_of_people)
     
     full_profile_list = []
     for person in list_of_people[0:5]:
@@ -136,7 +148,7 @@ def GetProfile(cookie_dict, search_params, location, mutual_connections_boolean)
        
         full_profile_list.append(prof)
         
-    # print(full_profile_list)
+    # logging.log(full_profile_list)
     
     return full_profile_list
     
@@ -151,15 +163,15 @@ def GetGeoUrn(api, location):
 def GetConversationThreads(api):
         
     convo_list=[]
-    yay = api.get_conversations()
+    convos = api.get_conversations()
 
-    for thread_idx in range(0, len(yay)):
-        first_name = get_values_for_key('firstName', yay['elements'][thread_idx]['participants'][0])
-        last_name = get_values_for_key('lastName', yay['elements'][thread_idx]['participants'][0])
+    for thread_idx in range(0, len(convos)):
+        first_name = get_values_for_key('firstName', convos['elements'][thread_idx]['participants'][0])
+        last_name = get_values_for_key('lastName', convos['elements'][thread_idx]['participants'][0])
         full_name = first_name[0] + " " + last_name[0]
         
-        profile_urn = get_values_for_key('dashEntityUrn', yay['elements'][thread_idx]['participants'][0])
-        # print(profile_urn)
+        profile_urn = get_values_for_key('dashEntityUrn', convos['elements'][thread_idx]['participants'][0])
+        
         regex = r"profile:(.+)"
         match = re.search(regex, profile_urn[0])
         if match:
@@ -185,23 +197,20 @@ def GetPeopleInterests(cookie_dict, profile_urn):
     
     api = Linkedin(cookies=cookie_dict)
     
-    # print(profile_urn)
+    logging.log(profile_urn)
 
     person_interests = api._fetch(f"/graphql?includeWebMetadata=True&variables=(profileUrn:urn%3Ali%3Afsd_profile%3A{profile_urn},sectionType:interests,tabIndex:1,locale:en_US)&&queryId=voyagerIdentityDashProfileComponents.38247e27f7b9b2ecbd8e8452e3c1a02c")
     person_interests = person_interests.json()
     person_interests_json = json.dumps(person_interests)
 
-    # print(type(person_interests))
-    # print(person_interests_json)
-
     # ============= Getting interests of People =============================
     pattern = re.compile(r'"(urn:li:fsd_profile:[^"]*)"')
     matches = re.findall(pattern, person_interests_json)
-    # print(matches)
+
     people_the_profile_is_interested_in_set = set(matches)
     people_the_profile_is_interested_in = [s.split(':')[-1] for s in people_the_profile_is_interested_in_set]
 
-    print(people_the_profile_is_interested_in)
+    logging.log(people_the_profile_is_interested_in)
 
     # Get the profile urn, get the name and store in another list
     final_people_the_profile_is_interested_in = []
@@ -213,8 +222,8 @@ def GetPeopleInterests(cookie_dict, profile_urn):
         full_name = first_name + " " + last_name 
         final_people_the_profile_is_interested_in.append([full_name, profile_urn])
 
-    print(final_people_the_profile_is_interested_in)
-    print(len(final_people_the_profile_is_interested_in))
+    logging.log(final_people_the_profile_is_interested_in)
+    logging.log(len(final_people_the_profile_is_interested_in))
     # ============= Getting interests of People =============================
     
     return final_people_the_profile_is_interested_in
@@ -231,8 +240,6 @@ def GetCompanyInterests(cookie_dict, public_id, profile_urn):
     pattern_for_company = re.compile(r'"(urn:li:fsd_company:[^"]*)"')
     matches_for_company = re.findall(pattern_for_company, person_interests_json)
     
-    # print(matches)
-    
     companies_the_profile_is_interested_in_set = set(matches_for_company)
     companies_the_profile_is_interested_in = [s.split(':')[-1] for s in companies_the_profile_is_interested_in_set]
     
@@ -240,12 +247,11 @@ def GetCompanyInterests(cookie_dict, public_id, profile_urn):
     final_companies_the_profile_is_interested_in = []
     for company_id in companies_the_profile_is_interested_in:
         temp = api.get_company(company_id)
-        # print(temp)
         company_name = temp['universalName']
         final_companies_the_profile_is_interested_in.append([company_name, company_id])
 
-    print(final_companies_the_profile_is_interested_in)
-    print(len(final_companies_the_profile_is_interested_in))
+    logging.log(final_companies_the_profile_is_interested_in)
+    logging.log(len(final_companies_the_profile_is_interested_in))
     # ============= Getting first 20 interests of Companies =============================
     
     return final_companies_the_profile_is_interested_in
@@ -273,11 +279,7 @@ def use_chatgpt():
 def receive_link():
     
     cookies_list = request.json['cookie']
-    cookie_dict = {}
-    for single_dict in cookies_list:
-        temp = single_dict["value"].strip('"')
-        cookie_dict[single_dict["name"]] = temp
-    
+    cookie_dict = cookies_list_to_cookie_dict(cookies_list)
     api = Linkedin(cookies=cookie_dict)
 
     search_params = request.json
@@ -290,11 +292,8 @@ def receive_link():
 
     else:
         data = q.enqueue(GetProfile, cookie_dict, search_params, '', mutual_connections_boolean)
-        
-    # print(data)
-    
+            
     job_id = data.get_id()
-    # print(job_id)
     
     return jsonify(success=True, message=job_id)
     
@@ -325,10 +324,7 @@ def job_status():
 def get_people_interests():
     
     cookies_list = request.json['cookie']
-    cookie_dict = {}
-    for single_dict in cookies_list:
-        temp = single_dict["value"].strip('"')
-        cookie_dict[single_dict["name"]] = temp
+    cookie_dict = cookies_list_to_cookie_dict(cookies_list)
 
     profile_urn = request.json['profileUrn']
     
@@ -342,10 +338,7 @@ def get_people_interests():
 def get_company_interests():
     
     cookies_list = request.json['cookie']
-    cookie_dict = {}
-    for single_dict in cookies_list:
-        temp = single_dict["value"].strip('"')
-        cookie_dict[single_dict["name"]] = temp
+    cookie_dict = cookies_list_to_cookie_dict(cookies_list)
     
     public_id = request.json
     profile_urn = request.json['profileUrn']
@@ -360,13 +353,9 @@ def get_company_interests():
 def get_convo_threads():
 
     cookies_list = request.json['cookie']
-    
-    cookie_dict = {}
-    for single_dict in cookies_list:
-        temp = single_dict["value"].strip('"')
-        cookie_dict[single_dict["name"]] = temp
-        
+    cookie_dict = cookies_list_to_cookie_dict(cookies_list)
     api = Linkedin(cookies=cookie_dict)
+    
     data = GetConversationThreads(api)
     
     return jsonify(success=True, message=data)
@@ -375,10 +364,7 @@ def get_convo_threads():
 def get_convo_messages():
     
     cookies_list = request.json['cookie']
-    cookie_dict = {}
-    for single_dict in cookies_list:
-        temp = single_dict["value"].strip('"')
-        cookie_dict[single_dict["name"]] = temp
+    cookie_dict = cookies_list_to_cookie_dict(cookies_list)
 
     profile_urn = request.json['profileUrn']
     
@@ -390,11 +376,7 @@ def get_convo_messages():
 def send_connect():
 
     cookies_list = request.json['cookie']
-    cookie_dict = {}
-    for single_dict in cookies_list:
-        temp = single_dict["value"].strip('"')
-        cookie_dict[single_dict["name"]] = temp
-
+    cookie_dict = cookies_list_to_cookie_dict(cookies_list)
     api = Linkedin(cookies=cookie_dict)
 
     profile_id = request.json['profileId']
@@ -407,11 +389,7 @@ def send_connect():
 def send_message():
     
     cookies_list = request.json['cookie']
-    cookie_dict = {}
-    for single_dict in cookies_list:
-        temp = single_dict["value"].strip('"')
-        cookie_dict[single_dict["name"]] = temp
-    
+    cookie_dict = cookies_list_to_cookie_dict(cookies_list)
     api = Linkedin(cookies=cookie_dict)
 
     profile_id = request.json['profileId']
@@ -424,21 +402,8 @@ def send_message():
 def save_cookie():
     
     cookies_list = request.json['cookie']    
-    
-    cookie_dict = {}
-    for single_dict in cookies_list:
-        temp = single_dict["value"].strip('"')
-        cookie_dict[single_dict["name"]] = temp
-    
-    # TODO: TRY CATCH HERE
+    cookie_dict = cookies_list_to_cookie_dict(cookies_list)
     api = Linkedin(cookies=cookie_dict)
-
-    # ================== NOT NEEDED, SAVING IN LOCAL STORAGE (FOR NOW) ==================
-    # Save cookie_dict
-    # cookie_filename = "linkedin_cookies_{}.pickle".format(email)
-    # with open(cookie_filename, "wb") as f:
-        # pickle.dump(cookie_dict, f)
-    # ================== NOT NEEDED, SAVING IN LOCAL STORAGE (FOR NOW) ==================
         
     return jsonify(success=True, message="success")
     
