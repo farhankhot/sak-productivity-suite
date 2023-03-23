@@ -2,11 +2,7 @@ import datetime
 
 import psycopg2
 
-connection = psycopg2.connect(user="postgres",
-                                password="1muhammad1",
-                                host="167.99.250.232",
-                                port="5432",
-                                database="postgres")
+
 
 def getSearchParams(title, location, currentcompany): 
 
@@ -16,6 +12,11 @@ def getSearchParams(title, location, currentcompany):
     data_time = datetime.datetime.now()
     
     try:
+        connection = psycopg2.connect(user="postgres",
+                                password="1muhammad1",
+                                host="167.99.250.232",
+                                port="5432",
+                                database="postgres")
         # userid, cookie, title, location, currentcompany, mutualconnections
         cursor = connection.cursor()
         # Executing a SQL query to insert datetime into table
