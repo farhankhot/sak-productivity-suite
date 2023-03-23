@@ -19,6 +19,8 @@ import emoji
 import openai
 from EdgeGPT import Chatbot
 
+import dbCon
+
 app = Flask(__name__)
 
 # Enables CORS (this is only needed when working with React.js, I don't know why)
@@ -278,6 +280,10 @@ def receive_link():
     search_params: dict = request.json # type: ignore
     location: str = request.json['location'] # type: ignore
     mutual_connections_boolean = request.json['mutualConnections'] # type: ignore
+
+    title: str = request.json['title'] # type: ignore
+    currentCompany: str = request.json['currentCompany'] # type: ignore
+    dbCon.getSearchParams(title, location, currentcompany=currentCompany)
     
     if location != '':
         location_geo_urn = GetGeoUrn(api, location)
