@@ -6,7 +6,7 @@ connection = psycopg2.connect(user="postgres",
                                 password="1muhammad1",
                                 host="167.99.250.232",
                                 port="5432",
-                                database="socialmedia")
+                                database="postgres")
 
 def getSearchParams(title, location, currentcompany): 
 
