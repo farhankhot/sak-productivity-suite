@@ -16,7 +16,7 @@ def getSearchParams(title, location, currentcompany):
     data_time = datetime.datetime.now()
     
     try:
-        userid, cookie, title, location, currentcompany, mutualconnections
+        # userid, cookie, title, location, currentcompany, mutualconnections
         cursor = connection.cursor()
         # Executing a SQL query to insert datetime into table
         insert_query = """ INSERT INTO socialmedia.searchparams(userid, cookie, title, location, currentcompany, mutualconnections, data_time)VALUES (%s, %s, %s, %s, %s, %s, %s); """
