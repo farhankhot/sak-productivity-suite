@@ -424,5 +424,5 @@ def save_cookie():
 @app.route('/profile-search', methods=['GET'])
 def profile_search():
         
-    return send_file('../client/public/index.html')
+    return send_file('../../client/public/index.html')
 # ================================================ ROUTES END =============================================
