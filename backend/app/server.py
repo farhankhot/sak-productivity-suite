@@ -421,7 +421,7 @@ def save_cookie():
         
     return jsonify(success=True, message="success")
 
-@app.route('/profile-search', methods=['POST'])
+@app.route('/profile-search', methods=['GET'])
 def profile_search():
         
     return render_template('../client/public/index.html')
