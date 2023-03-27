@@ -5,14 +5,7 @@
   "permissions": ["activeTab", "scripting", "storage", "identity", "downloads", "contextMenus", "alarms", "cookies", "audioCapture", "tabCapture"],
   "action": {
     "default_title": "Click to open",
-	"default_popup": "./index.html"
+	  "default_popup": "popup.html"
   },
-  "host_permissions": ["*://*/*"],
-  "content_scripts": [
-	{
-		"matches":["<all_urls>"], 
-		"all_frames": true,
-		"js": ["content_script.js"]
-  	}
-  ]
+  "host_permissions": ["*://*/*"]
 }

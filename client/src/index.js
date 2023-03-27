@@ -1,12 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import LinkedinCookie from './LinkedinCookie';
+import ProfileSearch from './ProfileSearch';
+import App from './App.js';
 import reportWebVitals from './reportWebVitals';
+import { BrowserRouter as Router } from "react-router-dom";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
 	<React.StrictMode>
-		<LinkedinCookie />
+		<Router>
+			{/* <ProfileSearch /> */}
+			<App />
+		</Router>
 	</React.StrictMode>
 );
 

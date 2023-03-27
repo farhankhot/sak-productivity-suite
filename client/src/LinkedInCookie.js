@@ -1,9 +1,10 @@
 /*global chrome*/
 import React, {useState, useEffect} from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ProfileSearch from "./ProfileSearch.js";
 import AudioRetrieval from "./AudioRetrieval.js";
 
-function LinkedinCookie() {
+function LinkedInCookie() {
 	
 	const [cookie, setCookie] = useState("");
 	
@@ -39,27 +40,23 @@ function LinkedinCookie() {
 	};
 	
 	return (
+		// {cookie === "" ? (
+		// 	<div>
+		// 		<h1>MAKE SURE YOU ARE LOGGED IN TO LINKEDIN BEFORE CLICKING BELOW</h1>
+		// 		<button onClick={handleLinkedinCookie}>Get LinkedIn Cookies</button>
+		// 		<AudioRetrieval />
+		// 	</div>
+		// ) : (
+		// 	<div>
+		// 		<button onClick={() => window.open( "https://sak-productivity-suite.herokuapp.com/dashboard") }>Open Dashboard</button>
+		// 		<Route exact path="/dashboard" element={<ProfileSearch />} />
+		// 	</div>
+		// )}
 		<>
-		{cookie === "" ? (
-			<div>
-				
-				<h1>MAKE SURE YOU ARE LOGGED IN TO LINKEDIN BEFORE CLICKING BELOW</h1> 
-
-				<button onClick={handleLinkedinCookie}>
-					Get Linkedin Cookies
-				</button>
-				
-				<AudioRetrieval />
-			</div>
-			
-		) : (
-			<button onClick={() => chrome.runtime.sendMessage({ type: 'render' })}>Render New Component</button>
-			// <ProfileSearch cookie={cookie} />
-			
-		)}
+		<Router>
+			<Route path="/dashboard" element={<ProfileSearch />} />			
+		</Router>
 		</>
-		
 	);
-
 }
-export default LinkedinCookie;
+export default LinkedInCookie;

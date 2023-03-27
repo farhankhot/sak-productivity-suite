@@ -10,7 +10,7 @@ import json
 
 from linkedin_api import Linkedin
 
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 
 # from bertopic import BERTopic
@@ -420,5 +420,9 @@ def save_cookie():
     api = Linkedin(cookies=cookie_dict) # type: ignore
         
     return jsonify(success=True, message="success")
-    
+
+@app.route('/search-profile', methods=['POST'])
+def search_profile():
+        
+    return render_template('../client/public/index.html')
 # ================================================ ROUTES END =============================================
