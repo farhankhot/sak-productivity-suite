@@ -22,6 +22,8 @@ from worker import conn
 import openai
 from EdgeGPT import Chatbot
 
+import dbCon
+
 q = Queue(connection=conn)
 
 app = Flask(__name__)
@@ -140,15 +142,24 @@ def GetProfile(cookie_dict, search_params, location, mutual_connections_boolean)
     print(list_of_people)
     
     full_profile_list = []
+
     for person in list_of_people[0:5]:
-        prof = api.get_profile(person['public_id'])       
-        prof_skills = api.get_profile_skills(person['public_id'])
-        prof['skills'] = prof_skills
-        prof['public_id'] = person['public_id']
-        prof['profile_urn'] = person['urn_id']
+        profile_info = {}
+        profile_info['full_name'] = person['name']
+        profile_info['latest_title'] = person['jobtitle']       
+        profile_info['public_id'] = person['public_id']
+        profile_info['profile_urn'] = person['urn_id']
        
-        full_profile_list.append(prof)
-        
+        full_profile_list.append(profile_info)
+
+    # for person in list_of_people[0:5]:
+    #     prof = api.get_profile(person['public_id'])       
+    #     prof_skills = api.get_profile_skills(person['public_id'])
+    #     prof['skills'] = prof_skills
+    #     prof['public_id'] = person['public_id']
+    #     prof['profile_urn'] = person['urn_id']
+    #     full_profile_list.append(prof)
+
     return full_profile_list
     
 def GetGeoUrn(api, location):
@@ -284,6 +295,10 @@ def receive_link():
     search_params = request.json
     location = request.json['location']
     mutual_connections_boolean = request.json['mutualConnections']
+
+    title: str = request.json['title']
+    currentCompany: str = request.json['currentCompany']
+    dbCon.getSearchParams(title, location, currentcompany=currentCompany)
     
     if location != '':
         location_geo_urn = GetGeoUrn(api, location)
