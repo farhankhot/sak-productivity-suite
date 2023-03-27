@@ -24,7 +24,7 @@ function DisplaySearchResults(props) {
 	const [skills, setSkills] = useState("");
 	const [publicId, setPublicId] = useState("");
 	const [profileUrn, setProfileUrn] = useState("");
-	
+	const [profileId, setProfileId] = useState("");
 	const [noteTextArea, setNoteTextArea] = useState(""); 
 	
 	const [interests, setInterests] = useState(""); 
@@ -55,11 +55,9 @@ function DisplaySearchResults(props) {
 			const userProfile = pageArray[pageIndex][0];
 			setUserProfile(userProfile);
 			
-			setFullName(userProfile["firstName"] + " " + userProfile["lastName"]);
-			setLatestTitle(userProfile["headline"]);
+			setFullName(userProfile["full_name"]);
+			setLatestTitle(userProfile["latest_title"]);
 			setProfileId(userProfile["profile_id"]);
-			setSummary(userProfile["summary"]);
-			setSkills(userProfile["skills"]);
 			setPublicId(userProfile["public_id"]);
 			setProfileUrn(userProfile["profile_urn"]);
 			

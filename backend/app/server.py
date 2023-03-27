@@ -149,6 +149,7 @@ def GetProfile(cookie_dict, search_params, location, mutual_connections_boolean)
         profile_info['latest_title'] = person['jobtitle']       
         profile_info['public_id'] = person['public_id']
         profile_info['profile_urn'] = person['urn_id']
+        profile_info['profile_id'] = person['profile_id']
        
         full_profile_list.append(profile_info)
 
