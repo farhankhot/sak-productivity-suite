@@ -53,9 +53,9 @@ function LinkedinCookie() {
 			</div>
 			
 		) : (
-		
-			<ProfileSearch cookie={cookie} />
-		
+			<button onClick={() => chrome.runtime.sendMessage({ type: 'render' })}>Render New Component</button>
+			// <ProfileSearch cookie={cookie} />
+			
 		)}
 		</>
 		
