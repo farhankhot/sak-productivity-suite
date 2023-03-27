@@ -20,7 +20,6 @@ function DisplaySearchResults(props) {
 	
 	const [fullName, setFullName] = useState("");
 	const [latestTitle, setLatestTitle] = useState("");
-	const [profileId, setProfileId] = useState("");
 	const [summary, setSummary] = useState("");
 	const [skills, setSkills] = useState("");
 	const [publicId, setPublicId] = useState("");
