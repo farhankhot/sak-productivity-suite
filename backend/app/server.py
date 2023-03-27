@@ -22,7 +22,7 @@ from worker import conn
 import openai
 from EdgeGPT import Chatbot
 
-import dbCon
+# import dbCon
 
 q = Queue(connection=conn)
 
@@ -298,7 +298,7 @@ def receive_link():
 
     title: str = request.json['title']
     currentCompany: str = request.json['currentCompany']
-    dbCon.getSearchParams(title, location, currentcompany=currentCompany)
+    # dbCon.getSearchParams(title, location, currentcompany=currentCompany)
     
     if location != '':
         location_geo_urn = GetGeoUrn(api, location)
