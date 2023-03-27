@@ -3,11 +3,13 @@ import ProfileSearch from './ProfileSearch';
 
 function App() {
     return (
-        <div>
-            <Routes>
-                <Route path="/profile-search" element={<ProfileSearch />} />
-            </Routes>
-        </div>
+        <Router>        
+            <div>
+                <Routes>
+                    <Route path="/profile-search" element={<ProfileSearch />} />
+                </Routes>
+            </div>
+        </Router>
     );
 }
 export default App;  
