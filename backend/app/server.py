@@ -28,6 +28,8 @@ from EdgeGPT import Chatbot
 
 import urllib.parse
 
+import dbCon
+
 q = Queue(connection=conn)
 
 app = Flask(__name__)
