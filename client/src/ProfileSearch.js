@@ -17,6 +17,7 @@ import NavbarComponent from "./NavbarComponent.js";
 function ProfileSearch(props) {
 	
 	const {sessionId} = props;
+	console.log(sessionId);
 	
 	const [title, setTitle] = useState("");
 	const [location, setLocation] = useState("");

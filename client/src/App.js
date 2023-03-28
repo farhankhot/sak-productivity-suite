@@ -15,7 +15,8 @@ function App() {
     // }
     // console.log(cookie);
 
-    const sessionId = searchParams.get("sessionId")
+    const sessionId = searchParams.get("sessionId");
+    console.log(sessionId);
 
     return (
         <>

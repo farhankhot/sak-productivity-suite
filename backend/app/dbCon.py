@@ -15,7 +15,6 @@ connection = psycopg2.connect(
 CHARACTERS = (
     string.ascii_letters
     + string.digits
-    + '-._#@'
 )
 def generate_unique_key():
     return ''.join(random.sample(CHARACTERS, 32))
