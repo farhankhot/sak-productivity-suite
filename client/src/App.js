@@ -1,4 +1,5 @@
-import { Routes, Route, useLocation } from 'react-router-dom';
+import React, {useState, useEffect} from "react";
+import { Routes, Route, useLocation} from 'react-router-dom';
 import DisplayConvos from './DisplayConvos';
 import ProfileSearch from './ProfileSearch';
 import NavbarComponent from './NavbarComponent';
@@ -6,7 +7,7 @@ import NavbarComponent from './NavbarComponent';
 function App() {
 
     const { search } = useLocation();
-    const searchParams = new URLSearchParams(search);
+    const [sessionId, setSessionId] = useState("");
 
     // const cookie = {};
     // for (const [key, value] of searchParams.entries()) {
@@ -14,14 +15,18 @@ function App() {
     // }
     // console.log(cookie);
 
-    const {sessionId} = searchParams.get("sessionId");
-    console.log("App.js sessionId: ", sessionId);
+    const val = search.split("=")[1];
+    console.log("val", val);
+
+    useEffect(() => {
+		setSessionId(val);
+	}, []);
 
     return (
         <>
-        <NavbarComponent />
+        <NavbarComponent sessionId={sessionId} />
         <Routes>
-            <Route path="/linkedin-search" element={<ProfileSearch sessionId={sessionId} />} />
+            {sessionId && <Route path="/linkedin-search" element={<ProfileSearch sessionId={sessionId} />} /> }
             <Route path="/linkedin-messages" element={<DisplayConvos />} />
         </Routes>
         </>
