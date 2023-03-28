@@ -24,6 +24,7 @@ function DisplaySearchResults(props) {
 	const [skills, setSkills] = useState("");
 	const [publicId, setPublicId] = useState("");
 	const [profileUrn, setProfileUrn] = useState("");
+	const [profileId, setProfileId] = useState("");
 	const [noteTextArea, setNoteTextArea] = useState(""); 
 	
 	const [interests, setInterests] = useState(""); 
@@ -56,6 +57,7 @@ function DisplaySearchResults(props) {
 			
 			setFullName(userProfile["full_name"]);
 			setLatestTitle(userProfile["latest_title"]);
+			setProfileId(userProfile["profile_id"]);
 			setPublicId(userProfile["public_id"]);
 			setProfileUrn(userProfile["profile_urn"]);
 			
@@ -192,7 +194,7 @@ function DisplaySearchResults(props) {
 				},
 				body: JSON.stringify({
 					cookie: cookie,
-					publicId: publicId,
+					profileId: profileId,
 					text: noteTextArea
 				})
 			});

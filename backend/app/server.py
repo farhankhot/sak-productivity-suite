@@ -156,6 +156,7 @@ def GetProfile(cookie_dict, search_params, location, mutual_connections_boolean)
         profile_info['latest_title'] = person['jobtitle']       
         profile_info['public_id'] = person['public_id']
         profile_info['profile_urn'] = person['urn_id']
+        profile_info['profile_id'] = person['profile_id']
        
         full_profile_list.append(profile_info)
 
@@ -392,10 +393,10 @@ def send_connect():
     cookie_dict = request.json['cookie'] # type: ignore
     api = Linkedin(cookies=cookie_dict) # type: ignore
 
-    public_id = request.json['publicId'] # type: ignore
-    text = request.json['text'] # type: ignore
+    public_id = request.json['publicId']
+    text = request.json['text']
     
-    error_boolean = api.add_connection(public_id, text)
+    error_boolean = api.add_connection(profile_id, text)
     return jsonify(success=True, message=error_boolean)
 
 @app.route('/send-message', methods=['POST'])
@@ -404,8 +405,8 @@ def send_message():
     cookie_dict = request.json['cookie'] # type: ignore
     api = Linkedin(cookies=cookie_dict) # type: ignore
 
-    public_id = request.json['publicId'] # type: ignore
-    text = request.json['text'] # type: ignore
+    public_id = request.json['publicId']
+    text = request.json['text']
     data = api.send_message(message_body = text, recipients=[public_id])
 
     return jsonify(success=True, message='sent message')
