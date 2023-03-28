@@ -10,14 +10,13 @@ import Form from 'react-bootstrap/Form';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 
 import './ProfileSearch.css';
-import NavbarComponent from "./NavbarComponent.js";
 
 // TODO: Fix relative imports (loadingGif should be in /public/)
 
 function ProfileSearch(props) {
 	
 	const {sessionId} = props;
-	console.log(sessionId);
+	console.log("ProfileSearch", sessionId);
 	
 	const [title, setTitle] = useState("");
 	const [location, setLocation] = useState("");

@@ -1,7 +1,6 @@
 import { Routes, Route, useLocation } from 'react-router-dom';
 import DisplayConvos from './DisplayConvos';
 import ProfileSearch from './ProfileSearch';
-import {Link} from 'react-router-dom';
 import NavbarComponent from './NavbarComponent';
 
 function App() {
@@ -15,8 +14,9 @@ function App() {
     // }
     // console.log(cookie);
 
-    const sessionId = searchParams.get("sessionId");
+    const {sessionId} = searchParams.get("sessionId");
     console.log(sessionId);
+    // const [sessionId, ]
 
     return (
         <>

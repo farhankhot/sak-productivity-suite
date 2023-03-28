@@ -5,8 +5,8 @@ import NavbarComponent from "./NavbarComponent.js";
 
 function DisplayConvos(props) {
 
-	// const { state } = useLocation();
-	// const { cookie } = state.cookie;
+	const { state } = useLocation();
+	const { cookie } = state.cookie;
 	const {sessionId} = props;
 	console.log("DisplayConvos sessionId: ", sessionId);
 
