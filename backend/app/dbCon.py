@@ -47,7 +47,7 @@ def get_cookie_from_user_sessions(session_id):
     try:
         cursor = connection.cursor()
         # Remove variable injection
-        select_query = """ SELECT cookie FROM socialmedia.user_sessions WHERE sessions LIKE '"""+session_id+"""'; """
+        select_query = """ SELECT cookie FROM socialmedia.user_sessions WHERE session_id LIKE '"""+session_id+"""'; """
         cursor.execute(select_query)
         connection.commit()
         if cursor.fetchone() is not None :
