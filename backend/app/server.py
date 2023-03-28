@@ -26,7 +26,7 @@ from worker import conn
 import openai
 from EdgeGPT import Chatbot
 
-import dbCon
+from app import dbCon
 
 import urllib.parse
 
