@@ -15,8 +15,7 @@ function App() {
     // console.log(cookie);
 
     const {sessionId} = searchParams.get("sessionId");
-    console.log(sessionId);
-    // const [sessionId, ]
+    console.log("App.js sessionId: ", sessionId);
 
     return (
         <>
