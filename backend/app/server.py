@@ -297,6 +297,7 @@ def use_chatgpt():
 def receive_link():
 
     session_id = request.json['sessionId'] # type: ignore
+    print("receive_link session_id: ", session_id)
 
     # Get cookie_dict using session_id
     # TODO: error handling

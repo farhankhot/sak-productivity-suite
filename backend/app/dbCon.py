@@ -44,6 +44,8 @@ def store_cookie_return_sessionid(cookie):
 
 def get_cookie_from_user_sessions(session_id):
 
+    session_id = str(session_id)
+
     try:
         cursor = connection.cursor()
         print(session_id)
