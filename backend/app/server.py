@@ -301,6 +301,7 @@ def receive_link():
     # Get cookie_dict using session_id
     # TODO: error handling
     cookie_dict = dbCon.get_cookie_from_user_sessions(session_id)
+    print("receive_link cookie_dict: ", cookie_dict)
     
     # cookie_dict = request.json['cookie'] # type: ignore
     api = Linkedin(cookies=cookie_dict) # type: ignore
