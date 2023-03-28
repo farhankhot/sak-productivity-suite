@@ -15,13 +15,13 @@ window.onload = function () {
             })
             .then( (response) => response.json())
             .then( (data) => {
-                const approvedCookie = data.cookie;
+                const encodedCookie = data.cookie;
                 const dashboardButton = document.createElement("button");
                 dashboardButton.textContent = "Open Dashboard";
                 
                 // TODO: Authentication (Only allow access if the cookies exist/are valid)
                 dashboardButton.onclick = function () {
-                    chrome.tabs.create({ url: `http://localhost:3000/?cookies=${approvedCookie}` });
+                    chrome.tabs.create({ url: `http://localhost:3000/?cookies=${encodedCookie}` });
                 }
                 document.body.appendChild(dashboardButton);
             }); 

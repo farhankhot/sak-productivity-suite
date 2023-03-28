@@ -73,7 +73,7 @@ function ProfileSearch(props) {
 					<input type="text" placeholder="Current Company" value={currentCompany} onChange={(e) => setCurrentCompany(e.target.value)} />
 					
 					<input type="checkbox" value={mutualConnectionsBoolean} onChange={(e) => setMutualConnectionsBoolean(e.target.value)} />
-					<label for="mutualConnectionsBoolean">
+					<label htmlFor="mutualConnectionsBoolean">
 						Get Mutual Connections?
 					</label>
 					

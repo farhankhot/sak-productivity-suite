@@ -28,6 +28,8 @@ from EdgeGPT import Chatbot
 
 # import dbCon
 
+import urllib.parse
+
 q = Queue(connection=conn)
 
 app = Flask(__name__)
@@ -422,8 +424,10 @@ def save_cookie():
     cookies_list = request.json['cookie']    
     cookie_dict = cookies_list_to_cookie_dict(cookies_list)
     api = Linkedin(cookies=cookie_dict) # type: ignore
-        
-    return jsonify(success=True, message="success", cookie=cookies_list)
+
+    url_encoded_cookie = urllib.parse.urlencode(cookie_dict) 
+    print(url_encoded_cookie)   
+    return jsonify(success=True, message="success", cookie=url_encoded_cookie)
 
 @app.route('/', methods=['GET'])
 def home():
