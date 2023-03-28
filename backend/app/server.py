@@ -393,7 +393,7 @@ def send_connect():
     cookie_dict = request.json['cookie'] # type: ignore
     api = Linkedin(cookies=cookie_dict) # type: ignore
 
-    public_id = request.json['publicId']
+    profile_id = request.json['profileId']
     text = request.json['text']
     
     error_boolean = api.add_connection(profile_id, text)
@@ -405,9 +405,9 @@ def send_message():
     cookie_dict = request.json['cookie'] # type: ignore
     api = Linkedin(cookies=cookie_dict) # type: ignore
 
-    public_id = request.json['publicId']
+    profile_id = request.json['profileId']
     text = request.json['text']
-    data = api.send_message(message_body = text, recipients=[public_id])
+    data = api.send_message(message_body = text, recipients=[profile_id])
 
     return jsonify(success=True, message='sent message')
 
