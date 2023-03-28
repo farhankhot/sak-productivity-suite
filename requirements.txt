@@ -9,3 +9,4 @@ git+https://github.com/farhankhot/linkedin-api.git
 Flask-Cors==3.0.10
 openai==0.27.2
 psycopg2==2.9.5
+pytz==2023.2
