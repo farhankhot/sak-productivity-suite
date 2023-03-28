@@ -28,7 +28,7 @@ from EdgeGPT import Chatbot
 
 import urllib.parse
 
-import dbCon
+from backend.app import dbCon
 
 q = Queue(connection=conn)
 
