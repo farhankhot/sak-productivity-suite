@@ -1,5 +1,3 @@
-// Basically, this script is required for the extension to work, without it the LinkedInCookie.js's chrome cookies API returns ""
-
 console.log("SAK productivity-suite init");
 window.onload = function () {
     document.getElementById("getLinkedInCookiesButton").onclick = function () {
@@ -17,13 +15,13 @@ window.onload = function () {
             })
             .then( (response) => response.json())
             .then( (data) => {
-                
+                const approvedCookie = data.cookie;
                 const dashboardButton = document.createElement("button");
                 dashboardButton.textContent = "Open Dashboard";
                 
-                // Go to https://sak-productivity-suite.herokuapp.com/profile-search
+                // TODO: Authentication (Only allow access if the cookies exist/are valid)
                 dashboardButton.onclick = function () {
-                    chrome.tabs.create({ url: 'https://sak-productivity-suite.herokuapp.com/profile-search' });
+                    chrome.tabs.create({ url: `http://localhost:3000/?cookies=${approvedCookie}` });
                 }
                 document.body.appendChild(dashboardButton);
             }); 

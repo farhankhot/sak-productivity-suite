@@ -1,3 +1,7 @@
+# Style guidelines:
+# cookie, not cookies
+# LinkedIn, not Linkedin
+
 # TODO: Move from print to logging
 import time
 import os
@@ -419,7 +423,7 @@ def save_cookie():
     cookie_dict = cookies_list_to_cookie_dict(cookies_list)
     api = Linkedin(cookies=cookie_dict) # type: ignore
         
-    return jsonify(success=True, message="success")
+    return jsonify(success=True, message="success", cookie=cookies_list)
 
 @app.route('/', methods=['GET'])
 def home():

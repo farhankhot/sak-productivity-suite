@@ -1,15 +1,21 @@
-import { Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import ProfileSearch from './ProfileSearch';
 
 function App() {
+    
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
+    const cookie = searchParams.get('cookie');
+
     return (
-        <Router>        
-            <div>
-                <Routes>
-                    <Route path="/profile-search" element={<ProfileSearch />} />
-                </Routes>
-            </div>
+        <>
+        <p>Hi!</p>
+        <Router>
+            <Routes>
+                <Route path="/" element={<ProfileSearch cookie={cookie}/>} />
+            </Routes>
         </Router>
+        </>
     );
 }
 export default App;  
