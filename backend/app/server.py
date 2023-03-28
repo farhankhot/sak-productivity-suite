@@ -26,8 +26,6 @@ from worker import conn
 import openai
 from EdgeGPT import Chatbot
 
-from app import dbCon
-
 import urllib.parse
 
 q = Queue(connection=conn)
