@@ -5,11 +5,12 @@ import string
 import random
 import pytz
 
-connection = psycopg2.connect(user="postgres",
-                                password="1muhammad1",
-                                host="167.99.250.232",
-                                port="5432",
-                                database="socialmedia")
+connection = psycopg2.connect(
+    user="postgres",
+    password="1muhammad1",
+    host="167.99.250.232",
+    port="5432",
+    database="postgres")
 
 CHARACTERS = (
     string.ascii_letters
