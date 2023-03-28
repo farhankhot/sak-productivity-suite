@@ -26,7 +26,7 @@ from worker import conn
 import openai
 from EdgeGPT import Chatbot
 
-# import dbCon
+import dbCon
 
 import urllib.parse
 
@@ -63,9 +63,9 @@ def UseChatGPT(prompt):
         ]
     )
     
-    print(completion['choices'][0]['message']['content'])
+    print(completion['choices'][0]['message']['content']) # type: ignore
     
-    return completion['choices'][0]['message']['content']
+    return completion['choices'][0]['message']['content'] # type: ignore
 
 def get_values_for_key(key, dictionary):
     values = []
@@ -175,7 +175,7 @@ def GetGeoUrn(api, location):
     res = api._fetch(f"/typeahead/hitsV2?keywords={location}&origin=OTHER&q=type&queryContext=List(geoVersion-%3E3,bingGeoSubTypeFilters-%3EMARKET_AREA%7CCOUNTRY_REGION%7CADMIN_DIVISION_1%7CCITY)&type=GEO")
 
     geo_urn = res.json()['elements'][0]['targetUrn'] # Output: urn:li:fs_geo:103644278
-    geo_urn = re.search("\d+", geo_urn).group()
+    geo_urn = re.search("\d+", geo_urn).group() # type: ignore
     return geo_urn
 
 def GetConversationThreads(api):
@@ -295,8 +295,14 @@ def use_chatgpt():
 
 @app.route('/receive-link', methods=['POST'])
 def receive_link():
+
+    session_id = request.json['sessionId'] # type: ignore
+
+    # Get cookie_dict using session_id
+    # TODO: error handling
+    cookie_dict = dbCon.get_cookie_from_user_sessions(session_id)
     
-    cookie_dict = request.json['cookie'] # type: ignore
+    # cookie_dict = request.json['cookie'] # type: ignore
     api = Linkedin(cookies=cookie_dict) # type: ignore
 
     search_params = request.json
@@ -393,8 +399,8 @@ def send_connect():
     cookie_dict = request.json['cookie'] # type: ignore
     api = Linkedin(cookies=cookie_dict) # type: ignore
 
-    profile_id = request.json['profileId']
-    text = request.json['text']
+    profile_id = request.json['profileId'] # type: ignore
+    text = request.json['text'] # type: ignore
     
     error_boolean = api.add_connection(profile_id, text)
     return jsonify(success=True, message=error_boolean)
@@ -405,8 +411,8 @@ def send_message():
     cookie_dict = request.json['cookie'] # type: ignore
     api = Linkedin(cookies=cookie_dict) # type: ignore
 
-    profile_id = request.json['profileId']
-    text = request.json['text']
+    profile_id = request.json['profileId'] # type: ignore
+    text = request.json['text'] # type: ignore
     data = api.send_message(message_body = text, recipients=[profile_id])
 
     return jsonify(success=True, message='sent message')
@@ -423,6 +429,9 @@ def save_cookie():
 
     # Instead of the 2 lines above, save the cookie_dict and generate a session_id for the user
     # Return the session_id, this will go to the database and get the cookie_dict
+    # The session_id will be passed back by the user, it will be checked against the DB
+    # and will return the cookie_dict to be passed in the LinkedIn API.
+    session_id = dbCon.store_cookie_return_sessionid(cookie_dict)
 
-    return jsonify(success=True, message="success", cookie=url_encoded_cookie)
+    return jsonify(success=True, message="success", session_id=session_id)
 # ================================================ ROUTES END =============================================

@@ -10,12 +10,13 @@ import Form from 'react-bootstrap/Form';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 
 import './ProfileSearch.css';
+import NavbarComponent from "./NavbarComponent.js";
 
 // TODO: Fix relative imports (loadingGif should be in /public/)
 
 function ProfileSearch(props) {
 	
-	const {cookie} = props;
+	const {sessionId} = props;
 	
 	const [title, setTitle] = useState("");
 	const [location, setLocation] = useState("");
@@ -32,7 +33,7 @@ function ProfileSearch(props) {
 	const navigate = useNavigate();
 		
 	const handleSearchRequest = async () => {
-		console.log("ProfileSearch cookie: ", cookie);
+		
 		try {
 			const response = await fetch("https://sak-productivity-suite.herokuapp.com/receive-link", {
 				method: "POST",
@@ -40,7 +41,7 @@ function ProfileSearch(props) {
 					"Content-Type": "application/json"
 				},
 				body: JSON.stringify({
-					cookie: cookie,
+					sessionId: sessionId,
 					title: title,
 					location: location,
 					currentCompany: currentCompany,
@@ -62,21 +63,22 @@ function ProfileSearch(props) {
 	};
 	
 	const handleMessagesButton = () => {
-		// console.log(cookie);
-		// navigate('/linkedin-messages', { state: { cookie: cookie} });
+		
+		navigate('/linkedin-messages', { state: { sessionId: sessionId} });
 		setNavigateToMessages(true);
 	};
 	
 	return (
 		<>
+		{/* <NavbarComponent /> */}
 		{jobFinished === true ? (
-			<DisplaySearchResults cookie={cookie} resultArray={resultArray} />
+			<DisplaySearchResults sessionId={sessionId} resultArray={resultArray} />
 		) : (
 			<>
 
-			{navigateToMessages && (
+			{/* {navigateToMessages && (
 				<DisplayConvos cookie={cookie} />
-			)}
+			)} */}
 
 			{!navigateToMessages && !isLoading && (
 				<>
@@ -95,7 +97,7 @@ function ProfileSearch(props) {
 					<div className="search-form-container">
 
 						<Form className="search-form">
-							<Form.Group className="mb-3" controlId="formPosition">
+							{/* <Form.Group className="mb-3" controlId="formPosition">
 								<Button 
 									variant="outline-dark" 
 									type="button" 
@@ -104,7 +106,7 @@ function ProfileSearch(props) {
 								>
 									Go to Messages
 								</Button>
-							</Form.Group>
+							</Form.Group> */}
 
 							<Form.Group className="mb-3" controlId="formPosition">
 								<FloatingLabel 
@@ -118,7 +120,7 @@ function ProfileSearch(props) {
 										onChange={(e) => setTitle(e.target.value)} 
 									/>
 									<Form.Text className="text-muted">
-										This is the position you want to search.
+										The position you want to search.
 									</Form.Text>
 								</FloatingLabel>
 							</Form.Group>
@@ -135,7 +137,7 @@ function ProfileSearch(props) {
 										onChange={(e) => setLocation(e.target.value)}
 									/>
 									<Form.Text className="text-muted">
-										What location do you want to search?
+										The location you want to search in
 									</Form.Text>
 								</FloatingLabel>
 							</Form.Group>
@@ -152,7 +154,7 @@ function ProfileSearch(props) {
 										onChange={(e) => setCurrentCompany(e.target.value)}
 									/>
 									<Form.Text className="text-muted">
-										Which company's employee do you want to search for?
+										The company's employees you want to search
 									</Form.Text>
 								</FloatingLabel>
 							</Form.Group>

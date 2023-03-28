@@ -1,13 +1,14 @@
 import React, {useState, useEffect} from "react";
 import DisplayThread from "./DisplayThread.js";
 import {Link, useLocation} from 'react-router-dom';
+import NavbarComponent from "./NavbarComponent.js";
 
 function DisplayConvos(props) {
 
 	// const { state } = useLocation();
 	// const { cookie } = state.cookie;
-	const {cookie} = props;
-	console.log(cookie);
+	const {sessionId} = props;
+	console.log("DisplayConvos sessionId: ", sessionId);
 
 	const [threadArray, setThreadArray] = useState([]);
 	const [threadName, setThreadName] = useState(null);
@@ -41,6 +42,7 @@ function DisplayConvos(props) {
 	
 	return (
 		<>
+		{/* <NavbarComponent /> */}
 		{ (threadName && threadId) ? (
 			<DisplayThread cookie={cookie} threadName={threadName} threadId={threadId} />
 		) : (

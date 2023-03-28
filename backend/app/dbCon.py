@@ -1,12 +1,63 @@
-import datetime
-
+from datetime import datetime
 import psycopg2
+
+import string
+import random
+import pytz
 
 connection = psycopg2.connect(user="postgres",
                                 password="1muhammad1",
                                 host="167.99.250.232",
                                 port="5432",
                                 database="socialmedia")
+
+CHARACTERS = (
+    string.ascii_letters
+    + string.digits
+    + '-._#@'
+)
+def generate_unique_key():
+    return ''.join(random.sample(CHARACTERS, 32))
+
+def store_cookie_return_sessionid(cookie): 
+
+    cookie = str(cookie)
+  
+    timeZone = pytz.timezone("EST") 
+    date_time = datetime.now(timeZone)
+
+    try:
+        session_id = generate_unique_key()
+        cursor = connection.cursor()
+
+        insert_query = """ INSERT INTO socialmedia.user_sessions(session_id, cookie, date_time) VALUES (%s, %s, %s); """
+        record_to_insert = (session_id, cookie, date_time)
+        cursor.execute(insert_query, record_to_insert)
+        connection.commit()
+        print("Record inserted in user_sessions successfully")
+
+        return session_id
+    
+    except (Exception, psycopg2.Error) as error:
+        print("Error while connecting to PostgreSQL", error)
+        return False
+
+def get_cookie_from_user_sessions(session_id):
+
+    try:
+        cursor = connection.cursor()
+        # Remove variable injection
+        select_query = """ SELECT cookie FROM socialmedia.user_sessions WHERE sessions LIKE '"""+session_id+"""'; """
+        cursor.execute(select_query)
+        connection.commit()
+        if cursor.fetchone() is not None :
+            return cursor.fetchone()
+        else:
+            return False
+    except (Exception, psycopg2.Error) as error:
+        print("Error while connecting to PostgreSQL", error)
+        return False
+
 
 def getSearchParams(title, location, currentcompany): 
 
