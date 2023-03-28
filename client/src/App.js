@@ -17,11 +17,11 @@ function App() {
 
     return (
         <>
-            <Routes>
-                <Route path="/" element={<ProfileSearch cookie={cookie} />} />
-                <Route path="/linkedin-messages" element={<DisplayConvos />} />
+        <Routes>
+            <Route path="/" element={<ProfileSearch cookie={cookie} />} />
+            <Route path="/linkedin-messages" element={<DisplayConvos />} />
 
-            </Routes>
+        </Routes>
         </>
     );
 }
