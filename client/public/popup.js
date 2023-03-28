@@ -22,10 +22,7 @@ window.onload = function () {
                 // TODO: Authentication (Only allow access if the cookies exist/are valid)
                 dashboardButton.onclick = function () {
                     chrome.tabs.create({ 
-                        url: `http://localhost:3000/?cookie=${encodedCookie}`,
-                        headers: {
-                            "Cookie": cookie 
-                        }
+                        url: `http://localhost:3000/?cookie=${encodedCookie}`
                     });
                 }
                 document.body.appendChild(dashboardButton);

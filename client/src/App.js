@@ -1,5 +1,7 @@
 import { Routes, Route, useLocation } from 'react-router-dom';
+import DisplayConvos from './DisplayConvos';
 import ProfileSearch from './ProfileSearch';
+import {Link} from 'react-router-dom';
 
 function App() {
 
@@ -15,9 +17,10 @@ function App() {
 
     return (
         <>
-        <p>Hi!</p>
             <Routes>
                 <Route path="/" element={<ProfileSearch cookie={cookie} />} />
+                <Route path="/linkedin-messages" element={<DisplayConvos />} />
+
             </Routes>
         </>
     );
