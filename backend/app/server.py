@@ -76,6 +76,7 @@ def get_values_for_key(key, dictionary):
             values.extend(get_values_for_key(key, v))
     return values    
 
+# Used only for save-cookie
 def cookies_list_to_cookie_dict(cookies_list):
     cookie_dict = {}
     for single_dict in cookies_list:
@@ -137,7 +138,7 @@ def cookies_list_to_cookie_dict(cookies_list):
 
 def GetProfile(cookie_dict, search_params, location, mutual_connections_boolean):
     
-    api = Linkedin(cookies=cookie_dict)
+    api = Linkedin(cookies=cookie_dict) # type: ignore
     
     list_of_people = api.search_people(keyword_title = search_params['title'],
                                         regions = [location if location != '' else ''],
@@ -198,7 +199,7 @@ def GetConversationThreads(api):
 
 def GetConversationMessages(cookie_dict, conversation_id):
     
-    api = Linkedin(cookies=cookie_dict)
+    api = Linkedin(cookies=cookie_dict) # type: ignore
 
     convo_list=[]
     convo = api.get_conversation_details(conversation_id)
@@ -277,7 +278,7 @@ def GetCompanyInterests(cookie_dict, public_id, profile_urn):
 @app.route('/use-bingai', methods=['POST'])
 def use_bingai():
 
-    prompt = request.json['prompt']    
+    prompt = request.json['prompt'] # type: ignore    
     data = q.enqueue(UseBingAI, prompt)
     job_id = data.get_id()
 
@@ -286,7 +287,7 @@ def use_bingai():
 @app.route('/use-chatgpt', methods=['POST'])
 def use_chatgpt():
 
-    prompt = request.json['prompt']    
+    prompt = request.json['prompt'] # type: ignore   
     ans = UseChatGPT(prompt)
     
     return jsonify(success=True, message=ans)
@@ -294,16 +295,15 @@ def use_chatgpt():
 @app.route('/receive-link', methods=['POST'])
 def receive_link():
     
-    cookie_dict = request.json['cookie']
-    # cookie_dict = cookies_list_to_cookie_dict(cookies_list)
+    cookie_dict = request.json['cookie'] # type: ignore
     api = Linkedin(cookies=cookie_dict) # type: ignore
 
     search_params = request.json
-    location = request.json['location']
-    mutual_connections_boolean = request.json['mutualConnections']
+    location = request.json['location'] # type: ignore
+    mutual_connections_boolean = request.json['mutualConnections'] # type: ignore
 
-    title: str = request.json['title']
-    currentCompany: str = request.json['currentCompany']
+    title: str = request.json['title'] # type: ignore
+    currentCompany: str = request.json['currentCompany'] # type: ignore
     # dbCon.getSearchParams(title, location, currentcompany=currentCompany)
     
     if location != '':
@@ -334,19 +334,18 @@ def receive_link():
 @app.route('/job-status', methods=['POST'])
 def job_status():
 
-    job_id = request.json['jobId']
+    job_id = request.json['jobId'] # type: ignore
     job = q.fetch_job(job_id)
-    job_status = job.get_status()
+    job_status = job.get_status() # type: ignore
+    result = job.result # type: ignore
     
-    return jsonify(success=True, status=job_status, result=job.result)
+    return jsonify(success=True, status=job_status, result=result)
 
 @app.route('/get-people-interests', methods=['POST'])
 def get_people_interests():
     
-    cookies_list = request.json['cookie']
-    cookie_dict = cookies_list_to_cookie_dict(cookies_list)
-
-    profile_urn = request.json['profileUrn']
+    cookie_dict = request.json['cookie'] # type: ignore
+    profile_urn = request.json['profileUrn'] # type: ignore
     
     data = q.enqueue(GetPeopleInterests, cookie_dict, profile_urn)
     
@@ -357,11 +356,9 @@ def get_people_interests():
 @app.route('/get-company-interests', methods=['POST'])
 def get_company_interests():
     
-    cookies_list = request.json['cookie']
-    cookie_dict = cookies_list_to_cookie_dict(cookies_list)
-    
+    cookie_dict = request.json['cookie'] # type: ignore
     public_id = request.json
-    profile_urn = request.json['profileUrn']
+    profile_urn = request.json['profileUrn'] # type: ignore
 
     data = q.enqueue(GetCompanyInterests, cookie_dict, public_id, profile_urn)
     
@@ -372,8 +369,7 @@ def get_company_interests():
 @app.route('/get-convo-threads', methods=['POST'])
 def get_convo_threads():
 
-    cookies_list = request.json['cookie']
-    cookie_dict = cookies_list_to_cookie_dict(cookies_list)
+    cookie_dict = request.json['cookie'] # type: ignore
     api = Linkedin(cookies=cookie_dict) # type: ignore
     
     data = GetConversationThreads(api)
@@ -383,10 +379,8 @@ def get_convo_threads():
 @app.route('/get-convo-messages', methods=['POST'])
 def get_convo_messages():
     
-    cookies_list = request.json['cookie']
-    cookie_dict = cookies_list_to_cookie_dict(cookies_list)
-
-    profile_urn = request.json['profileUrn']
+    cookie_dict = request.json['cookie'] # type: ignore
+    profile_urn = request.json['profileUrn'] # type: ignore
     
     data = GetConversationMessages(cookie_dict, profile_urn)
    
@@ -395,12 +389,11 @@ def get_convo_messages():
 @app.route('/send-connect', methods=['POST'])
 def send_connect():
 
-    cookies_list = request.json['cookie']
-    cookie_dict = cookies_list_to_cookie_dict(cookies_list)
+    cookie_dict = request.json['cookie'] # type: ignore
     api = Linkedin(cookies=cookie_dict) # type: ignore
 
-    public_id = request.json['publicId']
-    text = request.json['text']
+    public_id = request.json['publicId'] # type: ignore
+    text = request.json['text'] # type: ignore
     
     error_boolean = api.add_connection(public_id, text)
     return jsonify(success=True, message=error_boolean)
@@ -408,12 +401,11 @@ def send_connect():
 @app.route('/send-message', methods=['POST'])
 def send_message():
     
-    cookies_list = request.json['cookie']
-    cookie_dict = cookies_list_to_cookie_dict(cookies_list)
+    cookie_dict = request.json['cookie'] # type: ignore
     api = Linkedin(cookies=cookie_dict) # type: ignore
 
-    public_id = request.json['publicId']
-    text = request.json['text']
+    public_id = request.json['publicId'] # type: ignore
+    text = request.json['text'] # type: ignore
     data = api.send_message(message_body = text, recipients=[public_id])
 
     return jsonify(success=True, message='sent message')
@@ -421,7 +413,7 @@ def send_message():
 @app.route('/save-cookie', methods=['POST'])
 def save_cookie():
     
-    cookies_list = request.json['cookie']    
+    cookies_list = request.json['cookie'] # type: ignore  
     cookie_dict = cookies_list_to_cookie_dict(cookies_list)
     api = Linkedin(cookies=cookie_dict) # type: ignore
 
