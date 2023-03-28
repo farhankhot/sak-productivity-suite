@@ -294,8 +294,8 @@ def use_chatgpt():
 @app.route('/receive-link', methods=['POST'])
 def receive_link():
     
-    cookies_list = request.json['cookie']
-    cookie_dict = cookies_list_to_cookie_dict(cookies_list)
+    cookie_dict = request.json['cookie']
+    # cookie_dict = cookies_list_to_cookie_dict(cookies_list)
     api = Linkedin(cookies=cookie_dict) # type: ignore
 
     search_params = request.json
@@ -428,9 +428,4 @@ def save_cookie():
     url_encoded_cookie = urllib.parse.urlencode(cookie_dict) 
     print(url_encoded_cookie)   
     return jsonify(success=True, message="success", cookie=url_encoded_cookie)
-
-@app.route('/', methods=['GET'])
-def home():
-        
-    return send_file('../../client/public/index.html')
 # ================================================ ROUTES END =============================================

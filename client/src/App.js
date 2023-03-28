@@ -1,19 +1,24 @@
-import { BrowserRouter as Router, Routes, Route, useParams } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import ProfileSearch from './ProfileSearch';
 
 function App() {
 
-    const {cookie} = useParams();
-    console.log(cookie);
+    const { search } = useLocation();
+    const searchParams = new URLSearchParams(search);
+
+    // get all parameters
+    const cookie = {};
+    for (const [key, value] of searchParams.entries()) {
+        cookie[key] = value;
+    }
+    // console.log(cookie);
 
     return (
         <>
         <p>Hi!</p>
-        <Router>
             <Routes>
-                <Route path="/" element={<ProfileSearch cookie={cookie}/>} />
+                <Route path="/" element={<ProfileSearch cookie={cookie} />} />
             </Routes>
-        </Router>
         </>
     );
 }

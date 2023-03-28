@@ -18,10 +18,10 @@ window.onload = function () {
                 const encodedCookie = data.cookie;
                 const dashboardButton = document.createElement("button");
                 dashboardButton.textContent = "Open Dashboard";
-                
+
                 // TODO: Authentication (Only allow access if the cookies exist/are valid)
                 dashboardButton.onclick = function () {
-                    chrome.tabs.create({ url: `http://localhost:3000/?cookies=${encodedCookie}` });
+                    chrome.tabs.create({ url: `http://localhost:3000/?cookie=${encodedCookie}` });
                 }
                 document.body.appendChild(dashboardButton);
             }); 

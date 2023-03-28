@@ -1,4 +1,3 @@
-/*global chrome*/
 import React, {useState, useEffect} from "react";
 import {CheckJobStatus} from "./CheckJobStatus.js";
 import DisplaySearchResults from "./DisplaySearchResults.js";
@@ -10,18 +9,23 @@ import loadingGif from "./loading.gif";
 function ProfileSearch(props) {
 	
 	const {cookie} = props;
+	
 	const [title, setTitle] = useState("");
 	const [location, setLocation] = useState("");
 	const [currentCompany, setCurrentCompany] = useState("");
 	const [mutualConnectionsBoolean, setMutualConnectionsBoolean] = useState(false);
+	
 	const [jobFinished, setJobFinished] = useState(false);
 	const [resultArray, setResultArray] = useState([]);
+	
 	const [navigateToMessages, setNavigateToMessages] = useState(false);
+	
 	const [isLoading, setIsLoading] = useState(false);
 		
 	const handleSearchRequest = async () => {
+		console.log("ProfileSearch cookie: ", cookie);
 		try {
-			const response = await fetch("https://sak-productivity-suite.herokuapp.com/", {
+			const response = await fetch("https://sak-productivity-suite.herokuapp.com/receive-link", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json"
