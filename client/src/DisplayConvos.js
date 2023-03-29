@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from "react";
-import DisplayThread from "./DisplayThread.js";
 import {useNavigate} from 'react-router-dom';
 
 function DisplayConvos(props) {

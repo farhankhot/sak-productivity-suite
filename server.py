@@ -185,6 +185,7 @@ def GetConversationThreads(api):
         
     convo_list=[]
     convos = api.get_conversations()
+    print(convos)
 
     for thread_idx in range(0, len(convos)):
         first_name = get_values_for_key('firstName', convos['elements'][thread_idx]['participants'][0])
