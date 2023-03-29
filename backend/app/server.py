@@ -14,7 +14,7 @@ import json
 
 from linkedin_api import Linkedin
 
-from flask import Flask, request, jsonify, send_static_file
+from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
 
 # from bertopic import BERTopic
@@ -435,5 +435,5 @@ def save_cookie():
 @app.errorhandler(404)
 def not_found(e):
     print("not found, error 404")
-    return send_static_file('../../client/public/index.html')
+    return send_file('../../client/public/index.html')
 # ================================================ ROUTES END =============================================
