@@ -22,7 +22,7 @@ function App() {
             {sessionId && <Route path="/linkedin-search" element={<ProfileSearch sessionId={sessionId} />} /> }
             {sessionId && <Route path="/linkedin-messages" element={<DisplayConvos sessionId={sessionId} />} /> }
             <Route path="/display-linkedin-search-results" element={<DisplaySearchResults />} /> 
-
+            {sessionId && <Route path="/display-thread" element={<DisplayThread sessionId={sessionId} threadName={threadName} threadId={threadId} />} /> }
         </Routes>
         </>
     );

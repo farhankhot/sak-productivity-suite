@@ -3,7 +3,7 @@ import React, {useState, useEffect} from "react";
 
 function DisplayThread(props) {
 	
-	const {cookie, threadName, threadId} = props;	
+	const {sessionId, threadName, threadId} = props;	
 	const [convoArray, setConvoArray] = useState([]);
 	const [replyTextArea, setReplyTextArea] = useState([]);
 
@@ -17,8 +17,8 @@ function DisplayThread(props) {
 					'Content-Type': 'application/json',
 				},
 				body: JSON.stringify({
-					cookie: cookie,
-					profileUrn: threadId
+					sessionId: sessionId,
+					threadId: threadId
 				})
 			});
 
@@ -60,7 +60,7 @@ function DisplayThread(props) {
 					"Content-Type": "application/json"
 				},
 				body: JSON.stringify({
-					cookie: cookie,
+					sessionId: sessionId,
 					profileId: threadId,
 					text: replyTextArea
 				})

@@ -207,8 +207,11 @@ def GetConversationMessages(cookie_dict, conversation_id):
 
     convo_list=[]
     convo = api.get_conversation_details(conversation_id)
-        
+    print(convo)
+    
+    # TODO: Only getting latest message. Want to get entire conversation
     for message_idx in range(0, len(convo['events'])):
+        print("msg_idx", message_idx)
         cleaned_up_convo = get_values_for_key('text',convo['events'][message_idx])
         convo_list.append(cleaned_up_convo)
             
@@ -380,6 +383,13 @@ def get_company_interests():
 @app.route('/get-convo-threads', methods=['POST'])
 def get_convo_threads():
 
+    session_id = request.json['sessionId'] # type: ignore
+    print("get_convo_threads session_id: ", session_id)
+
+    # TODO: error handling
+    cookie_dict = dbCon.get_cookie_from_user_sessions(session_id)
+    print("get_convo_threads cookie_dict: ", cookie_dict)
+
     cookie_dict = request.json['cookie'] # type: ignore
     api = Linkedin(cookies=cookie_dict) # type: ignore
     
@@ -390,10 +400,16 @@ def get_convo_threads():
 @app.route('/get-convo-messages', methods=['POST'])
 def get_convo_messages():
     
-    cookie_dict = request.json['cookie'] # type: ignore
-    profile_urn = request.json['profileUrn'] # type: ignore
+    session_id = request.json['sessionId'] # type: ignore
+    print("get_convo_messages session_id: ", session_id)
+
+    # TODO: error handling
+    cookie_dict = dbCon.get_cookie_from_user_sessions(session_id)
+    print("get_convo_messages cookie_dict: ", cookie_dict)
+
+    thread_id = request.json['threadId'] # type: ignore
     
-    data = GetConversationMessages(cookie_dict, profile_urn)
+    data = GetConversationMessages(cookie_dict, thread_id)
    
     return jsonify(success=True, message=data)
 

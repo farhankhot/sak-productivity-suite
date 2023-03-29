@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 import DisplayThread from "./DisplayThread.js";
-import {useLocation} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 
 function DisplayConvos(props) {
 
@@ -10,6 +10,8 @@ function DisplayConvos(props) {
 	const [threadArray, setThreadArray] = useState([]);
 	const [threadName, setThreadName] = useState(null);
 	const [threadId, setThreadId] = useState(null);
+
+	const navigate = useNavigate();
 
 	useEffect( () => {
 		const handleGetThreads = async () => {
@@ -40,7 +42,12 @@ function DisplayConvos(props) {
 	return (
 		<>
 		{ (threadName && threadId) ? (
-			<DisplayThread sessionId={sessionId} threadName={threadName} threadId={threadId} />
+			// <DisplayThread sessionId={sessionId} threadName={threadName} threadId={threadId} />
+			navigate("/display-thread", {state: {
+				sessionId: sessionId,
+				threadName: threadName,
+				threadId: threadId
+			}})
 		) : (
 			<div>
 				<h1>Messages</h1>
