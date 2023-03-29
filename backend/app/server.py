@@ -32,7 +32,11 @@ from backend.app import dbCon
 
 q = Queue(connection=conn)
 
-app = Flask(__name__, static_folder="client/build/static", template_folder="client/build")
+app = Flask(
+    __name__, 
+    static_url_path='',
+    static_folder="client/build/static",
+    template_folder="client/build")
 
 # Enables CORS (this is only needed when working with React.js, I don't know why)
 CORS(app, resources={r"/*": {"origins": "*"}})
