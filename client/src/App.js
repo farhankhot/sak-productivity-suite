@@ -4,6 +4,7 @@ import DisplayConvos from './DisplayConvos';
 import ProfileSearch from './ProfileSearch';
 import NavbarComponent from './NavbarComponent';
 import DisplaySearchResults from "./DisplaySearchResults";
+import DisplayThread from "./DisplayThread";
 
 function App() {
 
@@ -22,7 +23,7 @@ function App() {
             {sessionId && <Route path="/linkedin-search" element={<ProfileSearch sessionId={sessionId} />} /> }
             {sessionId && <Route path="/linkedin-messages" element={<DisplayConvos sessionId={sessionId} />} /> }
             <Route path="/display-linkedin-search-results" element={<DisplaySearchResults />} /> 
-            {sessionId && <Route path="/display-thread" element={<DisplayThread sessionId={sessionId} threadName={threadName} threadId={threadId} />} /> }
+            {sessionId && <Route path="/display-thread" element={<DisplayThread />} /> }
         </Routes>
         </>
     );

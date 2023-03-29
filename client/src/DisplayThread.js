@@ -1,9 +1,13 @@
-/*global chrome*/
 import React, {useState, useEffect} from "react";
+import { useLocation } from 'react-router-dom';
 
-function DisplayThread(props) {
+function DisplayThread() {
+
+	const location = useLocation();
+	const sessionId = location.state?.sessionId;
+	const threadName = location.state?.threadName;
+	const threadId = location.state?.threadId;
 	
-	const {sessionId, threadName, threadId} = props;	
 	const [convoArray, setConvoArray] = useState([]);
 	const [replyTextArea, setReplyTextArea] = useState([]);
 

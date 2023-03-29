@@ -51,7 +51,7 @@ function DisplaySearchResults() {
 		setProfileInfoArray(temp);
 	}, [resultArray]);	
 		
-	const handleGettingPeopleInterests = async () => {
+	const handleGettingPeopleInterests = async (sessionId, profileUrn) => {
 		setIsLoading(true);
 		try {
 			const response = await fetch("https://sak-productivity-suite.herokuapp.com/get-people-interests", {
@@ -78,7 +78,7 @@ function DisplaySearchResults() {
 		}
 	};
 	
-	const handleGettingCompanyInterests = async () => {
+	const handleGettingCompanyInterests = async (sessionId, profileUrn, publicId) => {
 		setIsLoading(true);
 		try {
 			const response = await fetch("https://sak-productivity-suite.herokuapp.com/get-company-interests", {
@@ -122,10 +122,11 @@ function DisplaySearchResults() {
 		setSelectedInterests(updatedInterestsArray);
 	}
 	
-	const handleMakingConnectNote = async () => {
+	const handleMakingConnectNote = async (fullName) => {
 		
+		// TODO: Add summary back
 		const prompt = "This is the profile of a person: " + "\n" + fullName 
-		+ " This is their summary: " + summary +
+		+ " This is their summary: " +
 		" These are their interests: " + selectedInterests 
 		+ " Use the internet to get something useful about the interests and use it in the request. "
 		+ " Write a request to connect with them. Make it casual but eyecatching. The goal is to ask about their current Salesforce implementation. The length should be no more than 300 characters.";
@@ -154,7 +155,7 @@ function DisplaySearchResults() {
 		}
 	};
 	
-	const handleSendingConnectNote = async () => {
+	const handleSendingConnectNote = async (sessionId, profileId) => {
 		
 		try {
 			const response = await fetch("https://sak-productivity-suite.herokuapp.com/send-connect", {
@@ -206,16 +207,16 @@ function DisplaySearchResults() {
 								</Form.Group>
 
 								<ButtonGroup aria-label="Basic example" className="mb-2">
-									<Button onClick={handleGettingPeopleInterests}>
+									<Button onClick={handleGettingPeopleInterests(sessionId, profileInfo[4])}>
 										Get people interests
 									</Button>
-									<Button onClick={handleGettingCompanyInterests}>
+									<Button onClick={handleGettingCompanyInterests(sessionId, profileInfo[4], profileInfo[3])}>
 										Get company interests
 									</Button>
-									<Button onClick={handleMakingConnectNote}>
+									<Button onClick={handleMakingConnectNote(profileInfo[0])}>
 										Make Connect Note
 									</Button>
-									<Button onClick={handleSendingConnectNote}>
+									<Button onClick={handleSendingConnectNote(sessionId, profileInfo[2])}>
 										Send Connect Note
 									</Button>
 								</ButtonGroup>
