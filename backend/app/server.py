@@ -436,5 +436,5 @@ def save_cookie():
 def not_found(e):
     print("not found, error 404")
     print(os.listdir("."))
-    return render_template("index.html")
+    return render_template("client/build/index.html")
 # ================================================ ROUTES END =============================================
