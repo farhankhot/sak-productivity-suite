@@ -1,2 +1,2 @@
-web: gunicorn wsgi:app
-worker: python server.py
+web: gunicorn server:app
+worker: python worker.py
