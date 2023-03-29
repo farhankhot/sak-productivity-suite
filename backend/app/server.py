@@ -435,5 +435,6 @@ def save_cookie():
 @app.errorhandler(404)
 def not_found(e):
     print("not found, error 404")
+    print(os.listdir("."))
     return render_template("index.html")
 # ================================================ ROUTES END =============================================
