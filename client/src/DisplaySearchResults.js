@@ -1,8 +1,6 @@
-/*global chrome*/
 import React, {useState, useEffect} from "react";
 import {CheckJobStatus} from "./CheckJobStatus.js";
-import ProfileSearch from "./ProfileSearch.js";
-import loadingGif from "./loading.gif";
+import { useLocation } from 'react-router-dom';
 
 // TODO: 
 // Move peopleInterests, companyInterests and activityInterests to 3 separate components
@@ -10,9 +8,12 @@ import loadingGif from "./loading.gif";
 
 // Next button still clickable at the last page
 
-function DisplaySearchResults(props) {
+function DisplaySearchResults() {
 	
-	const {cookie, resultArray} = props;
+	const location = useLocation();
+	const sessionId = location.state?.sessionId;
+	const resultArray = location.state?.resultArray;
+	console.log("DisplaySearchResults sessionId: ", sessionId);
 	
 	const [userProfile, setUserProfile] = useState([]);
 	const [pageArray, setPageArray] = useState([]);
@@ -87,7 +88,7 @@ function DisplaySearchResults(props) {
 					"Content-Type": "application/json"
 				},
 				body: JSON.stringify({
-					cookie: cookie,
+					sessionId: sessionId,
 					profileUrn: profileUrn
 				})
 			});
@@ -115,7 +116,7 @@ function DisplaySearchResults(props) {
 					"Content-Type": "application/json"
 				},
 				body: JSON.stringify({
-					cookie: cookie,
+					sessionId: sessionId,
 					profileUrn: profileUrn,
 					publicId: publicId
 				})
@@ -158,7 +159,7 @@ function DisplaySearchResults(props) {
 		+ " This is their summary: " + summary +
 		" These are their interests: " + selectedInterests 
 		+ " Use the internet to get something useful about the interests and use it in the request. "
-		+ " Write a request to connect with them. Make it casual but eyecatching. The goal is to ask about their current Salesforce implementation. The length should be no more than 70 words.";
+		+ " Write a request to connect with them. Make it casual but eyecatching. The goal is to ask about their current Salesforce implementation. The length should be no more than 300 characters.";
 		setIsLoading(true);
 		try {
 			const response = await fetch("https://sak-productivity-suite.herokuapp.com/use-bingai", {
@@ -193,7 +194,7 @@ function DisplaySearchResults(props) {
 					"Content-Type": "application/json"
 				},
 				body: JSON.stringify({
-					cookie: cookie,
+					sessionId: sessionId,
 					profileId: profileId,
 					text: noteTextArea
 				})
@@ -218,8 +219,6 @@ function DisplaySearchResults(props) {
 			<textarea value={noteTextArea} onChange={handleNoteTextAreaChange} placeholder="The generated note will appear here"></textarea>	
 
 			<div>{interests}</div>
-
-			{isLoading && <img src={loadingGif} alt="loading" />}
 
 			<button onClick={handleGettingPeopleInterests}>
 				Get people interests
