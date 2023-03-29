@@ -51,11 +51,11 @@ function DisplaySearchResults() {
 		const temp = []
 		for (let i = 0; i < resultArray.length; i += 1) {
 			temp.push([ 
-				resultArray[i][0]["full_name"],
-				resultArray[i][0]["latest_title"],
-				resultArray[i][0]["profile_id"],
-				resultArray[i][0]["public_id"],
-				resultArray[i][0]["profile_urn"]
+				resultArray[i]["full_name"],
+				resultArray[i]["latest_title"],
+				resultArray[i]["profile_id"],
+				resultArray[i]["public_id"],
+				resultArray[i]["profile_urn"]
 			])
 		}
 		setProfileInfoArray(temp);
