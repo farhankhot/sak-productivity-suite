@@ -14,7 +14,7 @@ import json
 
 from linkedin_api import Linkedin
 
-from flask import Flask, request, jsonify, send_file
+from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 
 # from bertopic import BERTopic
@@ -32,7 +32,7 @@ from backend.app import dbCon
 
 q = Queue(connection=conn)
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="client/build/static", template_folder="client/build")
 
 # Enables CORS (this is only needed when working with React.js, I don't know why)
 CORS(app, resources={r"/*": {"origins": "*"}})
@@ -435,7 +435,5 @@ def save_cookie():
 @app.errorhandler(404)
 def not_found(e):
     print("not found, error 404")
-    print(os.chdir('..'))
-    print(os.getcwd())
-    return app.send_static_file('../../client/build/index.html')
+    return render_template("index.html")
 # ================================================ ROUTES END =============================================
