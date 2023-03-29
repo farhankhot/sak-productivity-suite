@@ -52,7 +52,7 @@ def get_cookie_from_user_sessions(session_id):
         cursor = connection.cursor()
         
         t = (session_id,)
-        cursor.execute("SELECT cookie FROM socialmedia.user_sessions WHERE session_id=%s", session_id)
+        cursor.execute("SELECT cookie FROM socialmedia.user_sessions WHERE session_id=%s", t)
         cookie_dict = cursor.fetchone()
         if cookie_dict:
             print(type(cookie_dict))
