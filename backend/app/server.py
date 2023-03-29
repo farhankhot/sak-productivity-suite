@@ -442,3 +442,6 @@ def not_found(e):
     print(os.listdir("./client/build"))
     return render_template("./client/build/index.html")
 # ================================================ ROUTES END =============================================
+
+if __name__ == "__main__":
+	app.run()
