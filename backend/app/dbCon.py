@@ -51,9 +51,9 @@ def get_cookie_from_user_sessions(session_id):
         
         t = (session_id,)
         cursor.execute("SELECT cookie FROM socialmedia.user_sessions WHERE session_id=%s", t)
-        print(cursor.fetchone())
-        if cursor.fetchone() is not None :
-            return cursor.fetchone()
+        cookie_dict = cursor.fetchone()
+        if cookie_dict:
+            return cookie_dict
         else:
             return False
     except (Exception, psycopg2.Error) as error:
