@@ -201,22 +201,27 @@ def GetConversationThreads(api):
                     
     return convo_list
 
-def GetConversationMessages(cookie_dict, conversation_id):
+def GetConversationMessages(cookie_dict, conversation_urn_id):
     
     api = Linkedin(cookies=cookie_dict) # type: ignore
 
-    convo_list=[]
-    res = api._fetch(
-        "https://www.linkedin.com/voyager/api/voyagerMessagingGraphQL/graphql?queryId=messengerMessages.8d15783c080e392b337ba57fc576ad21&variables=(conversationUrn:urn%3Ali%3Amsg_conversation%3A%28urn%3Ali%3Afsd_profile%3AACoAAECwamYBHZZRtLXKAA4aGPb3oy5MD63OJRI%2C2-YThiYmI0NzQtYzQ1OS00YTNiLWFmNWEtOGM5MjY0ODAzODFkXzAxMA%3D%3D%29)"
-    )
-    print(res.text)
+    # convo_list=[]
+    # res = api._fetch(
+    #     f"/messaging/conversations?\
+    #         keyVersion=LEGACY_INBOX&q=participants&recipients=List({profile_urn_id})"
+    #     "https://www.linkedin.com/voyager/api/voyagerMessagingGraphQL/graphql?queryId=messengerMessages.8d15783c080e392b337ba57fc576ad21&variables=(conversationUrn:urn%3Ali%3Amsg_conversation%3A%28urn%3Ali%3Afsd_profile%3AACoAAECwamYBHZZRtLXKAA4aGPb3oy5MD63OJRI%2C2-YThiYmI0NzQtYzQ1OS00YTNiLWFmNWEtOGM5MjY0ODAzODFkXzAxMA%3D%3D%29)"
+    # )
+    # print(res.text)
     # convo = api.get_conversation_details(conversation_id)
-    convo_list = res.json()['data']['messengerMessagesBySyncToken']['elements']
+    # convo_list = res.json()['data']['messengerMessagesBySyncToken']['elements']
 
-    text_messages = []
-    for elem in convo_list:
-        temp = elem['body']['text']
-        text_messages.append(text_messages)
+    # text_messages = []
+    # for elem in convo_list:
+    #     temp = elem['body']['text']
+    #     text_messages.append(text_messages)
+
+    convo = api.get_conversation(conversation_urn_id)
+    print(convo)
     
     # TODO: Only getting latest message. Want to get entire conversation
     # for message_idx in range(0, len(convo['events'])):
@@ -224,7 +229,7 @@ def GetConversationMessages(cookie_dict, conversation_id):
     #     cleaned_up_convo = get_values_for_key('text',convo['events'][message_idx])
     #     convo_list.append(cleaned_up_convo)
             
-    return text_messages
+    return convo
     
 def GetPeopleInterests(cookie_dict, profile_urn):
     
