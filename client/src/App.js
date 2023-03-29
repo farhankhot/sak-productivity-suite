@@ -24,7 +24,8 @@ function App() {
 
     return (
         <>
-        <NavbarComponent sessionId={sessionId} />
+        {console.log("iii")}
+        <NavbarComponent />
         <Routes>
             {sessionId && <Route path="/linkedin-search" element={<ProfileSearch sessionId={sessionId} />} /> }
             <Route path="/linkedin-messages" element={<DisplayConvos />} />

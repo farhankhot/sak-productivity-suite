@@ -3,8 +3,8 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import {Link} from 'react-router-dom';
 
-function NavbarComponent(props) {
-  const {sessionId} = props;
+function NavbarComponent() {
+
   return (
     <Navbar bg="primary" variant="dark" expand="lg">
       <Container>
