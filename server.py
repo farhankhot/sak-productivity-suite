@@ -440,6 +440,5 @@ def not_found(e):
     return app.send_static_file("index.html")
 # ================================================ ROUTES END =============================================
 
-# MAIN (change to production grade)
 if __name__ == "__main__":
 	app.run(host='0.0.0.0')
