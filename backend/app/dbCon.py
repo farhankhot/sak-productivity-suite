@@ -57,7 +57,7 @@ def get_cookie_from_user_sessions(session_id):
         if cookie_dict:
             print(type(cookie_dict))
             print(cookie_dict)
-            return cookie_dict[0]
+            return json.loads(cookie_dict[0])
         else:
             return False
     except (Exception, psycopg2.Error) as error:
