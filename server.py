@@ -209,7 +209,7 @@ def GetConversationMessages(cookie_dict, conversation_id):
     res = api._fetch(
         "https://www.linkedin.com/voyager/api/voyagerMessagingGraphQL/graphql?queryId=messengerMessages.8d15783c080e392b337ba57fc576ad21&variables=(conversationUrn:urn%3Ali%3Amsg_conversation%3A%28urn%3Ali%3Afsd_profile%3AACoAAECwamYBHZZRtLXKAA4aGPb3oy5MD63OJRI%2C2-YThiYmI0NzQtYzQ1OS00YTNiLWFmNWEtOGM5MjY0ODAzODFkXzAxMA%3D%3D%29)"
     )
-    print(res)
+    print(res.text)
     # convo = api.get_conversation_details(conversation_id)
     convo_list = res.json()['data']['messengerMessagesBySyncToken']['elements']
 
