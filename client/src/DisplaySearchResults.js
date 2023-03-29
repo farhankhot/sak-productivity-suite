@@ -43,47 +43,53 @@ function DisplaySearchResults() {
 	const [isLoading, setIsLoading] = useState(false);
 
 	const [showProfileArea, setShowProfileArea] = useState(false);
+
+	const [profileInfoArray, setProfileInfoArray] = useState([]);
 	
 	useEffect(() => {
-		// Divide the array into pages
-		const pageSize = 1;
-		const pageArray = [];
-		for (let i = 0; i < resultArray.length; i += pageSize) {
-			pageArray.push(resultArray.slice(i, i + pageSize));
+		
+		const temp = []
+		for (let i = 0; i < resultArray.length; i += 1) {
+			temp.push([ 
+				resultArray[i][0]["full_name"],
+				resultArray[i][0]["latest_title"],
+				resultArray[i][0]["profile_id"],
+				resultArray[i][0]["public_id"],
+				resultArray[i][0]["profile_urn"]
+			])
 		}
-		setPageArray(pageArray);
+		setProfileInfoArray(temp);
 	}, [resultArray]);	
 	
+	// useEffect(() => {
+		
+	// 	if (pageArray[pageIndex]) {
+		
+	// 		const userProfile = pageArray[pageIndex][0];
+	// 		setUserProfile(userProfile);
+			
+	// 		setFullName(userProfile["full_name"]);
+	// 		setLatestTitle(userProfile["latest_title"]);
+	// 		setProfileId(userProfile["profile_id"]);
+	// 		setPublicId(userProfile["public_id"]);
+	// 		setProfileUrn(userProfile["profile_urn"]);
+			
+	// 		setNoteTextArea("");
+			
+	// 		setPeopleInterestsArray([]);
+	// 		setCompanyInterestsArray([]);
+	// 		setActivityInterestsArray([]);
+			
+	// 		setSelectedInterests("");
+	// 	}
+		
+	// }, [pageIndex, pageArray]);
 
-	useEffect(() => {
-		
-		if (pageArray[pageIndex]) {
-		
-			const userProfile = pageArray[pageIndex][0];
-			setUserProfile(userProfile);
-			
-			setFullName(userProfile["full_name"]);
-			setLatestTitle(userProfile["latest_title"]);
-			setProfileId(userProfile["profile_id"]);
-			setPublicId(userProfile["public_id"]);
-			setProfileUrn(userProfile["profile_urn"]);
-			
-			setNoteTextArea("");
-			
-			setPeopleInterestsArray([]);
-			setCompanyInterestsArray([]);
-			setActivityInterestsArray([]);
-			
-			setSelectedInterests("");
-		}
-		
-	}, [pageIndex, pageArray]);
-
-	const handleNextPage = () => {
-		if (pageIndex < pageArray.length - 1) {
-			setPageIndex(pageIndex + 1);
-		}
-	};
+	// const handleNextPage = () => {
+	// 	if (pageIndex < pageArray.length - 1) {
+	// 		setPageIndex(pageIndex + 1);
+	// 	}
+	// };
 		
 	const handleGettingPeopleInterests = async () => {
 		setIsLoading(true);
@@ -98,7 +104,6 @@ function DisplaySearchResults() {
 					profileUrn: profileUrn
 				})
 			});
-			
 			
 			const data = await response.json();			
 			const jobId = data.message;
@@ -128,7 +133,6 @@ function DisplaySearchResults() {
 				})
 			});
 			
-			
 			const data = await response.json();
 			const jobId = data.message;
 			
@@ -136,7 +140,6 @@ function DisplaySearchResults() {
 				setIsLoading(false);
 				setCompanyInterestsArray(companyInterestsArray);	
 			});
-
 		} catch (error) {
 			console.error(error);
 		}
@@ -219,104 +222,97 @@ function DisplaySearchResults() {
 	};
 
 	return (
-
+		<Container>
+			<ListGroup>
+				{profileInfoArray.map( (profileInfo) => (
+					<ListGroup.Item action onClick={() => setShowProfileArea(true)}>
+						{profileInfo[0]}
+					</ListGroup.Item>
+				))}
+			</ListGroup>	
 		
-			<Container>
-			  <ListGroup>
-				<ListGroup.Item action onClick={() => setShowProfileArea(true)}>
-				  <div>{fullName}</div>
-				</ListGroup.Item>
-			  </ListGroup>
-		  
-			  {setShowProfileArea && (
-				<div>
-				  <Form.Group>
+			{setShowProfileArea && (
+			<div>
+				<Form.Group>
 					<Form.Control
-					  as="textarea"
-					  value={noteTextArea}
-					  onChange={handleNoteTextAreaChange}
-					  placeholder="The generated note will appear here"
+						as="textarea"
+						value={noteTextArea}
+						onChange={handleNoteTextAreaChange}
+						placeholder="The generated note will appear here"
 					/>
-				  </Form.Group>
-		  
-				  <ListGroup>
+				</Form.Group>
+		
+				<ListGroup>
+				
+				<ListGroup.Item>
+					<Button onClick={handleGettingPeopleInterests}>
+					Get people interests
+					</Button>
+				</ListGroup.Item>
+		
+				<ListGroup.Item>
+					<Button onClick={handleGettingCompanyInterests}>
+					Get company interests
+					</Button>
+				</ListGroup.Item>
+		
+				<ListGroup.Item>
+					<Button onClick={handleMakingConnectNote}>
+					Make Connect Note
+					</Button>
+				</ListGroup.Item>
+		
+				<ListGroup.Item>
+					<Button onClick={handleSendingConnectNote}>
+					Send Connect Note
+					</Button>
+				</ListGroup.Item>
+		
+				{peopleInterestsArray.length > 0 && (
 					<ListGroup.Item>
-					  <div>{latestTitle}</div>
+					<Form.Control
+						as="select"
+						multiple
+						onChange={handleInterestsSelection}
+					>
+						{peopleInterestsArray.map((interest) => (
+						<option key={interest}>{interest[0]}</option>
+						))}
+					</Form.Control>
 					</ListGroup.Item>
-		  		  
+				)}
+		
+				{companyInterestsArray.length > 0 && (
 					<ListGroup.Item>
-					  <Button onClick={handleGettingPeopleInterests}>
-						Get people interests
-					  </Button>
+					<Form.Control
+						as="select"
+						multiple
+						onChange={handleInterestsSelection}
+					>
+						{companyInterestsArray.map((interest) => (
+						<option key={interest}>{interest[0]}</option>
+						))}
+					</Form.Control>
 					</ListGroup.Item>
-		  
+				)}
+		
+				{activityInterestsArray.length > 0 && (
 					<ListGroup.Item>
-					  <Button onClick={handleGettingCompanyInterests}>
-						Get company interests
-					  </Button>
+					<Form.Control
+						as="select"
+						multiple
+						onChange={handleInterestsSelection}
+					>
+						{activityInterestsArray.map((interest) => (
+						<option key={interest}>{interest[0]}</option>
+						))}
+					</Form.Control>
 					</ListGroup.Item>
-		  
-					<ListGroup.Item>
-					  <Button onClick={handleNextPage}>Next</Button>
-					</ListGroup.Item>
-		  
-					<ListGroup.Item>
-					  <Button onClick={handleMakingConnectNote}>
-						Make Connect Note
-					  </Button>
-					</ListGroup.Item>
-		  
-					<ListGroup.Item>
-					  <Button onClick={handleSendingConnectNote}>
-						Send Connect Note
-					  </Button>
-					</ListGroup.Item>
-		  
-					{peopleInterestsArray.length > 0 && (
-					  <ListGroup.Item>
-						<Form.Control
-						  as="select"
-						  multiple
-						  onChange={handleInterestsSelection}
-						>
-						  {peopleInterestsArray.map((interest) => (
-							<option key={interest}>{interest[0]}</option>
-						  ))}
-						</Form.Control>
-					  </ListGroup.Item>
-					)}
-		  
-					{companyInterestsArray.length > 0 && (
-					  <ListGroup.Item>
-						<Form.Control
-						  as="select"
-						  multiple
-						  onChange={handleInterestsSelection}
-						>
-						  {companyInterestsArray.map((interest) => (
-							<option key={interest}>{interest[0]}</option>
-						  ))}
-						</Form.Control>
-					  </ListGroup.Item>
-					)}
-		  
-					{activityInterestsArray.length > 0 && (
-					  <ListGroup.Item>
-						<Form.Control
-						  as="select"
-						  multiple
-						  onChange={handleInterestsSelection}
-						>
-						  {activityInterestsArray.map((interest) => (
-							<option key={interest}>{interest[0]}</option>
-						  ))}
-						</Form.Control>
-					  </ListGroup.Item>
-					)}
-				  </ListGroup>
-				</div>
-			  )}
-			</Container>
+				)}
+				</ListGroup>
+			</div>
+			)}
+		</Container>
 	);
 }
 export default DisplaySearchResults;
