@@ -51,13 +51,12 @@ def get_cookie_from_user_sessions(session_id):
     try:
         cursor = connection.cursor()
         
-        t = (session_id,)
-        cursor.execute("SELECT cookie FROM socialmedia.user_sessions WHERE session_id=%s", t)
+        cursor.execute("SELECT cookie FROM socialmedia.user_sessions WHERE session_id=%s", session_id)
         cookie_dict = cursor.fetchone()
         if cookie_dict:
             print(type(cookie_dict))
             print(cookie_dict)
-            return cookie_dict 
+            return cookie_dict
         else:
             return False
     except (Exception, psycopg2.Error) as error:
