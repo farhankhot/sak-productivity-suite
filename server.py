@@ -33,8 +33,7 @@ import dbCon
 q = Queue(connection=conn)
 
 app = Flask(
-    __name__, 
-    static_url_path='',
+    __name__,
     static_folder="client/build")
 
 # Enables CORS (this is only needed when working with React.js, I don't know why)
@@ -441,5 +440,6 @@ def not_found(e):
     return app.send_static_file("index.html")
 # ================================================ ROUTES END =============================================
 
+# MAIN (change to production grade)
 if __name__ == "__main__":
 	app.run(host='0.0.0.0')
