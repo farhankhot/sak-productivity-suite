@@ -46,8 +46,6 @@ def store_cookie_return_sessionid(cookie):
 
 def get_cookie_from_user_sessions(session_id):
 
-    # session_id = str(session_id)
-
     try:
         cursor = connection.cursor()
         
@@ -55,11 +53,11 @@ def get_cookie_from_user_sessions(session_id):
         cursor.execute("SELECT cookie FROM socialmedia.user_sessions WHERE session_id=%s", t)
         cookie_dict = cursor.fetchone()
         if cookie_dict:
-            print(type(cookie_dict))
-            print(cookie_dict)
+            # print(type(cookie_dict)) # type is str, json.loads converts it back to a dict
             return json.loads(cookie_dict[0])
         else:
             return False
+        
     except (Exception, psycopg2.Error) as error:
         print("Error while connecting to PostgreSQL", error)
         return False
@@ -70,7 +68,7 @@ def getSearchParams(title, location, currentcompany):
     userid = "admin@admin.com"
     cookie = "Null"
     mutualconnections = "Null"
-    data_time = datetime.datetime.now()
+    data_time = datetime.now()
     
     try:
         userid, cookie, title, location, currentcompany, mutualconnections

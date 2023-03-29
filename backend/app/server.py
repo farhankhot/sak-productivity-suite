@@ -426,11 +426,7 @@ def save_cookie():
     cookie_dict = cookies_list_to_cookie_dict(cookies_list)
     api = Linkedin(cookies=cookie_dict) # type: ignore
 
-    # url_encoded_cookie = urllib.parse.urlencode(cookie_dict) 
-    # print(url_encoded_cookie)   
-
-    # Instead of the 2 lines above, save the cookie_dict and generate a session_id for the user
-    # Return the session_id, this will go to the database and get the cookie_dict
+    # Save the cookie_dict in DB and return a session_id for the user
     # The session_id will be passed back by the user, it will be checked against the DB
     # and will return the cookie_dict to be passed in the LinkedIn API.
     session_id = dbCon.store_cookie_return_sessionid(cookie_dict)
