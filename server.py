@@ -390,7 +390,6 @@ def get_convo_threads():
     cookie_dict = dbCon.get_cookie_from_user_sessions(session_id)
     print("get_convo_threads cookie_dict: ", cookie_dict)
 
-    cookie_dict = request.json['cookie'] # type: ignore
     api = Linkedin(cookies=cookie_dict) # type: ignore
     
     data = GetConversationThreads(api)
