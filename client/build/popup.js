@@ -1,4 +1,4 @@
-console.log("SAK productivity-suite init");
+console.log("SAK productivity-suite init"); 
 window.onload = function () {
     document.getElementById("getLinkedInCookiesButton").onclick = function () {
 
@@ -22,7 +22,7 @@ window.onload = function () {
                 // TODO: Authentication (Only allow access if the cookies exist/are valid)
                 dashboardButton.onclick = function () {
                     chrome.tabs.create({ 
-                        url: `http://localhost:3000/?sessionId=${sessionId}`
+                        url: `https://sak-productivity-suite.herokuapp.com/?sessionId=${sessionId}`
                     });
                 }
                 document.body.appendChild(dashboardButton);

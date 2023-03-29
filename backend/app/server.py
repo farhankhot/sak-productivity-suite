@@ -299,7 +299,6 @@ def receive_link():
     session_id = request.json['sessionId'] # type: ignore
     print("receive_link session_id: ", session_id)
 
-    # Get cookie_dict using session_id
     # TODO: error handling
     cookie_dict = dbCon.get_cookie_from_user_sessions(session_id)
     print("receive_link cookie_dict: ", cookie_dict)
@@ -432,4 +431,8 @@ def save_cookie():
     session_id = dbCon.store_cookie_return_sessionid(cookie_dict)
 
     return jsonify(success=True, message="success", session_id=session_id)
+
+@app.errorhandler(404)
+def not_found(e):
+    return app.send_static_file('../../client/public/index.html')
 # ================================================ ROUTES END =============================================
