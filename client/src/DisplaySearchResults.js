@@ -1,6 +1,10 @@
 import React, {useState, useEffect} from "react";
 import {CheckJobStatus} from "./CheckJobStatus.js";
 import { useLocation } from 'react-router-dom';
+import { ListGroup, ListGroupItem } from 'react-bootstrap';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import Container from 'react-bootstrap/Container';
 
 // TODO: 
 // Move peopleInterests, companyInterests and activityInterests to 3 separate components
@@ -13,7 +17,7 @@ function DisplaySearchResults() {
 	const location = useLocation();
 	const sessionId = location.state?.sessionId;
 	const resultArray = location.state?.resultArray;
-	console.log("DisplaySearchResults sessionId: ", sessionId);
+	// console.log("DisplaySearchResults sessionId: ", sessionId);
 	
 	const [userProfile, setUserProfile] = useState([]);
 	const [pageArray, setPageArray] = useState([]);
@@ -37,6 +41,8 @@ function DisplaySearchResults() {
 	const [selectedInterests, setSelectedInterests] = useState("");
 	
 	const [isLoading, setIsLoading] = useState(false);
+
+	const [showProfileArea, setShowProfileArea] = useState(false);
 	
 	useEffect(() => {
 		// Divide the array into pages
@@ -213,63 +219,104 @@ function DisplaySearchResults() {
 	};
 
 	return (
-		<div>
-			<div>{fullName}</div>
-			<div>{latestTitle}</div>
-			<textarea value={noteTextArea} onChange={handleNoteTextAreaChange} placeholder="The generated note will appear here"></textarea>	
 
-			<div>{interests}</div>
-
-			<button onClick={handleGettingPeopleInterests}>
-				Get people interests
-			</button>
-			<button onClick={handleGettingCompanyInterests}>
-				Get company interests
-			</button>
-			{/*<button onClick={handleGettingActivityInterests}>
-				Get interests from Linkedin activity
-			</button>*/}
-			<button onClick={handleNextPage}>
-				Next
-			</button>
-			<button onClick={handleMakingConnectNote}>
-				Make Connect Note
-			</button>
-			<button onClick={handleSendingConnectNote}>
-				Send Connect Note
-			</button>
 		
-			{peopleInterestsArray.length > 0 && (
-
-				<select multiple onChange={handleInterestsSelection} >
-				
-					{peopleInterestsArray.map( (interest) => (
-						<option key={interest}>{interest[0]}</option>
-					))}
-				</select>
-			)}
-
-			{companyInterestsArray.length > 0 && (
-				
-				<select multiple onChange={handleInterestsSelection} >
-				
-					{companyInterestsArray.map( (interest) => (
-						<option key={interest}>{ interest[0] }</option>
-					))}
-				</select>
-			)}
-			
-			{activityInterestsArray.length > 0 && (
-			
-				<select multiple onChange={handleInterestsSelection} >
-				
-					{activityInterestsArray.map( (interest) => (
-						<option key={interest}>{ interest[0] }</option>
-					))}
-				</select>
-			)}
-			
-		</div>
+			<Container>
+			  <ListGroup>
+				<ListGroup.Item action onClick={() => setShowProfileArea(true)}>
+				  <div>{fullName}</div>
+				</ListGroup.Item>
+			  </ListGroup>
+		  
+			  {setShowProfileArea && (
+				<div>
+				  <Form.Group>
+					<Form.Control
+					  as="textarea"
+					  value={noteTextArea}
+					  onChange={handleNoteTextAreaChange}
+					  placeholder="The generated note will appear here"
+					/>
+				  </Form.Group>
+		  
+				  <ListGroup>
+					<ListGroup.Item>
+					  <div>{latestTitle}</div>
+					</ListGroup.Item>
+		  		  
+					<ListGroup.Item>
+					  <Button onClick={handleGettingPeopleInterests}>
+						Get people interests
+					  </Button>
+					</ListGroup.Item>
+		  
+					<ListGroup.Item>
+					  <Button onClick={handleGettingCompanyInterests}>
+						Get company interests
+					  </Button>
+					</ListGroup.Item>
+		  
+					<ListGroup.Item>
+					  <Button onClick={handleNextPage}>Next</Button>
+					</ListGroup.Item>
+		  
+					<ListGroup.Item>
+					  <Button onClick={handleMakingConnectNote}>
+						Make Connect Note
+					  </Button>
+					</ListGroup.Item>
+		  
+					<ListGroup.Item>
+					  <Button onClick={handleSendingConnectNote}>
+						Send Connect Note
+					  </Button>
+					</ListGroup.Item>
+		  
+					{peopleInterestsArray.length > 0 && (
+					  <ListGroup.Item>
+						<Form.Control
+						  as="select"
+						  multiple
+						  onChange={handleInterestsSelection}
+						>
+						  {peopleInterestsArray.map((interest) => (
+							<option key={interest}>{interest[0]}</option>
+						  ))}
+						</Form.Control>
+					  </ListGroup.Item>
+					)}
+		  
+					{companyInterestsArray.length > 0 && (
+					  <ListGroup.Item>
+						<Form.Control
+						  as="select"
+						  multiple
+						  onChange={handleInterestsSelection}
+						>
+						  {companyInterestsArray.map((interest) => (
+							<option key={interest}>{interest[0]}</option>
+						  ))}
+						</Form.Control>
+					  </ListGroup.Item>
+					)}
+		  
+					{activityInterestsArray.length > 0 && (
+					  <ListGroup.Item>
+						<Form.Control
+						  as="select"
+						  multiple
+						  onChange={handleInterestsSelection}
+						>
+						  {activityInterestsArray.map((interest) => (
+							<option key={interest}>{interest[0]}</option>
+						  ))}
+						</Form.Control>
+					  </ListGroup.Item>
+					)}
+				  </ListGroup>
+				</div>
+			  )}
+			</Container>
 	);
 }
 export default DisplaySearchResults;
