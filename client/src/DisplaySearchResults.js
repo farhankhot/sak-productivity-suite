@@ -192,84 +192,83 @@ function DisplaySearchResults() {
 
 	return (
 		<Container>
+			<h1>Search Results:</h1>
 			<ListGroup>
 				{profileInfoArray.map( (profileInfo) => (
 					<ListGroup.Item action onClick={() => setShowProfileArea(true)}>
 						{profileInfo[0]}
+						{showProfileArea && (
+							<>
+								<Form.Group>
+									<Form.Control
+										as="textarea"
+										value={noteTextArea}
+										onChange={handleNoteTextAreaChange}
+										placeholder="The generated note will appear here"
+									/>
+								</Form.Group>
+						
+								<ButtonGroup aria-label="Basic example" className="mb-2">
+									<Button onClick={handleGettingPeopleInterests}>
+										Get people interests
+									</Button>
+									<Button onClick={handleGettingCompanyInterests}>
+										Get company interests
+									</Button>
+									<Button onClick={handleMakingConnectNote}>
+										Make Connect Note
+									</Button>
+									<Button onClick={handleSendingConnectNote}>
+										Send Connect Note
+									</Button>
+								</ButtonGroup>
+
+								{peopleInterestsArray.length > 0 && (
+									<ListGroup.Item>
+										<Form.Control
+											as="select"
+											multiple
+											onChange={handleInterestsSelection}
+										>
+											{peopleInterestsArray.map((interest) => (
+												<option key={interest}>{interest[0]}</option>
+											))}
+										</Form.Control>
+									</ListGroup.Item>
+								)}
+						
+								{companyInterestsArray.length > 0 && (
+									<ListGroup.Item>
+										<Form.Control
+											as="select"
+											multiple
+											onChange={handleInterestsSelection}
+										>
+											{companyInterestsArray.map((interest) => (
+												<option key={interest}>{interest[0]}</option>
+											))}
+										</Form.Control>
+									</ListGroup.Item>
+								)}
+						
+								{activityInterestsArray.length > 0 && (
+									<ListGroup.Item>
+										<Form.Control
+											as="select"
+											multiple
+											onChange={handleInterestsSelection}
+										>
+											{activityInterestsArray.map((interest) => (
+												<option key={interest}>{interest[0]}</option>
+											))}
+										</Form.Control>
+									</ListGroup.Item>
+								)}
+							</>
+						)}
 					</ListGroup.Item>
 				))}
-			</ListGroup>	
-		
-			{showProfileArea && (
-				<>
-					<Form.Group>
-						<Form.Control
-							as="textarea"
-							value={noteTextArea}
-							onChange={handleNoteTextAreaChange}
-							placeholder="The generated note will appear here"
-						/>
-					</Form.Group>
-			
-					<ButtonGroup aria-label="Basic example" className="mb-2">
-						<Button onClick={handleGettingPeopleInterests}>
-							Get people interests
-						</Button>
-						<Button onClick={handleGettingCompanyInterests}>
-							Get company interests
-						</Button>
-						<Button onClick={handleMakingConnectNote}>
-							Make Connect Note
-						</Button>
-						<Button onClick={handleSendingConnectNote}>
-							Send Connect Note
-						</Button>
-					</ButtonGroup>
-
-					{peopleInterestsArray.length > 0 && (
-						<ListGroup.Item>
-							<Form.Control
-								as="select"
-								multiple
-								onChange={handleInterestsSelection}
-							>
-								{peopleInterestsArray.map((interest) => (
-									<option key={interest}>{interest[0]}</option>
-								))}
-							</Form.Control>
-						</ListGroup.Item>
-					)}
-			
-					{companyInterestsArray.length > 0 && (
-						<ListGroup.Item>
-							<Form.Control
-								as="select"
-								multiple
-								onChange={handleInterestsSelection}
-							>
-								{companyInterestsArray.map((interest) => (
-									<option key={interest}>{interest[0]}</option>
-								))}
-							</Form.Control>
-						</ListGroup.Item>
-					)}
-			
-					{activityInterestsArray.length > 0 && (
-						<ListGroup.Item>
-							<Form.Control
-								as="select"
-								multiple
-								onChange={handleInterestsSelection}
-							>
-								{activityInterestsArray.map((interest) => (
-									<option key={interest}>{interest[0]}</option>
-								))}
-							</Form.Control>
-						</ListGroup.Item>
-					)}
-					
-				</>
-			)}
+			</ListGroup>			
 		</Container>
 	);
 }
