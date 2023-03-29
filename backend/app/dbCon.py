@@ -49,8 +49,7 @@ def get_cookie_from_user_sessions(session_id):
     try:
         cursor = connection.cursor()
         print(session_id)
-        cursor.execute('SELECT cookie FROM socialmedia.user_sessions WHERE session_id=?', (session_id))
-        connection.commit()
+        cursor.execute('SELECT cookie FROM socialmedia.user_sessions WHERE session_id=?', (session_id,))
         if cursor.fetchone() is not None :
             return cursor.fetchone()
         else:
