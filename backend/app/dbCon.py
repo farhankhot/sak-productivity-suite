@@ -5,6 +5,8 @@ import string
 import random
 import pytz
 
+import json
+
 connection = psycopg2.connect(
     user="postgres",
     password="1muhammad1",
@@ -21,7 +23,7 @@ def generate_unique_key():
 
 def store_cookie_return_sessionid(cookie): 
 
-    cookie = str(cookie)
+    cookie = json.dumps(cookie)
   
     timeZone = pytz.timezone("EST") 
     date_time = datetime.now(timeZone)
@@ -53,7 +55,7 @@ def get_cookie_from_user_sessions(session_id):
         cursor.execute("SELECT cookie FROM socialmedia.user_sessions WHERE session_id=%s", t)
         cookie_dict = cursor.fetchone()
         if cookie_dict:
-            return cookie_dict
+            return json.loads(cookie_dict) # type: ignore
         else:
             return False
     except (Exception, psycopg2.Error) as error:
