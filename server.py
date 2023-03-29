@@ -185,17 +185,17 @@ def GetConversationThreads(api):
         
     convo_list=[]
     convos = api.get_conversations()
-    print(convos)
+    # print(convos)
 
     for thread_idx in range(0, len(convos)):
         first_name = get_values_for_key('firstName', convos['elements'][thread_idx]['participants'][0])
         last_name = get_values_for_key('lastName', convos['elements'][thread_idx]['participants'][0])
         full_name = first_name[0] + " " + last_name[0]
         
-        profile_urn = get_values_for_key('dashEntityUrn', convos['elements'][thread_idx]['participants'][0])
-        
-        regex = r"profile:(.+)"
-        match = re.search(regex, profile_urn[0])
+        # profile_urn = get_values_for_key('dashEntityUrn', convos['elements'][thread_idx]['participants'][0])
+        conversation_urn_id = convos['elements'][thread_idx]['dashEntityUrn'] 
+        regex = r"conversation:(.+)"
+        match = re.search(regex, conversation_urn_id[0])
         if match:
             result = match.group(1)
             convo_list.append([full_name, result])
