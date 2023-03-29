@@ -435,5 +435,6 @@ def save_cookie():
 @app.errorhandler(404)
 def not_found(e):
     print("not found, error 404")
+    print(os.getcwd())
     return app.send_static_file('client/build/index.html')
 # ================================================ ROUTES END =============================================
