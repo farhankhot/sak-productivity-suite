@@ -24,7 +24,6 @@ function App() {
 
     return (
         <>
-        {console.log("iii")}
         <NavbarComponent />
         <Routes>
             {sessionId && <Route path="/linkedin-search" element={<ProfileSearch sessionId={sessionId} />} /> }
