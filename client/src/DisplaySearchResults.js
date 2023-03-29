@@ -1,16 +1,14 @@
 import React, {useState, useEffect} from "react";
 import {CheckJobStatus} from "./CheckJobStatus.js";
 import { useLocation } from 'react-router-dom';
-import { ListGroup, ListGroupItem } from 'react-bootstrap';
+import { ButtonGroup, ListGroup, ListGroupItem } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
 
-// TODO: 
-// Move peopleInterests, companyInterests and activityInterests to 3 separate components
-// Move making note to a separate component
-
-// Next button still clickable at the last page
+// Move peopleInterests, companyInterests and activityInterests to 3 separate components?
+// Make every result a component?
+// Move making note to a separate component?
 
 function DisplaySearchResults() {
 	
@@ -48,6 +46,7 @@ function DisplaySearchResults() {
 	
 	useEffect(() => {
 		
+		// Change temp to JSON 
 		const temp = []
 		for (let i = 0; i < resultArray.length; i += 1) {
 			temp.push([ 
@@ -60,36 +59,6 @@ function DisplaySearchResults() {
 		}
 		setProfileInfoArray(temp);
 	}, [resultArray]);	
-	
-	// useEffect(() => {
-		
-	// 	if (pageArray[pageIndex]) {
-		
-	// 		const userProfile = pageArray[pageIndex][0];
-	// 		setUserProfile(userProfile);
-			
-	// 		setFullName(userProfile["full_name"]);
-	// 		setLatestTitle(userProfile["latest_title"]);
-	// 		setProfileId(userProfile["profile_id"]);
-	// 		setPublicId(userProfile["public_id"]);
-	// 		setProfileUrn(userProfile["profile_urn"]);
-			
-	// 		setNoteTextArea("");
-			
-	// 		setPeopleInterestsArray([]);
-	// 		setCompanyInterestsArray([]);
-	// 		setActivityInterestsArray([]);
-			
-	// 		setSelectedInterests("");
-	// 	}
-		
-	// }, [pageIndex, pageArray]);
-
-	// const handleNextPage = () => {
-	// 	if (pageIndex < pageArray.length - 1) {
-	// 		setPageIndex(pageIndex + 1);
-	// 	}
-	// };
 		
 	const handleGettingPeopleInterests = async () => {
 		setIsLoading(true);
@@ -231,86 +200,75 @@ function DisplaySearchResults() {
 				))}
 			</ListGroup>	
 		
-			{setShowProfileArea && (
-			<div>
-				<Form.Group>
-					<Form.Control
-						as="textarea"
-						value={noteTextArea}
-						onChange={handleNoteTextAreaChange}
-						placeholder="The generated note will appear here"
-					/>
-				</Form.Group>
-		
-				<ListGroup>
-				
-				<ListGroup.Item>
-					<Button onClick={handleGettingPeopleInterests}>
-					Get people interests
-					</Button>
-				</ListGroup.Item>
-		
-				<ListGroup.Item>
-					<Button onClick={handleGettingCompanyInterests}>
-					Get company interests
-					</Button>
-				</ListGroup.Item>
-		
-				<ListGroup.Item>
-					<Button onClick={handleMakingConnectNote}>
-					Make Connect Note
-					</Button>
-				</ListGroup.Item>
-		
-				<ListGroup.Item>
-					<Button onClick={handleSendingConnectNote}>
-					Send Connect Note
-					</Button>
-				</ListGroup.Item>
-		
-				{peopleInterestsArray.length > 0 && (
-					<ListGroup.Item>
-					<Form.Control
-						as="select"
-						multiple
-						onChange={handleInterestsSelection}
-					>
-						{peopleInterestsArray.map((interest) => (
-						<option key={interest}>{interest[0]}</option>
-						))}
-					</Form.Control>
-					</ListGroup.Item>
-				)}
-		
-				{companyInterestsArray.length > 0 && (
-					<ListGroup.Item>
-					<Form.Control
-						as="select"
-						multiple
-						onChange={handleInterestsSelection}
-					>
-						{companyInterestsArray.map((interest) => (
-						<option key={interest}>{interest[0]}</option>
-						))}
-					</Form.Control>
-					</ListGroup.Item>
-				)}
-		
-				{activityInterestsArray.length > 0 && (
-					<ListGroup.Item>
-					<Form.Control
-						as="select"
-						multiple
-						onChange={handleInterestsSelection}
-					>
-						{activityInterestsArray.map((interest) => (
-						<option key={interest}>{interest[0]}</option>
-						))}
-					</Form.Control>
-					</ListGroup.Item>
-				)}
-				</ListGroup>
-			</div>
+			{showProfileArea && (
+				<>
+					<Form.Group>
+						<Form.Control
+							as="textarea"
+							value={noteTextArea}
+							onChange={handleNoteTextAreaChange}
+							placeholder="The generated note will appear here"
+						/>
+					</Form.Group>
+			
+					<ButtonGroup aria-label="Basic example" className="mb-2">
+						<Button onClick={handleGettingPeopleInterests}>
+							Get people interests
+						</Button>
+						<Button onClick={handleGettingCompanyInterests}>
+							Get company interests
+						</Button>
+						<Button onClick={handleMakingConnectNote}>
+							Make Connect Note
+						</Button>
+						<Button onClick={handleSendingConnectNote}>
+							Send Connect Note
+						</Button>
+					</ButtonGroup>
+
+					{peopleInterestsArray.length > 0 && (
+						<ListGroup.Item>
+							<Form.Control
+								as="select"
+								multiple
+								onChange={handleInterestsSelection}
+							>
+								{peopleInterestsArray.map((interest) => (
+									<option key={interest}>{interest[0]}</option>
+								))}
+							</Form.Control>
+						</ListGroup.Item>
+					)}
+			
+					{companyInterestsArray.length > 0 && (
+						<ListGroup.Item>
+							<Form.Control
+								as="select"
+								multiple
+								onChange={handleInterestsSelection}
+							>
+								{companyInterestsArray.map((interest) => (
+									<option key={interest}>{interest[0]}</option>
+								))}
+							</Form.Control>
+						</ListGroup.Item>
+					)}
+			
+					{activityInterestsArray.length > 0 && (
+						<ListGroup.Item>
+							<Form.Control
+								as="select"
+								multiple
+								onChange={handleInterestsSelection}
+							>
+								{activityInterestsArray.map((interest) => (
+									<option key={interest}>{interest[0]}</option>
+								))}
+							</Form.Control>
+						</ListGroup.Item>
+					)}
+					
+				</>
 			)}
 		</Container>
 	);
