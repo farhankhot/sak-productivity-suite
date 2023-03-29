@@ -1,9 +1,8 @@
 import React, {useState, useEffect} from "react";
 import {CheckJobStatus} from "./CheckJobStatus.js";
 import DisplaySearchResults from "./DisplaySearchResults.js";
-import DisplayConvos from "./DisplayConvos.js";
 import loadingGif from "./loading.gif";
-import {Link, useNavigate} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -70,7 +69,6 @@ function ProfileSearch(props) {
 	
 	return (
 		<>
-		{/* <NavbarComponent /> */}
 		{jobFinished === true ? (
 			<DisplaySearchResults sessionId={sessionId} resultArray={resultArray} />
 		) : (

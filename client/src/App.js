@@ -27,7 +27,7 @@ function App() {
         <NavbarComponent />
         <Routes>
             {sessionId && <Route path="/linkedin-search" element={<ProfileSearch sessionId={sessionId} />} /> }
-            <Route path="/linkedin-messages" element={<DisplayConvos />} />
+            {sessionId && <Route path="/linkedin-messages" element={<DisplayConvos sessionId={sessionId} />} /> }
         </Routes>
         </>
     );

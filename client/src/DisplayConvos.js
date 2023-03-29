@@ -1,12 +1,9 @@
 import React, {useState, useEffect} from "react";
 import DisplayThread from "./DisplayThread.js";
-import {Link, useLocation} from 'react-router-dom';
-import NavbarComponent from "./NavbarComponent.js";
+import {useLocation} from 'react-router-dom';
 
 function DisplayConvos(props) {
 
-	const { state } = useLocation();
-	const { cookie } = state.cookie;
 	const {sessionId} = props;
 	console.log("DisplayConvos sessionId: ", sessionId);
 
@@ -22,7 +19,7 @@ function DisplayConvos(props) {
 					'Content-Type': 'application/json',
 				},
 				body: JSON.stringify({
-					cookie: cookie
+					sessionId: sessionId
 				})
 			});
 
@@ -30,10 +27,10 @@ function DisplayConvos(props) {
 			const thread = data.message;
 			setThreadArray(thread);
 		};	
-		if (cookie) {
+		if (sessionId) {
 			handleGetThreads();
 		}
-	}, [cookie]);
+	}, [sessionId]);
 		
 	const handleThreadClick = (threadName) => {
 		setThreadName(threadName[0]);
@@ -42,9 +39,8 @@ function DisplayConvos(props) {
 	
 	return (
 		<>
-		{/* <NavbarComponent /> */}
 		{ (threadName && threadId) ? (
-			<DisplayThread cookie={cookie} threadName={threadName} threadId={threadId} />
+			<DisplayThread sessionId={sessionId} threadName={threadName} threadId={threadId} />
 		) : (
 			<div>
 				<h1>Messages</h1>
