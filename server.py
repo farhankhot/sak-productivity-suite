@@ -206,7 +206,7 @@ def GetConversationMessages(cookie_dict, conversation_id):
     api = Linkedin(cookies=cookie_dict) # type: ignore
 
     convo_list=[]
-    convo = api.get_conversation(conversation_id)
+    convo = api.get_conversation_details(conversation_id)
     print(convo)
     
     # TODO: Only getting latest message. Want to get entire conversation
