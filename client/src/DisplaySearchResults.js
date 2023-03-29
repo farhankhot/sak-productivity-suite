@@ -43,6 +43,8 @@ function DisplaySearchResults() {
 	const [showProfileArea, setShowProfileArea] = useState(false);
 
 	const [profileInfoArray, setProfileInfoArray] = useState([]);
+
+	const [selectedName, setSelectedName] = useState("");
 	
 	useEffect(() => {
 		
@@ -190,14 +192,19 @@ function DisplaySearchResults() {
 		setNoteTextArea(event.target.value);
 	};
 
+	const handleSearchResultClick = (profileName) => {
+		setShowProfileArea(true);
+		setSelectedName(profileName);
+	};
+
 	return (
 		<Container>
 			<h1>Search Results:</h1>
 			<ListGroup>
 				{profileInfoArray.map( (profileInfo) => (
-					<ListGroup.Item action onClick={() => setShowProfileArea(true)}>
+					<ListGroup.Item action onClick={handleSearchResultClick(profileInfo[0])} >
 						{profileInfo[0]}
-						{showProfileArea && (
+						{showProfileArea && selectedName === profileInfo[0] && (
 							<>
 								<Form.Group>
 									<Form.Control
