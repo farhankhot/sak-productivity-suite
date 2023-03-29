@@ -192,91 +192,99 @@ function DisplaySearchResults() {
 		setNoteTextArea(event.target.value);
 	};
 
-	const handleSearchResultClick = (profileName) => {
-		setShowProfileArea(true);
-		setSelectedName(profileName);
-	};
+	// const handleSearchResultClick = (profileName) => {
+	// 	setShowProfileArea(true);
+	// 	setSelectedName(profileName);
+	// };
 
 	return (
 		<Container>
-			<h1>Search Results:</h1>
-			<ListGroup>
-				{profileInfoArray.map( (profileInfo) => (
-					<ListGroup.Item action onClick={handleSearchResultClick(profileInfo[0])} >
-						{profileInfo[0]}
-						{showProfileArea && selectedName === profileInfo[0] && (
-							<>
-								<Form.Group>
-									<Form.Control
-										as="textarea"
-										value={noteTextArea}
-										onChange={handleNoteTextAreaChange}
-										placeholder="The generated note will appear here"
-									/>
-								</Form.Group>
-						
-								<ButtonGroup aria-label="Basic example" className="mb-2">
-									<Button onClick={handleGettingPeopleInterests}>
-										Get people interests
-									</Button>
-									<Button onClick={handleGettingCompanyInterests}>
-										Get company interests
-									</Button>
-									<Button onClick={handleMakingConnectNote}>
-										Make Connect Note
-									</Button>
-									<Button onClick={handleSendingConnectNote}>
-										Send Connect Note
-									</Button>
-								</ButtonGroup>
+  <h1>Search Results:</h1>
+  <ListGroup>
+    {profileInfoArray.map((profileInfo) => (
+      <ListGroup.Item
+        action
+        onClick={() => {
+          setShowProfileArea(true);
+          setSelectedName(profileInfo[0]);
+        }}
+      >
+        {profileInfo[0]}
+        {showProfileArea && selectedName === profileInfo[0] && (
+          <>
+            <Form.Group>
+              <Form.Control
+                as="textarea"
+                value={noteTextArea}
+                onChange={handleNoteTextAreaChange}
+                placeholder="The generated note will appear here"
+              />
+            </Form.Group>
 
-								{peopleInterestsArray.length > 0 && (
-									<ListGroup.Item>
-										<Form.Control
-											as="select"
-											multiple
-											onChange={handleInterestsSelection}
-										>
-											{peopleInterestsArray.map((interest) => (
-												<option key={interest}>{interest[0]}</option>
-											))}
-										</Form.Control>
-									</ListGroup.Item>
-								)}
-						
-								{companyInterestsArray.length > 0 && (
-									<ListGroup.Item>
-										<Form.Control
-											as="select"
-											multiple
-											onChange={handleInterestsSelection}
-										>
-											{companyInterestsArray.map((interest) => (
-												<option key={interest}>{interest[0]}</option>
-											))}
-										</Form.Control>
-									</ListGroup.Item>
-								)}
-						
-								{activityInterestsArray.length > 0 && (
-									<ListGroup.Item>
-										<Form.Control
-											as="select"
-											multiple
-											onChange={handleInterestsSelection}
-										>
-											{activityInterestsArray.map((interest) => (
-												<option key={interest}>{interest[0]}</option>
-											))}
-										</Form.Control>
-									</ListGroup.Item>
-								)}
-							</>
-						)}
-					</ListGroup.Item>
-				))}
-			</ListGroup>			
-		</Container>
+            <ButtonGroup aria-label="Basic example" className="mb-2">
+              <Button onClick={handleGettingPeopleInterests}>
+                Get people interests
+              </Button>
+              <Button onClick={handleGettingCompanyInterests}>
+                Get company interests
+              </Button>
+              <Button onClick={handleMakingConnectNote}>
+                Make Connect Note
+              </Button>
+              <Button onClick={handleSendingConnectNote}>
+                Send Connect Note
+              </Button>
+            </ButtonGroup>
+
+            {peopleInterestsArray.length > 0 && (
+              <ListGroup.Item>
+                <Form.Control
+                  as="select"
+                  multiple
+                  onChange={handleInterestsSelection}
+                >
+                  {peopleInterestsArray.map((interest) => (
+                    <option key={interest}>{interest[0]}</option>
+                  ))}
+                </Form.Control>
+              </ListGroup.Item>
+            )}
+
+            {companyInterestsArray.length > 0 && (
+              <ListGroup.Item>
+                <Form.Control
+                  as="select"
+                  multiple
+                  onChange={handleInterestsSelection}
+                >
+                  {companyInterestsArray.map((interest) => (
+                    <option key={interest}>{interest[0]}</option>
+                  ))}
+                </Form.Control>
+              </ListGroup.Item>
+            )}
+
+            {activityInterestsArray.length > 0 && (
+              <ListGroup.Item>
+                <Form.Control
+                  as="select"
+                  multiple
+                  onChange={handleInterestsSelection}
+                >
+                  {activityInterestsArray.map((interest) => (
+                    <option key={interest}>{interest[0]}</option>
+                  ))}
+                </Form.Control>
+              </ListGroup.Item>
+            )}
+          </>
+        )}
+      </ListGroup.Item>
+    ))}
+  </ListGroup>
+</Container>
+
+
 	);
 }
 export default DisplaySearchResults;
