@@ -218,7 +218,7 @@ def GetConversationMessages(cookie_dict, conversation_urn_id):
         print(cleaned_up_convo)
         convo_list.append(cleaned_up_convo)
             
-    return convo
+    return convo_list
     
 def GetPeopleInterests(cookie_dict, profile_urn):
     
