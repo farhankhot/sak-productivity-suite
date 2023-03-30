@@ -213,9 +213,10 @@ def GetConversationMessages(cookie_dict, conversation_urn_id):
     # TODO: Get 'from' 
     for message_idx in range(0, len(convo['elements'])):
         t = convo['elements'][message_idx]['eventContent']
+        s = convo['elements'][message_idx]['from']
         # print(t)
         cleaned_up_text = get_values_for_key('text', t)
-        sent_by = get_values_for_key('firstName', t)
+        sent_by = get_values_for_key('firstName', s)
         print(sent_by)
         print(cleaned_up_text + sent_by)
         message = cleaned_up_text + sent_by
