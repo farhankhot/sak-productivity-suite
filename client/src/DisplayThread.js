@@ -85,7 +85,11 @@ function DisplayThread() {
 	return (
 		<div>
             <h1>{threadName}</h1>
-			<p>{convoArray}</p>
+			{
+				convoArray.map( (message) => {
+					<p>{message}</p>
+				})
+			}
             <textarea value={replyTextArea} onChange={handleReplyTextAreaChange} placeholder="The generated note will appear here"></textarea>
             <button onClick={handleMakingReply}>Reply</button>
             <button onClick={handleSendingMessage}>Send Message</button>

@@ -206,15 +206,14 @@ def GetConversationThreads(api):
 def GetConversationMessages(cookie_dict, conversation_urn_id):
     
     api = Linkedin(cookies=cookie_dict) # type: ignore
-
     convo = api.get_conversation(conversation_urn_id)
-    print(convo)
+    # print(convo)
     
     convo_list=[]
     # TODO: Only getting latest message. Want to get entire conversation
     for message_idx in range(0, len(convo['elements'])):
         t = convo['elements'][message_idx]['eventContent']
-        print(t)
+        # print(t)
         cleaned_up_convo = get_values_for_key('text', t)
         print(cleaned_up_convo)
         convo_list.append(cleaned_up_convo)
