@@ -31,6 +31,9 @@ function DisplayThread() {
 			setConvoArray(thread);
 		};	
 		getSingleThread();
+		// The 2 lines below deal with auto refresh of messages.
+		// Run function every 5 seconds and clearInterval removes the timer after every 5 seconds. 
+		// This prevents memory leak.
 		const intervalId = setInterval(getSingleThread, 5000);
 		return () => clearInterval(intervalId);
 	}, []);
