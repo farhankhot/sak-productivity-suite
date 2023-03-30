@@ -210,13 +210,15 @@ def GetConversationMessages(cookie_dict, conversation_urn_id):
     # print(convo)
     
     convo_list=[]
-    # TODO: Only getting latest message. Want to get entire conversation
+    # TODO: Get 'from' 
     for message_idx in range(0, len(convo['elements'])):
         t = convo['elements'][message_idx]['eventContent']
         # print(t)
-        cleaned_up_convo = get_values_for_key('text', t)
-        print(cleaned_up_convo)
-        convo_list.append(cleaned_up_convo)
+        cleaned_up_text = get_values_for_key('text', t)
+        sent_by = get_values_for_key('firstName', t)
+        print(cleaned_up_text + sent_by)
+        message = cleaned_up_text[0] + " " + sent_by
+        convo_list.append(message)
             
     return convo_list
     
