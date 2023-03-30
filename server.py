@@ -289,7 +289,7 @@ def GetCompanyInterests(cookie_dict, public_id, profile_urn):
     
 def SalesNavigatorLeadsInfo(api):
     res = api._fetch(
-        f"/sales-api/salesApiPeopleSearch?q=peopleSearchQuery&query=(sp…entity%2CownerInfo%2Cownership%2Cvisibility%29%29",
+        f"/sales-api/salesApiPeopleSearch?q=peopleSearchQuery&query=(spotlightParam:(selectedType:ALL),doFetchSpotlights:true,doFetchHits:true,doFetchFilters:false,pivotParam:(com.linkedin.sales.search.LeadListPivotRequest:(list:urn:li:fs_salesList:6898676432906588160,sortCriteria:LAST_ACTIVITY,sortOrder:DESCENDING)),list:(scope:LEAD,includeAll:false,excludeAll:false,includedValues:List((id:6898676432906588160))))&start=0&count=25&decoration=(entityUrn,profilePictureDisplayImage,firstName,lastName,fullName,degree,blockThirdPartyDataSharing,crmStatus,geoRegion,lastUpdatedTimeInListAt,pendingInvitation,newListEntitySinceLastViewed,saved,leadAssociatedAccount~fs_salesCompany(entityUrn,name),outreachActivity,memorialized,listCount,savedAccount~fs_salesCompany(entityUrn,name),notificationUrnOnLeadList,uniquePositionCompanyCount,currentPositions*(title,companyName,current,companyUrn),mostRecentEntityNote(body,lastModifiedAt,noteId,seat,entity,ownerInfo,ownership,visibility))",
         base_request=True)
     print(res.text)
     print(res.json())
