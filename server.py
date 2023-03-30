@@ -196,7 +196,8 @@ def GetConversationThreads(api):
         conversation_urn_id = convos['elements'][thread_idx]['dashEntityUrn'] 
         print(conversation_urn_id)
         regex = r"conversation:(.+)"
-        match = re.search(regex, conversation_urn_id[0])
+        match = re.search(regex, conversation_urn_id)
+        print("match", match)
         if match:
             result = match.group(1)
             convo_list.append([full_name, result])
