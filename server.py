@@ -194,6 +194,7 @@ def GetConversationThreads(api):
         
         # profile_urn = get_values_for_key('dashEntityUrn', convos['elements'][thread_idx]['participants'][0])
         conversation_urn_id = convos['elements'][thread_idx]['dashEntityUrn'] 
+        print(conversation_urn_id)
         regex = r"conversation:(.+)"
         match = re.search(regex, conversation_urn_id[0])
         if match:
