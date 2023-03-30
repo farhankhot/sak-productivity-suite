@@ -408,6 +408,7 @@ def get_convo_threads():
     api = Linkedin(cookies=cookie_dict) # type: ignore
     
     data = GetConversationThreads(api)
+    print("GetConversationThreads output: ", data)
     
     return jsonify(success=True, message=data)
 
