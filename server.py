@@ -216,8 +216,9 @@ def GetConversationMessages(cookie_dict, conversation_urn_id):
         # print(t)
         cleaned_up_text = get_values_for_key('text', t)
         sent_by = get_values_for_key('firstName', t)
+        print(sent_by)
         print(cleaned_up_text + sent_by)
-        message = cleaned_up_text[0] + " " + sent_by
+        message = cleaned_up_text + sent_by
         convo_list.append(message)
             
     return convo_list
