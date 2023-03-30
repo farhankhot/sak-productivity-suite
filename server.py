@@ -287,8 +287,31 @@ def GetCompanyInterests(cookie_dict, public_id, profile_urn):
     
     return final_companies_the_profile_is_interested_in
     
+def SalesNavigatorLeadsInfo(api):
+    res = api._fetch(f"/sales-api/salesApiPeopleSearch?q=peopleSearchQuery&query=(sp…entity%2CownerInfo%2Cownership%2Cvisibility%29%29")
+    print(res.text)
+    print(res.json())
+
+    return res.json()
+
 
 # ================================================ ROUTES START =============================================
+@app.route('/get-leads', methods=['POST'])
+def get_leads():
+
+    session_id = request.json['sessionId'] # type: ignore
+    print("receive_link session_id: ", session_id)
+
+    # TODO: error handling
+    cookie_dict = dbCon.get_cookie_from_user_sessions(session_id)
+    print("receive_link cookie_dict: ", cookie_dict)
+    
+    # cookie_dict = request.json['cookie'] # type: ignore
+    api = Linkedin(cookies=cookie_dict) # type: ignore
+    data = SalesNavigatorLeadsInfo(api)
+
+    return jsonify(success=True, message=data)
+
 @app.route('/use-bingai', methods=['POST'])
 def use_bingai():
 

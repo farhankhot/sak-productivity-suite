@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from "react";
 import { Routes, Route, useLocation} from 'react-router-dom';
+import Home from "./Home";
 import DisplayConvos from './DisplayConvos';
 import ProfileSearch from './ProfileSearch';
 import NavbarComponent from './NavbarComponent';
@@ -20,6 +21,7 @@ function App() {
         <>
         <NavbarComponent />
         <Routes>
+            {sessionId && <Route path="/" element={<Home sessionId={sessionId} />} /> }
             {sessionId && <Route path="/linkedin-search" element={<ProfileSearch sessionId={sessionId} />} /> }
             {sessionId && <Route path="/linkedin-messages" element={<DisplayConvos sessionId={sessionId} />} /> }
             <Route path="/display-linkedin-search-results" element={<DisplaySearchResults />} /> 
