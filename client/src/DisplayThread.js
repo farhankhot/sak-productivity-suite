@@ -13,7 +13,7 @@ function DisplayThread() {
 
 	useEffect( () => {
 		
-		const handleGetSingleThread = setInterval( async() => {
+		const getSingleThread = async () => {
 		
 			const response = await fetch('https://sak-productivity-suite.herokuapp.com/get-convo-messages', {
 				method: 'POST',
@@ -29,8 +29,10 @@ function DisplayThread() {
 			const data = await response.json();
 			const thread = data.message;
 			setConvoArray(thread);
-		}, 5000);	
-		return () => clearInterval(handleGetSingleThread);
+		};	
+		getSingleThread();
+		const intervalId = setInterval(getSingleThread, 5000);
+		return () => clearInterval(intervalId);
 	}, []);
 	
 	const handleMakingReply = async() => {
