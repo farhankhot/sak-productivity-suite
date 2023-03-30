@@ -288,7 +288,9 @@ def GetCompanyInterests(cookie_dict, public_id, profile_urn):
     return final_companies_the_profile_is_interested_in
     
 def SalesNavigatorLeadsInfo(api):
-    res = api._fetch(f"/sales-api/salesApiPeopleSearch?q=peopleSearchQuery&query=(sp…entity%2CownerInfo%2Cownership%2Cvisibility%29%29")
+    res = api._fetch(
+        f"/sales-api/salesApiPeopleSearch?q=peopleSearchQuery&query=(sp…entity%2CownerInfo%2Cownership%2Cvisibility%29%29",
+        base_request=True)
     print(res.text)
     print(res.json())
 
