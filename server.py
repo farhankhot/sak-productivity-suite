@@ -306,7 +306,7 @@ def SalesNavigatorLeadsInfo(api):
             person['entityUrn'],
         ])
 
-    return leads_list_unparsed
+    return lead_list
 
 # ================================================ ROUTES START =============================================
 @app.route('/get-leads', methods=['POST'])
