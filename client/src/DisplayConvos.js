@@ -4,7 +4,7 @@ import {useNavigate} from 'react-router-dom';
 function DisplayConvos(props) {
 
 	const {sessionId} = props;
-	console.log("DisplayConvos sessionId: ", sessionId);
+	// console.log("DisplayConvos sessionId: ", sessionId);
 
 	const [threadArray, setThreadArray] = useState([]);
 	const [threadName, setThreadName] = useState(null);

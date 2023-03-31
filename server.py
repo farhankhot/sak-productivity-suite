@@ -259,7 +259,7 @@ def GetPeopleInterests(cookie_dict, profile_urn):
     
     return final_people_the_profile_is_interested_in
     
-def GetCompanyInterests(cookie_dict, public_id, profile_urn):
+def GetCompanyInterests(cookie_dict, profile_urn):
     
     api = Linkedin(cookies=cookie_dict) # type: ignore
     
@@ -288,6 +288,9 @@ def GetCompanyInterests(cookie_dict, public_id, profile_urn):
     return final_companies_the_profile_is_interested_in
     
 def SalesNavigatorLeadsInfo(api):
+
+    # TODO: fast
+
     res = api._fetch(
         f"/sales-api/salesApiPeopleSearch?q=peopleSearchQuery&query=(spotlightParam:(selectedType:ALL),doFetchSpotlights:true,doFetchHits:true,doFetchFilters:false,pivotParam:(com.linkedin.sales.search.LeadListPivotRequest:(list:urn%3Ali%3Afs_salesList%3A6898676432906588160,sortCriteria:LAST_ACTIVITY,sortOrder:DESCENDING)),list:(scope:LEAD,includeAll:false,excludeAll:false,includedValues:List((id:6898676432906588160))))&start=0&count=25&decoration=%28entityUrn%2CprofilePictureDisplayImage%2CfirstName%2ClastName%2CfullName%2Cdegree%2CblockThirdPartyDataSharing%2CcrmStatus%2CgeoRegion%2ClastUpdatedTimeInListAt%2CpendingInvitation%2CnewListEntitySinceLastViewed%2Csaved%2CleadAssociatedAccount~fs_salesCompany%28entityUrn%2Cname%29%2CoutreachActivity%2Cmemorialized%2ClistCount%2CsavedAccount~fs_salesCompany%28entityUrn%2Cname%29%2CnotificationUrnOnLeadList%2CuniquePositionCompanyCount%2CcurrentPositions*%28title%2CcompanyName%2Ccurrent%2CcompanyUrn%29%2CmostRecentEntityNote%28body%2ClastModifiedAt%2CnoteId%2Cseat%2Centity%2CownerInfo%2Cownership%2Cvisibility%29%29",
         base_request=True)
@@ -296,34 +299,134 @@ def SalesNavigatorLeadsInfo(api):
 
     leads_list_unparsed = res.json()["elements"]
 
-    lead_list = []
-    for person in leads_list_unparsed:
-        lead_list.append([
-            person['fullName'],
-            person['currentPositions'][0]['title'],
-            person['currentPositions'][0]['companyName'],
-            person['geoRegion'],
-            person['entityUrn'],
-        ])
+    regex = r"urn:li:fs_salesProfile:(.+)" 
 
-    return lead_list
+    lead_list = []
+    member_urn_id_list = []
+    for lead in leads_list_unparsed:
+        match = re.search(regex, lead['entityUrn'])
+        # Only include a lead if they have a member_urn_id
+        if match:
+            member_urn_id = match.group(1)
+            lead_list.append([
+                lead['fullName'],
+                lead['currentPositions'][0]['title'],
+                lead['currentPositions'][0]['companyName'],
+                lead['geoRegion'],
+                member_urn_id,
+            ])
+            member_urn_id_list.append(member_urn_id)
+
+    return lead_list, member_urn_id_list
+
+# TODO: Change name to show that this is returning Connect note not info
+def GetLeadInfo(cookie_dict, leads_list, member_urn_id_list):
+
+    final_lead_connect_note_list = []
+    for i, profile_urn in enumerate(member_urn_id_list):
+
+        # TODO: Get interests at random
+        api = Linkedin(cookies=cookie_dict) # type: ignore
+
+        # ============= Getting Relationships =============================
+        lead_info = []
+        res_for_shared_relationships = api._fetch(f"/sales-api/salesApiProfileHighlights/{profile_urn}?decoration=(sharedConnection(sharedConnectionUrns*~fs_salesProfile(entityUrn,firstName,lastName,fullName,pictureInfo,profilePictureDisplayImage)),teamlinkInfo(totalCount),sharedEducations*(overlapInfo,entityUrn~fs_salesSchool(entityUrn,logoId,name,url,schoolPictureDisplayImage)),sharedExperiences*(overlapInfo,entityUrn~fs_salesCompany(entityUrn,pictureInfo,name,companyPictureDisplayImage)),sharedGroups*(entityUrn~fs_salesGroup(entityUrn,name,largeLogoId,smallLogoId,groupPictureDisplayImage)))"
+                            ,base_request=True)
+        # print(res.text)
+        # print(res.json())
+
+        # Get the first relationship that LinkedIn recommends
+        lead_relationships = []
+        shared_connections = res_for_shared_relationships.json()['sharedConnection']['sharedConnectionUrnsResolutionResults']
+        if len(shared_connections.values() > 0):
+            shared_connection = shared_connections.values()[0]['fullName']
+            lead_relationships.append(shared_connection)
+
+        shared_groups = res_for_shared_relationships.json()['sharedGroup']['entityUrnResolutionResult']
+        if len(shared_groups) >= 1:
+            shared_group = shared_groups[1]['entityUrnResolutionResult']['name'] 
+            lead_relationships.append(shared_group)
+        
+        lead_info.append(lead_relationships)
+        # ============= Getting Relationships =============================
+
+        # ============= Getting interests =============================
+        lead_interests = []
+        interests = api._fetch(f"/graphql?includeWebMetadata=True&variables=(profileUrn:urn%3Ali%3Afsd_profile%3A{profile_urn},sectionType:interests,tabIndex:1,locale:en_US)&&queryId=voyagerIdentityDashProfileComponents.38247e27f7b9b2ecbd8e8452e3c1a02c")
+        interests = interests.json()
+        interests_json = json.dumps(interests)
+
+        pattern = re.compile(r'"(urn:li:fsd_profile:[^"]*)"')
+        matches = re.findall(pattern, interests_json)
+        people_the_profile_is_interested_in_set = set(matches)
+        people_the_profile_is_interested_in = [s.split(':')[-1] for s in people_the_profile_is_interested_in_set]
+
+        pattern_for_company = re.compile(r'"(urn:li:fsd_company:[^"]*)"')
+        matches_for_company = re.findall(pattern_for_company, interests_json)
+        companies_the_profile_is_interested_in_set = set(matches_for_company)
+        companies_the_profile_is_interested_in = [s.split(':')[-1] for s in companies_the_profile_is_interested_in_set]
+
+        for i, profile_urn in enumerate(people_the_profile_is_interested_in):
+            if i == 1:
+                break
+            temp = api.get_profile(profile_urn)
+            first_name = temp['firstName']
+            last_name = temp['lastName']
+            full_name = first_name + " " + last_name 
+            lead_interests.append(full_name)
+        
+        for i, company_id in enumerate(companies_the_profile_is_interested_in):
+            if i == 1:
+                break
+            temp = api.get_company(company_id)
+            company_name = temp['universalName']
+            lead_interests.append([company_name, company_id])
+        
+        lead_info.append(lead_interests)
+        # ============= Getting interests =============================
+        
+        # TODO: Add summary
+        prompt = "This is the profile of a person: " + leads_list[i][0] + " These are their interests: " + lead_interests + " These are our mutual connections: " + lead_relationships + " Use the internet to get something useful about the interests and use it in the request. " + " Write a request to connect with them. Make it casual but eyecatching. The goal is to ask about their current Salesforce implementation. The length should be no more than 300 characters."
+
+        connect_note = UseBingAI(prompt)
+        
+        final_lead_connect_note_list.append(connect_note)
+
+    return final_lead_connect_note_list
 
 # ================================================ ROUTES START =============================================
+@app.route('/get-lead_info', methods=['POST'])
+def get_lead_info():
+
+    session_id = request.json['sessionId'] # type: ignore
+    print("get_lead_info session_id: ", session_id)
+
+    # TODO: error handling
+    cookie_dict = dbCon.get_cookie_from_user_sessions(session_id)
+    print("get_lead_info cookie_dict: ", cookie_dict)
+
+    leads_list = request.json['leadsArray'] # type: ignore
+    member_urn_id_list = request.json['memberUrnIdArray'] # type: ignore
+    
+    data = q.enqueue(GetLeadInfo, cookie_dict, leads_list, member_urn_id_list)
+    job_id = data.get_id()
+
+    return jsonify(success=True, message=job_id)
+
 @app.route('/get-leads', methods=['POST'])
 def get_leads():
 
     session_id = request.json['sessionId'] # type: ignore
-    print("receive_link session_id: ", session_id)
+    print("get_leads session_id: ", session_id)
 
     # TODO: error handling
     cookie_dict = dbCon.get_cookie_from_user_sessions(session_id)
-    print("receive_link cookie_dict: ", cookie_dict)
+    print("get_leads cookie_dict: ", cookie_dict)
     
-    # cookie_dict = request.json['cookie'] # type: ignore
     api = Linkedin(cookies=cookie_dict) # type: ignore
-    data = SalesNavigatorLeadsInfo(api)
+    lead_list, member_urn_id_list = SalesNavigatorLeadsInfo(api)
 
-    return jsonify(success=True, message=data)
+    return jsonify(success=True, lead_list=lead_list, member_urn_id_list=member_urn_id_list)
 
 @app.route('/use-bingai', methods=['POST'])
 def use_bingai():

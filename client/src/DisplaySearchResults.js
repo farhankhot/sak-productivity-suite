@@ -87,8 +87,7 @@ function DisplaySearchResults() {
 				},
 				body: JSON.stringify({
 					sessionId: sessionId,
-					profileUrn: profileUrn,
-					publicId: publicId
+					profileUrn: profileUrn
 				})
 			});
 			
