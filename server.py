@@ -298,17 +298,13 @@ def SalesNavigatorLeadsInfo(api):
 
     lead_list = []
     for person in leads_list_unparsed:
-        profile_info = {}
-        profile_info['full_name'] = person['fullName']
-
-        profile_info['latest_title'] = person['currentPositions'][0]['title']        
-        profile_info['latest_title_company'] = person['currentPositions'][0]['companyName']
-        
-        profile_info['geo_region'] = person['geoRegion']
-        
-        profile_info['member_urn_id'] = person['entityUrn']
-       
-        lead_list.append(profile_info)
+        lead_list.append([
+            person['fullName'],
+            person['currentPositions'][0]['title'],
+            person['currentPositions'][0]['companyName'],
+            person['geoRegion'],
+            person['entityUrn'],
+        ])
 
     return lead_list
 

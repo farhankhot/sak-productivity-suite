@@ -7,7 +7,7 @@ import Container from 'react-bootstrap/Container';
 
 function Home(props) {
 	const {sessionId} = props;
-	console.log("Home sessionId: ", sessionId);
+	// console.log("Home sessionId: ", sessionId);
 
 	// ========= Need to get this information, for now backend is not returning it ============
 	// const [summary, setSummary] = useState("");
@@ -47,27 +47,12 @@ function Home(props) {
 			});
 			const data = await response.json();
 			console.log("Successfully gotten leads: ", data.message);
-            setLeadsArray(data.message);
-			
+			setLeadsArray(leadsArray);
 		}catch(error){
 			console.log(error);
 		}	
 	};
-	
-	useEffect(() => {
-		// Change temp to JSON 
-		const temp = []
-		for (let i = 0; i < leadsArray.length; i += 1) {
-			temp.push([ 
-				leadsArray[i]["full_name"],
-				leadsArray[i]["latest_title"] + "at " + leadsArray[i]["latest_title_company"],
-				leadsArray[i]["geo_region"],
-				leadsArray[i]["member_urn_id"]
-			])
-		}
-		setLeadsArray(temp);
-	}, [leadsArray]);	
-		
+			
 	// const handleGettingPeopleInterests = async (sessionId, profileUrn) => {
 	// 	setIsLoading(true);
 	// 	try {
