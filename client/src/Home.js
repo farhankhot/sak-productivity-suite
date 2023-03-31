@@ -39,12 +39,12 @@ function Home(props) {
 				})
 			});
 			const data = await response.json();
-			const leadsArray = data.message;
-			console.log("Successfully gotten leads: ", data);
+			const leadsArray = data.lead_list;
+			// console.log("Successfully gotten leads: ", data);
 			const memberUrnIdArray = data.member_urn_id_list; 
 			setLeadsArray(leadsArray);
 			setMemberUrnIdArray(memberUrnIdArray);
-			showCreateConnectNoteButton(true);
+			setShowCreateConnectNoteButton(true);
 		}catch(error){
 			console.log(error);
 		}	
@@ -104,9 +104,9 @@ function Home(props) {
             <Button variant="primary" type="button" onClick={handleGettingLeads}>
                 Get leads
             </Button>
-			<Button variant="primary" type="button" onClick={() => handleAutoCreatingNotes(sessionId, leadsArray[0][4])}>
+			{showCreateConnectNoteButton && <Button variant="primary" type="button" onClick={() => handleAutoCreatingNotes(sessionId, leadsArray[0][4])}>
                 Auto Create notes for all leads
-            </Button>
+            </Button>}
 
 			<Container>
 				<h1>Search Results:</h1>
