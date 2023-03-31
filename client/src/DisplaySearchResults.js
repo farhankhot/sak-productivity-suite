@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 import {CheckJobStatus} from "./CheckJobStatus.js";
 import { useLocation } from 'react-router-dom';
-import { ButtonGroup, ListGroup, ListGroupItem } from 'react-bootstrap';
+import { ButtonGroup, ListGroup } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';

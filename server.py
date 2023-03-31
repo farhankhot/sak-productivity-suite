@@ -291,11 +291,26 @@ def SalesNavigatorLeadsInfo(api):
     res = api._fetch(
         f"/sales-api/salesApiPeopleSearch?q=peopleSearchQuery&query=(spotlightParam:(selectedType:ALL),doFetchSpotlights:true,doFetchHits:true,doFetchFilters:false,pivotParam:(com.linkedin.sales.search.LeadListPivotRequest:(list:urn%3Ali%3Afs_salesList%3A6898676432906588160,sortCriteria:LAST_ACTIVITY,sortOrder:DESCENDING)),list:(scope:LEAD,includeAll:false,excludeAll:false,includedValues:List((id:6898676432906588160))))&start=0&count=25&decoration=%28entityUrn%2CprofilePictureDisplayImage%2CfirstName%2ClastName%2CfullName%2Cdegree%2CblockThirdPartyDataSharing%2CcrmStatus%2CgeoRegion%2ClastUpdatedTimeInListAt%2CpendingInvitation%2CnewListEntitySinceLastViewed%2Csaved%2CleadAssociatedAccount~fs_salesCompany%28entityUrn%2Cname%29%2CoutreachActivity%2Cmemorialized%2ClistCount%2CsavedAccount~fs_salesCompany%28entityUrn%2Cname%29%2CnotificationUrnOnLeadList%2CuniquePositionCompanyCount%2CcurrentPositions*%28title%2CcompanyName%2Ccurrent%2CcompanyUrn%29%2CmostRecentEntityNote%28body%2ClastModifiedAt%2CnoteId%2Cseat%2Centity%2CownerInfo%2Cownership%2Cvisibility%29%29",
         base_request=True)
-    print(res.text)
-    print(res.json())
+    # print(res.text)
+    # print(res.json())
 
-    return res.json()
+    leads_list_unparsed = res.json()["elements"]
 
+    lead_list = []
+    for person in leads_list_unparsed:
+        profile_info = {}
+        profile_info['full_name'] = person['fullName']
+
+        profile_info['latest_title'] = person['currentPositions'][0]['title']        
+        profile_info['latest_title_company'] = person['currentPositions'][0]['companyName']
+        
+        profile_info['geo_region'] = person['geoRegion']
+        
+        profile_info['member_urn_id'] = person['entityUrn']
+       
+        lead_list.append(profile_info)
+
+    return lead_list
 
 # ================================================ ROUTES START =============================================
 @app.route('/get-leads', methods=['POST'])
