@@ -36,7 +36,6 @@ function DisplaySearchResults() {
 	const [selectedName, setSelectedName] = useState("");
 	
 	useEffect(() => {
-		
 		// Change temp to JSON 
 		const temp = []
 		for (let i = 0; i < resultArray.length; i += 1) {
