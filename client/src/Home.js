@@ -47,7 +47,7 @@ function Home(props) {
 			});
 			const data = await response.json();
 			console.log("Successfully gotten leads: ", data.message);
-			setLeadsArray(leadsArray);
+			setLeadsArray(data.message);
 		}catch(error){
 			console.log(error);
 		}	
