@@ -296,17 +296,17 @@ def SalesNavigatorLeadsInfo(api):
 
     leads_list_unparsed = res.json()["elements"]
 
-    lead_list = []
-    for person in leads_list_unparsed:
-        lead_list.append([
-            person['fullName'],
-            person['currentPositions'][0]['title'],
-            person['currentPositions'][0]['companyName'],
-            person['geoRegion'],
-            person['entityUrn'],
-        ])
+    # lead_list = []
+    # for person in leads_list_unparsed:
+    #     lead_list.append([
+    #         person['fullName'],
+    #         person['currentPositions'][0]['title'],
+    #         person['currentPositions'][0]['companyName'],
+    #         person['geoRegion'],
+    #         person['entityUrn'],
+    #     ])
 
-    return lead_list
+    return leads_list_unparsed
 
 # ================================================ ROUTES START =============================================
 @app.route('/get-leads', methods=['POST'])
