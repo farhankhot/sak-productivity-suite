@@ -40,7 +40,7 @@ function Home(props) {
 			});
 			const data = await response.json();
 			const leadsArray = data.message;
-			// console.log("Successfully gotten leads: ", data.message);
+			console.log("Successfully gotten leads: ", data);
 			const memberUrnIdArray = data.member_urn_id_list; 
 			setLeadsArray(leadsArray);
 			setMemberUrnIdArray(memberUrnIdArray);
