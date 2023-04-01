@@ -329,11 +329,12 @@ def GetLeadInfo(cookie_dict, leads_list, member_urn_id_list):
         api = Linkedin(cookies=cookie_dict) # type: ignore
 
         # ============= Getting Relationships =============================
+        # TODO: doesn't work
         lead_info = []
         res_for_shared_relationships = api._fetch(f"/sales-api/salesApiProfileHighlights/{profile_urn}?decoration=(sharedConnection(sharedConnectionUrns*~fs_salesProfile(entityUrn,firstName,lastName,fullName,pictureInfo,profilePictureDisplayImage)),teamlinkInfo(totalCount),sharedEducations*(overlapInfo,entityUrn~fs_salesSchool(entityUrn,logoId,name,url,schoolPictureDisplayImage)),sharedExperiences*(overlapInfo,entityUrn~fs_salesCompany(entityUrn,pictureInfo,name,companyPictureDisplayImage)),sharedGroups*(entityUrn~fs_salesGroup(entityUrn,name,largeLogoId,smallLogoId,groupPictureDisplayImage)))"
                             ,base_request=True)
-        # print(res.text)
-        # print(res.json())
+        print(res_for_shared_relationships.text)
+        print(res_for_shared_relationships.json())
 
         # Get the first relationship that LinkedIn recommends
         lead_relationships = []
