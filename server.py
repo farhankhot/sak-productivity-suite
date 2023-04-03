@@ -47,7 +47,7 @@ async def UseBingAI(prompt):
 
     ans_json = await bot.ask(prompt=prompt)
     ans = ans_json['item']['messages'][1]['text']
-    print(ans)
+    
     await bot.close()
     return ans
 
@@ -396,7 +396,7 @@ def GetLeadInfo(cookie_dict, leads_list, member_urn_id_list):
             " Include something useful about the interests and use it in the request. " + \
             " Write a request to connect with them. Make it casual but eyecatching. The goal is to ask about their current Salesforce implementation. The length should be no more than 300 characters."
 
-        connect_note = UseBingAI(prompt)
+        connect_note = asyncio.run(UseBingAI(prompt))
         
         final_lead_connect_note_list.append(connect_note)
 
