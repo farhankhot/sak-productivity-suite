@@ -325,6 +325,10 @@ def GetLeadInfo(cookie_dict, leads_list, member_urn_id_list):
     final_lead_connect_note_list = []
     for i, profile_urn in enumerate(member_urn_id_list):
 
+        # Testing
+        if i == 1:
+            break
+
         # TODO: Get interests at random
         api = Linkedin(cookies=cookie_dict) # type: ignore
 
