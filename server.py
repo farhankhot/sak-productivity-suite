@@ -335,7 +335,7 @@ def GetLeadInfo(cookie_dict, leads_list, member_urn_id_list):
         # ============= Getting Relationships =============================
         # TODO: doesn't work
         lead_info = []
-        res_for_shared_relationships = api._fetch(f"/sales-api/salesApiProfileHighlights/ACwAAAAGln8B758PslHp8PPTvjhj99s-ntWMkKk?decoration=(sharedConnection(sharedConnectionUrns*~fs_salesProfile(entityUrn,firstName,lastName,fullName,pictureInfo,profilePictureDisplayImage)),teamlinkInfo(totalCount),sharedEducations*(overlapInfo,entityUrn~fs_salesSchool(entityUrn,logoId,name,url,schoolPictureDisplayImage)),sharedExperiences*(overlapInfo,entityUrn~fs_salesCompany(entityUrn,pictureInfo,name,companyPictureDisplayImage)),sharedGroups*(entityUrn~fs_salesGroup(entityUrn,name,largeLogoId,smallLogoId,groupPictureDisplayImage)))"
+        res_for_shared_relationships = api._fetch(f"/sales-api/salesApiProfileHighlights/ACwAAAyHWPkBD-iR2ZckDou2GX-a6W4yrCJMSEw?decoration=(sharedConnection(sharedConnectionUrns*~fs_salesProfile(entityUrn,firstName,lastName,fullName,pictureInfo,profilePictureDisplayImage)),teamlinkInfo(totalCount),sharedEducations*(overlapInfo,entityUrn~fs_salesSchool(entityUrn,logoId,name,url,schoolPictureDisplayImage)),sharedExperiences*(overlapInfo,entityUrn~fs_salesCompany(entityUrn,pictureInfo,name,companyPictureDisplayImage)),sharedGroups*(entityUrn~fs_salesGroup(entityUrn,name,largeLogoId,smallLogoId,groupPictureDisplayImage)))"
                 ,base_request=True)
         print(res_for_shared_relationships.text)
         print(res_for_shared_relationships.json())
