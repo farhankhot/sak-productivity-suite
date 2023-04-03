@@ -328,8 +328,8 @@ def GetLeadInfo(cookie_dict, leads_list, member_urn_id_list):
     for lead_idx, profile_urn in enumerate(member_urn_id_list):
 
         # Testing
-        # if i == 1:
-        #     break
+        if lead_idx == 4:
+            break
 
         # TODO: Get interests at random
         api = Linkedin(cookies=cookie_dict) # type: ignore
