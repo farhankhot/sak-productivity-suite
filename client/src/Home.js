@@ -71,8 +71,8 @@ function Home(props) {
 				// This list contains Connect Notes for each person in the lead list
 				// Save to an array, then display a textbox and the note for each note in list
 				setConnectNoteArray(resultArray);
+				console.log("Successfully gotten Connect note array: ", connectNoteArray);
 			});
-			console.log("Successfully gotten Connect note array: ", connectNoteArray);
 		}catch(error){
 			console.log(error);
 		}
