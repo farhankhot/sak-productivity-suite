@@ -327,7 +327,7 @@ def GetLeadInfo(cookie_dict, leads_list, member_urn_id_list):
     for lead_idx, profile_urn in enumerate(member_urn_id_list):
 
         # Testing
-        if lead_idx == 4:
+        if lead_idx == 2:
             break
 
         # TODO: Get interests at random
@@ -396,7 +396,7 @@ def GetLeadInfo(cookie_dict, leads_list, member_urn_id_list):
             " Include something useful about the interests and use it in the request. " + \
             " Write a request to connect with them. Make it casual but eyecatching. The goal is to ask about their current Salesforce implementation. The length should be no more than 300 characters."
 
-        connect_note = UseChatGPT(prompt)
+        connect_note = UseBingAI(prompt)
         
         final_lead_connect_note_list.append(connect_note)
 
