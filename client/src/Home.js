@@ -210,16 +210,16 @@ function Home(props) {
 							{leadInfo[0]}, {leadInfo[1]}
 
 							<ButtonGroup aria-label="Basic example" className="mb-2">
-								<Button onClick={handleGettingPeopleInterests(sessionId, leadInfo[4])}>
+								<Button >
 									Get people interests
 								</Button>
-								<Button onClick={handleGettingCompanyInterests(sessionId, leadInfo[4])}>
+								<Button>
 									Get company interests
 								</Button>
-								<Button onClick={handleMakingConnectNote(leadInfo[0])}>
+								<Button >
 									Make Connect Note
 								</Button>
-								<Button onClick={handleSendingConnectNote(sessionId, leadInfo[4])}>
+								<Button >
 									Send Connect Note
 								</Button>
 							</ButtonGroup>
