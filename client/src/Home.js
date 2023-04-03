@@ -134,18 +134,14 @@ function Home(props) {
 											setConnectNoteArray(updatedConnectNote);
 										}}
 									/>
-									<Button onClick={handleSendingConnectNote(sessionId, leadInfo[4])}>
+									{/* <Button onClick={handleSendingConnectNote(sessionId, leadInfo[4])}>
 										Send Connect Note
-									</Button>
+									</Button> */}
 								</>
 							)}
 						</ListGroup.Item>
 					))}
 				</ListGroup>
-				{/* leadInfo out of scope here, need to send a array of member_urns to handlSendingConnectNote */}
-				{/* <Button onClick={handleSendingConnectNote(sessionId, leadInfo[4])}>
-					Send Connect Note to all leads
-				</Button> */}
 			</Container>
 		</>
 	)
