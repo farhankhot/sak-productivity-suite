@@ -123,38 +123,21 @@ function Home(props) {
 							// }}
 						>
 							{leadInfo[0]}, {leadInfo[1]}
-							{/* {showProfileArea && selectedName === leadInfo[0] && (
-								<>
-									<Form.Group>
-									<Form.Control
-										as="textarea"
-										value={connectNoteArray}
-										onChange={handleNoteTextAreaChange}
-										placeholder="The generated note will appear here"
-									/>
-									</Form.Group>
-
-									<Button onClick={handleSendingConnectNote(sessionId, leadInfo[2])}>
-										Send Connect Note
-									</Button>
-								</>
-							)}  */}
+							{/* IDK if this works, will test */}
+							{connectNoteArray.length > 0 &&
+								leadsArray.map((lead, index) => (
+									<div key={index}>
+										<textarea
+											value={connectNoteArray[index]}
+											onChange={(event) => {
+												const updatedConnectNoteArray = [...connectNoteArray];
+												updatedConnectNoteArray[index] = event.target.value;
+												setConnectNoteArray(updatedConnectNoteArray);
+											}}
+										/>
+									</div>
+							))}
 						</ListGroup.Item>
-					))}
-					{/* IDK if this works, will test */}
-					{connectNoteArray.length > 0 &&
-						leadsArray.map((lead, index) => (
-							<div key={index}>
-								<h5>{lead}</h5>
-								<textarea
-									value={connectNoteArray[index]}
-									onChange={(event) => {
-										const updatedConnectNoteArray = [...connectNoteArray];
-										updatedConnectNoteArray[index] = event.target.value;
-										setConnectNoteArray(updatedConnectNoteArray);
-									}}
-								/>
-							</div>
 					))}
 				</ListGroup>
 			</Container>
