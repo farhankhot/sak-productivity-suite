@@ -391,8 +391,7 @@ def GetLeadInfo(cookie_dict, leads_list, member_urn_id_list):
         lead_info.append(lead_interests)
         # ============= Getting interests =============================
         
-        str_lead_profile = str(leads_list[lead_idx][0])
-        prompt = "This is the profile of a person: " + str_lead_profile + \
+        prompt = "This is the profile of a person: " + leads_list[lead_idx][0][0] + \
             " These are their interests: " + lead_interests + \
             " These are our mutual connections: " + "" + \
             " Use the internet to get something useful about the interests and use it in the request. " + \
