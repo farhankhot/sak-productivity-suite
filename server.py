@@ -53,10 +53,9 @@ async def UseBingAI(prompt):
 
 def UseChatGPT(prompt):
 
-    # TODO: Check usage in the conversation, if token limit is near, start a new conversation
-    
-    openai_key = "sk-BQ0tK7GxoNDv0zYjTkT1T3BlbkFJ2TAJQSSJ4UEYSrDPn68"
-    openai_key = openai_key + "7"
+    # TODO: Check context length usage in the conversation, if token limit is near, start a new conversation
+    openai_key = "sk-BFk5W7jx2pZjz0Y1vhsjT3BlbkFJRXRp7HrXqrAZoVgnri8"
+    openai_key = openai_key + "T"
     openai.api_key = openai_key
 
     completion = openai.ChatCompletion.create(
@@ -394,10 +393,10 @@ def GetLeadInfo(cookie_dict, leads_list, member_urn_id_list):
         prompt = "This is the profile of a person: " + leads_list[lead_idx][0] + \
             " These are their interests: " + ",".join(lead_interests) + \
             " These are our mutual connections: " + "" + \
-            " Use the internet to get something useful about the interests and use it in the request. " + \
+            " Include something useful about the interests and use it in the request. " + \
             " Write a request to connect with them. Make it casual but eyecatching. The goal is to ask about their current Salesforce implementation. The length should be no more than 300 characters."
 
-        connect_note = UseBingAI(prompt)
+        connect_note = UseChatGPT(prompt)
         
         final_lead_connect_note_list.append(connect_note)
 
