@@ -326,6 +326,7 @@ def GetLeadInfo(cookie_dict, leads_list, member_urn_id_list):
     api = Linkedin(cookies=cookie_dict) # type: ignore
     t = []
     for lead_idx, profile_urn in enumerate(member_urn_id_list):
+        print(lead_idx)
         # Testing
         if lead_idx == 2:
             break   
