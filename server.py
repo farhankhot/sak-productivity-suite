@@ -47,7 +47,7 @@ async def UseBingAI(prompt):
 
     ans_json = await bot.ask(prompt=prompt)
     ans = ans_json['item']['messages'][1]['text']
-    
+    print(ans)
     await bot.close()
     return ans
 
