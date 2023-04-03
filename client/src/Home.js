@@ -66,15 +66,15 @@ function Home(props) {
 				})
 			});
 			const jobIdArray = await response.json();
-			jobIdArray.message.forEach(element => {
-				CheckJobStatus(element, (resultArray) => {
-					// This gets a big list
-					// This list contains Connect Notes for each person in the lead list
-					// Save to an array, then display a textbox and the note for each note in list
-					setConnectNoteArray(resultArray);
-					console.log("Successfully gotten Connect note array: ", connectNoteArray);
-				});
+			
+			CheckJobStatus(element, (resultArray) => {
+				// This gets a big list
+				// This list contains Connect Notes for each person in the lead list
+				// Save to an array, then display a textbox and the note for each note in list
+				setConnectNoteArray(resultArray);
+				console.log("Successfully gotten Connect note array: ", connectNoteArray);
 			});
+			
 			
 		}catch(error){
 			console.log(error);
