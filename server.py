@@ -400,7 +400,7 @@ def GetLeadInfo(cookie_dict, leads_list, member_urn_id_list):
     return final_lead_connect_note_list
 
 # ================================================ ROUTES START =============================================
-@app.route('/get-lead_info', methods=['POST'])
+@app.route('/get-lead-info', methods=['POST'])
 def get_lead_info():
 
     session_id = request.json['sessionId'] # type: ignore
