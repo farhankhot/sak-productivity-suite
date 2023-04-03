@@ -322,6 +322,8 @@ def SalesNavigatorLeadsInfo(api):
 # TODO: Change name to show that this is returning Connect note not info
 def GetLeadInfo(cookie_dict, leads_list, member_urn_id_list):
 
+    print("s", leads_list[0][0])
+
     final_lead_connect_note_list = []
     for i, profile_urn in enumerate(member_urn_id_list):
 
