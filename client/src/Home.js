@@ -68,11 +68,10 @@ function Home(props) {
 			const jobId = await response.json();
 			
 			CheckJobStatus(jobId.message, (resultArray) => {
-				// This gets a big list
-				// This list contains Connect Notes for each person in the lead list
+				// This gets an array of Connect Notes for each person in the lead list
 				// Save to an array, then display a textbox and the note for each note in list
 				setConnectNoteArray(resultArray);
-				console.log("Successfully gotten Connect note array: ", connectNoteArray);
+				console.log("Successfully gotten Connect note array: ", resultArray);
 			});
 			
 			
@@ -124,19 +123,13 @@ function Home(props) {
 						>
 							{leadInfo[0]}, {leadInfo[1]}
 							{/* IDK if this works, will test */}
-							{connectNoteArray.length > 0 &&
-								leadsArray.map((lead, index) => (
-									<div key={index}>
-										<textarea
-											value={connectNoteArray[index]}
-											onChange={(event) => {
-												const updatedConnectNoteArray = [...connectNoteArray];
-												updatedConnectNoteArray[index] = event.target.value;
-												setConnectNoteArray(updatedConnectNoteArray);
-											}}
-										/>
-									</div>
-							))}
+							{connectNoteArray.length > 0 && (
+									
+								<textarea
+									value={connectNoteArray[index]}
+									
+								/>
+							)}
 						</ListGroup.Item>
 					))}
 				</ListGroup>
