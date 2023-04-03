@@ -320,6 +320,8 @@ def SalesNavigatorLeadsInfo(api):
     return lead_list, member_urn_id_list
 
 # TODO: Change name to show that this is returning Connect note not info
+# TODO: Add summary
+# TODO: Add relationships
 def GetLeadInfo(cookie_dict, leads_list, member_urn_id_list):
 
     final_lead_connect_note_list = []
@@ -333,9 +335,7 @@ def GetLeadInfo(cookie_dict, leads_list, member_urn_id_list):
         api = Linkedin(cookies=cookie_dict) # type: ignore
         lead_info = []
         
-        # ============= Getting Relationships =============================
-        # # TODO: doesn't work
-        
+        # ============= Getting Relationships =============================        
         # res_for_shared_relationships = api._fetch(f"/sales-api/salesApiProfileHighlights/ACwAAAyHWPkBDiR2ZckDou2GXa6W4yrCJMSEw?decoration=(sharedConnection(sharedConnectionUrns*~fs_salesProfile(entityUrn,firstName,lastName,fullName,pictureInfo,profilePictureDisplayImage)),teamlinkInfo(totalCount),sharedEducations*(overlapInfo,entityUrn~fs_salesSchool(entityUrn,logoId,name,url,schoolPictureDisplayImage)),sharedExperiences*(overlapInfo,entityUrn~fs_salesCompany(entityUrn,pictureInfo,name,companyPictureDisplayImage)),sharedGroups*(entityUrn~fs_salesGroup(entityUrn,name,largeLogoId,smallLogoId,groupPictureDisplayImage)))"
         #         ,base_request=True)
         # print(res_for_shared_relationships.text)
@@ -391,8 +391,8 @@ def GetLeadInfo(cookie_dict, leads_list, member_urn_id_list):
         lead_info.append(lead_interests)
         # ============= Getting interests =============================
         
-        # TODO: Add summary
-        prompt = "This is the profile of a person: " + leads_list[lead_idx][0] + \
+        str_lead_profile = str(leads_list[lead_idx][0])
+        prompt = "This is the profile of a person: " + str_lead_profile + \
             " These are their interests: " + lead_interests + \
             " These are our mutual connections: " + "" + \
             " Use the internet to get something useful about the interests and use it in the request. " + \
