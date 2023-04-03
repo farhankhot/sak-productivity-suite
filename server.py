@@ -343,7 +343,7 @@ def GetLeadInfo(cookie_dict, leads_list, member_urn_id_list):
         # Get the first relationship that LinkedIn recommends
         lead_relationships = []
         shared_connections = res_for_shared_relationships.json()['sharedConnection']['sharedConnectionUrnsResolutionResults']
-        if len(shared_connections.values() > 0):
+        if len(shared_connections.values()) > 0:
             shared_connection = shared_connections.values()[0]['fullName']
             lead_relationships.append(shared_connection)
 
