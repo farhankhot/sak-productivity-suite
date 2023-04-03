@@ -65,9 +65,9 @@ function Home(props) {
 					memberUrnIdArray: memberUrnIdArray
 				})
 			});
-			const jobIdArray = await response.json();
+			const jobId = await response.json();
 			
-			CheckJobStatus(element, (resultArray) => {
+			CheckJobStatus(jobId.message, (resultArray) => {
 				// This gets a big list
 				// This list contains Connect Notes for each person in the lead list
 				// Save to an array, then display a textbox and the note for each note in list
