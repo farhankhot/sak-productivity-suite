@@ -391,8 +391,8 @@ def GetLeadInfo(cookie_dict, leads_list, member_urn_id_list):
         lead_info.append(lead_interests)
         # ============= Getting interests =============================
         
-        prompt = "This is the profile of a person: " + leads_list[lead_idx][0][0] + \
-            " These are their interests: " + lead_interests + \
+        prompt = "This is the profile of a person: " + leads_list[lead_idx][0] + \
+            " These are their interests: " + str(lead_interests) + \
             " These are our mutual connections: " + "" + \
             " Use the internet to get something useful about the interests and use it in the request. " + \
             " Write a request to connect with them. Make it casual but eyecatching. The goal is to ask about their current Salesforce implementation. The length should be no more than 300 characters."
