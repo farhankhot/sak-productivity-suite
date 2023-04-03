@@ -413,11 +413,12 @@ def get_lead_info():
     leads_list = request.json['leadsArray'] # type: ignore
     member_urn_id_list = request.json['memberUrnIdArray'] # type: ignore
     
-    data = q.enqueue(GetLeadInfo, cookie_dict, leads_list, member_urn_id_list)
-    print(data)
-    job_id = data.get_id()
+    # data = q.enqueue(GetLeadInfo, cookie_dict, leads_list, member_urn_id_list)
+    # print(data)
+    # job_id = data.get_id()
+    data = GetLeadInfo(cookie_dict, leads_list, member_urn_id_list)
 
-    return jsonify(success=True, message=job_id)
+    return jsonify(success=True, message=data)
 
 @app.route('/get-leads', methods=['POST'])
 def get_leads():
