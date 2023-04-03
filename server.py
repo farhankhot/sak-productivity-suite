@@ -322,10 +322,8 @@ def SalesNavigatorLeadsInfo(api):
 # TODO: Change name to show that this is returning Connect note not info
 def GetLeadInfo(cookie_dict, leads_list, member_urn_id_list):
 
-    print("s", leads_list[0][0])
-
     final_lead_connect_note_list = []
-    for i, profile_urn in enumerate(member_urn_id_list):
+    for lead_idx, profile_urn in enumerate(member_urn_id_list):
 
         # Testing
         # if i == 1:
@@ -394,7 +392,7 @@ def GetLeadInfo(cookie_dict, leads_list, member_urn_id_list):
         # ============= Getting interests =============================
         
         # TODO: Add summary
-        prompt = "This is the profile of a person: " + leads_list[i][0] + \
+        prompt = "This is the profile of a person: " + leads_list[lead_idx][0] + \
             " These are their interests: " + lead_interests + \
             " These are our mutual connections: " + "" + \
             " Use the internet to get something useful about the interests and use it in the request. " + \
