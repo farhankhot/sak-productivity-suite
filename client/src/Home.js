@@ -50,59 +50,6 @@ function Home(props) {
 		}	
 	};
 
-	const handleGettingPeopleInterests = async (sessionId, profileUrn) => {
-		setIsLoading(true);
-		try {
-			const response = await fetch("https://sak-productivity-suite.herokuapp.com/get-people-interests", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json"
-				},
-				body: JSON.stringify({
-					sessionId: sessionId,
-					profileUrn: profileUrn
-				})
-			});
-			
-			const data = await response.json();			
-			const jobId = data.message;
-			
-			CheckJobStatus(jobId, (peopleInterestsArray) => {
-				setIsLoading(false);
-				// setPeopleInterestsArray(peopleInterestsArray);	
-			});
-
-		} catch (error) {
-			console.error(error);
-		}
-	};
-	
-	const handleGettingCompanyInterests = async (sessionId, profileUrn) => {
-		setIsLoading(true);
-		try {
-			const response = await fetch("https://sak-productivity-suite.herokuapp.com/get-company-interests", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json"
-				},
-				body: JSON.stringify({
-					sessionId: sessionId,
-					profileUrn: profileUrn
-				})
-			});
-			
-			const data = await response.json();
-			const jobId = data.message;
-			
-			CheckJobStatus(jobId, (companyInterestsArray) => {
-				setIsLoading(false);
-				// setCompanyInterestsArray(companyInterestsArray);	
-			});
-		} catch (error) {
-			console.error(error);
-		}
-	};
-
 	// This button goes through the lead list and creates a Connect note for them
 	// It chooses max 5 relationships + interests and prompts Bing Chat to output a Connect note 
 	const handleAutoCreatingNotes = async(sessionId, memberUrnId) => {
@@ -128,39 +75,6 @@ function Home(props) {
 			});
 			
 			
-		}catch(error){
-			console.log(error);
-		}
-	};
-
-	const handleMakingConnectNote = async (fullName) => {
-		
-		// TODO: Add summary back
-		const prompt = "This is the profile of a person: " + "\n" + fullName 
-		+ " This is their summary: " +
-		" These are their interests: "  
-		+ " Use the internet to get something useful about the interests and use it in the request. "
-		+ " Write a request to connect with them. Make it casual but eyecatching. The goal is to ask about their current Salesforce implementation. The length should be no more than 300 characters.";
-		setIsLoading(true);
-		try {
-			const response = await fetch("https://sak-productivity-suite.herokuapp.com/use-bingai", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json"
-				},
-				body: JSON.stringify({
-					prompt: prompt
-				})
-			});
-			
-			const data = await response.json();
-			const jobId = data.message;
-			
-			CheckJobStatus(jobId, (resultArray) => {
-				setIsLoading(false);
-				setNoteTextArea(resultArray);	
-			});
-
 		}catch(error){
 			console.log(error);
 		}
@@ -209,21 +123,6 @@ function Home(props) {
 						>
 							{leadInfo[0]}, {leadInfo[1]}
 
-							<ButtonGroup aria-label="Basic example" className="mb-2">
-								<Button >
-									Get people interests
-								</Button>
-								<Button>
-									Get company interests
-								</Button>
-								<Button >
-									Make Connect Note
-								</Button>
-								<Button >
-									Send Connect Note
-								</Button>
-							</ButtonGroup>
-
 							{connectNoteArray.length > 0 && (
 									
 								<>
@@ -235,7 +134,9 @@ function Home(props) {
 											setConnectNoteArray(updatedConnectNote);
 										}}
 									/>
-									
+									<Button onClick={handleSendingConnectNote(sessionId, leadInfo[4])}>
+										Send Connect Note
+									</Button>
 								</>
 							)}
 						</ListGroup.Item>
