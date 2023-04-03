@@ -209,6 +209,21 @@ function Home(props) {
 						>
 							{leadInfo[0]}, {leadInfo[1]}
 
+							<ButtonGroup aria-label="Basic example" className="mb-2">
+								<Button onClick={handleGettingPeopleInterests(sessionId, leadInfo[4])}>
+									Get people interests
+								</Button>
+								<Button onClick={handleGettingCompanyInterests(sessionId, leadInfo[4])}>
+									Get company interests
+								</Button>
+								<Button onClick={handleMakingConnectNote(leadInfo[0])}>
+									Make Connect Note
+								</Button>
+								<Button onClick={handleSendingConnectNote(sessionId, leadInfo[4])}>
+									Send Connect Note
+								</Button>
+							</ButtonGroup>
+
 							{connectNoteArray.length > 0 && (
 									
 								<>
@@ -220,21 +235,7 @@ function Home(props) {
 											setConnectNoteArray(updatedConnectNote);
 										}}
 									/>
-									<ButtonGroup aria-label="Basic example" className="mb-2">
-										<Button onClick={handleGettingPeopleInterests(sessionId, leadInfo[4])}>
-											Get people interests
-										</Button>
-										<Button onClick={handleGettingCompanyInterests(sessionId, leadInfo[4])}>
-											Get company interests
-										</Button>
-										<Button onClick={handleMakingConnectNote(leadInfo[0])}>
-											Make Connect Note
-										</Button>
-										<Button onClick={handleSendingConnectNote(sessionId, leadInfo[4])}>
-											Send Connect Note
-										</Button>
-									</ButtonGroup>
-
+									
 								</>
 							)}
 						</ListGroup.Item>
