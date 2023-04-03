@@ -122,17 +122,30 @@ function Home(props) {
 							// }}
 						>
 							{leadInfo[0]}, {leadInfo[1]}
-							{/* IDK if this works, will test */}
+
 							{connectNoteArray.length > 0 && (
 									
-								<textarea
-									value={connectNoteArray[index]}
-									
-								/>
+								<>
+									<textarea
+										value={connectNoteArray[index]} 
+										onChange={(event) => {
+											const updatedConnectNote = [...connectNoteArray];
+											updatedConnectNote[index] = event.target.value;
+											setConnectNoteArray(updatedConnectNote);
+										}}
+									/>
+									<Button onClick={handleSendingConnectNote(sessionId, leadInfo[4])}>
+										Send Connect Note
+									</Button>
+								</>
 							)}
 						</ListGroup.Item>
 					))}
 				</ListGroup>
+				{/* leadInfo out of scope here, need to send a array of member_urns to handlSendingConnectNote */}
+				{/* <Button onClick={handleSendingConnectNote(sessionId, leadInfo[4])}>
+					Send Connect Note to all leads
+				</Button> */}
 			</Container>
 		</>
 	)
