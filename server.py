@@ -326,33 +326,34 @@ def GetLeadInfo(cookie_dict, leads_list, member_urn_id_list):
     for i, profile_urn in enumerate(member_urn_id_list):
 
         # Testing
-        if i == 1:
-            break
+        # if i == 1:
+        #     break
 
         # TODO: Get interests at random
         api = Linkedin(cookies=cookie_dict) # type: ignore
-
-        # ============= Getting Relationships =============================
-        # TODO: doesn't work
         lead_info = []
-        res_for_shared_relationships = api._fetch(f"/sales-api/salesApiProfileHighlights/ACwAAAyHWPkBDiR2ZckDou2GXa6W4yrCJMSEw?decoration=(sharedConnection(sharedConnectionUrns*~fs_salesProfile(entityUrn,firstName,lastName,fullName,pictureInfo,profilePictureDisplayImage)),teamlinkInfo(totalCount),sharedEducations*(overlapInfo,entityUrn~fs_salesSchool(entityUrn,logoId,name,url,schoolPictureDisplayImage)),sharedExperiences*(overlapInfo,entityUrn~fs_salesCompany(entityUrn,pictureInfo,name,companyPictureDisplayImage)),sharedGroups*(entityUrn~fs_salesGroup(entityUrn,name,largeLogoId,smallLogoId,groupPictureDisplayImage)))"
-                ,base_request=True)
-        print(res_for_shared_relationships.text)
-        print(res_for_shared_relationships.json())
-
-        # Get the first relationship that LinkedIn recommends
-        lead_relationships = []
-        shared_connections = res_for_shared_relationships.json()['sharedConnection']['sharedConnectionUrnsResolutionResults']
-        if len(shared_connections.values() > 0):
-            shared_connection = shared_connections.values()[0]['fullName']
-            lead_relationships.append(shared_connection)
-
-        shared_groups = res_for_shared_relationships.json()['sharedGroup']['entityUrnResolutionResult']
-        if len(shared_groups) >= 1:
-            shared_group = shared_groups[1]['entityUrnResolutionResult']['name'] 
-            lead_relationships.append(shared_group)
         
-        lead_info.append(lead_relationships)
+        # ============= Getting Relationships =============================
+        # # TODO: doesn't work
+        
+        # res_for_shared_relationships = api._fetch(f"/sales-api/salesApiProfileHighlights/ACwAAAyHWPkBDiR2ZckDou2GXa6W4yrCJMSEw?decoration=(sharedConnection(sharedConnectionUrns*~fs_salesProfile(entityUrn,firstName,lastName,fullName,pictureInfo,profilePictureDisplayImage)),teamlinkInfo(totalCount),sharedEducations*(overlapInfo,entityUrn~fs_salesSchool(entityUrn,logoId,name,url,schoolPictureDisplayImage)),sharedExperiences*(overlapInfo,entityUrn~fs_salesCompany(entityUrn,pictureInfo,name,companyPictureDisplayImage)),sharedGroups*(entityUrn~fs_salesGroup(entityUrn,name,largeLogoId,smallLogoId,groupPictureDisplayImage)))"
+        #         ,base_request=True)
+        # print(res_for_shared_relationships.text)
+        # print(res_for_shared_relationships.json())
+
+        # # Get the first relationship that LinkedIn recommends
+        # lead_relationships = []
+        # shared_connections = res_for_shared_relationships.json()['sharedConnection']['sharedConnectionUrnsResolutionResults']
+        # if len(shared_connections.values() > 0):
+        #     shared_connection = shared_connections.values()[0]['fullName']
+        #     lead_relationships.append(shared_connection)
+
+        # shared_groups = res_for_shared_relationships.json()['sharedGroup']['entityUrnResolutionResult']
+        # if len(shared_groups) >= 1:
+        #     shared_group = shared_groups[1]['entityUrnResolutionResult']['name'] 
+        #     lead_relationships.append(shared_group)
+        
+        # lead_info.append(lead_relationships)
         # ============= Getting Relationships =============================
 
         # ============= Getting interests =============================
@@ -391,7 +392,11 @@ def GetLeadInfo(cookie_dict, leads_list, member_urn_id_list):
         # ============= Getting interests =============================
         
         # TODO: Add summary
-        prompt = "This is the profile of a person: " + leads_list[i][0] + " These are their interests: " + lead_interests + " These are our mutual connections: " + lead_relationships + " Use the internet to get something useful about the interests and use it in the request. " + " Write a request to connect with them. Make it casual but eyecatching. The goal is to ask about their current Salesforce implementation. The length should be no more than 300 characters."
+        prompt = "This is the profile of a person: " + leads_list[i][0] + \
+            " These are their interests: " + lead_interests + \
+            " These are our mutual connections: " + "" + \
+            " Use the internet to get something useful about the interests and use it in the request. " + \
+            " Write a request to connect with them. Make it casual but eyecatching. The goal is to ask about their current Salesforce implementation. The length should be no more than 300 characters."
 
         connect_note = UseBingAI(prompt)
         
