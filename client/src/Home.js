@@ -244,9 +244,10 @@ function Home(props) {
 					{leadsArray.map((leadInfo, index) => (
 						<ListGroup.Item
 							action
-							onClick={() => {
+							onClick={(e) => {
 								setShowProfileArea(true);
 								setSelectedName(leadInfo[4]);
+								e.stopPropagation();
 							}}
 						>
 							{leadInfo[0]}, {leadInfo[1]}
