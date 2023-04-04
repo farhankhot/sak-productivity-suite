@@ -255,7 +255,7 @@ function Home(props) {
 						>
 							{leadInfo[0]}, {leadInfo[1]}
 
-							{(connectNoteArray.length > 0) || (showProfileArea && selectedName===leadInfo[4]) && (
+							{(connectNoteArray.length > 0) && (
 								<div>
 									<Form.Group>
 										<Form.Control
