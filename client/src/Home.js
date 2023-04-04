@@ -224,10 +224,8 @@ function Home(props) {
 	// };
 	// ================ Create and Send Connect Note(s) ===============================
 
-	const handleNoteTextAreaChange = (event, index) => {
-		const updatedConnectNote = [...connectNoteArray];
-		updatedConnectNote[index] = event.target.value;
-		setConnectNoteArray(updatedConnectNote);
+	const handleNoteTextAreaChange = (event) => {
+		setConnectNoteArray(event.target.value);
 	};
 
 	return (
@@ -255,7 +253,45 @@ function Home(props) {
 						>
 							{leadInfo[0]}, {leadInfo[1]}
 
-							{(connectNoteArray.length > 0) && (
+							{showProfileArea && selectedName===leadInfo[4] && (
+								<div>
+									<Form.Group>
+										<Form.Control
+											as="textarea"
+											value={connectNoteArray[index]} 
+											onChange={ (event) => {
+												handleNoteTextAreaChange(event)
+											}}
+										/>
+									</Form.Group>
+									
+									<ButtonGroup aria-label="Basic example" className="mb-2">
+										<Button onClick={ () => {
+											handleGettingPeopleInterests(sessionId, leadInfo[4])
+										}}
+										>
+											Get people interests
+										</Button>
+										<Button onClick={ () => {
+											handleGettingCompanyInterests(sessionId, leadInfo[4])
+										}}>
+											Get company interests
+										</Button>
+										<Button onClick={ () => {
+											handleMakingConnectNote(leadInfo[0])
+										}}>
+											Make Connect Note
+										</Button>										
+										<Button onClick={ () => {
+											handleSendingConnectNote(sessionId, leadInfo[4])
+										}}>
+											Send Connect Note
+										</Button>
+									</ButtonGroup>
+								</div>
+							)}
+
+							{(connectNoteArray.length > 0) && (!showProfileArea) (
 								<div>
 									<Form.Group>
 										<Form.Control
@@ -290,7 +326,6 @@ function Home(props) {
 											Send Connect Note
 										</Button>
 									</ButtonGroup>
-									
 								</div>
 							)}
 						</ListGroup.Item>
