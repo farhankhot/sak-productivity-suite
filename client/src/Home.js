@@ -11,22 +11,17 @@ function Home(props) {
 	// console.log("Home sessionId: ", sessionId);
 
 	const [isLoading, setIsLoading] = useState(false);
-	
-	const [noteTextArea, setNoteTextArea] = useState(""); 
-	
-	const [peopleInterestsArray, setPeopleInterestsArray] = useState([]);	
-	const [companyInterestsArray, setCompanyInterestsArray] = useState([]);	
-	const [activityInterestsArray, setActivityInterestsArray] = useState([]);
-	const [selectedInterests, setSelectedInterests] = useState("");
-
 	const [showProfileArea, setShowProfileArea] = useState(false);
-
-	const [leadsArray, setLeadsArray] = useState([]);
 	const [showCreateConnectNoteButton, setShowCreateConnectNoteButton] = useState(false);
 
+	const [leadsArray, setLeadsArray] = useState([]);
+	const [memberUrnIdArray, setMemberUrnIdArray] = useState([]);
+
+	const [noteTextArea, setNoteTextArea] = useState(""); 
 	const [connectNoteArray, setConnectNoteArray] = useState([]);
 
-	const [memberUrnIdArray, setMemberUrnIdArray] = useState([]);
+	const [interestsArray, setInterestsArray] = useState("");
+	const [selectedInterests, setSelectedInterests] = useState("");
 		
 	const handleGettingLeads = async() => {
         try {
@@ -97,7 +92,7 @@ function Home(props) {
 			const data = await response.json();			
 			const jobId = data.message;
 			CheckJobStatus(jobId, (peopleInterestsArray) => {
-				setPeopleInterestsArray(peopleInterestsArray);	
+				setInterestsArray(peopleInterestsArray);	
 			});
 		} catch (error) {
 			console.error(error);
@@ -122,7 +117,7 @@ function Home(props) {
 			const data = await response.json();
 			const jobId = data.message;
 			CheckJobStatus(jobId, (companyInterestsArray) => {
-				setCompanyInterestsArray(companyInterestsArray);	
+				setInterestsArray(companyInterestsArray);	
 			});
 		} catch (error) {
 			console.error(error);
@@ -280,42 +275,14 @@ function Home(props) {
 										</Button> */}
 									</ButtonGroup>
 
-									{peopleInterestsArray.length > 0 && (
+									{(interestsArray.length > 0) && (
 										<ListGroup.Item>
 											<Form.Control
 											as="select"
 											multiple
 											onChange={handleInterestsSelection}
 											>
-											{peopleInterestsArray.map((interest) => (
-												<option key={interest}>{interest[0]}</option>
-											))}
-											</Form.Control>
-										</ListGroup.Item>
-									)}
-
-									{companyInterestsArray.length > 0 && (
-										<ListGroup.Item>
-											<Form.Control
-											as="select"
-											multiple
-											onChange={handleInterestsSelection}
-											>
-											{companyInterestsArray.map((interest) => (
-												<option key={interest}>{interest[0]}</option>
-											))}
-											</Form.Control>
-										</ListGroup.Item>
-									)}
-
-									{activityInterestsArray.length > 0 && (
-										<ListGroup.Item>
-											<Form.Control
-											as="select"
-											multiple
-											onChange={handleInterestsSelection}
-											>
-											{activityInterestsArray.map((interest) => (
+											{interestsArray.map((interest) => (
 												<option key={interest}>{interest[0]}</option>
 											))}
 											</Form.Control>
