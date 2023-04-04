@@ -224,8 +224,10 @@ function Home(props) {
 	// };
 	// ================ Create and Send Connect Note(s) ===============================
 
-	const handleNoteTextAreaChange = (event) => {
-		setConnectNoteArray(event.target.value);
+	const handleNoteTextAreaChange = (event, index) => {
+		const updatedConnectNoteArray = [...connectNoteArray];
+		updatedConnectNoteArray[index] = event.target.value;
+		setConnectNoteArray(updatedConnectNoteArray);
 	};
 
 	return (
@@ -237,10 +239,6 @@ function Home(props) {
                 Auto Create notes for all leads
             </Button>}
 
-			{/* DONE: Add the 4 usual buttons after handleAutoCreatingNotes, Add a send to all button */}
-			{/* DONE: Add option to click the lead div and have 4 usual buttons+textarea popup */}
-			
-			{/* TODO: Check if getting all lead_info works (relationships, interests) */}
 			<Container>
 				<h1>Search Results:</h1>
 				<ListGroup>
@@ -253,14 +251,14 @@ function Home(props) {
 						>
 							{leadInfo[0]}, {leadInfo[1]}
 
-							{showProfileArea && selectedName===leadInfo[4] && (
+							{(connectNoteArray.length > 0) || (showProfileArea && selectedName===leadInfo[4]) && (
 								<div>
 									<Form.Group>
 										<Form.Control
 											as="textarea"
 											value={connectNoteArray[index]} 
 											onChange={ (event) => {
-												handleNoteTextAreaChange(event)
+												handleNoteTextAreaChange(event, index)
 											}}
 										/>
 									</Form.Group>
@@ -288,44 +286,7 @@ function Home(props) {
 											Send Connect Note
 										</Button>
 									</ButtonGroup>
-								</div>
-							)}
-
-							{(connectNoteArray.length > 0) && (!showProfileArea) (
-								<div>
-									<Form.Group>
-										<Form.Control
-											as="textarea"
-											value={connectNoteArray[index]} 
-											// onChange={ (event) => {
-											// 	handleNoteTextAreaChange(event, index)
-											// }}
-										/>
-									</Form.Group>
 									
-									<ButtonGroup aria-label="Basic example" className="mb-2">
-										<Button onClick={ () => {
-											handleGettingPeopleInterests(sessionId, leadInfo[4])
-										}}
-										>
-											Get people interests
-										</Button>
-										<Button onClick={ () => {
-											handleGettingCompanyInterests(sessionId, leadInfo[4])
-										}}>
-											Get company interests
-										</Button>
-										<Button onClick={ () => {
-											handleMakingConnectNote(leadInfo[0])
-										}}>
-											Make Connect Note
-										</Button>										
-										<Button onClick={ () => {
-											handleSendingConnectNote(sessionId, leadInfo[4])
-										}}>
-											Send Connect Note
-										</Button>
-									</ButtonGroup>
 								</div>
 							)}
 						</ListGroup.Item>
