@@ -333,70 +333,70 @@ def GetLeadInfo(cookie_dict, leads_list, member_urn_id_list):
 
         lead_info = []
         # ============= Getting Relationships =============================        
-        res_for_shared_relationships = api._fetch(f"/sales-api/salesApiProfileHighlights/{profile_urn}?decoration=%28sharedConnection%28sharedConnectionUrns*~fs_salesProfile%28entityUrn%2CfirstName%2ClastName%2CfullName%2CpictureInfo%2CprofilePictureDisplayImage%29%29%2CteamlinkInfo%28totalCount%29%2CsharedEducations*%28overlapInfo%2CentityUrn~fs_salesSchool%28entityUrn%2ClogoId%2Cname%2Curl%2CschoolPictureDisplayImage%29%29%2CsharedExperiences*%28overlapInfo%2CentityUrn~fs_salesCompany%28entityUrn%2CpictureInfo%2Cname%2CcompanyPictureDisplayImage%29%29%2CsharedGroups*%28entityUrn~fs_salesGroup%28entityUrn%2Cname%2ClargeLogoId%2CsmallLogoId%2CgroupPictureDisplayImage%29%29%29"
-                ,base_request=True)
-        # print(res_for_shared_relationships.text)
-        print(res_for_shared_relationships.json())
+        # res_for_shared_relationships = api._fetch(f"/sales-api/salesApiProfileHighlights/{profile_urn}?decoration=%28sharedConnection%28sharedConnectionUrns*~fs_salesProfile%28entityUrn%2CfirstName%2ClastName%2CfullName%2CpictureInfo%2CprofilePictureDisplayImage%29%29%2CteamlinkInfo%28totalCount%29%2CsharedEducations*%28overlapInfo%2CentityUrn~fs_salesSchool%28entityUrn%2ClogoId%2Cname%2Curl%2CschoolPictureDisplayImage%29%29%2CsharedExperiences*%28overlapInfo%2CentityUrn~fs_salesCompany%28entityUrn%2CpictureInfo%2Cname%2CcompanyPictureDisplayImage%29%29%2CsharedGroups*%28entityUrn~fs_salesGroup%28entityUrn%2Cname%2ClargeLogoId%2CsmallLogoId%2CgroupPictureDisplayImage%29%29%29"
+        #         ,base_request=True)
+        # # print(res_for_shared_relationships.text)
+        # # print(res_for_shared_relationships.json())
 
-        # Get the first relationship that LinkedIn recommends
-        lead_relationships = []
-        shared_connections = res_for_shared_relationships.json()['sharedConnection']['sharedConnectionUrnsResolutionResults']
-        if len(shared_connections.values()) > 0:
-            shared_connection = shared_connections.values()[0]['fullName']
-            lead_relationships.append(shared_connection)
+        # # Get the first relationship that LinkedIn recommends
+        # lead_relationships = []
+        # shared_connections = res_for_shared_relationships.json()['sharedConnection']['sharedConnectionUrnsResolutionResults']
+        # if len(shared_connections.values()) > 0:
+        #     shared_connection = shared_connections.values()[0]['fullName']
+        #     lead_relationships.append(shared_connection)
 
-        shared_groups = res_for_shared_relationships.json()['sharedGroup']['entityUrnResolutionResult']
-        if len(shared_groups) >= 1:
-            shared_group = shared_groups[1]['entityUrnResolutionResult']['name'] 
-            lead_relationships.append(shared_group)
+        # shared_groups = res_for_shared_relationships.json()['sharedGroup']['entityUrnResolutionResult']
+        # if len(shared_groups) >= 1:
+        #     shared_group = shared_groups[1]['entityUrnResolutionResult']['name'] 
+        #     lead_relationships.append(shared_group)
         
-        lead_info.append(lead_relationships)
+        # lead_info.append(lead_relationships)
         # ============= Getting Relationships =============================
         
         # ============= Getting interests =================================
-        lead_interests = []
-        interests = api._fetch(f"/graphql?includeWebMetadata=True&variables=(profileUrn:urn%3Ali%3Afsd_profile%3A{profile_urn},sectionType:interests,tabIndex:1,locale:en_US)&&queryId=voyagerIdentityDashProfileComponents.38247e27f7b9b2ecbd8e8452e3c1a02c")
-        interests = interests.json()
-        interests_json = json.dumps(interests)
+        # lead_interests = []
+        # interests = api._fetch(f"/graphql?includeWebMetadata=True&variables=(profileUrn:urn%3Ali%3Afsd_profile%3A{profile_urn},sectionType:interests,tabIndex:1,locale:en_US)&&queryId=voyagerIdentityDashProfileComponents.38247e27f7b9b2ecbd8e8452e3c1a02c")
+        # interests = interests.json()
+        # interests_json = json.dumps(interests)
 
-        pattern = re.compile(r'"(urn:li:fsd_profile:[^"]*)"')
-        matches = re.findall(pattern, interests_json)
-        people_the_profile_is_interested_in_set = set(matches)
-        people_the_profile_is_interested_in = [s.split(':')[-1] for s in people_the_profile_is_interested_in_set]
+        # pattern = re.compile(r'"(urn:li:fsd_profile:[^"]*)"')
+        # matches = re.findall(pattern, interests_json)
+        # people_the_profile_is_interested_in_set = set(matches)
+        # people_the_profile_is_interested_in = [s.split(':')[-1] for s in people_the_profile_is_interested_in_set]
 
-        pattern_for_company = re.compile(r'"(urn:li:fsd_company:[^"]*)"')
-        matches_for_company = re.findall(pattern_for_company, interests_json)
-        companies_the_profile_is_interested_in_set = set(matches_for_company)
-        companies_the_profile_is_interested_in = [s.split(':')[-1] for s in companies_the_profile_is_interested_in_set]
+        # pattern_for_company = re.compile(r'"(urn:li:fsd_company:[^"]*)"')
+        # matches_for_company = re.findall(pattern_for_company, interests_json)
+        # companies_the_profile_is_interested_in_set = set(matches_for_company)
+        # companies_the_profile_is_interested_in = [s.split(':')[-1] for s in companies_the_profile_is_interested_in_set]
 
-        for i, profile_urn in enumerate(people_the_profile_is_interested_in):
-            if i == 1:
-                break
-            temp = api.get_profile(profile_urn)
-            first_name = temp['firstName']
-            last_name = temp['lastName']
-            full_name = first_name + " " + last_name 
-            lead_interests.append(full_name)
+        # for i, profile_urn in enumerate(people_the_profile_is_interested_in):
+        #     if i == 1:
+        #         break
+        #     temp = api.get_profile(profile_urn)
+        #     first_name = temp['firstName']
+        #     last_name = temp['lastName']
+        #     full_name = first_name + " " + last_name 
+        #     lead_interests.append(full_name)
         
-        for i, company_id in enumerate(companies_the_profile_is_interested_in):
-            if i == 1:
-                break
-            temp = api.get_company(company_id)
-            company_name = temp['universalName']
-            lead_interests.append([company_name, company_id])
+        # for i, company_id in enumerate(companies_the_profile_is_interested_in):
+        #     if i == 1:
+        #         break
+        #     temp = api.get_company(company_id)
+        #     company_name = temp['universalName']
+        #     lead_interests.append([company_name, company_id])
         
-        lead_info.append(lead_interests)
-        # ============= Getting interests =================================
+        # lead_info.append(lead_interests)
+        # # ============= Getting interests =================================
         
-        prompt = "This is the profile of a person: " + leads_list[lead_idx][0] + \
-            " These are their interests: " + ",".join(lead_interests) + \
-            " These are our mutual connections: " + "" + \
-            " Include something useful about the interests and use it in the request. " + \
-            " Write a request to connect with them. Make it casual but eyecatching. The goal is to ask about their current Salesforce implementation. The length should be no more than 300 characters."
+        # prompt = "This is the profile of a person: " + leads_list[lead_idx][0] + \
+        #     " These are their interests: " + ",".join(lead_interests) + \
+        #     " These are our mutual connections: " + "" + \
+        #     " Include something useful about the interests and use it in the request. " + \
+        #     " Write a request to connect with them. Make it casual but eyecatching. The goal is to ask about their current Salesforce implementation. The length should be no more than 300 characters."
 
-        connect_note = asyncio.run(UseBingAI(prompt))
+        # connect_note = asyncio.run(UseBingAI(prompt))
         # print(connect_note)
-        # connect_note = "hi," + leads_list[lead_idx][0]
+        connect_note = "hi," + leads_list[lead_idx][0]
         t.append(connect_note)
     return t
 
