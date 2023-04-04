@@ -306,7 +306,7 @@ def SalesNavigatorLeadsInfo(api):
         # Only include a lead if they have a member_urn_id
         if match:
             member_urn_id = match.group(1)
-            print(member_urn_id, type(member_urn_id))
+            # print(member_urn_id, type(member_urn_id))
             lead_list.append([
                 lead['fullName'],
                 lead['currentPositions'][0]['title'],

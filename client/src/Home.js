@@ -79,8 +79,10 @@ function Home(props) {
 		}
 	};
 
-	const handleGettingPeopleInterests = async (sessionId, profileUrnTuple) => {
-		const profileUrn = profileUrnTuple[0];
+	const handleGettingPeopleInterests = async (sessionId, profileUrnStr) => {
+		const startIndex = profileUrnStr.indexOf("(") + 1;
+		const endIndex = profileUrnStr.indexOf(",");
+		const profileUrn = profileUrnStr.substring(startIndex, endIndex);
 		try {
 			const response = await fetch("https://sak-productivity-suite.herokuapp.com/get-people-interests", {
 				method: "POST",
@@ -102,8 +104,10 @@ function Home(props) {
 		}
 	};
 	
-	const handleGettingCompanyInterests = async (sessionId, profileUrnTuple) => {
-		const profileUrn = profileUrnTuple[0];
+	const handleGettingCompanyInterests = async (sessionId, profileUrnStr) => {
+		const startIndex = profileUrnStr.indexOf("(") + 1;
+		const endIndex = profileUrnStr.indexOf(",");
+		const profileUrn = profileUrnStr.substring(startIndex, endIndex);
 		try {
 			const response = await fetch("https://sak-productivity-suite.herokuapp.com/get-company-interests", {
 				method: "POST",
