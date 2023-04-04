@@ -261,7 +261,9 @@ function Home(props) {
 										<Form.Control
 											as="textarea"
 											value={connectNoteArray[index]} 
-											onChange={handleNoteTextAreaChange(index)}
+											onChange={ (event) => {
+												handleNoteTextAreaChange(event, index)
+											}}
 										/>
 									</Form.Group>
 									
