@@ -413,23 +413,23 @@ def SendMultipleConnectNote(cookie_dict, member_urn_id_list, connect_note_list):
     return jsonify(success=True, message=error_boolean_list)
 
 # ================================================ ROUTES START =============================================
-@app.route('/send-multiple-connect', methods=['POST'])
-def send_multiple_connect():
+# @app.route('/send-multiple-connect', methods=['POST'])
+# def send_multiple_connect():
 
-    session_id = request.json['sessionId'] # type: ignore
-    print("get_lead_info session_id: ", session_id)
+#     session_id = request.json['sessionId'] # type: ignore
+#     print("get_lead_info session_id: ", session_id)
 
-    # TODO: error handling
-    cookie_dict = dbCon.get_cookie_from_user_sessions(session_id)
-    print("get_lead_info cookie_dict: ", cookie_dict)
+#     # TODO: error handling
+#     cookie_dict = dbCon.get_cookie_from_user_sessions(session_id)
+#     print("get_lead_info cookie_dict: ", cookie_dict)
 
-    member_urn_id_list = request.json['memberUrnIdArray'] # type: ignore
-    connect_note_list = request.json['connectNoteArray'] # type: ignore
+#     member_urn_id_list = request.json['memberUrnIdArray'] # type: ignore
+#     connect_note_list = request.json['text'] # type: ignore
  
-    data = q.enqueue(SendMultipleConnectNote, cookie_dict, member_urn_id_list, connect_note_list)
-    job_id = data.get_id()
+#     data = q.enqueue(SendMultipleConnectNote, cookie_dict, member_urn_id_list, connect_note_list)
+#     job_id = data.get_id()
 
-    return jsonify(success=True, message=job_id)
+#     return jsonify(success=True, message=job_id)
 
 @app.route('/get-lead-info', methods=['POST'])
 def get_lead_info():

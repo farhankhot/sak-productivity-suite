@@ -180,47 +180,48 @@ function Home(props) {
 			console.log(error);
 		}
 	};
-		
-	const handleSendingConnectNote = async (sessionId, profileId) => {
-		try {
-			const response = await fetch("https://sak-productivity-suite.herokuapp.com/send-connect", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json"
-				},
-				body: JSON.stringify({
-					sessionId: sessionId,
-					profileId: profileId,
-					text: noteTextArea
-				})
-			});
-			const data = await response.json();
-			console.log("Successfully sent the connect note to the person", data.message);
-		}catch(error){
-			console.log(error);
-		}
-	};
 
-	const handleSendingMultipleConnectNote = async (sessionId) => {
-		try {
-			const response = await fetch("https://sak-productivity-suite.herokuapp.com/send-multiple-connect", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json"
-				},
-				body: JSON.stringify({
-					sessionId: sessionId,
-					memberUrnIdArray: memberUrnIdArray,
-					text: connectNoteArray
-				})
-			});
-			const data = await response.json();
-			console.log("Successfully sent the connect note to the person", data.message);
-		}catch(error){
-			console.log(error);
-		}
-	};
-	// ================ Create and Send Connect Note ===============================
+	// ================ Create and Send Connect Note(s) ===============================
+	// const handleSendingConnectNote = async (sessionId, profileId) => {
+	// 	try {
+	// 		const response = await fetch("https://sak-productivity-suite.herokuapp.com/send-connect", {
+	// 			method: "POST",
+	// 			headers: {
+	// 				"Content-Type": "application/json"
+	// 			},
+	// 			body: JSON.stringify({
+	// 				sessionId: sessionId,
+	// 				profileId: profileId,
+	// 				text: noteTextArea
+	// 			})
+	// 		});
+	// 		const data = await response.json();
+	// 		console.log("Successfully sent the connect note to the person", data.message);
+	// 	}catch(error){
+	// 		console.log(error);
+	// 	}
+	// };
+
+	// const handleSendingMultipleConnectNote = async (sessionId) => {
+	// 	try {
+	// 		const response = await fetch("https://sak-productivity-suite.herokuapp.com/send-multiple-connect", {
+	// 			method: "POST",
+	// 			headers: {
+	// 				"Content-Type": "application/json"
+	// 			},
+	// 			body: JSON.stringify({
+	// 				sessionId: sessionId,
+	// 				memberUrnIdArray: memberUrnIdArray,
+	// 				text: connectNoteArray
+	// 			})
+	// 		});
+	// 		const data = await response.json();
+	// 		console.log("Successfully sent the connect note to the person", data.message);
+	// 	}catch(error){
+	// 		console.log(error);
+	// 	}
+	// };
+	// ================ Create and Send Connect Note(s) ===============================
 
 	return (
 		<>
@@ -270,19 +271,18 @@ function Home(props) {
 										</Button>
 
 										{/* TODO: Change param to profileId */}
-										<Button onClick={handleSendingConnectNote(sessionId, leadInfo[4])}>
+										{/* <Button onClick={handleSendingConnectNote(sessionId, leadInfo[4])}>
 											Send Connect Note
-										</Button>
+										</Button> */}
 									</ButtonGroup>
 								</>
 							)}
 						</ListGroup.Item>
 					))}
 				</ListGroup>
-				{/* leadInfo out of scope here, need to send a array of member_urns to handlSendingConnectNote */}
-				{connectNoteArray.length > 0 && (<Button onClick={handleSendingMultipleConnectNote(sessionId)}>
+				{/* {connectNoteArray.length > 0 && (<Button onClick={handleSendingMultipleConnectNote(sessionId)}>
 					Send Connect Note to all leads
-				</Button>)}
+				</Button>)} */}
 			</Container>
 		</>
 	)
