@@ -11,17 +11,22 @@ function Home(props) {
 	// console.log("Home sessionId: ", sessionId);
 
 	const [isLoading, setIsLoading] = useState(false);
+	
+	const [noteTextArea, setNoteTextArea] = useState(""); 
+	
+	const [peopleInterestsArray, setPeopleInterestsArray] = useState([]);	
+	const [companyInterestsArray, setCompanyInterestsArray] = useState([]);	
+	const [activityInterestsArray, setActivityInterestsArray] = useState([]);
+	const [selectedInterests, setSelectedInterests] = useState("");
+
 	const [showProfileArea, setShowProfileArea] = useState(false);
-	const [showCreateConnectNoteButton, setShowCreateConnectNoteButton] = useState(false);
 
 	const [leadsArray, setLeadsArray] = useState([]);
-	const [memberUrnIdArray, setMemberUrnIdArray] = useState([]);
+	const [showCreateConnectNoteButton, setShowCreateConnectNoteButton] = useState(false);
 
-	const [noteTextArea, setNoteTextArea] = useState(""); 
 	const [connectNoteArray, setConnectNoteArray] = useState([]);
 
-	const [interestsArray, setInterestsArray] = useState("");
-	const [selectedInterests, setSelectedInterests] = useState("");
+	const [memberUrnIdArray, setMemberUrnIdArray] = useState([]);
 		
 	const handleGettingLeads = async() => {
         try {
@@ -92,8 +97,7 @@ function Home(props) {
 			const data = await response.json();			
 			const jobId = data.message;
 			CheckJobStatus(jobId, (peopleInterestsArray) => {
-				const newInterestsArray = [...interestsArray, ...peopleInterestsArray];
-				setInterestsArray(newInterestsArray);	
+				setPeopleInterestsArray(peopleInterestsArray);	
 			});
 		} catch (error) {
 			console.error(error);
@@ -118,8 +122,7 @@ function Home(props) {
 			const data = await response.json();
 			const jobId = data.message;
 			CheckJobStatus(jobId, (companyInterestsArray) => {
-				const newInterestsArray = [...interestsArray, ...companyInterestsArray];
-				setInterestsArray(newInterestsArray);		
+				setCompanyInterestsArray(companyInterestsArray);	
 			});
 		} catch (error) {
 			console.error(error);
@@ -277,14 +280,42 @@ function Home(props) {
 										</Button> */}
 									</ButtonGroup>
 
-									{(interestsArray.length > 0) && (
+									{peopleInterestsArray.length > 0 && (
 										<ListGroup.Item>
 											<Form.Control
 											as="select"
 											multiple
 											onChange={handleInterestsSelection}
 											>
-											{interestsArray.map((interest) => (
+											{peopleInterestsArray.map((interest) => (
+												<option key={interest}>{interest[0]}</option>
+											))}
+											</Form.Control>
+										</ListGroup.Item>
+									)}
+
+									{companyInterestsArray.length > 0 && (
+										<ListGroup.Item>
+											<Form.Control
+											as="select"
+											multiple
+											onChange={handleInterestsSelection}
+											>
+											{companyInterestsArray.map((interest) => (
+												<option key={interest}>{interest[0]}</option>
+											))}
+											</Form.Control>
+										</ListGroup.Item>
+									)}
+
+									{activityInterestsArray.length > 0 && (
+										<ListGroup.Item>
+											<Form.Control
+											as="select"
+											multiple
+											onChange={handleInterestsSelection}
+											>
+											{activityInterestsArray.map((interest) => (
 												<option key={interest}>{interest[0]}</option>
 											))}
 											</Form.Control>
