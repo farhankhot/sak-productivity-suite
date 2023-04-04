@@ -92,7 +92,8 @@ function Home(props) {
 			const data = await response.json();			
 			const jobId = data.message;
 			CheckJobStatus(jobId, (peopleInterestsArray) => {
-				setInterestsArray(peopleInterestsArray);	
+				const newInterestsArray = [...interestsArray, ...peopleInterestsArray];
+				setInterestsArray(newInterestsArray);	
 			});
 		} catch (error) {
 			console.error(error);
@@ -117,7 +118,8 @@ function Home(props) {
 			const data = await response.json();
 			const jobId = data.message;
 			CheckJobStatus(jobId, (companyInterestsArray) => {
-				setInterestsArray(companyInterestsArray);	
+				const newInterestsArray = [...interestsArray, ...companyInterestsArray];
+				setInterestsArray(newInterestsArray);		
 			});
 		} catch (error) {
 			console.error(error);
