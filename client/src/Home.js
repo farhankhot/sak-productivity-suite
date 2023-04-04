@@ -224,6 +224,12 @@ function Home(props) {
 	// };
 	// ================ Create and Send Connect Note(s) ===============================
 
+	const handleNoteTextAreaChange = (event, index) => {
+		const updatedConnectNote = [...connectNoteArray];
+		updatedConnectNote[index] = event.target.value;
+		setConnectNoteArray(updatedConnectNote);
+	};
+
 	return (
 		<>
             <Button variant="primary" type="button" onClick={handleGettingLeads}>
@@ -255,11 +261,7 @@ function Home(props) {
 										<Form.Control
 											as="textarea"
 											value={connectNoteArray[index]} 
-											// onChange={(event) => {
-											// 	const updatedConnectNote = [...connectNoteArray];
-											// 	updatedConnectNote[index] = event.target.value;
-											// 	setConnectNoteArray(updatedConnectNote);
-											// }}
+											onChange={handleNoteTextAreaChange(index)}
 										/>
 									</Form.Group>
 									
