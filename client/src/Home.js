@@ -9,14 +9,15 @@ import Form from 'react-bootstrap/Form';
 function Home(props) {
 	const {sessionId} = props;
 	// console.log("Home sessionId: ", sessionId);
+	
 	const [isLoading, setIsLoading] = useState(false);
 	
 	const [noteTextArea, setNoteTextArea] = useState(""); 
 	
 	const [peopleInterestsArray, setPeopleInterestsArray] = useState([]);	
 	const [companyInterestsArray, setCompanyInterestsArray] = useState([]);	
-	// const [activityInterestsArray, setActivityInterestsArray] = useState([]);
-	// const [selectedInterests, setSelectedInterests] = useState("");
+	const [activityInterestsArray, setActivityInterestsArray] = useState([]);
+	const [selectedInterests, setSelectedInterests] = useState("");
 
 	const [showProfileArea, setShowProfileArea] = useState(false);
 	const [selectedName, setSelectedName] = useState("");
@@ -132,22 +133,20 @@ function Home(props) {
 		}
 	};
 	
-	// const handleGettingActivityInterests = () => {
-		// // TODO
-	// };
+	const handleGettingActivityInterests = () => {
+		// TODO
+	};
 	
-	// const handleInterestsSelection = (event) => {
-		
-	// 	var selections = event.target.options;
-	// 	const updatedInterestsArray = [];
-	// 	for (var i = 0; i < selections.length; i++){
-	// 		if(selections[i].selected){
-	// 			updatedInterestsArray.push(selections[i].value);
-	// 		}
-	// 	}
-		
-	// 	setSelectedInterests(updatedInterestsArray);
-	// }
+	const handleInterestsSelection = (event) => {
+		var selections = event.target.options;
+		const updatedInterestsArray = [];
+		for (var i = 0; i < selections.length; i++){
+			if(selections[i].selected){
+				updatedInterestsArray.push(selections[i].value);
+			}
+		}
+		setSelectedInterests(updatedInterestsArray);
+	}
 	
 	// ================ Create and Send Connect Note(s) ===============================
 	const handleMakingConnectNote = async (fullName) => {
@@ -224,10 +223,8 @@ function Home(props) {
 	// };
 	// ================ Create and Send Connect Note(s) ===============================
 
-	const handleNoteTextAreaChange = (event, index) => {
-		const updatedConnectNoteArray = [...connectNoteArray];
-		updatedConnectNoteArray[index] = event.target.value;
-		setConnectNoteArray(updatedConnectNoteArray);
+	const handleNoteTextAreaChange = (event) => {
+		setNoteTextArea(event.target.value);
 	};
 
 	return (
@@ -247,11 +244,80 @@ function Home(props) {
 							onClick={() => {
 								setShowProfileArea(true);
 								setSelectedName(leadInfo[4]);
-							}}
-						>
+							}}>
 							{leadInfo[0]}, {leadInfo[1]}
 
-							{(connectNoteArray.length > 0) || (showProfileArea && selectedName===leadInfo[4]) && (
+							{showProfileArea && selectedName === leadInfo[4] && (
+								<>
+									<Form.Group>
+									<Form.Control
+										as="textarea"
+										value={noteTextArea}
+										onChange={handleNoteTextAreaChange}
+										placeholder="The generated note will appear here"
+									/>
+									</Form.Group>
+
+									<ButtonGroup aria-label="Basic example" className="mb-2">
+										<Button onClick={handleGettingPeopleInterests(sessionId, leadInfo[4])}>
+											Get people interests
+										</Button>
+										<Button onClick={handleGettingCompanyInterests(sessionId, leadInfo[4])}>
+											Get company interests
+										</Button>
+										<Button onClick={handleMakingConnectNote(leadInfo[0])}>
+											Make Connect Note
+										</Button>
+										{/* <Button onClick={handleSendingConnectNote(sessionId, leadInfo[4])}>
+											Send Connect Note
+										</Button> */}
+									</ButtonGroup>
+
+									{peopleInterestsArray.length > 0 && (
+										<ListGroup.Item>
+											<Form.Control
+											as="select"
+											multiple
+											onChange={handleInterestsSelection}
+											>
+											{peopleInterestsArray.map((interest) => (
+												<option key={interest}>{interest[0]}</option>
+											))}
+											</Form.Control>
+										</ListGroup.Item>
+									)}
+
+									{companyInterestsArray.length > 0 && (
+										<ListGroup.Item>
+											<Form.Control
+											as="select"
+											multiple
+											onChange={handleInterestsSelection}
+											>
+											{companyInterestsArray.map((interest) => (
+												<option key={interest}>{interest[0]}</option>
+											))}
+											</Form.Control>
+										</ListGroup.Item>
+									)}
+
+									{activityInterestsArray.length > 0 && (
+										<ListGroup.Item>
+											<Form.Control
+											as="select"
+											multiple
+											onChange={handleInterestsSelection}
+											>
+											{activityInterestsArray.map((interest) => (
+												<option key={interest}>{interest[0]}</option>
+											))}
+											</Form.Control>
+										</ListGroup.Item>
+									)}
+								</>
+							)}
+
+							{(connectNoteArray.length > 0) && (
 								<div>
 									<Form.Group>
 										<Form.Control
@@ -266,8 +332,7 @@ function Home(props) {
 									<ButtonGroup aria-label="Basic example" className="mb-2">
 										<Button onClick={ () => {
 											handleGettingPeopleInterests(sessionId, leadInfo[4])
-										}}
-										>
+										}}>
 											Get people interests
 										</Button>
 										<Button onClick={ () => {
