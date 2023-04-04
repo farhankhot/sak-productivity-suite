@@ -17,8 +17,8 @@ function Home(props) {
 	// const [activityInterestsArray, setActivityInterestsArray] = useState([]);
 	// const [selectedInterests, setSelectedInterests] = useState("");
 
-	// const [showProfileArea, setShowProfileArea] = useState(false);
-	// const [selectedName, setSelectedName] = useState("");
+	const [showProfileArea, setShowProfileArea] = useState(false);
+	const [selectedName, setSelectedName] = useState("");
 
 	const [leadsArray, setLeadsArray] = useState([]);
 	const [showCreateConnectNoteButton, setShowCreateConnectNoteButton] = useState(false);
@@ -203,7 +203,7 @@ function Home(props) {
 
 	const handleSendingMultipleConnectNote = async (sessionId) => {
 		try {
-			const response = await fetch("https://sak-productivity-suite.herokuapp.com/send-connect", {
+			const response = await fetch("https://sak-productivity-suite.herokuapp.com/send-multiple-connect", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json"
@@ -239,16 +239,15 @@ function Home(props) {
 				<ListGroup>
 					{leadsArray.map((leadInfo, index) => (
 						<ListGroup.Item
-							// action
-							// onClick={() => {
-							// 	setShowProfileArea(true);
-							// 	setSelectedName(leadInfo[0]);
-							// }}
+							action
+							onClick={() => {
+								setShowProfileArea(true);
+								setSelectedName(leadInfo[4]);
+							}}
 						>
 							{leadInfo[0]}, {leadInfo[1]}
 
-							{connectNoteArray.length > 0 && (
-									
+							{connectNoteArray.length > 0 || (showProfileArea && selectedName==leadInfo[4]) &&  (
 								<>
 									<textarea
 										value={connectNoteArray[index]} 
