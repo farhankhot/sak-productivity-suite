@@ -148,6 +148,7 @@ function Home(props) {
 	// 	setSelectedInterests(updatedInterestsArray);
 	// }
 	
+	// ================ Create and Send Connect Note(s) ===============================
 	const handleMakingConnectNote = async (fullName) => {
 		
 		// TODO: Add summary, interests back
@@ -181,26 +182,25 @@ function Home(props) {
 		}
 	};
 
-	// ================ Create and Send Connect Note(s) ===============================
-	// const handleSendingConnectNote = async (sessionId, profileId) => {
-	// 	try {
-	// 		const response = await fetch("https://sak-productivity-suite.herokuapp.com/send-connect", {
-	// 			method: "POST",
-	// 			headers: {
-	// 				"Content-Type": "application/json"
-	// 			},
-	// 			body: JSON.stringify({
-	// 				sessionId: sessionId,
-	// 				profileId: profileId,
-	// 				text: noteTextArea
-	// 			})
-	// 		});
-	// 		const data = await response.json();
-	// 		console.log("Successfully sent the connect note to the person", data.message);
-	// 	}catch(error){
-	// 		console.log(error);
-	// 	}
-	// };
+	const handleSendingConnectNote = async (sessionId, profileId) => {
+		try {
+			const response = await fetch("https://sak-productivity-suite.herokuapp.com/send-connect", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify({
+					sessionId: sessionId,
+					profileId: profileId,
+					text: noteTextArea
+				})
+			});
+			const data = await response.json();
+			console.log("Successfully sent the connect note to the person", data.message);
+		}catch(error){
+			console.log(error);
+		}
+	};
 
 	// const handleSendingMultipleConnectNote = async (sessionId) => {
 	// 	try {
@@ -262,20 +262,18 @@ function Home(props) {
 									/>
 									
 									<ButtonGroup aria-label="Basic example" className="mb-2">
-										<Button >
+										<Button onClick={handleGettingPeopleInterests(sessionId, leadInfo[4])}>
 											Get people interests
 										</Button>
-										<Button >
+										<Button onClick={handleGettingCompanyInterests(sessionId, leadInfo[4] )}>
 											Get company interests
 										</Button>
-										<Button >
+										<Button onClick={handleMakingConnectNote(leadInfo[0])}>
 											Make Connect Note
-										</Button>
-
-										{/* TODO: Change param to profileId */}
-										{/* <Button onClick={handleSendingConnectNote(sessionId, leadInfo[4])}>
+										</Button>										
+										<Button onClick={handleSendingConnectNote(sessionId, leadInfo[4])}>
 											Send Connect Note
-										</Button> */}
+										</Button>
 									</ButtonGroup>
 								</>
 							)}
