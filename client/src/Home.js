@@ -252,17 +252,17 @@ function Home(props) {
 						>
 							{leadInfo[0]}, {leadInfo[1]}
 
-							{connectNoteArray.length > 0 || (showProfileArea && selectedName==leadInfo[4]) &&  (
+							{(connectNoteArray.length > 0) || (showProfileArea && selectedName===leadInfo[4]) && (
 								<div>
 									<Form.Group>
 										<Form.Control
 											as="textarea"
 											value={connectNoteArray[index]} 
-											onChange={(event) => {
-												const updatedConnectNote = [...connectNoteArray];
-												updatedConnectNote[index] = event.target.value;
-												setConnectNoteArray(updatedConnectNote);
-											}}
+											// onChange={(event) => {
+											// 	const updatedConnectNote = [...connectNoteArray];
+											// 	updatedConnectNote[index] = event.target.value;
+											// 	setConnectNoteArray(updatedConnectNote);
+											// }}
 										/>
 									</Form.Group>
 									
