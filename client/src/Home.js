@@ -236,7 +236,6 @@ function Home(props) {
 			{/* DONE: Add the 4 usual buttons after handleAutoCreatingNotes, Add a send to all button */}
 			{/* DONE: Add option to click the lead div and have 4 usual buttons+textarea popup */}
 			
-			{/* TODO: Fix zombie processes (have 4 buttons+textarea w/ connect note appear as soon as finished making) */}
 			{/* TODO: Check if getting all lead_info works (relationships, interests) */}
 			<Container>
 				<h1>Search Results:</h1>
@@ -244,10 +243,10 @@ function Home(props) {
 					{leadsArray.map((leadInfo, index) => (
 						<ListGroup.Item
 							
-							onClick={(e) => {
+							onClick={() => {
 								setShowProfileArea(true);
 								setSelectedName(leadInfo[4]);
-								e.stopPropagation();
+								
 							}}
 						>
 							{leadInfo[0]}, {leadInfo[1]}
