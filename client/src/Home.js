@@ -20,7 +20,6 @@ function Home(props) {
 	const [selectedInterests, setSelectedInterests] = useState("");
 
 	const [showProfileArea, setShowProfileArea] = useState(false);
-	const [selectedName, setSelectedName] = useState("");
 
 	const [leadsArray, setLeadsArray] = useState([]);
 	const [showCreateConnectNoteButton, setShowCreateConnectNoteButton] = useState(false);
@@ -68,7 +67,6 @@ function Home(props) {
 				})
 			});
 			const jobId = await response.json();
-			
 			CheckJobStatus(jobId.message, (resultArray) => {
 				// This gets an array of Connect Notes for each person in the lead list
 				// Save to an array, then display a textbox and the note for each note in list
@@ -76,8 +74,6 @@ function Home(props) {
 				setShowProfileArea(true);
 				console.log("Successfully gotten Connect note array: ", resultArray);
 			});
-			
-			
 		}catch(error){
 			console.log(error);
 		}
@@ -95,15 +91,11 @@ function Home(props) {
 					profileUrn: profileUrn
 				})
 			});
-			
 			const data = await response.json();			
 			const jobId = data.message;
-			
 			CheckJobStatus(jobId, (peopleInterestsArray) => {
-				
 				setPeopleInterestsArray(peopleInterestsArray);	
 			});
-
 		} catch (error) {
 			console.error(error);
 		}
@@ -121,12 +113,9 @@ function Home(props) {
 					profileUrn: profileUrn
 				})
 			});
-			
 			const data = await response.json();
 			const jobId = data.message;
-			
 			CheckJobStatus(jobId, (companyInterestsArray) => {
-				
 				setCompanyInterestsArray(companyInterestsArray);	
 			});
 		} catch (error) {
@@ -183,25 +172,25 @@ function Home(props) {
 		}
 	};
 
-	const handleSendingConnectNote = async (sessionId, profileId) => {
-		try {
-			const response = await fetch("https://sak-productivity-suite.herokuapp.com/send-connect", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json"
-				},
-				body: JSON.stringify({
-					sessionId: sessionId,
-					profileId: profileId,
-					text: noteTextArea
-				})
-			});
-			const data = await response.json();
-			console.log("Successfully sent the connect note to the person", data.message);
-		}catch(error){
-			console.log(error);
-		}
-	};
+	// const handleSendingConnectNote = async (sessionId, profileId) => {
+	// 	try {
+	// 		const response = await fetch("https://sak-productivity-suite.herokuapp.com/send-connect", {
+	// 			method: "POST",
+	// 			headers: {
+	// 				"Content-Type": "application/json"
+	// 			},
+	// 			body: JSON.stringify({
+	// 				sessionId: sessionId,
+	// 				profileId: profileId,
+	// 				text: noteTextArea
+	// 			})
+	// 		});
+	// 		const data = await response.json();
+	// 		console.log("Successfully sent the connect note to the person", data.message);
+	// 	}catch(error){
+	// 		console.log(error);
+	// 	}
+	// };
 
 	// const handleSendingMultipleConnectNote = async (sessionId) => {
 	// 	try {
@@ -246,7 +235,6 @@ function Home(props) {
 						<ListGroup.Item
 							onClick={() => {
 								setShowProfileArea(true);
-								setSelectedName(leadInfo[4]);
 							}}>
 							{leadInfo[0]}, {leadInfo[1]}
 
@@ -279,12 +267,54 @@ function Home(props) {
 										}}>
 											Make Connect Note
 										</Button>										
-										<Button onClick={ () => {
+										{/* <Button onClick={ () => {
 											handleSendingConnectNote(sessionId, leadInfo[4])
 										}}>
 											Send Connect Note
-										</Button>
+										</Button> */}
 									</ButtonGroup>
+
+									{peopleInterestsArray.length > 0 && (
+										<ListGroup.Item>
+											<Form.Control
+											as="select"
+											multiple
+											onChange={handleInterestsSelection}
+											>
+											{peopleInterestsArray.map((interest) => (
+												<option key={interest}>{interest[0]}</option>
+											))}
+											</Form.Control>
+										</ListGroup.Item>
+									)}
+
+									{companyInterestsArray.length > 0 && (
+										<ListGroup.Item>
+											<Form.Control
+											as="select"
+											multiple
+											onChange={handleInterestsSelection}
+											>
+											{companyInterestsArray.map((interest) => (
+												<option key={interest}>{interest[0]}</option>
+											))}
+											</Form.Control>
+										</ListGroup.Item>
+									)}
+
+									{activityInterestsArray.length > 0 && (
+										<ListGroup.Item>
+											<Form.Control
+											as="select"
+											multiple
+											onChange={handleInterestsSelection}
+											>
+											{activityInterestsArray.map((interest) => (
+												<option key={interest}>{interest[0]}</option>
+											))}
+											</Form.Control>
+										</ListGroup.Item>
+									)}
 								</div>
 							)}
 						</ListGroup.Item>

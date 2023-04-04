@@ -542,7 +542,13 @@ def job_status():
 @app.route('/get-people-interests', methods=['POST'])
 def get_people_interests():
     
-    cookie_dict = request.json['cookie'] # type: ignore
+    session_id = request.json['sessionId'] # type: ignore
+    # print("get_people_interests session_id: ", session_id)
+
+    # TODO: error handling
+    cookie_dict = dbCon.get_cookie_from_user_sessions(session_id)
+    # print("get_people_interests cookie_dict: ", cookie_dict)
+
     profile_urn = request.json['profileUrn'] # type: ignore
     
     data = q.enqueue(GetPeopleInterests, cookie_dict, profile_urn)
@@ -554,11 +560,16 @@ def get_people_interests():
 @app.route('/get-company-interests', methods=['POST'])
 def get_company_interests():
     
-    cookie_dict = request.json['cookie'] # type: ignore
-    public_id = request.json
+    session_id = request.json['sessionId'] # type: ignore
+    # print("get_company_interests session_id: ", session_id)
+
+    # TODO: error handling
+    cookie_dict = dbCon.get_cookie_from_user_sessions(session_id)
+    # print("get_company_interests cookie_dict: ", cookie_dict)
+    
     profile_urn = request.json['profileUrn'] # type: ignore
 
-    data = q.enqueue(GetCompanyInterests, cookie_dict, public_id, profile_urn)
+    data = q.enqueue(GetCompanyInterests, cookie_dict, profile_urn)
     
     job_id = data.get_id()
     
