@@ -232,9 +232,11 @@ function Home(props) {
                 Auto Create notes for all leads
             </Button>}
 
-			{/* TODO: Add the 4 usual buttons after handleAutoCreatingNotes, Add a send to all button */}
-			{/* TODO: Add option to click the lead div and have 4 usual buttons+textarea popup */}
-
+			{/* DONE: Add the 4 usual buttons after handleAutoCreatingNotes, Add a send to all button */}
+			{/* DONE: Add option to click the lead div and have 4 usual buttons+textarea popup */}
+			
+			{/* TODO: Fix zombie processes (have 4 buttons+textarea w/ connect note appear as soon as finished making) */}
+			{/* TODO: Check if getting all lead_info works (relationships, interests) */}
 			<Container>
 				<h1>Search Results:</h1>
 				<ListGroup>
@@ -260,13 +262,13 @@ function Home(props) {
 									/>
 									
 									<ButtonGroup aria-label="Basic example" className="mb-2">
-										<Button onClick={handleGettingPeopleInterests(sessionId, leadInfo[4])}>
+										<Button >
 											Get people interests
 										</Button>
-										<Button onClick={handleGettingCompanyInterests(sessionId, leadInfo[4] )}>
+										<Button >
 											Get company interests
 										</Button>
-										<Button onClick={handleMakingConnectNote(leadInfo[0])}>
+										<Button >
 											Make Connect Note
 										</Button>
 
