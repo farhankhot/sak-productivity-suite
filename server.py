@@ -399,7 +399,38 @@ def GetLeadInfo(cookie_dict, leads_list, member_urn_id_list):
         t.append(connect_note)
     return t
 
+def SendMultipleConnectNote(cookie_dict, member_urn_id_list, connect_note_list):
+    api = Linkedin(cookies=cookie_dict) # type: ignore
+    
+    error_boolean_list = []
+    for i, member in enumerate(member_urn_id_list):
+        # error_boolean = api.add_connection(member, connect_note_list[i])
+        # error_boolean_list.append(error_boolean)
+        
+        # Testing
+        print(member, connect_note_list[i])
+
+    return jsonify(success=True, message=error_boolean_list)
+
 # ================================================ ROUTES START =============================================
+@app.route('/send-multiple-connect', methods=['POST'])
+def send_multiple_connect():
+
+    session_id = request.json['sessionId'] # type: ignore
+    print("get_lead_info session_id: ", session_id)
+
+    # TODO: error handling
+    cookie_dict = dbCon.get_cookie_from_user_sessions(session_id)
+    print("get_lead_info cookie_dict: ", cookie_dict)
+
+    member_urn_id_list = request.json['memberUrnIdArray'] # type: ignore
+    connect_note_list = request.json['connectNoteArray'] # type: ignore
+ 
+    data = q.enqueue(SendMultipleConnectNote, cookie_dict, member_urn_id_list, connect_note_list)
+    job_id = data.get_id()
+
+    return jsonify(success=True, message=job_id)
+
 @app.route('/get-lead-info', methods=['POST'])
 def get_lead_info():
 

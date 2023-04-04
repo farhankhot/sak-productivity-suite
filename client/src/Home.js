@@ -200,6 +200,26 @@ function Home(props) {
 			console.log(error);
 		}
 	};
+
+	const handleSendingMultipleConnectNote = async (sessionId) => {
+		try {
+			const response = await fetch("https://sak-productivity-suite.herokuapp.com/send-connect", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify({
+					sessionId: sessionId,
+					memberUrnIdArray: memberUrnIdArray,
+					text: connectNoteArray
+				})
+			});
+			const data = await response.json();
+			console.log("Successfully sent the connect note to the person", data.message);
+		}catch(error){
+			console.log(error);
+		}
+	};
 	// ================ Create and Send Connect Note ===============================
 
 	return (
@@ -211,8 +231,8 @@ function Home(props) {
                 Auto Create notes for all leads
             </Button>}
 
-			{/* Add the 4 usual buttons after handleAutoCreatingNotes, Add a send to all button */}
-			{/* Add option to click the lead div and have 4 usual buttons+textarea popup */}
+			{/* TODO: Add the 4 usual buttons after handleAutoCreatingNotes, Add a send to all button */}
+			{/* TODO: Add option to click the lead div and have 4 usual buttons+textarea popup */}
 
 			<Container>
 				<h1>Search Results:</h1>
@@ -249,8 +269,8 @@ function Home(props) {
 										<Button onClick={handleMakingConnectNote(leadInfo[0])}>
 											Make Connect Note
 										</Button>
-										
-										{/* Change param to profileId */}
+
+										{/* TODO: Change param to profileId */}
 										<Button onClick={handleSendingConnectNote(sessionId, leadInfo[4])}>
 											Send Connect Note
 										</Button>
@@ -261,9 +281,9 @@ function Home(props) {
 					))}
 				</ListGroup>
 				{/* leadInfo out of scope here, need to send a array of member_urns to handlSendingConnectNote */}
-				{/* <Button onClick={handleSendingConnectNote(sessionId, leadInfo[4])}>
+				{connectNoteArray.length > 0 && (<Button onClick={handleSendingMultipleConnectNote(sessionId)}>
 					Send Connect Note to all leads
-				</Button> */}
+				</Button>)}
 			</Container>
 		</>
 	)
