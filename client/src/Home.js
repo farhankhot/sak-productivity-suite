@@ -4,6 +4,7 @@ import {CheckJobStatus} from "./CheckJobStatus.js";
 import Button from 'react-bootstrap/Button';
 import { ButtonGroup, ListGroup } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
+import Form from 'react-bootstrap/Form';
 
 function Home(props) {
 	const {sessionId} = props;
@@ -252,14 +253,17 @@ function Home(props) {
 
 							{connectNoteArray.length > 0 || (showProfileArea && selectedName==leadInfo[4]) &&  (
 								<>
-									<textarea
-										value={connectNoteArray[index]} 
-										onChange={(event) => {
-											const updatedConnectNote = [...connectNoteArray];
-											updatedConnectNote[index] = event.target.value;
-											setConnectNoteArray(updatedConnectNote);
-										}}
-									/>
+									<Form.Group>
+										<Form.Control
+											as="textarea"
+											value={connectNoteArray[index]} 
+											onChange={(event) => {
+												const updatedConnectNote = [...connectNoteArray];
+												updatedConnectNote[index] = event.target.value;
+												setConnectNoteArray(updatedConnectNote);
+											}}
+										/>
+									</Form.Group>
 									
 									<ButtonGroup aria-label="Basic example" className="mb-2">
 										<Button type="button" onClick={handleGettingPeopleInterests(sessionId, leadInfo[4])}>
