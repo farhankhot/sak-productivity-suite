@@ -243,7 +243,7 @@ function Home(props) {
 				<ListGroup>
 					{leadsArray.map((leadInfo, index) => (
 						<ListGroup.Item
-							action
+							
 							onClick={(e) => {
 								setShowProfileArea(true);
 								setSelectedName(leadInfo[4]);
@@ -258,25 +258,38 @@ function Home(props) {
 										<Form.Control
 											as="textarea"
 											value={connectNoteArray[index]} 
-											// onChange={(event) => {
-											// 	const updatedConnectNote = [...connectNoteArray];
-											// 	updatedConnectNote[index] = event.target.value;
-											// 	setConnectNoteArray(updatedConnectNote);
-											// }}
+											onChange={(event) => {
+												const updatedConnectNote = [...connectNoteArray];
+												updatedConnectNote[index] = event.target.value;
+												setConnectNoteArray(updatedConnectNote);
+											}}
 										/>
 									</Form.Group>
 									
 									<ButtonGroup aria-label="Basic example" className="mb-2">
-										<Button onClick={handleGettingPeopleInterests(sessionId, leadInfo[4])}>
+										<Button onClick={ (e) => {
+											e.stopPropagation();
+											handleGettingPeopleInterests(sessionId, leadInfo[4])
+										}}
+										>
 											Get people interests
 										</Button>
-										<Button onClick={handleGettingCompanyInterests(sessionId, leadInfo[4] )}>
+										<Button onClick={ (e) => {
+											e.stopPropagation();
+											handleGettingCompanyInterests(sessionId, leadInfo[4])
+										}}>
 											Get company interests
 										</Button>
-										<Button onClick={handleMakingConnectNote(leadInfo[0])}>
+										<Button onClick={ (e) => {
+											e.stopPropagation();
+											handleMakingConnectNote(leadInfo[0])
+										}}>
 											Make Connect Note
 										</Button>										
-										<Button onClick={handleSendingConnectNote(sessionId, leadInfo[4])}>
+										<Button onClick={ (e) => {
+											e.stopPropagation();
+											handleSendingConnectNote(sessionId, leadInfo[4])
+										}}>
 											Send Connect Note
 										</Button>
 									</ButtonGroup>
