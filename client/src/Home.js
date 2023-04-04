@@ -73,7 +73,7 @@ function Home(props) {
 				// This gets an array of Connect Notes for each person in the lead list
 				// Save to an array, then display a textbox and the note for each note in list
 				setConnectNoteArray(resultArray);
-				showProfileArea(true);
+				setShowProfileArea(true);
 				console.log("Successfully gotten Connect note array: ", resultArray);
 			});
 			
