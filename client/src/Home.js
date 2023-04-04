@@ -242,18 +242,16 @@ function Home(props) {
 				<ListGroup>
 					{leadsArray.map((leadInfo, index) => (
 						<ListGroup.Item
-							
 							onClick={() => {
 								setShowProfileArea(true);
 								setSelectedName(leadInfo[4]);
-								
 							}}
 						>
 							{leadInfo[0]}, {leadInfo[1]}
 
 							{(connectNoteArray.length > 0) || (showProfileArea && selectedName===leadInfo[4]) && (
 								<div>
-									<Form.Group>
+									
 										<Form.Control
 											as="textarea"
 											value={connectNoteArray[index]} 
@@ -263,30 +261,26 @@ function Home(props) {
 												setConnectNoteArray(updatedConnectNote);
 											}}
 										/>
-									</Form.Group>
+									
 									
 									<ButtonGroup aria-label="Basic example" className="mb-2">
 										<Button onClick={ () => {
-											
 											handleGettingPeopleInterests(sessionId, leadInfo[4])
 										}}
 										>
 											Get people interests
 										</Button>
 										<Button onClick={ () => {
-											
 											handleGettingCompanyInterests(sessionId, leadInfo[4])
 										}}>
 											Get company interests
 										</Button>
 										<Button onClick={ () => {
-											
 											handleMakingConnectNote(leadInfo[0])
 										}}>
 											Make Connect Note
 										</Button>										
 										<Button onClick={ () => {
-											
 											handleSendingConnectNote(sessionId, leadInfo[4])
 										}}>
 											Send Connect Note
