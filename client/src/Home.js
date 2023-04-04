@@ -266,27 +266,27 @@ function Home(props) {
 									</Form.Group>
 									
 									<ButtonGroup aria-label="Basic example" className="mb-2">
-										<Button onClick={ (e) => {
-											e.stopPropagation();
+										<Button onClick={ () => {
+											
 											handleGettingPeopleInterests(sessionId, leadInfo[4])
 										}}
 										>
 											Get people interests
 										</Button>
-										<Button onClick={ (e) => {
-											e.stopPropagation();
+										<Button onClick={ () => {
+											
 											handleGettingCompanyInterests(sessionId, leadInfo[4])
 										}}>
 											Get company interests
 										</Button>
-										<Button onClick={ (e) => {
-											e.stopPropagation();
+										<Button onClick={ () => {
+											
 											handleMakingConnectNote(leadInfo[0])
 										}}>
 											Make Connect Note
 										</Button>										
-										<Button onClick={ (e) => {
-											e.stopPropagation();
+										<Button onClick={ () => {
+											
 											handleSendingConnectNote(sessionId, leadInfo[4])
 										}}>
 											Send Connect Note
