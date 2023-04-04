@@ -12,8 +12,8 @@ function Home(props) {
 	
 	const [noteTextArea, setNoteTextArea] = useState(""); 
 	
-	// const [peopleInterestsArray, setPeopleInterestsArray] = useState([]);	
-	// const [companyInterestsArray, setCompanyInterestsArray] = useState([]);	
+	const [peopleInterestsArray, setPeopleInterestsArray] = useState([]);	
+	const [companyInterestsArray, setCompanyInterestsArray] = useState([]);	
 	// const [activityInterestsArray, setActivityInterestsArray] = useState([]);
 	// const [selectedInterests, setSelectedInterests] = useState("");
 
@@ -79,6 +79,107 @@ function Home(props) {
 			console.log(error);
 		}
 	};
+
+	const handleGettingPeopleInterests = async (sessionId, profileUrn) => {
+		try {
+			const response = await fetch("https://sak-productivity-suite.herokuapp.com/get-people-interests", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify({
+					sessionId: sessionId,
+					profileUrn: profileUrn
+				})
+			});
+			
+			const data = await response.json();			
+			const jobId = data.message;
+			
+			CheckJobStatus(jobId, (peopleInterestsArray) => {
+				
+				setPeopleInterestsArray(peopleInterestsArray);	
+			});
+
+		} catch (error) {
+			console.error(error);
+		}
+	};
+	
+	const handleGettingCompanyInterests = async (sessionId, profileUrn) => {
+		try {
+			const response = await fetch("https://sak-productivity-suite.herokuapp.com/get-company-interests", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify({
+					sessionId: sessionId,
+					profileUrn: profileUrn
+				})
+			});
+			
+			const data = await response.json();
+			const jobId = data.message;
+			
+			CheckJobStatus(jobId, (companyInterestsArray) => {
+				
+				setCompanyInterestsArray(companyInterestsArray);	
+			});
+		} catch (error) {
+			console.error(error);
+		}
+	};
+	
+	// const handleGettingActivityInterests = () => {
+		// // TODO
+	// };
+	
+	// const handleInterestsSelection = (event) => {
+		
+	// 	var selections = event.target.options;
+	// 	const updatedInterestsArray = [];
+	// 	for (var i = 0; i < selections.length; i++){
+	// 		if(selections[i].selected){
+	// 			updatedInterestsArray.push(selections[i].value);
+	// 		}
+	// 	}
+		
+	// 	setSelectedInterests(updatedInterestsArray);
+	// }
+	
+	const handleMakingConnectNote = async (fullName) => {
+		
+		// TODO: Add summary, interests back
+		const prompt = "This is the profile of a person: " + fullName
+		+ " This is their summary: " +
+		" These are their interests: " + 
+		+ " Use the internet to get something useful about the interests and use it in the request. "
+		+ " Write a request to connect with them. Make it casual but eyecatching. The goal is to ask about their current Salesforce implementation. The length should be no more than 300 characters.";
+		
+		try {
+			const response = await fetch("https://sak-productivity-suite.herokuapp.com/use-bingai", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify({
+					prompt: prompt
+				})
+			});
+			
+			const data = await response.json();
+			const jobId = data.message;
+			
+			CheckJobStatus(jobId, (resultArray) => {
+				
+				setNoteTextArea(resultArray);	
+			});
+
+		}catch(error){
+			console.log(error);
+		}
+	};
 		
 	const handleSendingConnectNote = async (sessionId, profileId) => {
 		try {
@@ -110,6 +211,9 @@ function Home(props) {
                 Auto Create notes for all leads
             </Button>}
 
+			{/* Add the 4 usual buttons after handleAutoCreatingNotes, Add a send to all button */}
+			{/* Add option to click the lead div and have 4 usual buttons+textarea popup */}
+
 			<Container>
 				<h1>Search Results:</h1>
 				<ListGroup>
@@ -134,9 +238,23 @@ function Home(props) {
 											setConnectNoteArray(updatedConnectNote);
 										}}
 									/>
-									<Button onClick={handleSendingConnectNote(sessionId, leadInfo[4])}>
-										Send Connect Note
-									</Button>
+									
+									<ButtonGroup aria-label="Basic example" className="mb-2">
+										<Button onClick={handleGettingPeopleInterests(sessionId, leadInfo[4])}>
+											Get people interests
+										</Button>
+										<Button onClick={handleGettingCompanyInterests(sessionId, leadInfo[4] )}>
+											Get company interests
+										</Button>
+										<Button onClick={handleMakingConnectNote(leadInfo[0])}>
+											Make Connect Note
+										</Button>
+										
+										{/* Change param to profileId */}
+										<Button onClick={handleSendingConnectNote(sessionId, leadInfo[4])}>
+											Send Connect Note
+										</Button>
+									</ButtonGroup>
 								</>
 							)}
 						</ListGroup.Item>
