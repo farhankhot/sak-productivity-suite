@@ -80,9 +80,13 @@ def search_leads(lead_name, title, current_company, location):
 
     try:
         cursor = connection.cursor()
-        t = ((lead_name, title, current_company, location), )
-        cursor.execute("SELECT cookie FROM socialmedia.user_sessions WHERE session_id=%s", t)
+        t = (f'%{lead_name}%', f'%{title}%', f'%{current_company}%', f'%{location}%')
+        cursor.execute("SELECT cookie FROM socialmedia.leads WHERE session_id LIKE %s \
+                       AND title LIKE %s \
+                       AND current_company LIKE %s \
+                       AND location LIKE %s", t) # type: ignore
         result = cursor.fetchone()
+        print(result)
         if result:
             return json.loads(result[0])
         else:
@@ -91,34 +95,3 @@ def search_leads(lead_name, title, current_company, location):
     except (Exception, psycopg2.Error) as error:
         print("Error while connecting to PostgreSQL", error)
         return False
-
-# def getSearchParams(title, location, currentcompany): 
-
-#     userid = "admin@admin.com"
-#     cookie = "Null"
-#     mutualconnections = "Null"
-#     data_time = datetime.now()
-    
-#     try:
-#         userid, cookie, title, location, currentcompany, mutualconnections
-#         cursor = connection.cursor()
-#         # Executing a SQL query to insert datetime into table
-#         insert_query = """ INSERT INTO socialmedia.searchparams(userid, cookie, title, location, currentcompany, mutualconnections, data_time)VALUES (%s, %s, %s, %s, %s, %s, %s); """
-        
-#         cursor.execute(insert_query, userid, cookie, title, location, currentcompany, mutualconnections, data_time)
-#         connection.commit()
-#         print("Record inserted successfully")
-
-#         return True 
-
-#     except (Exception, psycopg2.Error) as error:
-#         print("Error while connecting to PostgreSQL", error)
-
-#         return False
-
-#     finally:
-#         if connection:
-#             cursor.close()
-#             connection.close()
-#             print("PostgreSQL connection is closed")
-
