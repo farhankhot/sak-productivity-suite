@@ -15,9 +15,10 @@ function Home(props) {
 	const [noteTextArea, setNoteTextArea] = useState(""); 
 	
 	const [peopleInterestsArray, setPeopleInterestsArray] = useState(Array.from({length: 25}, () => []));
+	const [companyInterestsArray, setCompanyInterestsArray] = useState(Array.from({length: 25}, () => []));
+
+	// const [activityInterestsArray, setActivityInterestsArray] = useState(Array.from({length: 25}, () => []));
 	
-	const [companyInterestsArray, setCompanyInterestsArray] = useState([]);	
-	const [activityInterestsArray, setActivityInterestsArray] = useState([]);
 	const [selectedInterests, setSelectedInterests] = useState("");
 
 	const [showProfileArea, setShowProfileArea] = useState(false);
@@ -109,7 +110,7 @@ function Home(props) {
 		}
 	};
 	
-	const handleGettingCompanyInterests = async (sessionId, profileUrnStr) => {
+	const handleGettingCompanyInterests = async (sessionId, profileUrnStr, index) => {
 		const startIndex = profileUrnStr.indexOf("(") + 1;
 		const endIndex = profileUrnStr.indexOf(",");
 		const profileUrn = profileUrnStr.substring(startIndex, endIndex);
@@ -126,8 +127,12 @@ function Home(props) {
 			});
 			const data = await response.json();
 			const jobId = data.message;
-			CheckJobStatus(jobId, (companyInterestsArray) => {
-				setCompanyInterestsArray(companyInterestsArray);	
+			CheckJobStatus(jobId, (resultArray) => {
+				const newArray = [...companyInterestsArray];
+				for (let i = 0; i < resultArray.length; i++){
+					newArray[index].push(resultArray[i]);
+				}
+				setCompanyInterestsArray(newArray);	
 			});
 		} catch (error) {
 			console.error(error);
@@ -138,6 +143,7 @@ function Home(props) {
 		// TODO
 	};
 	
+	// TODO: Gets all of the selected interests, not just the current lead's
 	const handleInterestsSelection = (event) => {
 		var selections = event.target.options;
 		const updatedInterestsArray = [];
@@ -152,10 +158,10 @@ function Home(props) {
 	// ================ Create and Send Connect Note(s) ===============================
 	
 	// TODO: Add summary, interests back
-	const handleMakingConnectNote = async (fullName) => {
+	const handleMakingConnectNote = async (fullName, index) => {
 		const prompt = "This is the profile of a person: " + fullName
 		+ " This is their summary: " +
-		" These are their interests: " + 
+		" These are their interests: " + setSelectedInterests
 		+ " Use the internet to get something useful about the interests and use it in the request. "
 		+ " Write a request to connect with them. Make it casual but eyecatching. The goal is to ask about their current Salesforce implementation. The length should be no more than 300 characters.";
 		try {
@@ -173,8 +179,9 @@ function Home(props) {
 			const jobId = data.message;
 			
 			CheckJobStatus(jobId, (resultArray) => {
-				
-				setNoteTextArea(resultArray);	
+				const newArray = [...connectNoteArray];
+				newArray[index] = resultArray;
+				setConnectNoteArray(newArray);	
 			});
 
 		}catch(error){
@@ -298,20 +305,20 @@ function Home(props) {
 											</Form.Control>
 										</ListGroup.Item>
 									)}
-									{companyInterestsArray.length > 0 && (
+									{companyInterestsArray[index].length > 0 && (
 										<ListGroup.Item>
 											<Form.Control
 											as="select"
 											multiple
 											onChange={handleInterestsSelection}
 											>
-											{companyInterestsArray.map((interest) => (
+											{companyInterestsArray[index].map((interest) => (
 												<option key={interest}>{interest[0]}</option>
 											))}
 											</Form.Control>
 										</ListGroup.Item>
 									)}
-									{activityInterestsArray.length > 0 && (
+									{/* {activityInterestsArray.length > 0 && (
 										<ListGroup.Item>
 											<Form.Control
 											as="select"
@@ -323,7 +330,7 @@ function Home(props) {
 											))}
 											</Form.Control>
 										</ListGroup.Item>
-									)}
+									)} */}
 								</div>
 							)}
 						</ListGroup.Item>
