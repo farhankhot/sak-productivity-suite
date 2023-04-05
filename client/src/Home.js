@@ -292,7 +292,7 @@ function Home(props) {
 											multiple
 											onChange={handleInterestsSelection}
 											>
-											{peopleInterestsArray.map((interest) => (
+											{peopleInterestsArray[index].map((interest) => (
 												<option key={interest}>{interest[0]}</option>
 											))}
 											</Form.Control>
