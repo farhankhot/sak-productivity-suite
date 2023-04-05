@@ -48,7 +48,7 @@ function DisplaySearchResults() {
 		
 	const handleGettingPeopleInterests = async (sessionId, profileUrnStr, index) => {
 		
-		setIsLoading(true);
+		// setIsLoading(true);
 		
 		const startIndex = profileUrnStr.indexOf("(") + 1;
 		const endIndex = profileUrnStr.indexOf(",");
@@ -85,7 +85,7 @@ function DisplaySearchResults() {
 	
 	const handleGettingCompanyInterests = async (sessionId, profileUrnStr, index) => {
 		
-		setIsLoading(true);
+		// setIsLoading(true);
 
 		const startIndex = profileUrnStr.indexOf("(") + 1;
 		const endIndex = profileUrnStr.indexOf(",");
