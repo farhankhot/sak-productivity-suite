@@ -62,34 +62,64 @@ def get_cookie_from_user_sessions(session_id):
         print("Error while connecting to PostgreSQL", error)
         return False
 
+def store_leads(lead_list):
 
-def getSearchParams(title, location, currentcompany): 
-
-    userid = "admin@admin.com"
-    cookie = "Null"
-    mutualconnections = "Null"
-    data_time = datetime.now()
-    
-    try:
-        userid, cookie, title, location, currentcompany, mutualconnections
-        cursor = connection.cursor()
-        # Executing a SQL query to insert datetime into table
-        insert_query = """ INSERT INTO socialmedia.searchparams(userid, cookie, title, location, currentcompany, mutualconnections, data_time)VALUES (%s, %s, %s, %s, %s, %s, %s); """
+    for lead_info in lead_list:
+        try:
+            cursor = connection.cursor()
+            t = (lead_info[0], lead_info[1], lead_info[2], lead_info[3], )
+            cursor.execute("INSERT INTO socialmedia.leads(lead_name, title, current_company, location) VALUES=%s", t)
+            connection.commit()
+            print("Record inserted successfully")
+            return True
+                
+        except (Exception, psycopg2.Error) as error:
+            print("Error while connecting to PostgreSQL", error)
+            return False
         
-        cursor.execute(insert_query, userid, cookie, title, location, currentcompany, mutualconnections, data_time)
-        connection.commit()
-        print("Record inserted successfully")
+def search_leads(lead_name, title, current_company, location):
 
-        return True 
-
+    try:
+        cursor = connection.cursor()
+        t = (lead_name, title, current_company, location)
+        cursor.execute("SELECT cookie FROM socialmedia.user_sessions WHERE session_id=%s", t)
+        result = cursor.fetchone()
+        if result:
+            return json.loads(result[0])
+        else:
+            return False
+            
     except (Exception, psycopg2.Error) as error:
         print("Error while connecting to PostgreSQL", error)
-
         return False
 
-    finally:
-        if connection:
-            cursor.close()
-            connection.close()
-            print("PostgreSQL connection is closed")
+# def getSearchParams(title, location, currentcompany): 
+
+#     userid = "admin@admin.com"
+#     cookie = "Null"
+#     mutualconnections = "Null"
+#     data_time = datetime.now()
+    
+#     try:
+#         userid, cookie, title, location, currentcompany, mutualconnections
+#         cursor = connection.cursor()
+#         # Executing a SQL query to insert datetime into table
+#         insert_query = """ INSERT INTO socialmedia.searchparams(userid, cookie, title, location, currentcompany, mutualconnections, data_time)VALUES (%s, %s, %s, %s, %s, %s, %s); """
+        
+#         cursor.execute(insert_query, userid, cookie, title, location, currentcompany, mutualconnections, data_time)
+#         connection.commit()
+#         print("Record inserted successfully")
+
+#         return True 
+
+#     except (Exception, psycopg2.Error) as error:
+#         print("Error while connecting to PostgreSQL", error)
+
+#         return False
+
+#     finally:
+#         if connection:
+#             cursor.close()
+#             connection.close()
+#             print("PostgreSQL connection is closed")
 

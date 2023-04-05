@@ -286,7 +286,6 @@ def GetCompanyInterests(cookie_dict, profile_urn):
     
     return final_companies_the_profile_is_interested_in
 
-# TODO: fast
 def SalesNavigatorLeadsInfo(api):
 
     res = api._fetch(
@@ -401,55 +400,35 @@ def GetLeadInfo(cookie_dict, leads_list, member_urn_id_list):
         t.append(connect_note)
     return t
 
-def SendMultipleConnectNote(cookie_dict, member_urn_id_list, connect_note_list):
-    api = Linkedin(cookies=cookie_dict) # type: ignore
-    
-    error_boolean_list = []
-    for i, member in enumerate(member_urn_id_list):
-        # error_boolean = api.add_connection(member, connect_note_list[i])
-        # error_boolean_list.append(error_boolean)
-        
-        # Testing
-        print(member, connect_note_list[i])
-
-    return jsonify(success=True, message=error_boolean_list)
-
 # ================================================ ROUTES START =============================================
-# @app.route('/send-multiple-connect', methods=['POST'])
-# def send_multiple_connect():
 
-#     session_id = request.json['sessionId'] # type: ignore
-#     print("get_lead_info session_id: ", session_id)
+@app.route('/search-leads-in-db', methods=['POST'])
+def search_leads_in_db():
 
-#     # TODO: error handling
-#     cookie_dict = dbCon.get_cookie_from_user_sessions(session_id)
-#     print("get_lead_info cookie_dict: ", cookie_dict)
-
-#     member_urn_id_list = request.json['memberUrnIdArray'] # type: ignore
-#     connect_note_list = request.json['text'] # type: ignore
+    lead_name = request.json['leadName'] # type: ignore
+    title = request.json['title'] # type: ignore
+    current_company = request.json['currentCompany'] # type: ignore
+    location = request.json['location'] # type: ignore
  
-#     data = q.enqueue(SendMultipleConnectNote, cookie_dict, member_urn_id_list, connect_note_list)
-#     job_id = data.get_id()
-
-#     return jsonify(success=True, message=job_id)
+    data = dbCon.search_leads(lead_name, title, current_company, location) # type: ignore
+    
+    return jsonify(success=True, message=data)
 
 @app.route('/get-lead-info', methods=['POST'])
 def get_lead_info():
 
     session_id = request.json['sessionId'] # type: ignore
-    print("get_lead_info session_id: ", session_id)
+    # print("get_lead_info session_id: ", session_id)
 
     # TODO: error handling
     cookie_dict = dbCon.get_cookie_from_user_sessions(session_id)
-    print("get_lead_info cookie_dict: ", cookie_dict)
+    # print("get_lead_info cookie_dict: ", cookie_dict)
 
     leads_list = request.json['leadsArray'] # type: ignore
     member_urn_id_list = request.json['memberUrnIdArray'] # type: ignore
  
     data = q.enqueue(GetLeadInfo, cookie_dict, leads_list, member_urn_id_list)
     job_id = data.get_id()
-    # job_id_list.append(job_id)
-    # data = GetLeadInfo(cookie_dict, leads_list, member_urn_id_list)
 
     return jsonify(success=True, message=job_id)
 
@@ -457,14 +436,15 @@ def get_lead_info():
 def get_leads():
 
     session_id = request.json['sessionId'] # type: ignore
-    print("get_leads session_id: ", session_id)
+    # print("get_leads session_id: ", session_id)
 
     # TODO: error handling
     cookie_dict = dbCon.get_cookie_from_user_sessions(session_id)
-    print("get_leads cookie_dict: ", cookie_dict)
+    # print("get_leads cookie_dict: ", cookie_dict)
     
     api = Linkedin(cookies=cookie_dict) # type: ignore
     lead_list, member_urn_id_list = SalesNavigatorLeadsInfo(api)
+    dbCon.store_leads(lead_list)
 
     return jsonify(success=True, lead_list=lead_list, member_urn_id_list=member_urn_id_list)
 

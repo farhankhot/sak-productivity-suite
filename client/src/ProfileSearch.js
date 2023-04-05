@@ -13,10 +13,10 @@ function ProfileSearch(props) {
 	const {sessionId} = props;
 	// console.log("ProfileSearch", sessionId);
 	
+	const [leadName, setLeadName] = useState("");
 	const [title, setTitle] = useState("");
 	const [location, setLocation] = useState("");
 	const [currentCompany, setCurrentCompany] = useState("");
-	const [mutualConnectionsBoolean, setMutualConnectionsBoolean] = useState(false);
 	
 	const [jobFinished, setJobFinished] = useState(false);
 	const [resultArray, setResultArray] = useState([]);
@@ -27,19 +27,20 @@ function ProfileSearch(props) {
 		
 	const handleSearchRequest = async () => {
 		try {
-			const response = await fetch("https://sak-productivity-suite.herokuapp.com/receive-link", {
+			const response = await fetch("https://sak-productivity-suite.herokuapp.com/search-leads-in-db", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json"
 				},
 				body: JSON.stringify({
 					sessionId: sessionId,
+					leadName: leadName,
 					title: title,
-					location: location,
 					currentCompany: currentCompany,
-					mutualConnections: mutualConnectionsBoolean
+					location: location
 				})
 			});
+
 			setIsLoading(true);
 			const data = await response.json();
 			const jobId = data.message;
@@ -66,36 +67,36 @@ function ProfileSearch(props) {
 							<Form.Group className="mb-3" controlId="formPosition">
 								<FloatingLabel 
 									controlId="floatingInput" 
-									label="Enter a position"
+									label="Enter name"
+									className="mb-3" >
+									<Form.Control 
+										type="text"
+										value={leadName}
+										onChange={(e) => setLeadName(e.target.value)} />
+									<Form.Text className="text-muted">
+										The name you want to search (Optional)
+									</Form.Text>
+								</FloatingLabel>
+							</Form.Group>
+
+							<Form.Group className="mb-3" controlId="formPosition">
+								<FloatingLabel 
+									controlId="floatingInput" 
+									label="Enter position"
 									className="mb-3" >
 									<Form.Control 
 										type="text"
 										value={title}
 										onChange={(e) => setTitle(e.target.value)} />
 									<Form.Text className="text-muted">
-										The position you want to search.
-									</Form.Text>
-								</FloatingLabel>
-							</Form.Group>
-
-							<Form.Group className="mb-3" controlId="formLocation">
-								<FloatingLabel 
-										controlId="floatingInput" 
-										label="Enter a location"
-										className="mb-3" >
-									<Form.Control 
-										type="text"
-										value={location} 
-										onChange={(e) => setLocation(e.target.value)} />
-									<Form.Text className="text-muted">
-										The location you want to search in
+										The position you want to search
 									</Form.Text>
 								</FloatingLabel>
 							</Form.Group>
 
 							<Form.Group className="mb-3" controlId="formCurrentCompany">
 								<FloatingLabel 
-									label="Enter the company"
+									label="Enter current company"
 									className="mb-3" >
 									<Form.Control 
 										type="text" 
@@ -103,21 +104,28 @@ function ProfileSearch(props) {
 										onChange={(e) => setCurrentCompany(e.target.value)}
 									/>
 									<Form.Text className="text-muted">
-										The company's employees you want to search
+										Which company's employees do you want to search?
 									</Form.Text>
 								</FloatingLabel>
 							</Form.Group>
 
-							<Form.Group className="mb-3" controlId="formMutualConnections">
-								<Form.Check 
-									type="checkbox"
-									label="Search only mutual connections"
-									value={mutualConnectionsBoolean} 
-									onChange={(e) => setMutualConnectionsBoolean(e.target.value)} />
+							<Form.Group className="mb-3" controlId="formLocation">
+								<FloatingLabel 
+										controlId="floatingInput" 
+										label="Enter location"
+										className="mb-3" >
+									<Form.Control 
+										type="text"
+										value={location} 
+										onChange={(e) => setLocation(e.target.value)} />
+									<Form.Text className="text-muted">
+										The location you want to search
+									</Form.Text>
+								</FloatingLabel>
 							</Form.Group>
 							
 							<Button variant="primary" type="button" onClick={handleSearchRequest}>
-								{isLoading ? 'Loading...' : 'Search'}
+								{isLoading ? 'Results Loading...' : 'Search'}
 							</Button>
 
 						</Form>

@@ -11,24 +11,19 @@ function Home(props) {
 	// console.log("Home sessionId: ", sessionId);
 
 	const [isLoading, setIsLoading] = useState(false);
-	
-	const [noteTextArea, setNoteTextArea] = useState(""); 
-	
+		
 	const [peopleInterestsArray, setPeopleInterestsArray] = useState(Array.from({length: 25}, () => []));
 	const [companyInterestsArray, setCompanyInterestsArray] = useState(Array.from({length: 25}, () => []));
-
 	// const [activityInterestsArray, setActivityInterestsArray] = useState(Array.from({length: 25}, () => []));
-	
 	const [selectedInterests, setSelectedInterests] = useState("");
 
 	const [showProfileArea, setShowProfileArea] = useState(false);
 
 	const [leadsArray, setLeadsArray] = useState([]);
-	const [showCreateConnectNoteButton, setShowCreateConnectNoteButton] = useState(false);
-
-	const [connectNoteArray, setConnectNoteArray] = useState([]);
-
 	const [memberUrnIdArray, setMemberUrnIdArray] = useState([]);
+
+	const [showCreateConnectNoteButton, setShowCreateConnectNoteButton] = useState(false);
+	const [connectNoteArray, setConnectNoteArray] = useState([]);
 		
 	const handleGettingLeads = async() => {
         try {
@@ -54,7 +49,6 @@ function Home(props) {
 	};
 
 	// This button goes through the lead list and creates a Connect note for them
-	// It chooses max 5 relationships + interests and prompts Bing Chat to output a Connect note 
 	const handleAutoCreatingNotes = async(sessionId, memberUrnId) => {
 		try {
 			const response = await fetch("https://sak-productivity-suite.herokuapp.com/get-lead-info", {
@@ -70,8 +64,6 @@ function Home(props) {
 			});
 			const jobId = await response.json();
 			CheckJobStatus(jobId.message, (resultArray) => {
-				// This gets an array of Connect Notes for each person in the lead list
-				// Save to an array, then display a textbox and the note for each note in list
 				setConnectNoteArray(resultArray);
 				setShowProfileArea(true);
 				console.log("Successfully gotten Connect note array: ", resultArray);
@@ -139,10 +131,9 @@ function Home(props) {
 		}
 	};
 	
-	const handleGettingActivityInterests = () => {
-		// TODO
-	};
-	
+	// TODO
+	// const handleGettingActivityInterests = () => { };
+			
 	// TODO: Gets all of the selected interests, not just the current lead's
 	const handleInterestsSelection = (event) => {
 		var selections = event.target.options;
@@ -154,14 +145,11 @@ function Home(props) {
 		}
 		setSelectedInterests(updatedInterestsArray);
 	}
-	
+
 	// ================ Create and Send Connect Note(s) ===============================
-	
-	// TODO: Add summary, interests back
 	const handleMakingConnectNote = async (fullName, index) => {
 		const prompt = "This is the profile of a person: " + fullName
-		+ " This is their summary: " +
-		" These are their interests: " + selectedInterests
+		+ " These are their interests: " + selectedInterests
 		+ " Use the internet to get something useful about the interests and use it in the request. "
 		+ " Write a request to connect with them. Make it casual but eyecatching. The goal is to ask about their current Salesforce implementation. The length should be no more than 300 characters.";
 		try {
@@ -189,45 +177,25 @@ function Home(props) {
 		}
 	};
 
-	// const handleSendingConnectNote = async (sessionId, profileId) => {
-	// 	try {
-	// 		const response = await fetch("https://sak-productivity-suite.herokuapp.com/send-connect", {
-	// 			method: "POST",
-	// 			headers: {
-	// 				"Content-Type": "application/json"
-	// 			},
-	// 			body: JSON.stringify({
-	// 				sessionId: sessionId,
-	// 				profileId: profileId,
-	// 				text: noteTextArea
-	// 			})
-	// 		});
-	// 		const data = await response.json();
-	// 		console.log("Successfully sent the connect note to the person", data.message);
-	// 	}catch(error){
-	// 		console.log(error);
-	// 	}
-	// };
-
-	// const handleSendingMultipleConnectNote = async (sessionId) => {
-	// 	try {
-	// 		const response = await fetch("https://sak-productivity-suite.herokuapp.com/send-multiple-connect", {
-	// 			method: "POST",
-	// 			headers: {
-	// 				"Content-Type": "application/json"
-	// 			},
-	// 			body: JSON.stringify({
-	// 				sessionId: sessionId,
-	// 				memberUrnIdArray: memberUrnIdArray,
-	// 				text: connectNoteArray
-	// 			})
-	// 		});
-	// 		const data = await response.json();
-	// 		console.log("Successfully sent the connect note to the person", data.message);
-	// 	}catch(error){
-	// 		console.log(error);
-	// 	}
-	// };
+	const handleSendingConnectNote = async (sessionId, profileId, index) => {
+		try {
+			const response = await fetch("https://sak-productivity-suite.herokuapp.com/send-connect", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify({
+					sessionId: sessionId,
+					profileId: profileId,
+					text: connectNoteArray[index]
+				})
+			});
+			const data = await response.json();
+			console.log("Successfully sent the connect note to the person", data.message);
+		}catch(error){
+			console.log(error);
+		}
+	};
 	// ================ Create and Send Connect Note(s) ===============================
 
 	const handleNoteTextAreaChange = (event, index) => {
@@ -241,12 +209,11 @@ function Home(props) {
             <Button variant="primary" type="button" onClick={handleGettingLeads}>
                 Get leads
             </Button>
+
 			{showCreateConnectNoteButton && <Button variant="primary" type="button" onClick={() => handleAutoCreatingNotes(sessionId, leadsArray[0][4])}>
                 Auto Create notes for all leads
             </Button>}
-			{/* {connectNoteArray.length > 0 && (<Button onClick={handleSendingMultipleConnectNote(sessionId)}>
-					Send Connect Note to all leads
-			</Button>)} */}
+
 			<Container>
 				<h1>Search Results:</h1>
 				<ListGroup>
@@ -256,8 +223,6 @@ function Home(props) {
 								setShowProfileArea(true);
 							}}>
 							{leadInfo[0]}, {leadInfo[1]}
-
-							{/* {(connectNoteArray.length > 0) && ( */}
 							
 							{showProfileArea && (
 								<div>
@@ -286,12 +251,13 @@ function Home(props) {
 										}}>
 											Make Connect Note
 										</Button>										
-										{/* <Button onClick={ () => {
-											handleSendingConnectNote(sessionId, leadInfo[4])
+										<Button onClick={ () => {
+											handleSendingConnectNote(sessionId, leadInfo[4], index)
 										}}>
 											Send Connect Note
-										</Button> */}
+										</Button>
 									</ButtonGroup>
+
 									{peopleInterestsArray[index].length > 0 && (
 										<ListGroup.Item>
 											<Form.Control
@@ -305,6 +271,7 @@ function Home(props) {
 											</Form.Control>
 										</ListGroup.Item>
 									)}
+									
 									{companyInterestsArray[index].length > 0 && (
 										<ListGroup.Item>
 											<Form.Control
@@ -318,6 +285,7 @@ function Home(props) {
 											</Form.Control>
 										</ListGroup.Item>
 									)}
+									
 									{/* {activityInterestsArray.length > 0 && (
 										<ListGroup.Item>
 											<Form.Control
@@ -331,6 +299,7 @@ function Home(props) {
 											</Form.Control>
 										</ListGroup.Item>
 									)} */}
+
 								</div>
 							)}
 						</ListGroup.Item>
