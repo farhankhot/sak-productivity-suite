@@ -161,7 +161,7 @@ function Home(props) {
 	const handleMakingConnectNote = async (fullName, index) => {
 		const prompt = "This is the profile of a person: " + fullName
 		+ " This is their summary: " +
-		" These are their interests: " + setSelectedInterests
+		" These are their interests: " + selectedInterests
 		+ " Use the internet to get something useful about the interests and use it in the request. "
 		+ " Write a request to connect with them. Make it casual but eyecatching. The goal is to ask about their current Salesforce implementation. The length should be no more than 300 characters.";
 		try {
