@@ -44,7 +44,7 @@ function DisplaySearchResults() {
 	
 	useEffect(() => {
 		setProfileInfoArray(resultArray);
-	}, []);	
+	}, [resultArray]);	
 		
 	const handleGettingPeopleInterests = async (sessionId, profileUrnStr, index) => {
 		
