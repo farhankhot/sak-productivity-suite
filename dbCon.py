@@ -67,7 +67,7 @@ def store_leads(lead_list):
     for lead_info in lead_list:
         try:
             cursor = connection.cursor()
-            t = (lead_info[0], lead_info[1], lead_info[2], lead_info[3], )
+            t = ( (lead_info[0], lead_info[1], lead_info[2], lead_info[3]), )
             cursor.execute("INSERT INTO socialmedia.leads(lead_name, title, current_company, location) VALUES=%s", t)
             connection.commit()
             print("Record inserted successfully")
