@@ -80,7 +80,7 @@ def search_leads(lead_name, title, current_company, location):
 
     try:
         cursor = connection.cursor()
-        t = (lead_name, title, current_company, location)
+        t = ((lead_name, title, current_company, location), )
         cursor.execute("SELECT cookie FROM socialmedia.user_sessions WHERE session_id=%s", t)
         result = cursor.fetchone()
         if result:
