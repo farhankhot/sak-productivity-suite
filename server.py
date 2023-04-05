@@ -329,7 +329,7 @@ def GetLeadInfo(cookie_dict, leads_list, member_urn_id_list):
         
         # Testing
         print(lead_idx)
-        if lead_idx == 2:
+        if lead_idx == 4:
             break   
 
         lead_info = []
@@ -355,49 +355,49 @@ def GetLeadInfo(cookie_dict, leads_list, member_urn_id_list):
         # ============= Getting Relationships =============================
         
         # ============= Getting interests =================================
-        # lead_interests = []
-        # interests = api._fetch(f"/graphql?includeWebMetadata=True&variables=(profileUrn:urn%3Ali%3Afsd_profile%3A{profile_urn},sectionType:interests,tabIndex:1,locale:en_US)&&queryId=voyagerIdentityDashProfileComponents.38247e27f7b9b2ecbd8e8452e3c1a02c")
-        # interests = interests.json()
-        # interests_json = json.dumps(interests)
+        lead_interests = []
+        interests = api._fetch(f"/graphql?includeWebMetadata=True&variables=(profileUrn:urn%3Ali%3Afsd_profile%3A{profile_urn},sectionType:interests,tabIndex:1,locale:en_US)&&queryId=voyagerIdentityDashProfileComponents.38247e27f7b9b2ecbd8e8452e3c1a02c")
+        interests = interests.json()
+        interests_json = json.dumps(interests)
 
-        # pattern = re.compile(r'"(urn:li:fsd_profile:[^"]*)"')
-        # matches = re.findall(pattern, interests_json)
-        # people_the_profile_is_interested_in_set = set(matches)
-        # people_the_profile_is_interested_in = [s.split(':')[-1] for s in people_the_profile_is_interested_in_set]
+        pattern = re.compile(r'"(urn:li:fsd_profile:[^"]*)"')
+        matches = re.findall(pattern, interests_json)
+        people_the_profile_is_interested_in_set = set(matches)
+        people_the_profile_is_interested_in = [s.split(':')[-1] for s in people_the_profile_is_interested_in_set]
 
-        # pattern_for_company = re.compile(r'"(urn:li:fsd_company:[^"]*)"')
-        # matches_for_company = re.findall(pattern_for_company, interests_json)
-        # companies_the_profile_is_interested_in_set = set(matches_for_company)
-        # companies_the_profile_is_interested_in = [s.split(':')[-1] for s in companies_the_profile_is_interested_in_set]
+        pattern_for_company = re.compile(r'"(urn:li:fsd_company:[^"]*)"')
+        matches_for_company = re.findall(pattern_for_company, interests_json)
+        companies_the_profile_is_interested_in_set = set(matches_for_company)
+        companies_the_profile_is_interested_in = [s.split(':')[-1] for s in companies_the_profile_is_interested_in_set]
 
-        # for i, profile_urn in enumerate(people_the_profile_is_interested_in):
-        #     if i == 1:
-        #         break
-        #     temp = api.get_profile(profile_urn)
-        #     first_name = temp['firstName']
-        #     last_name = temp['lastName']
-        #     full_name = first_name + " " + last_name 
-        #     lead_interests.append(full_name)
+        for i, profile_urn in enumerate(people_the_profile_is_interested_in):
+            if i == 1:
+                break
+            temp = api.get_profile(profile_urn)
+            first_name = temp['firstName']
+            last_name = temp['lastName']
+            full_name = first_name + " " + last_name 
+            lead_interests.append(full_name)
         
-        # for i, company_id in enumerate(companies_the_profile_is_interested_in):
-        #     if i == 1:
-        #         break
-        #     temp = api.get_company(company_id)
-        #     company_name = temp['universalName']
-        #     lead_interests.append([company_name, company_id])
+        for i, company_id in enumerate(companies_the_profile_is_interested_in):
+            if i == 1:
+                break
+            temp = api.get_company(company_id)
+            company_name = temp['universalName']
+            lead_interests.append([company_name, company_id])
         
-        # lead_info.append(lead_interests)
-        # # ============= Getting interests =================================
+        lead_info.append(lead_interests)
+        # ============= Getting interests =================================
         
-        # prompt = "This is the profile of a person: " + leads_list[lead_idx][0] + \
-        #     " These are their interests: " + ",".join(lead_interests) + \
-        #     " These are our mutual connections: " + "" + \
-        #     " Include something useful about the interests and use it in the request. " + \
-        #     " Write a request to connect with them. Make it casual but eyecatching. The goal is to ask about their current Salesforce implementation. The length should be no more than 300 characters."
+        prompt = "This is the profile of a person: " + leads_list[lead_idx][0] + \
+            " These are their interests: " + ",".join(lead_interests) + \
+            " These are our mutual connections: " + "" + \
+            " Include something useful about the interests and use it in the request. " + \
+            " Write a request to connect with them. Make it casual but eyecatching. The goal is to ask about their current Salesforce implementation. The length should be no more than 300 characters."
 
-        # connect_note = asyncio.run(UseBingAI(prompt))
+        connect_note = asyncio.run(UseBingAI(prompt))
         # print(connect_note)
-        connect_note = "hi," + leads_list[lead_idx][0]
+        # connect_note = "hi," + leads_list[lead_idx][0]
         t.append(connect_note)
     return t
 
