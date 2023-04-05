@@ -14,7 +14,8 @@ function Home(props) {
 	
 	const [noteTextArea, setNoteTextArea] = useState(""); 
 	
-	const [peopleInterestsArray, setPeopleInterestsArray] = useState([]);	
+	const peopleInterestsArray = Array.from({length: 3}, () => []);
+	
 	const [companyInterestsArray, setCompanyInterestsArray] = useState([]);	
 	const [activityInterestsArray, setActivityInterestsArray] = useState([]);
 	const [selectedInterests, setSelectedInterests] = useState("");
@@ -79,7 +80,7 @@ function Home(props) {
 		}
 	};
 
-	const handleGettingPeopleInterests = async (sessionId, profileUrnStr) => {
+	const handleGettingPeopleInterests = async (sessionId, profileUrnStr, index) => {
 		const startIndex = profileUrnStr.indexOf("(") + 1;
 		const endIndex = profileUrnStr.indexOf(",");
 		const profileUrn = profileUrnStr.substring(startIndex, endIndex);
@@ -96,8 +97,10 @@ function Home(props) {
 			});
 			const data = await response.json();			
 			const jobId = data.message;
-			CheckJobStatus(jobId, (peopleInterestsArray) => {
-				setPeopleInterestsArray(peopleInterestsArray);	
+			CheckJobStatus(jobId, (resultArray) => {
+				for (let i = 0; i < resultArray.length; i++){
+					peopleInterestsArray[index].push(resultArray[i]);
+				}	
 			});
 		} catch (error) {
 			console.error(error);
@@ -145,15 +148,14 @@ function Home(props) {
 	}
 	
 	// ================ Create and Send Connect Note(s) ===============================
+	
+	// TODO: Add summary, interests back
 	const handleMakingConnectNote = async (fullName) => {
-		
-		// TODO: Add summary, interests back
 		const prompt = "This is the profile of a person: " + fullName
 		+ " This is their summary: " +
 		" These are their interests: " + 
 		+ " Use the internet to get something useful about the interests and use it in the request. "
 		+ " Write a request to connect with them. Make it casual but eyecatching. The goal is to ask about their current Salesforce implementation. The length should be no more than 300 characters.";
-		
 		try {
 			const response = await fetch("https://sak-productivity-suite.herokuapp.com/use-bingai", {
 				method: "POST",
@@ -233,7 +235,9 @@ function Home(props) {
 			{showCreateConnectNoteButton && <Button variant="primary" type="button" onClick={() => handleAutoCreatingNotes(sessionId, leadsArray[0][4])}>
                 Auto Create notes for all leads
             </Button>}
-
+			{/* {connectNoteArray.length > 0 && (<Button onClick={handleSendingMultipleConnectNote(sessionId)}>
+					Send Connect Note to all leads
+			</Button>)} */}
 			<Container>
 				<h1>Search Results:</h1>
 				<ListGroup>
@@ -259,17 +263,17 @@ function Home(props) {
 									</Form.Group>
 									<ButtonGroup aria-label="Basic example" className="mb-2">
 										<Button onClick={ () => {
-											handleGettingPeopleInterests(sessionId, leadInfo[4])
+											handleGettingPeopleInterests(sessionId, leadInfo[4], index)
 										}}>
 											Get people interests
 										</Button>
 										<Button onClick={ () => {
-											handleGettingCompanyInterests(sessionId, leadInfo[4])
+											handleGettingCompanyInterests(sessionId, leadInfo[4], index)
 										}}>
 											Get company interests
 										</Button>
 										<Button onClick={ () => {
-											handleMakingConnectNote(leadInfo[0])
+											handleMakingConnectNote(leadInfo[0], index)
 										}}>
 											Make Connect Note
 										</Button>										
@@ -279,7 +283,6 @@ function Home(props) {
 											Send Connect Note
 										</Button> */}
 									</ButtonGroup>
-
 									{peopleInterestsArray.length > 0 && (
 										<ListGroup.Item>
 											<Form.Control
@@ -293,7 +296,6 @@ function Home(props) {
 											</Form.Control>
 										</ListGroup.Item>
 									)}
-
 									{companyInterestsArray.length > 0 && (
 										<ListGroup.Item>
 											<Form.Control
@@ -307,7 +309,6 @@ function Home(props) {
 											</Form.Control>
 										</ListGroup.Item>
 									)}
-
 									{activityInterestsArray.length > 0 && (
 										<ListGroup.Item>
 											<Form.Control
@@ -326,9 +327,6 @@ function Home(props) {
 						</ListGroup.Item>
 					))}
 				</ListGroup>
-				{/* {connectNoteArray.length > 0 && (<Button onClick={handleSendingMultipleConnectNote(sessionId)}>
-					Send Connect Note to all leads
-				</Button>)} */}
 			</Container>
 		</>
 	)
