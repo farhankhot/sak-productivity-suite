@@ -81,14 +81,14 @@ def search_leads(lead_name, title, current_company, location):
     try:
         cursor = connection.cursor()
         t = (f'%{lead_name}%', f'%{title}%', f'%{current_company}%', f'%{location}%')
-        cursor.execute("SELECT cookie FROM socialmedia.leads WHERE lead_name LIKE %s \
+        cursor.execute("SELECT lead_name, title, current_company, location FROM socialmedia.leads WHERE lead_name LIKE %s \
                        AND title LIKE %s \
                        AND current_company LIKE %s \
                        AND location LIKE %s", t) # type: ignore
-        result = cursor.fetchone()
-        print(result)
-        if result:
-            return json.loads(result[0])
+        results = cursor.fetchall()
+        print(results)
+        if results:
+            return results # type: ignore
         else:
             return False
             
