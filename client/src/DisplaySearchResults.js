@@ -129,19 +129,21 @@ function DisplaySearchResults() {
 			<ListGroup>
 				{profileInfoArray.map((profileInfo, index) => (
 					<ListGroup.Item
-						action
 						onClick={() => {
 							setShowProfileArea(true);
-						}}
-					>
+						}}>
 						{profileInfo[0]}, {profileInfo[1]}
 						{showProfileArea && (
 							<>
 								<ButtonGroup aria-label="Basic example" className="mb-2">
-									<Button onClick={handleGettingPeopleInterests(sessionId, profileInfo[4], index)}>
+									<Button onClick={ () => {
+										handleGettingPeopleInterests(sessionId, profileInfo[4], index)
+									}}>
 										Get people interests
 									</Button>
-									<Button onClick={handleGettingCompanyInterests(sessionId, profileInfo[4], index)}>
+									<Button onClick={ () => {
+										handleGettingCompanyInterests(sessionId, profileInfo[4], index)
+									}}>
 										Get company interests
 									</Button>
 								</ButtonGroup>
