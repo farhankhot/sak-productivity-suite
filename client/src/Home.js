@@ -215,7 +215,7 @@ function Home(props) {
             </Button>}
 
 			<Container>
-				<h1>Search Results:</h1>
+				<h1>Sales Navigator List:</h1>
 				<ListGroup>
 					{leadsArray.map((leadInfo, index) => (
 						<ListGroup.Item
