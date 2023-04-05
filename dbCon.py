@@ -85,10 +85,10 @@ def search_leads(lead_name, title, current_company, location):
                        AND title LIKE %s \
                        AND current_company LIKE %s \
                        AND location LIKE %s", t) # type: ignore
-        results = cursor.fetchall()
-        print(results)
-        if results:
-            return results # type: ignore
+        result = cursor.fetchone()
+        print(result[0]) # type: ignore
+        if result:
+            return results[0] # type: ignore
         else:
             return False
             
