@@ -14,7 +14,7 @@ function Home(props) {
 	
 	const [noteTextArea, setNoteTextArea] = useState(""); 
 	
-	const peopleInterestsArray = Array.from({length: 3}, () => []);
+	const [peopleInterestsArray, setPeopleInterestsArray] = useState(Array.from({length: 25}, () => []));
 	
 	const [companyInterestsArray, setCompanyInterestsArray] = useState([]);	
 	const [activityInterestsArray, setActivityInterestsArray] = useState([]);
@@ -98,9 +98,11 @@ function Home(props) {
 			const data = await response.json();			
 			const jobId = data.message;
 			CheckJobStatus(jobId, (resultArray) => {
+				const newArray = [...peopleInterestsArray];
 				for (let i = 0; i < resultArray.length; i++){
-					peopleInterestsArray[index].push(resultArray[i]);
-				}	
+					newArray[index].push(resultArray[i]);
+				}
+				setPeopleInterestsArray(newArray);
 			});
 		} catch (error) {
 			console.error(error);
@@ -283,7 +285,7 @@ function Home(props) {
 											Send Connect Note
 										</Button> */}
 									</ButtonGroup>
-									{peopleInterestsArray.length > 0 && (
+									{peopleInterestsArray[index].length > 0 && (
 										<ListGroup.Item>
 											<Form.Control
 											as="select"
