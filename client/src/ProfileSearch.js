@@ -42,13 +42,12 @@ function ProfileSearch(props) {
 			});
 
 			setIsLoading(true);
-			const data = await response.json();
-			const jobId = data.message;
 			
-			CheckJobStatus(jobId, (resultArray) => {
-				setResultArray(resultArray);	
-				setJobFinished(true);
-			});
+			const data = await response.json();
+			const resultArray = data.message;
+
+			setResultArray(resultArray);	
+			setJobFinished(true);
 
 		} catch (error) {
 			console.error(error);

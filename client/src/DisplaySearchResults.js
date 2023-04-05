@@ -28,19 +28,23 @@ function DisplaySearchResults() {
 	const [showProfileArea, setShowProfileArea] = useState(false);
 	const [profileInfoArray, setProfileInfoArray] = useState([]);
 	
+	// useEffect(() => {
+	// 	const temp = []
+	// 	for (let i = 0; i < resultArray.length; i += 1) {
+	// 		temp.push([ 
+	// 			resultArray[i]["full_name"],
+	// 			resultArray[i]["latest_title"],
+	// 			resultArray[i]["current_company"],
+	// 			resultArray[i]["location"],
+	// 			resultArray[i]["profile_urn"]
+	// 		])
+	// 	}
+	// 	setProfileInfoArray(temp);
+	// }, [resultArray]);
+	
 	useEffect(() => {
-		const temp = []
-		for (let i = 0; i < resultArray.length; i += 1) {
-			temp.push([ 
-				resultArray[i]["full_name"],
-				resultArray[i]["latest_title"],
-				resultArray[i]["profile_id"],
-				resultArray[i]["public_id"],
-				resultArray[i]["profile_urn"]
-			])
-		}
-		setProfileInfoArray(temp);
-	}, [resultArray]);	
+		setProfileInfoArray(resultArray);
+	}, []);	
 		
 	const handleGettingPeopleInterests = async (sessionId, profileUrnStr, index) => {
 		
