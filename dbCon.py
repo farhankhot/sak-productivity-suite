@@ -43,12 +43,6 @@ def store_cookie_return_sessionid(cookie):
     except (Exception, psycopg2.Error) as error:
         print("Error while connecting to PostgreSQL", error)
         return False
-    
-    # finally:
-    #     if connection:
-    #         cursor.close() # type: ignore
-    #         connection.close()
-    #         print("PostgreSQL connection is closed")
 
 def get_cookie_from_user_sessions(session_id):
 
@@ -67,12 +61,6 @@ def get_cookie_from_user_sessions(session_id):
     except (Exception, psycopg2.Error) as error:
         print("Error while connecting to PostgreSQL", error)
         return False
-    
-    finally:
-        if connection:
-            cursor.close() # type: ignore
-            connection.close()
-            print("PostgreSQL connection is closed")
 
 def store_leads(lead_list):
 
@@ -89,12 +77,6 @@ def store_leads(lead_list):
     except (Exception, psycopg2.Error) as error:
         print("Error while connecting to PostgreSQL", error)
         return False
-    
-    finally:
-        if connection:
-            cursor.close() # type: ignore
-            connection.close()
-            print("PostgreSQL connection is closed")
         
 def search_leads(lead_name, title, current_company, location):
 
@@ -115,9 +97,3 @@ def search_leads(lead_name, title, current_company, location):
     except (Exception, psycopg2.Error) as error:
         print("Error while connecting to PostgreSQL", error)
         return False
-    
-    finally:
-        if connection:
-            cursor.close() # type: ignore
-            connection.close()
-            print("PostgreSQL connection is closed")
