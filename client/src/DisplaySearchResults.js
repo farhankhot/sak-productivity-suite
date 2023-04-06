@@ -151,12 +151,10 @@ function DisplaySearchResults() {
 										
 									</ButtonGroup>
 
-									{/* {peopleInterestsArray[index].length > 0 && (
+									{peopleInterestsArray[index].length > 0 && (
 										<ListGroup.Item>
 											<Form.Control
 											as="select"
-											multiple
-											onChange={handleInterestsSelection}
 											>
 											{peopleInterestsArray[index].map((interest) => (
 												<option key={interest}>{interest[0]}</option>
@@ -169,15 +167,13 @@ function DisplaySearchResults() {
 										<ListGroup.Item>
 											<Form.Control
 											as="select"
-											multiple
-											onChange={handleInterestsSelection}
 											>
 											{companyInterestsArray[index].map((interest) => (
 												<option key={interest}>{interest[0]}</option>
 											))}
 											</Form.Control>
 										</ListGroup.Item>
-									)} */}
+									)}
 									
 									{/* {activityInterestsArray.length > 0 && (
 										<ListGroup.Item>

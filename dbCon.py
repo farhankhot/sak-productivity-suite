@@ -63,11 +63,13 @@ def get_cookie_from_user_sessions(session_id):
         return False
 
 def store_leads(lead_list):
+
+    # TODO: Check if name + title + current_company combination exists in DB, don't save if it does
     try:
         cursor = connection.cursor()
         for lead_info in lead_list:
-            t = ((lead_info[0], lead_info[1], lead_info[2], lead_info[3]),)
-            cursor.execute("INSERT INTO socialmedia.leads(lead_name, title, current_company, location) VALUES %s", t)
+            t = ((lead_info[0], lead_info[1], lead_info[2], lead_info[3], lead_info[4]),)
+            cursor.execute("INSERT INTO socialmedia.leads(lead_name, title, current_company, location, member_urnid) VALUES %s", t)
         connection.commit()
         print("All records inserted successfully")
         return True
@@ -81,7 +83,7 @@ def search_leads(lead_name, title, current_company, location):
     try:
         cursor = connection.cursor()
         t = [f'%{lead_name}%', f'%{title}%', f'%{current_company}%', f'%{location}%']
-        cursor.execute("SELECT lead_name, title, current_company, location FROM socialmedia.leads WHERE lead_name LIKE %s \
+        cursor.execute("SELECT lead_name, title, current_company, location, member_urnid FROM socialmedia.leads WHERE lead_name LIKE %s \
                        AND title LIKE %s \
                        AND current_company LIKE %s \
                        AND location LIKE %s", t) # type: ignore
