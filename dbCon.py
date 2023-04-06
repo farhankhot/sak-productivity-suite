@@ -69,7 +69,7 @@ def store_leads(lead_list):
         cursor = connection.cursor()
         for lead_info in lead_list:
             t = ((lead_info[0], lead_info[1], lead_info[2], lead_info[3], lead_info[4]),)
-            cursor.execute("INSERT INTO socialmedia.leads(lead_name, title, current_company, location, member_urnid) VALUES %s ON CONFLICT(member_urnid) DO NOTHING", t)
+            cursor.execute("INSERT INTO socialmedia.leads(lead_name, title, current_company, location, member_urnid) VALUES %s ON CONFLICT(lead_name, title, current_company) DO NOTHING", t)
         connection.commit()
         print("All records inserted successfully")
         return True
