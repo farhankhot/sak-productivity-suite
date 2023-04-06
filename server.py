@@ -288,8 +288,16 @@ def GetCompanyInterests(cookie_dict, profile_urn):
 
 def SalesNavigatorLeadsInfo(api):
 
+    # Get the latest list created
+    res_leads_list = api._fetch(
+        f"/sales-api/salesApiLists?q=listType&listType=LEAD&listSources=List(MANUAL,SYSTEM,CRM_AT_RISK_OPPORTUNITY,CRM_SYNC,CRM_BLUEBIRD,BUYER_INTEREST,LINKEDIN_SALES_INSIGHTS,CSV_IMPORT,RECOMMENDATION,NEW_EXECS_IN_SAVED_ACCOUNTS,LEADS_TO_FOLLOW_UP,CRM_PERSON_ACCOUNT,BOOK_OF_BUSINESS)&isMetadataNeeded=true&start=0&count=25&sortCriteria=LAST_MODIFIED&sortOrder=DESCENDING&decoration=%28id%2ClistType%2ClistSource%2Cname%2Cdescription%2CcreatedAt%2Crole%2ClastModifiedAt%2ClastViewedAt%2CentityCount%2CunsavedEntityCount%2Cshared%2Csubscribed%2ClistCsvImportTask%2CmockList%2Ccreator~fs_salesProfile%28entityUrn%2CfullName%2CprofilePictureDisplayImage%29%2ClastModifiedBy~fs_salesProfile%28entityUrn%2CfullName%29%29"
+        , base_request=True)
+    res_leads_list_json = res_leads_list.json()
+    latest_list_id = res_leads_list_json["elements"][0]["id"]
+
+    # Get the leads from the latest list
     res = api._fetch(
-        f"/sales-api/salesApiPeopleSearch?q=peopleSearchQuery&query=(spotlightParam:(selectedType:ALL),doFetchSpotlights:true,doFetchHits:true,doFetchFilters:false,pivotParam:(com.linkedin.sales.search.LeadListPivotRequest:(list:urn%3Ali%3Afs_salesList%3A6898676432906588160,sortCriteria:LAST_ACTIVITY,sortOrder:DESCENDING)),list:(scope:LEAD,includeAll:false,excludeAll:false,includedValues:List((id:6898676432906588160))))&start=0&count=25&decoration=%28entityUrn%2CprofilePictureDisplayImage%2CfirstName%2ClastName%2CfullName%2Cdegree%2CblockThirdPartyDataSharing%2CcrmStatus%2CgeoRegion%2ClastUpdatedTimeInListAt%2CpendingInvitation%2CnewListEntitySinceLastViewed%2Csaved%2CleadAssociatedAccount~fs_salesCompany%28entityUrn%2Cname%29%2CoutreachActivity%2Cmemorialized%2ClistCount%2CsavedAccount~fs_salesCompany%28entityUrn%2Cname%29%2CnotificationUrnOnLeadList%2CuniquePositionCompanyCount%2CcurrentPositions*%28title%2CcompanyName%2Ccurrent%2CcompanyUrn%29%2CmostRecentEntityNote%28body%2ClastModifiedAt%2CnoteId%2Cseat%2Centity%2CownerInfo%2Cownership%2Cvisibility%29%29",
+        f"/sales-api/salesApiPeopleSearch?q=peopleSearchQuery&query=(spotlightParam:(selectedType:ALL),doFetchSpotlights:true,doFetchHits:true,doFetchFilters:false,pivotParam:(com.linkedin.sales.search.LeadListPivotRequest:(list:urn%3Ali%3Afs_salesList%3A{latest_list_id},sortCriteria:LAST_ACTIVITY,sortOrder:DESCENDING)),list:(scope:LEAD,includeAll:false,excludeAll:false,includedValues:List((id:{latest_list_id}))))&start=0&count=25&decoration=%28entityUrn%2CprofilePictureDisplayImage%2CfirstName%2ClastName%2CfullName%2Cdegree%2CblockThirdPartyDataSharing%2CcrmStatus%2CgeoRegion%2ClastUpdatedTimeInListAt%2CpendingInvitation%2CnewListEntitySinceLastViewed%2Csaved%2CleadAssociatedAccount~fs_salesCompany%28entityUrn%2Cname%29%2CoutreachActivity%2Cmemorialized%2ClistCount%2CsavedAccount~fs_salesCompany%28entityUrn%2Cname%29%2CnotificationUrnOnLeadList%2CuniquePositionCompanyCount%2CcurrentPositions*%28title%2CcompanyName%2Ccurrent%2CcompanyUrn%29%2CmostRecentEntityNote%28body%2ClastModifiedAt%2CnoteId%2Cseat%2Centity%2CownerInfo%2Cownership%2Cvisibility%29%29",
         base_request=True)
     # print(res.text)
     # print(res.json())
