@@ -37,6 +37,7 @@ def store_cookie_return_sessionid(cookie):
         record_to_insert = (session_id, cookie, date_time)
         cursor.execute(insert_query, record_to_insert)
         result = cursor.fetchone()
+        print("rs", result)
 
         if result:
             print("result", result)
