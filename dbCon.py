@@ -24,7 +24,7 @@ def generate_unique_key():
 # This is storing the cookie (if it is not in user_sessions table) and returning a session_id
 def store_cookie_return_sessionid(cookie): 
 
-    cookie = json.dumps(cookie)
+    # cookie = json.dumps(cookie)
      
     timeZone = pytz.timezone("EST") 
     date_time = datetime.now(timeZone)
