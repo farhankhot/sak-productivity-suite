@@ -39,6 +39,7 @@ def store_cookie_return_sessionid(cookie):
         result = cursor.fetchone()
 
         if result:
+            print("result", result)
             session_id = result[0]
             print("Cookie already in user_sessions, returning corresponding session_id")
         else:
