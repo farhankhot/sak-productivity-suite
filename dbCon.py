@@ -44,11 +44,11 @@ def store_cookie_return_sessionid(cookie):
         print("Error while connecting to PostgreSQL", error)
         return False
     
-    finally:
-        if connection:
-            cursor.close() # type: ignore
-            connection.close()
-            print("PostgreSQL connection is closed")
+    # finally:
+    #     if connection:
+    #         cursor.close() # type: ignore
+    #         connection.close()
+    #         print("PostgreSQL connection is closed")
 
 def get_cookie_from_user_sessions(session_id):
 
