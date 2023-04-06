@@ -1,11 +1,10 @@
 from datetime import datetime
-
-import psycopg2
-import pytz
-
 import string
 import random
 import json
+
+import psycopg2
+import pytz
 
 connection = psycopg2.connect(
     user="postgres",
@@ -24,48 +23,25 @@ def generate_unique_key():
 # This is storing the cookie (if it is not in user_sessions table) and returning a session_id
 def store_cookie_return_sessionid(cookie): 
 
-    # cookie = json.dumps(cookie)
+    cookie = json.dumps(cookie)
      
     timeZone = pytz.timezone("EST") 
     date_time = datetime.now(timeZone)
 
-    # try:
-    #     session_id = generate_unique_key()
-    #     cursor = connection.cursor()
-
-    #     insert_query = """ INSERT INTO socialmedia.user_sessions(session_id, cookie, date_time) VALUES (%s, %s, %s); """
-    #     record_to_insert = (session_id, cookie, date_time)
-    #     cursor.execute(insert_query, record_to_insert)
-    #     connection.commit()
-    #     print("Record inserted in user_sessions successfully")
-    #     return session_id
-    
-    # except (Exception, psycopg2.Error) as error:
-    #     print("Error while connecting to PostgreSQL", error)
-    #     return False
     try:
         session_id = generate_unique_key()
         cursor = connection.cursor()
-        c = str(cookie)
-        print(c)
-        select_query = """ SELECT session_id FROM socialmedia.user_sessions WHERE cookie = %s; """
-        cursor.execute(select_query, (c,))
-        existing_session_id = cursor.fetchone()
 
-        if existing_session_id:
-            print("Session already exists for this cookie")
-            return existing_session_id[0]
-        else:
-            insert_query = """ INSERT INTO socialmedia.user_sessions(session_id, cookie, date_time) VALUES (%s, %s, %s); """
-            record_to_insert = (session_id, cookie, date_time)
-            cursor.execute(insert_query, record_to_insert)
-            connection.commit()
-            print("Record inserted in user_sessions successfully")
-            return session_id
-    except Exception as e:
-        print(e)
-        connection.rollback()
-
+        insert_query = """ INSERT INTO socialmedia.user_sessions(session_id, cookie, date_time) VALUES (%s, %s, %s); """
+        record_to_insert = (session_id, cookie, date_time)
+        cursor.execute(insert_query, record_to_insert)
+        connection.commit()
+        print("Record inserted in user_sessions successfully")
+        return session_id
+    
+    except (Exception, psycopg2.Error) as error:
+        print("Error while connecting to PostgreSQL", error)
+        return False
 
 def get_cookie_from_user_sessions(session_id):
 
