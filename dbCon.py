@@ -24,7 +24,7 @@ def generate_unique_key():
 def store_cookie_return_sessionid(cookie): 
 
     cookie = json.dumps(cookie)
-  
+     
     timeZone = pytz.timezone("EST") 
     date_time = datetime.now(timeZone)
 
@@ -32,7 +32,7 @@ def store_cookie_return_sessionid(cookie):
         session_id = generate_unique_key()
         cursor = connection.cursor()
 
-        insert_query = """ INSERT INTO socialmedia.user_sessions(session_id, cookie, date_time) VALUES (%s, %s, %s) ON CONFLICT(session_id) DO NOTHING RETURNING session_id; """
+        insert_query = """ INSERT INTO socialmedia.user_sessions(session_id, cookie, date_time) VALUES (%s, %s, %s); """
         record_to_insert = (session_id, cookie, date_time)
         cursor.execute(insert_query, record_to_insert)
         connection.commit()
