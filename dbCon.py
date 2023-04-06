@@ -21,6 +21,7 @@ CHARACTERS = (
 def generate_unique_key():
     return ''.join(random.sample(CHARACTERS, 32))
 
+# This is storing the cookie (if it is not in user_sessions table) and returning a session_id
 def store_cookie_return_sessionid(cookie): 
 
     cookie = json.dumps(cookie)
@@ -35,8 +36,14 @@ def store_cookie_return_sessionid(cookie):
         insert_query = """ INSERT INTO socialmedia.user_sessions(session_id, cookie, date_time) VALUES (%s, %s, %s) ON CONFLICT(cookie) DO NOTHING RETURNING session_id; """
         record_to_insert = (session_id, cookie, date_time)
         cursor.execute(insert_query, record_to_insert)
-        connection.commit()
-        print("Record inserted in user_sessions successfully")
+        result = cursor.fetchone()
+
+        if result:
+            session_id = result[0]
+            print("Cookie already in user_sessions, returning corresponding session_id")
+        else:
+            connection.commit()
+            print("Cookie inserted in user_sessions, returning new session_id")
 
         return session_id
     
@@ -69,7 +76,7 @@ def store_leads(lead_list):
         cursor = connection.cursor()
         for lead_info in lead_list:
             t = ((lead_info[0], lead_info[1], lead_info[2], lead_info[3], lead_info[4]),)
-            cursor.execute("INSERT INTO socialmedia.leads(lead_name, title, current_company, location, member_urnid) VALUES %s", t)
+            cursor.execute("INSERT INTO socialmedia.leads(lead_name, title, current_company, location, member_urnid) VALUES %s ON CONFLICT(member_urnid) DO NOTHING", t)
         connection.commit()
         print("All records inserted successfully")
         return True
