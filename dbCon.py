@@ -33,7 +33,7 @@ def store_cookie_return_sessionid(cookie):
         session_id = generate_unique_key()
         cursor = connection.cursor()
 
-        select_query = """SELECT 1 FROM socialmedia.user_sessions WHERE cookie = %s;"""
+        select_query = """SELECT session_id FROM socialmedia.user_sessions WHERE cookie = %s;"""
         cursor.execute(select_query, (cookie,))
         result = cursor.fetchone()
 
