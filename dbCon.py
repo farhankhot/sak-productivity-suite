@@ -1,10 +1,10 @@
 from datetime import datetime
+
 import psycopg2
+import pytz
 
 import string
 import random
-import pytz
-
 import json
 
 connection = psycopg2.connect(
@@ -32,7 +32,7 @@ def store_cookie_return_sessionid(cookie):
         session_id = generate_unique_key()
         cursor = connection.cursor()
 
-        insert_query = """ INSERT INTO socialmedia.user_sessions(session_id, cookie, date_time) VALUES (%s, %s, %s); """
+        insert_query = """ INSERT INTO socialmedia.user_sessions(session_id, cookie, date_time) VALUES (%s, %s, %s) ON CONFLICT(session_id) DO NOTHING; """
         record_to_insert = (session_id, cookie, date_time)
         cursor.execute(insert_query, record_to_insert)
         connection.commit()

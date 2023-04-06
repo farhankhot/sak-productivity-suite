@@ -132,7 +132,7 @@ function DisplaySearchResults() {
 							onClick={() => {
 								setShowProfileArea(true);
 							}}>
-							{leadInfo[0]}, {leadInfo[1]}
+							{leadInfo[0]}, {leadInfo[1]} at {leadInfo[2]}
 							
 							{showProfileArea && (
 								<div>
