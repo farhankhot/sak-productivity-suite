@@ -155,7 +155,7 @@ function DisplaySearchResults() {
 										<ListGroup.Item>
 											<Form.Control
 											as="select"
-											>
+											multiple>
 											{peopleInterestsArray[index].map((interest) => (
 												<option key={interest}>{interest[0]}</option>
 											))}
@@ -167,7 +167,7 @@ function DisplaySearchResults() {
 										<ListGroup.Item>
 											<Form.Control
 											as="select"
-											>
+											multiple>
 											{companyInterestsArray[index].map((interest) => (
 												<option key={interest}>{interest[0]}</option>
 											))}
