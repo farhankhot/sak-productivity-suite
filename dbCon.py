@@ -33,22 +33,21 @@ def store_cookie_return_sessionid(cookie):
         session_id = generate_unique_key()
         cursor = connection.cursor()
 
-        insert_query = """ INSERT INTO socialmedia.user_sessions(session_id, cookie, date_time) VALUES (%s, %s, %s) ON CONFLICT(cookie) DO UPDATE SET session_id=EXCLUDED.session_id RETURNING session_id; """
-        record_to_insert = (session_id, cookie, date_time)
-        cursor.execute(insert_query, record_to_insert)
+        select_query = """SELECT 1 FROM socialmedia.user_sessions WHERE cookie = %s;"""
+        cursor.execute(select_query, (cookie,))
         result = cursor.fetchone()
-        print("rs", result)
 
         if result:
-            print("result", result)
-            session_id = result[0]
             print("Cookie already in user_sessions, returning corresponding session_id")
+            session_id = result[0]
         else:
+            insert_query = """INSERT INTO socialmedia.user_sessions(session_id, cookie, date_time) VALUES (%s, %s, %s);"""
+            record_to_insert = (session_id, cookie, date_time)
+            cursor.execute(insert_query, record_to_insert)
             connection.commit()
             print("Cookie inserted in user_sessions, returning new session_id")
 
         return session_id
-    
     except (Exception, psycopg2.Error) as error:
         print("Error while connecting to PostgreSQL", error)
         return False
