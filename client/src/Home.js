@@ -36,13 +36,16 @@ function Home(props) {
 					sessionId: sessionId
 				})
 			});
+
 			const data = await response.json();
 			const leadsArray = data.lead_list;
 			// console.log("Successfully gotten leads: ", data);
 			const memberUrnIdArray = data.member_urn_id_list; 
+
 			setLeadsArray(leadsArray);
 			setMemberUrnIdArray(memberUrnIdArray);
 			setShowCreateConnectNoteButton(true);
+		
 		}catch(error){
 			console.log(error);
 		}finally {
@@ -70,11 +73,10 @@ function Home(props) {
 				setConnectNoteArray(resultArray);
 				setShowProfileArea(true);
 				console.log("Successfully gotten Connect note array: ", resultArray);
+				setIsLoading(false);
 			});
 		}catch(error){
 			console.log(error);
-		}finally {
-			setIsLoading(false);
 		}
 	};
 
@@ -103,12 +105,11 @@ function Home(props) {
 					newArray[index].push(resultArray[i]);
 				}
 				setPeopleInterestsArray(newArray);
+				setIsLoading(false);
 			});
 
 		} catch (error) {
 			console.error(error);
-		}finally {
-			setIsLoading(false);
 		}
 	};
 	
@@ -136,13 +137,12 @@ function Home(props) {
 				for (let i = 0; i < resultArray.length; i++){
 					newArray[index].push(resultArray[i]);
 				}
-				setCompanyInterestsArray(newArray);	
+				setCompanyInterestsArray(newArray);
+				setIsLoading(false);	
 			});
 		
 		} catch (error) {
 			console.error(error);
-		}finally {
-			setIsLoading(false);
 		}
 	};
 	
@@ -186,12 +186,11 @@ function Home(props) {
 				const newArray = [...connectNoteArray];
 				newArray[index] = resultArray;
 				setConnectNoteArray(newArray);	
+				setIsLoading(false);
 			});
 
 		}catch(error){
 			console.log(error);
-		}finally {
-			setIsLoading(false);
 		}
 	};
 
@@ -211,6 +210,7 @@ function Home(props) {
 			});
 			const data = await response.json();
 			console.log("Successfully sent the connect note to the person", data.message);
+			
 		}catch(error){
 			console.log(error);
 		} finally {
