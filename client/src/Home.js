@@ -27,6 +27,7 @@ function Home(props) {
 		
 	const handleGettingLeads = async() => {
         try {
+			setIsLoading(true);
 			const response = await fetch("https://sak-productivity-suite.herokuapp.com/get-leads", {
 				method: "POST",
 				headers: {
@@ -45,7 +46,9 @@ function Home(props) {
 			setShowCreateConnectNoteButton(true);
 		}catch(error){
 			console.log(error);
-		}	
+		}finally {
+			setIsLoading(false);
+		}
 	};
 
 	// This button goes through the lead list and creates a Connect note for them
@@ -63,10 +66,12 @@ function Home(props) {
 				})
 			});
 			const jobId = await response.json();
+			setIsLoading(true);
 			CheckJobStatus(jobId.message, (resultArray) => {
 				setConnectNoteArray(resultArray);
 				setShowProfileArea(true);
 				console.log("Successfully gotten Connect note array: ", resultArray);
+				setIsLoading(false);
 			});
 		}catch(error){
 			console.log(error);
@@ -90,12 +95,14 @@ function Home(props) {
 			});
 			const data = await response.json();			
 			const jobId = data.message;
+			setIsLoading(true);
 			CheckJobStatus(jobId, (resultArray) => {
 				const newArray = [...peopleInterestsArray];
 				for (let i = 0; i < resultArray.length; i++){
 					newArray[index].push(resultArray[i]);
 				}
 				setPeopleInterestsArray(newArray);
+				setIsLoading(false);
 			});
 		} catch (error) {
 			console.error(error);
@@ -119,12 +126,14 @@ function Home(props) {
 			});
 			const data = await response.json();
 			const jobId = data.message;
+			setIsLoading(true);
 			CheckJobStatus(jobId, (resultArray) => {
 				const newArray = [...companyInterestsArray];
 				for (let i = 0; i < resultArray.length; i++){
 					newArray[index].push(resultArray[i]);
 				}
 				setCompanyInterestsArray(newArray);	
+				setIsLoading(false);
 			});
 		} catch (error) {
 			console.error(error);
@@ -151,7 +160,7 @@ function Home(props) {
 		const prompt = "This is the profile of a person: " + fullName
 		+ " These are their interests: " + selectedInterests
 		+ " Use the internet to get something useful about the interests and use it in the request. "
-		+ " Write a request to connect with them. Make it casual but eyecatching. The goal is to ask about their current Salesforce implementation. Use only 280 characters.";
+		+ " Write a request to connect with them. Make it casual but eyecatching. The goal is to ask about their current Salesforce implementation. Use only 300 characters.";
 		try {
 			const response = await fetch("https://sak-productivity-suite.herokuapp.com/use-bingai", {
 				method: "POST",
@@ -165,11 +174,12 @@ function Home(props) {
 			
 			const data = await response.json();
 			const jobId = data.message;
-			
+			setIsLoading(true);
 			CheckJobStatus(jobId, (resultArray) => {
 				const newArray = [...connectNoteArray];
 				newArray[index] = resultArray;
-				setConnectNoteArray(newArray);	
+				setConnectNoteArray(newArray);
+				setIsLoading(false);	
 			});
 
 		}catch(error){
@@ -207,11 +217,11 @@ function Home(props) {
 	return (
 		<>
             <Button variant="primary" type="button" onClick={handleGettingLeads}>
-                Get leads
+				{isLoading ? 'Getting Leads...' : 'Get Leads'}
             </Button>
 
 			{showCreateConnectNoteButton && <Button variant="primary" type="button" onClick={() => handleAutoCreatingNotes(sessionId, leadsArray[0][4])}>
-                Auto Create notes for all leads
+				{isLoading ? 'Creating Notes...' : 'Auto Create notes for all leads'}
             </Button>}
 
 			<Container>
@@ -239,12 +249,12 @@ function Home(props) {
 										<Button onClick={ () => {
 											handleGettingPeopleInterests(sessionId, leadInfo[4], index)
 										}}>
-											Get people interests
+											{isLoading ? 'Loading...' : 'Get people interests'}
 										</Button>
 										<Button onClick={ () => {
 											handleGettingCompanyInterests(sessionId, leadInfo[4], index)
 										}}>
-											Get company interests
+											{isLoading ? 'Loading...' : 'Get company interests'}
 										</Button>
 										<Button onClick={ () => {
 											handleMakingConnectNote(leadInfo[0], index)

@@ -400,7 +400,7 @@ def GetLeadInfo(cookie_dict, leads_list, member_urn_id_list):
             " These are their interests: " + ",".join(lead_interests) + \
             " These are our mutual connections: " + "" + \
             " Include something useful about the interests and use it in the request. " + \
-            " Write a request to connect with them. Make it casual but eyecatching. The goal is to ask about their current Salesforce implementation. Use only 280 characters."
+            " Write a request to connect with them. Make it casual but eyecatching. The goal is to ask about their current Salesforce implementation. Use only 300 characters."
 
         connect_note = asyncio.run(UseBingAI(prompt))
         # print(connect_note)
