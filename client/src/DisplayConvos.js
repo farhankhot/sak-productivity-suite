@@ -6,6 +6,8 @@ function DisplayConvos(props) {
 	const {sessionId} = props;
 	// console.log("DisplayConvos sessionId: ", sessionId);
 
+	const [isLoadingConvos, setIsLoadingConvos] = useState(null);
+
 	const [threadArray, setThreadArray] = useState([]);
 	const [threadName, setThreadName] = useState(null);
 	const [threadId, setThreadId] = useState(null);
@@ -14,6 +16,7 @@ function DisplayConvos(props) {
 
 	useEffect( () => {
 		const handleGetThreads = async () => {
+			setIsLoadingConvos(true);
 			const response = await fetch('https://sak-productivity-suite.herokuapp.com/get-convo-threads', {
 				method: 'POST',
 				headers: {
@@ -27,6 +30,7 @@ function DisplayConvos(props) {
 			const data = await response.json();
 			const thread = data.message;
 			setThreadArray(thread);
+			setIsLoadingConvos(false);
 		};	
 		if (sessionId) {
 			handleGetThreads();
@@ -50,7 +54,7 @@ function DisplayConvos(props) {
 		) : (
 			<div>
 				<h1>Messages</h1>
-			
+				{isLoadingConvos ? <p>Getting Leads...</p> : <p>Get Leads</p>}
 				{threadArray.length > 0 && (
 					<>
 					{threadArray.map( (threadName) => (
