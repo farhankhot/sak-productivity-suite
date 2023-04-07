@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from "react";
-import {useNavigate} from 'react-router-dom';
 import {CheckJobStatus} from "./CheckJobStatus.js";
 import Button from 'react-bootstrap/Button';
 import { ButtonGroup, ListGroup } from 'react-bootstrap';
@@ -54,6 +53,7 @@ function Home(props) {
 	// This button goes through the lead list and creates a Connect note for them
 	const handleAutoCreatingNotes = async(sessionId, memberUrnId) => {
 		try {
+			setIsLoading(true);
 			const response = await fetch("https://sak-productivity-suite.herokuapp.com/get-lead-info", {
 				method: "POST",
 				headers: {
@@ -66,15 +66,15 @@ function Home(props) {
 				})
 			});
 			const jobId = await response.json();
-			setIsLoading(true);
 			CheckJobStatus(jobId.message, (resultArray) => {
 				setConnectNoteArray(resultArray);
 				setShowProfileArea(true);
 				console.log("Successfully gotten Connect note array: ", resultArray);
-				setIsLoading(false);
 			});
 		}catch(error){
 			console.log(error);
+		}finally {
+			setIsLoading(false);
 		}
 	};
 
@@ -83,6 +83,7 @@ function Home(props) {
 		const endIndex = profileUrnStr.indexOf(",");
 		const profileUrn = profileUrnStr.substring(startIndex, endIndex);
 		try {
+			setIsLoading(true);
 			const response = await fetch("https://sak-productivity-suite.herokuapp.com/get-people-interests", {
 				method: "POST",
 				headers: {
@@ -95,17 +96,19 @@ function Home(props) {
 			});
 			const data = await response.json();			
 			const jobId = data.message;
-			setIsLoading(true);
+
 			CheckJobStatus(jobId, (resultArray) => {
 				const newArray = [...peopleInterestsArray];
 				for (let i = 0; i < resultArray.length; i++){
 					newArray[index].push(resultArray[i]);
 				}
 				setPeopleInterestsArray(newArray);
-				setIsLoading(false);
 			});
+
 		} catch (error) {
 			console.error(error);
+		}finally {
+			setIsLoading(false);
 		}
 	};
 	
@@ -114,6 +117,7 @@ function Home(props) {
 		const endIndex = profileUrnStr.indexOf(",");
 		const profileUrn = profileUrnStr.substring(startIndex, endIndex);
 		try {
+			setIsLoading(true);
 			const response = await fetch("https://sak-productivity-suite.herokuapp.com/get-company-interests", {
 				method: "POST",
 				headers: {
@@ -126,17 +130,19 @@ function Home(props) {
 			});
 			const data = await response.json();
 			const jobId = data.message;
-			setIsLoading(true);
+			
 			CheckJobStatus(jobId, (resultArray) => {
 				const newArray = [...companyInterestsArray];
 				for (let i = 0; i < resultArray.length; i++){
 					newArray[index].push(resultArray[i]);
 				}
 				setCompanyInterestsArray(newArray);	
-				setIsLoading(false);
 			});
+		
 		} catch (error) {
 			console.error(error);
+		}finally {
+			setIsLoading(false);
 		}
 	};
 	
@@ -162,6 +168,7 @@ function Home(props) {
 		+ " Use the internet to get something useful about the interests and use it in the request. "
 		+ " Write a request to connect with them. Make it casual but eyecatching. The goal is to ask about their current Salesforce implementation. Use only 300 characters.";
 		try {
+			setIsLoading(true);
 			const response = await fetch("https://sak-productivity-suite.herokuapp.com/use-bingai", {
 				method: "POST",
 				headers: {
@@ -174,21 +181,23 @@ function Home(props) {
 			
 			const data = await response.json();
 			const jobId = data.message;
-			setIsLoading(true);
+
 			CheckJobStatus(jobId, (resultArray) => {
 				const newArray = [...connectNoteArray];
 				newArray[index] = resultArray;
-				setConnectNoteArray(newArray);
-				setIsLoading(false);	
+				setConnectNoteArray(newArray);	
 			});
 
 		}catch(error){
 			console.log(error);
+		}finally {
+			setIsLoading(false);
 		}
 	};
 
 	const handleSendingConnectNote = async (sessionId, profileId, index) => {
 		try {
+			setIsLoading(true);
 			const response = await fetch("https://sak-productivity-suite.herokuapp.com/send-connect", {
 				method: "POST",
 				headers: {
@@ -204,6 +213,8 @@ function Home(props) {
 			console.log("Successfully sent the connect note to the person", data.message);
 		}catch(error){
 			console.log(error);
+		} finally {
+			setIsLoading(false);
 		}
 	};
 	// ================ Create and Send Connect Note(s) ===============================
@@ -259,12 +270,12 @@ function Home(props) {
 										<Button onClick={ () => {
 											handleMakingConnectNote(leadInfo[0], index)
 										}}>
-											Make Connect Note
+											{isLoading ? 'Making note...' : 'Make Connect Note'}
 										</Button>										
 										<Button onClick={ () => {
 											handleSendingConnectNote(sessionId, leadInfo[4], index)
 										}}>
-											Send Connect Note
+											{isLoading ? 'Sending note...' : 'Send Connect Note'}
 										</Button>
 									</ButtonGroup>
 
