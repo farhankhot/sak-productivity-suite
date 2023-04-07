@@ -92,7 +92,7 @@ function DisplayThread() {
 		
 	return (
 		<div>
-			{isLoadingThread ? <p>Loading conversation...</p> : <p>Conversation:</p>}
+			{isLoadingThread ? <p>Refreshing...</p> : <p></p>}
             <h1>{threadName}</h1>
 			{convoArray.map( (message) => (
 				<p>{message[1]}: {message[0]}</p>
