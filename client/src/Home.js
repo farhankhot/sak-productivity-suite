@@ -9,7 +9,12 @@ function Home(props) {
 	const {sessionId} = props;
 	// console.log("Home sessionId: ", sessionId);
 
-	const [isLoading, setIsLoading] = useState(false);
+	const [isLoadingLeads, setIsLoadingLeads] = useState(false);
+	const [isLoadingAutoCreatingNotes, setIsLoadingAutoCreatingNotes] = useState(false);
+	const [isLoadingPeopleInterests, setIsLoadingPeopleInterests] = useState(false);
+	const [isLoadingCompanyInterests, setIsLoadingCompanyInterests] = useState(false);
+	const [isLoadingMakingNote, setIsLoadingMakingNote] = useState(false);
+	const [isLoadingSendingNote, setIsLoadingSendingNote] = useState(false);
 		
 	const [peopleInterestsArray, setPeopleInterestsArray] = useState(Array.from({length: 25}, () => []));
 	const [companyInterestsArray, setCompanyInterestsArray] = useState(Array.from({length: 25}, () => []));
@@ -26,7 +31,7 @@ function Home(props) {
 		
 	const handleGettingLeads = async() => {
         try {
-			setIsLoading(true);
+			setIsLoadingLeads(true);
 			const response = await fetch("https://sak-productivity-suite.herokuapp.com/get-leads", {
 				method: "POST",
 				headers: {
@@ -49,14 +54,14 @@ function Home(props) {
 		}catch(error){
 			console.log(error);
 		}finally {
-			setIsLoading(false);
+			setIsLoadingLeads(false);
 		}
 	};
 
 	// This button goes through the lead list and creates a Connect note for them
 	const handleAutoCreatingNotes = async(sessionId, memberUrnId) => {
 		try {
-			setIsLoading(true);
+			setIsLoadingAutoCreatingNotes(true);
 			const response = await fetch("https://sak-productivity-suite.herokuapp.com/get-lead-info", {
 				method: "POST",
 				headers: {
@@ -73,7 +78,7 @@ function Home(props) {
 				setConnectNoteArray(resultArray);
 				setShowProfileArea(true);
 				console.log("Successfully gotten Connect note array: ", resultArray);
-				setIsLoading(false);
+				setIsLoadingAutoCreatingNotes(false);
 			});
 		}catch(error){
 			console.log(error);
@@ -85,7 +90,7 @@ function Home(props) {
 		const endIndex = profileUrnStr.indexOf(",");
 		const profileUrn = profileUrnStr.substring(startIndex, endIndex);
 		try {
-			setIsLoading(true);
+			setIsLoadingPeopleInterests(true);
 			const response = await fetch("https://sak-productivity-suite.herokuapp.com/get-people-interests", {
 				method: "POST",
 				headers: {
@@ -105,7 +110,7 @@ function Home(props) {
 					newArray[index].push(resultArray[i]);
 				}
 				setPeopleInterestsArray(newArray);
-				setIsLoading(false);
+				setIsLoadingPeopleInterests(false);
 			});
 
 		} catch (error) {
@@ -118,7 +123,7 @@ function Home(props) {
 		const endIndex = profileUrnStr.indexOf(",");
 		const profileUrn = profileUrnStr.substring(startIndex, endIndex);
 		try {
-			setIsLoading(true);
+			setIsLoadingCompanyInterests(true);
 			const response = await fetch("https://sak-productivity-suite.herokuapp.com/get-company-interests", {
 				method: "POST",
 				headers: {
@@ -138,7 +143,7 @@ function Home(props) {
 					newArray[index].push(resultArray[i]);
 				}
 				setCompanyInterestsArray(newArray);
-				setIsLoading(false);	
+				setIsLoadingCompanyInterests(false);	
 			});
 		
 		} catch (error) {
@@ -166,9 +171,9 @@ function Home(props) {
 		const prompt = "This is the profile of a person: " + fullName
 		+ " These are their interests: " + selectedInterests
 		+ " Use the internet to get something useful about the interests and use it in the request. "
-		+ " Write a request to connect with them. Make it casual but eyecatching. The goal is to ask about their current Salesforce implementation. Use only 300 characters.";
+		+ " Write a request to connect with them. Make it casual but eyecatching. The goal is to ask about their current Salesforce implementation. Use only 50 words.";
 		try {
-			setIsLoading(true);
+			setIsLoadingMakingNote(true);
 			const response = await fetch("https://sak-productivity-suite.herokuapp.com/use-bingai", {
 				method: "POST",
 				headers: {
@@ -186,7 +191,7 @@ function Home(props) {
 				const newArray = [...connectNoteArray];
 				newArray[index] = resultArray;
 				setConnectNoteArray(newArray);	
-				setIsLoading(false);
+				setIsLoadingMakingNote(false);
 			});
 
 		}catch(error){
@@ -196,7 +201,7 @@ function Home(props) {
 
 	const handleSendingConnectNote = async (sessionId, profileId, index) => {
 		try {
-			setIsLoading(true);
+			setIsLoadingSendingNote(true);
 			const response = await fetch("https://sak-productivity-suite.herokuapp.com/send-connect", {
 				method: "POST",
 				headers: {
@@ -214,7 +219,7 @@ function Home(props) {
 		}catch(error){
 			console.log(error);
 		} finally {
-			setIsLoading(false);
+			setIsLoadingSendingNote(false);
 		}
 	};
 	// ================ Create and Send Connect Note(s) ===============================
@@ -228,11 +233,11 @@ function Home(props) {
 	return (
 		<>
             <Button variant="primary" type="button" onClick={handleGettingLeads}>
-				{isLoading ? 'Getting Leads...' : 'Get Leads'}
+				{isLoadingLeads ? 'Getting Leads...' : 'Get Leads'}
             </Button>
 
 			{showCreateConnectNoteButton && <Button variant="primary" type="button" onClick={() => handleAutoCreatingNotes(sessionId, leadsArray[0][4])}>
-				{isLoading ? 'Creating Notes...' : 'Auto Create notes for all leads'}
+				{isLoadingAutoCreatingNotes ? 'Creating Notes...' : 'Auto Create notes for all leads'}
             </Button>}
 
 			<Container>
@@ -260,22 +265,22 @@ function Home(props) {
 										<Button onClick={ () => {
 											handleGettingPeopleInterests(sessionId, leadInfo[4], index)
 										}}>
-											{isLoading ? 'Loading...' : 'Get people interests'}
+											{isLoadingPeopleInterests ? 'Loading...' : 'Get people interests'}
 										</Button>
 										<Button onClick={ () => {
 											handleGettingCompanyInterests(sessionId, leadInfo[4], index)
 										}}>
-											{isLoading ? 'Loading...' : 'Get company interests'}
+											{isLoadingCompanyInterests ? 'Loading...' : 'Get company interests'}
 										</Button>
 										<Button onClick={ () => {
 											handleMakingConnectNote(leadInfo[0], index)
 										}}>
-											{isLoading ? 'Making note...' : 'Make Connect Note'}
+											{isLoadingMakingNote ? 'Making note...' : 'Make Connect Note'}
 										</Button>										
 										<Button onClick={ () => {
 											handleSendingConnectNote(sessionId, leadInfo[4], index)
 										}}>
-											{isLoading ? 'Sending note...' : 'Send Connect Note'}
+											{isLoadingSendingNote ? 'Sending note...' : 'Send Connect Note'}
 										</Button>
 									</ButtonGroup>
 
