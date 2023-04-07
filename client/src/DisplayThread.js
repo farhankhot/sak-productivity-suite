@@ -8,7 +8,7 @@ function DisplayThread() {
 	const threadName = location.state?.threadName;
 	const threadId = location.state?.threadId;
 
-	const [isLoadingThread, setIsLoadingThread] = useState(null);	
+	// const [isLoadingThread, setIsLoadingThread] = useState(null);	
 	
 	const [convoArray, setConvoArray] = useState([]);
 	const [replyTextArea, setReplyTextArea] = useState([]);
@@ -16,7 +16,7 @@ function DisplayThread() {
 	useEffect( () => {
 		
 		const getSingleThread = async () => {
-			setIsLoadingThread(true);
+			// setIsLoadingThread(true);
 			const response = await fetch('https://sak-productivity-suite.herokuapp.com/get-convo-messages', {
 				method: 'POST',
 				headers: {
@@ -31,7 +31,7 @@ function DisplayThread() {
 			const data = await response.json();
 			const thread = data.message;
 			setConvoArray(thread);
-			setIsLoadingThread(false);
+			// setIsLoadingThread(false);
 		};	
 		getSingleThread();
 		// The 2 lines below deal with auto refresh of messages.
@@ -92,7 +92,7 @@ function DisplayThread() {
 		
 	return (
 		<div>
-			{isLoadingThread ? <p>Refreshing...</p> : <p></p>}
+			{/* {isLoadingThread ? <p>Refreshing...</p> : <p>Conversation:</p>} */}
             <h1>{threadName}</h1>
 			{convoArray.map( (message) => (
 				<p>{message[1]}: {message[0]}</p>
