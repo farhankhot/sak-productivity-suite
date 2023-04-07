@@ -6,7 +6,7 @@ function DisplayConvos(props) {
 	const {sessionId} = props;
 	// console.log("DisplayConvos sessionId: ", sessionId);
 
-	const [isLoadingConvos, setIsLoadingConvos] = useState(null);
+	const [isLoadingConvos, setIsLoadingConvos] = useState(false);
 
 	const [threadArray, setThreadArray] = useState([]);
 	const [threadName, setThreadName] = useState(null);
@@ -54,7 +54,7 @@ function DisplayConvos(props) {
 		) : (
 			<div>
 				<h1>Messages</h1>
-				{isLoadingConvos ? <p>Getting Leads...</p> : <p>Get Leads</p>}
+				{isLoadingConvos ? <p>Getting Conversations...</p> : <p>Conversations:</p>}
 				{threadArray.length > 0 && (
 					<>
 					{threadArray.map( (threadName) => (
