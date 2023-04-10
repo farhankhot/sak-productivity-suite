@@ -141,13 +141,13 @@ function DisplayThread() {
 					}}
 					/>
 				</Form.Group>
-				<Button onClick={ (event) => {
-					handleMakingReply(event)
+				<Button onClick={ () => {
+					handleMakingReply()
 				}}>
-					{isLoadingReply ? <p>Generating reply...</p> : <p>Generate Reply:</p>}
+					{isLoadingReply ? <p>Generating reply...</p> : <p>Generate Reply</p>}
 				</Button>
-				<Button onClick={ (event) => {
-					handleSendingMessage(event)
+				<Button onClick={ () => {
+					handleSendingMessage()
 				}}>
 					Send Message
 				</Button>
