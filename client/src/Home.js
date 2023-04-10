@@ -242,7 +242,7 @@ function Home(props) {
 				{isLoadingAutoCreatingNotes ? 'Creating Notes...' : 'Auto Create notes for all leads'}
             </Button>}
 
-			<div className="mx-auto" style={{ maxWidth: "800px"}}>
+			<div className="mx-auto" style={{ maxWidth: "800px", paddingBottom: '20px'}}>
 			<h1>Sales Navigator List:</h1>
 			<Accordion alwaysOpen>
 				{leadsArray.map((leadInfo, index) => (

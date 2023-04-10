@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from "react";
 import { useLocation } from 'react-router-dom';
+import {CheckJobStatus} from "./CheckJobStatus.js";
 
 function DisplayThread() {
 
@@ -56,7 +57,10 @@ function DisplayThread() {
 			});
 			
 			const data = await response.json();
-			setReplyTextArea(data.message);			
+			const jobId = data.message;
+			CheckJobStatus(jobId, (resultArray) => {
+				setReplyTextArea(resultArray);	
+			});
 
 		}catch(error){
 			console.log(error);
