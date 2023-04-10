@@ -28,7 +28,9 @@ function DisplayZoomInfoSearchResults() {
 							}}>
                             <h1>{companyInfo.name}</h1>
                             <p>{companyInfo.city}, {companyInfo.country}</p>
-							
+							<p>Employee Range: {companyInfo.employeeRange}</p>
+                            <p>Revenue Range: {companyInfo.revenueRange}</p>
+                            <p>Website: <a href={companyInfo.website}></a></p>
 							{showProfileArea && (
 								<div>
 									
