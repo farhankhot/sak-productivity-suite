@@ -38,8 +38,8 @@ function ZoomInfoSearch() {
 			setIsLoading(true);
 			
 			const data = await response.json();
-			console.log(data);
-			const resultArray = data.message;
+			// console.log(data);
+			const resultArray = data;
 
 			setResultArray(resultArray);	
 			setJobFinished(true);
