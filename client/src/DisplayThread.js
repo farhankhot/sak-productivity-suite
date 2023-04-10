@@ -51,7 +51,7 @@ function DisplayThread() {
 		const prompt = "Reply to this: " + convoArray[convoArray.length-1];
 		try {
 			setIsLoadingReply(true);
-			const response = await fetch("https://sak-productivity-suite.herokuapp.com/use-bingai", {
+			const response = await fetch("https://sak-productivity-suite.herokuapp.com/use-chatgpt", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json"
