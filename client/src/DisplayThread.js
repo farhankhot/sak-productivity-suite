@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react";
 import { useLocation } from 'react-router-dom';
 import {CheckJobStatus} from "./CheckJobStatus.js";
+import Form from 'react-bootstrap/Form';
 
 function DisplayThread() {
 
@@ -43,7 +44,7 @@ function DisplayThread() {
 	}, []);
 	
 	const handleMakingReply = async() => {
-		const prompt = "Reply to this: " + convoArray;
+		const prompt = "Reply to this: " + convoArray[convoArray.length-1];
 		
 		try {
 			const response = await fetch("https://sak-productivity-suite.herokuapp.com/use-bingai", {
@@ -101,7 +102,16 @@ function DisplayThread() {
 			{convoArray.map( (message) => (
 				<p>{message[1]}: {message[0]}</p>
 			))}
-            <textarea value={replyTextArea} onChange={handleReplyTextAreaChange} placeholder="The generated note will appear here"></textarea>
+            {/* <textarea value={replyTextArea} onChange={handleReplyTextAreaChange}></textarea> */}
+			<Form.Group>
+				<Form.Control
+					as="textarea"
+					value={replyTextArea} 
+					onChange={ (event) => {
+						handleReplyTextAreaChange(event)
+					}}
+				/>
+			</Form.Group>
             <button onClick={handleMakingReply}>Reply</button>
             <button onClick={handleSendingMessage}>Send Message</button>
 		</div>
