@@ -250,7 +250,7 @@ function Home(props) {
 							}}>
 							{leadInfo[0]}, {leadInfo[1]}
 							
-							{showProfileArea && (
+							{showProfileArea ===index && (
 								<div>
 									<Form.Group>
 										<Form.Control
