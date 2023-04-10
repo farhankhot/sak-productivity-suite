@@ -242,7 +242,7 @@ function Home(props) {
 				{isLoadingAutoCreatingNotes ? 'Creating Notes...' : 'Auto Create notes for all leads'}
             </Button>}
 
-			<Container>
+		
 				<h1>Sales Navigator List:</h1>
 				<Accordion>
 					{leadsArray.map((leadInfo, index) => (
@@ -250,7 +250,7 @@ function Home(props) {
 							>
 							{leadInfo[0]}, {leadInfo[1]}
 							
-							{showProfileArea && (
+							
 								<div>
 									<Form.Group>
 										<Form.Control
@@ -327,11 +327,11 @@ function Home(props) {
 									)} */}
 
 								</div>
-							)}
+							
 						</Accordion.Item>
 					))}
 				</Accordion>
-			</Container>
+		
 		</>
 	)
 }
