@@ -4,6 +4,8 @@ import Button from 'react-bootstrap/Button';
 import { ButtonGroup, ListGroup } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
+import Accordion from 'react-bootstrap/Accordion';
+
 
 function Home(props) {
 	const {sessionId} = props;
@@ -242,15 +244,13 @@ function Home(props) {
 
 			<Container>
 				<h1>Sales Navigator List:</h1>
-				<ListGroup>
+				<Accordion>
 					{leadsArray.map((leadInfo, index) => (
-						<ListGroup.Item
-							onClick={() => {
-								setShowProfileArea(true);
-							}}>
+						<Accordion.Item eventKey = {index.toString()}
+							>
 							{leadInfo[0]}, {leadInfo[1]}
 							
-							{showProfileArea ===index && (
+							{showProfileArea && (
 								<div>
 									<Form.Group>
 										<Form.Control
@@ -328,9 +328,9 @@ function Home(props) {
 
 								</div>
 							)}
-						</ListGroup.Item>
+						</Accordion.Item>
 					))}
-				</ListGroup>
+				</Accordion>
 			</Container>
 		</>
 	)
