@@ -310,7 +310,10 @@ def SalesNavigatorLeadsInfo(api):
             member_urn_id = match.group(1)
             # print(member_urn_id, type(member_urn_id))
             print(lead['fullName'], lead['currentPositions'])
-            title, companyName = ''
+            title, companyName, geoRegion = '', '', ''
+
+            if lead['geoRegion']:
+                geoRegion = lead['geoRegion']
 
             if len(lead['currentPositions']) > 0:
                 if lead['currentPositions'][0]['title']:
@@ -322,7 +325,7 @@ def SalesNavigatorLeadsInfo(api):
                 lead['fullName'],
                 title,
                 companyName,
-                lead['geoRegion'],
+                geoRegion,
                 member_urn_id,
             ])
             member_urn_id_list.append(member_urn_id)
