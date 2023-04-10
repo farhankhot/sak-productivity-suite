@@ -48,8 +48,8 @@ function DisplayThread() {
 	
 	const handleMakingReply = async() => {
 		const prompt = "Reply to this: " + convoArray[convoArray.length-1];
-		isLoadingReply(true);
 		try {
+			isLoadingReply(true);
 			const response = await fetch("https://sak-productivity-suite.herokuapp.com/use-bingai", {
 				method: "POST",
 				headers: {
@@ -119,7 +119,7 @@ function DisplayThread() {
         //     <button onClick={handleMakingReply}>Reply</button>
         //     <button onClick={handleSendingMessage}>Send Message</button>
 		// </div>
-		<Container style={{ paddingBottom: '20px'}}>
+		<Container style={{ paddingTop: '20px', paddingBottom: '20px'}}>
 			<Card>
 				<Card.Header>
 				<Card.Title>{threadName}</Card.Title>
@@ -134,6 +134,7 @@ function DisplayThread() {
 					<Form.Control
 					as="textarea"
 					style={{ height: '150px' }}
+					placeholder="Type your message here"
 					value={replyTextArea}
 					onChange={(event) => {
 						handleReplyTextAreaChange(event);
