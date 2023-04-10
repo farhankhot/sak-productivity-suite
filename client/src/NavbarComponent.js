@@ -14,6 +14,7 @@ function NavbarComponent() {
           <Nav className="me-auto">
             <Nav.Link as={Link} to="/linkedin-search">Search</Nav.Link>
             <Nav.Link as={Link} to="/linkedin-messages">Messages</Nav.Link>
+            <Nav.Link as={Link} to="/zoominfo-search">ZoomInfo Search</Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>

@@ -6,6 +6,8 @@ import ProfileSearch from './ProfileSearch';
 import NavbarComponent from './NavbarComponent';
 import DisplaySearchResults from "./DisplaySearchResults";
 import DisplayThread from "./DisplayThread";
+import ZoomInfoSearch from "./ZoomInfoSearch";
+import DisplayZoomInfoSearchResults from "./DisplayZoomInfoSearchResults";
 
 function App() {
 
@@ -22,10 +24,17 @@ function App() {
         <NavbarComponent />
         <Routes>
             {sessionId && <Route path="/" element={<Home sessionId={sessionId} />} /> }
+
             {sessionId && <Route path="/linkedin-search" element={<ProfileSearch sessionId={sessionId} />} /> }
-            {sessionId && <Route path="/linkedin-messages" element={<DisplayConvos sessionId={sessionId} />} /> }
             <Route path="/display-linkedin-search-results" element={<DisplaySearchResults />} /> 
+            
             {sessionId && <Route path="/display-thread" element={<DisplayThread />} /> }
+            {sessionId && <Route path="/linkedin-messages" element={<DisplayConvos sessionId={sessionId} />} /> }
+
+            {sessionId && <Route path="/zoominfo-search" element={<ZoomInfoSearch sessionId={sessionId} />} /> }
+            <Route path="/display-zoominfo-search-results" element={<DisplayZoomInfoSearchResults />} /> 
+            
+            
         </Routes>
         </>
     );
