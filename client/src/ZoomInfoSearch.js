@@ -26,7 +26,7 @@ function ZoomInfoSearch() {
 	const handleZoomInfoSearchRequest = async () => {
 		try {
 			const response = await fetch("https://sak-productivity-suite.herokuapp.com/search-zoominfo", {
-				method: "POST",
+				method: "GET",
 				headers: {
 					"Content-Type": "application/json"
 				},
