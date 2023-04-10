@@ -248,7 +248,7 @@ function Home(props) {
 					{leadsArray.map((leadInfo, index) => (
 						<Accordion.Item eventKey = {index.toString()}
 							>
-							{leadInfo[0]}, {leadInfo[1]}
+							<Accordion.Header>{leadInfo[0]}, {leadInfo[1]}</Accordion.Header>
 							
 							<Accordion.Body>
 								<div>
