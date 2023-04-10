@@ -62,7 +62,7 @@ function ZoomInfoSearch() {
 									<Form.Control 
 										type="text"
 										value={companyName}
-										onChange={(e) => setLeadName(e.target.value)} />
+										onChange={(e) => setCompanyName(e.target.value)} />
 									<Form.Text className="text-muted">
 										Company name you want to search (Optional)
 									</Form.Text>
