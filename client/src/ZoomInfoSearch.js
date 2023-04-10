@@ -25,20 +25,23 @@ function ZoomInfoSearch() {
 		
 	const handleZoomInfoSearchRequest = async () => {
 		try {
-			const response = await fetch(`http://167.99.250.232:5555/${companyName}`, {
+			const response = await fetch("https://sak-productivity-suite.herokuapp.com/search-zoominfo", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json"
-				}
+				},
+				body: JSON.stringify({
+					companyName: companyName
+				})
 			});
 
 			setIsLoading(true);
 			
 			const data = await response.json();
 			console.log(data);
-			// const resultArray = data.message;
+			const resultArray = data.message;
 
-			setResultArray(data);	
+			setResultArray(resultArray);	
 			setJobFinished(true);
 
 		} catch (error) {
