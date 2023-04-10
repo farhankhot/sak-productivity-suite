@@ -50,7 +50,7 @@ function DisplayThread() {
 	const handleMakingReply = async() => {
 		const prompt = "Reply to this: " + convoArray[convoArray.length-1];
 		try {
-			isLoadingReply(true);
+			setIsLoadingReply(true);
 			const response = await fetch("https://sak-productivity-suite.herokuapp.com/use-bingai", {
 				method: "POST",
 				headers: {
@@ -65,7 +65,7 @@ function DisplayThread() {
 			const jobId = data.message;
 			CheckJobStatus(jobId, (resultArray) => {
 				setReplyTextArea(resultArray);	
-				isLoadingReply(false);
+				setIsLoadingReply(false);
 			});
 
 		}catch(error){
