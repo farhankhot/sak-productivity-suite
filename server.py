@@ -406,11 +406,11 @@ def GetLeadInfo(cookie_dict, leads_list, member_urn_id_list):
 
 # ================================================ ROUTES START =============================================
 
-@app.route('/search-zoominfo')
+@app.route('/search-zoominfo', methods=['POST'])
 def search_zoominfo():
 
     company_name = request.json['companyName'] # type: ignore
-    data = requests.get(f"https://167.99.250.232:5555/{company_name}")   
+    data = requests.post(f"http://167.99.250.232:5555/{company_name}")   
     print(data)
     return jsonify(success=True, message=data)
 
