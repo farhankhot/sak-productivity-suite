@@ -58,7 +58,7 @@ function DisplayZoomInfoSearchResults() {
                                     <Accordion.Header>Primary Industries</Accordion.Header>
                                     <Accordion.Body>
                                         <ul>
-                                            {companyInfo.primaryIndustries.map((industry, index) => (
+                                            {companyInfo.primaryIndustry.map((industry, index) => (
                                                 <li key={index}>{industry}</li>
                                             ))}
                                         </ul>
