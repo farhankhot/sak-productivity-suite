@@ -29,16 +29,47 @@ function DisplayZoomInfoSearchResults() {
 							}}>
                             <h1>{companyInfo.name}</h1>
                             <p>{companyInfo.city}, {companyInfo.country}</p>
+                            <p>{companyInfo.descriptionList[0].description}</p>
 							<p>Employee Count: {companyInfo.employeeCount}</p>
                             <p>Revenue Range: {companyInfo.revenueRange}</p>
                             <p>Website: <a href={companyInfo.website}>Link</a></p>
                             <Accordion>
+                                <Accordion.Item eventKey="0">
+                                    <Accordion.Header>Business model</Accordion.Header>
+                                    <Accordion.Body>
+                                        <ul>
+                                            {companyInfo.businessModel.map((model, index) => (
+                                                <li key={index}>{model}</li>
+                                            ))}
+                                        </ul>
+                                    </Accordion.Body>
+                                </Accordion.Item>
                                 <Accordion.Item eventKey="0">
                                     <Accordion.Header>Competitors</Accordion.Header>
                                     <Accordion.Body>
                                         <ul>
                                             {companyInfo.competitors.map((competitor, index) => (
                                                 <li key={index}>{competitor.name}</li>
+                                            ))}
+                                        </ul>
+                                    </Accordion.Body>
+                                </Accordion.Item>
+                                <Accordion.Item eventKey="0">
+                                    <Accordion.Header>Primary Industries</Accordion.Header>
+                                    <Accordion.Body>
+                                        <ul>
+                                            {companyInfo.primaryIndustries.map((industry, index) => (
+                                                <li key={index}>{industry}</li>
+                                            ))}
+                                        </ul>
+                                    </Accordion.Body>
+                                </Accordion.Item>
+                                <Accordion.Item eventKey="0">
+                                    <Accordion.Header>Sub Unit Industries</Accordion.Header>
+                                    <Accordion.Body>
+                                        <ul>
+                                            {companyInfo.subUnitIndustries.map((industry, index) => (
+                                                <li key={index}>{industry}</li>
                                             ))}
                                         </ul>
                                     </Accordion.Body>
