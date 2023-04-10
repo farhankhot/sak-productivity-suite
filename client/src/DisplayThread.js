@@ -2,6 +2,9 @@ import React, {useState, useEffect} from "react";
 import { useLocation } from 'react-router-dom';
 import {CheckJobStatus} from "./CheckJobStatus.js";
 import Form from 'react-bootstrap/Form';
+import Container from 'react-bootstrap/Container';
+import Card from 'react-bootstrap/Card';
+import Button from 'react-bootstrap/Button';
 
 function DisplayThread() {
 
@@ -96,26 +99,58 @@ function DisplayThread() {
 	};
 		
 	return (
-		<div>
-			{/* {isLoadingThread ? <p>Refreshing...</p> : <p>Conversation:</p>} */}
-            <h1>{threadName}</h1>
-			{convoArray.map( (message) => (
-				<p>{message[1]}: {message[0]}</p>
-			))}
-            {/* <textarea value={replyTextArea} onChange={handleReplyTextAreaChange}></textarea> */}
-			<Form.Group>
-				<Form.Control
+		// <div>
+		// 	{/* {isLoadingThread ? <p>Refreshing...</p> : <p>Conversation:</p>} */}
+        //     <h1>{threadName}</h1>
+		// 	{convoArray.map( (message) => (
+		// 		<p>{message[1]}: {message[0]}</p>
+		// 	))}
+        //     {/* <textarea value={replyTextArea} onChange={handleReplyTextAreaChange}></textarea> */}
+		// 	<Form.Group>
+		// 		<Form.Control
+		// 			as="textarea"
+		// 			value={replyTextArea} 
+		// 			onChange={ (event) => {
+		// 				handleReplyTextAreaChange(event)
+		// 			}}
+		// 		/>
+		// 	</Form.Group>
+        //     <button onClick={handleMakingReply}>Reply</button>
+        //     <button onClick={handleSendingMessage}>Send Message</button>
+		// </div>
+		<Container>
+			<Card>
+				<Card.Header>
+				<Card.Title>{threadName}</Card.Title>
+				</Card.Header>
+				<Card.Body>
+				{convoArray.map((message) => (
+					<Card.Text>
+					{message[1]}: {message[0]}
+					</Card.Text>
+				))}
+				<Form.Group>
+					<Form.Control
 					as="textarea"
-					value={replyTextArea} 
-					onChange={ (event) => {
-						handleReplyTextAreaChange(event)
+					value={replyTextArea}
+					onChange={(event) => {
+						handleReplyTextAreaChange(event);
 					}}
-				/>
-			</Form.Group>
-            <button onClick={handleMakingReply}>Reply</button>
-            <button onClick={handleSendingMessage}>Send Message</button>
-		</div>
+					/>
+				</Form.Group>
+				<Button onClick={ (event) => {
+					handleMakingReply(event)
+				}}>
+					Reply
+				</Button>
+				<Button onClick={ (event) => {
+					handleSendingMessage(event)
+				}}>
+					Send Message
+				</Button>
+				</Card.Body>
+			</Card>
+		</Container>
 	)
-
 }
 export default DisplayThread;
