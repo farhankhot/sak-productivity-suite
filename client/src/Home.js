@@ -250,7 +250,7 @@ function Home(props) {
 							>
 							{leadInfo[0]}, {leadInfo[1]}
 							
-							
+							<Accordion.Body>
 								<div>
 									<Form.Group>
 										<Form.Control
@@ -327,6 +327,7 @@ function Home(props) {
 									)} */}
 
 								</div>
+							</Accordion.Body>
 							
 						</Accordion.Item>
 					))}
