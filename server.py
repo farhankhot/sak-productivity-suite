@@ -487,9 +487,10 @@ def use_bingai():
 def use_chatgpt():
 
     prompt = request.json['prompt'] # type: ignore   
-    ans = UseChatGPT(prompt)
+    data = q.enqueue(UseChatGPT, prompt)
+    job_id = data.get_id()
     
-    return jsonify(success=True, message=ans)
+    return jsonify(success=True, message=job_id)
 
 # @app.route('/receive-link', methods=['POST'])
 # def receive_link():
