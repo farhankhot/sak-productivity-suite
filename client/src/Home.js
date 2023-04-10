@@ -241,98 +241,98 @@ function Home(props) {
 			{showCreateConnectNoteButton && <Button variant="primary" type="button" onClick={() => handleAutoCreatingNotes(sessionId, leadsArray[0][4])}>
 				{isLoadingAutoCreatingNotes ? 'Creating Notes...' : 'Auto Create notes for all leads'}
             </Button>}
-
 		
-				<h1>Sales Navigator List:</h1>
-				<Accordion>
-					{leadsArray.map((leadInfo, index) => (
-						<Accordion.Item eventKey = {index.toString()}
-							>
-							<Accordion.Header>{leadInfo[0]}, {leadInfo[1]}</Accordion.Header>
-							
-							<Accordion.Body>
-								<div>
-									<Form.Group>
+			<div style={{ maxWidth: "600px" }}>
+			<h1>Sales Navigator List:</h1>
+			<Accordion alwaysOpen>
+				{leadsArray.map((leadInfo, index) => (
+					<Accordion.Item eventKey = {index.toString()}
+						>
+						<Accordion.Header>{leadInfo[0]}, {leadInfo[1]}</Accordion.Header>
+						
+						<Accordion.Body>
+							<div>
+								<Form.Group>
+									<Form.Control
+										as="textarea"
+										value={connectNoteArray[index]} 
+										onChange={ (event) => {
+											handleNoteTextAreaChange(event, index)
+										}}
+									/>
+								</Form.Group>
+								<ButtonGroup aria-label="Basic example" className="mb-2">
+									<Button onClick={ () => {
+										handleGettingPeopleInterests(sessionId, leadInfo[4], index)
+									}}>
+										{isLoadingPeopleInterests ? 'Loading...' : 'Get people interests'}
+									</Button>
+									<Button onClick={ () => {
+										handleGettingCompanyInterests(sessionId, leadInfo[4], index)
+									}}>
+										{isLoadingCompanyInterests ? 'Loading...' : 'Get company interests'}
+									</Button>
+									<Button onClick={ () => {
+										handleMakingConnectNote(leadInfo[0], index)
+									}}>
+										{isLoadingMakingNote ? 'Making note...' : 'Make Connect Note'}
+									</Button>										
+									<Button onClick={ () => {
+										handleSendingConnectNote(sessionId, leadInfo[4], index)
+									}}>
+										{isLoadingSendingNote ? 'Sending note...' : 'Send Connect Note'}
+									</Button>
+								</ButtonGroup>
+
+								{peopleInterestsArray[index].length > 0 && (
+									<ListGroup.Item>
 										<Form.Control
-											as="textarea"
-											value={connectNoteArray[index]} 
-											onChange={ (event) => {
-												handleNoteTextAreaChange(event, index)
-											}}
-										/>
-									</Form.Group>
-									<ButtonGroup aria-label="Basic example" className="mb-2">
-										<Button onClick={ () => {
-											handleGettingPeopleInterests(sessionId, leadInfo[4], index)
-										}}>
-											{isLoadingPeopleInterests ? 'Loading...' : 'Get people interests'}
-										</Button>
-										<Button onClick={ () => {
-											handleGettingCompanyInterests(sessionId, leadInfo[4], index)
-										}}>
-											{isLoadingCompanyInterests ? 'Loading...' : 'Get company interests'}
-										</Button>
-										<Button onClick={ () => {
-											handleMakingConnectNote(leadInfo[0], index)
-										}}>
-											{isLoadingMakingNote ? 'Making note...' : 'Make Connect Note'}
-										</Button>										
-										<Button onClick={ () => {
-											handleSendingConnectNote(sessionId, leadInfo[4], index)
-										}}>
-											{isLoadingSendingNote ? 'Sending note...' : 'Send Connect Note'}
-										</Button>
-									</ButtonGroup>
+										as="select"
+										multiple
+										onChange={handleInterestsSelection}
+										>
+										{peopleInterestsArray[index].map((interest) => (
+											<option key={interest}>{interest[0]}</option>
+										))}
+										</Form.Control>
+									</ListGroup.Item>
+								)}
+								
+								{companyInterestsArray[index].length > 0 && (
+									<ListGroup.Item>
+										<Form.Control
+										as="select"
+										multiple
+										onChange={handleInterestsSelection}
+										>
+										{companyInterestsArray[index].map((interest) => (
+											<option key={interest}>{interest[0]}</option>
+										))}
+										</Form.Control>
+									</ListGroup.Item>
+								)}
+								
+								{/* {activityInterestsArray.length > 0 && (
+									<ListGroup.Item>
+										<Form.Control
+										as="select"
+										multiple
+										onChange={handleInterestsSelection}
+										>
+										{activityInterestsArray.map((interest) => (
+											<option key={interest}>{interest[0]}</option>
+										))}
+										</Form.Control>
+									</ListGroup.Item>
+								)} */}
 
-									{peopleInterestsArray[index].length > 0 && (
-										<ListGroup.Item>
-											<Form.Control
-											as="select"
-											multiple
-											onChange={handleInterestsSelection}
-											>
-											{peopleInterestsArray[index].map((interest) => (
-												<option key={interest}>{interest[0]}</option>
-											))}
-											</Form.Control>
-										</ListGroup.Item>
-									)}
-									
-									{companyInterestsArray[index].length > 0 && (
-										<ListGroup.Item>
-											<Form.Control
-											as="select"
-											multiple
-											onChange={handleInterestsSelection}
-											>
-											{companyInterestsArray[index].map((interest) => (
-												<option key={interest}>{interest[0]}</option>
-											))}
-											</Form.Control>
-										</ListGroup.Item>
-									)}
-									
-									{/* {activityInterestsArray.length > 0 && (
-										<ListGroup.Item>
-											<Form.Control
-											as="select"
-											multiple
-											onChange={handleInterestsSelection}
-											>
-											{activityInterestsArray.map((interest) => (
-												<option key={interest}>{interest[0]}</option>
-											))}
-											</Form.Control>
-										</ListGroup.Item>
-									)} */}
-
-								</div>
-							</Accordion.Body>
-							
-						</Accordion.Item>
-					))}
-				</Accordion>
-		
+							</div>
+						</Accordion.Body>
+						
+					</Accordion.Item>
+				))}
+			</Accordion>
+			</div>
 		</>
 	)
 }
