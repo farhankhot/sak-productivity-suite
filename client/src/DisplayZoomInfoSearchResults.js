@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react";
 import { useLocation } from 'react-router-dom';
 import { ButtonGroup, ListGroup } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
-import { Accordion, Card, Button } from 'react-bootstrap';
+import Accordion from 'react-bootstrap/Accordion';
 
 function DisplayZoomInfoSearchResults() {
 	
@@ -33,22 +33,16 @@ function DisplayZoomInfoSearchResults() {
                             <p>Revenue Range: {companyInfo.revenueRange}</p>
                             <p>Website: <a href={companyInfo.website}>Link</a></p>
                             <Accordion>
-                                <Card>
-                                    <Card.Header>
-                                    <Accordion.Toggle as={Button} variant="link" eventKey="0">
-                                        Competitors
-                                    </Accordion.Toggle>
-                                    </Card.Header>
-                                    <Accordion.Collapse eventKey="0">
-                                    <Card.Body>
+                                <Accordion.Item eventKey="0">
+                                    <Accordion.Header>Competitors</Accordion.Header>
+                                    <Accordion.Body>
                                         <ul>
-                                        {companyInfo.competitors.map((competitor, index) => (
-                                            <li key={index}>{competitor.name}</li>
-                                        ))}
+                                            {companyInfo.competitors.map((competitor, index) => (
+                                                <li key={index}>{competitor.name}</li>
+                                            ))}
                                         </ul>
-                                    </Card.Body>
-                                    </Accordion.Collapse>
-                                </Card>
+                                    </Accordion.Body>
+                                </Accordion.Item>
                             </Accordion>
   
 							{/* {showProfileArea && (
