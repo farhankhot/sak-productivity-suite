@@ -32,7 +32,7 @@ function DisplayZoomInfoSearchResults() {
                             <p>{companyInfo.descriptionList[0].description}</p>
 							<p>Employee Count: {companyInfo.employeeCount}</p>
                             <p>Revenue Range: {companyInfo.revenueRange}</p>
-                            <p>Website: <a href={companyInfo.website} target="_blank">Link</a></p>
+                            <p>Website: <a href={"//" + companyInfo.website} target="_blank">Link</a></p>
                             <Accordion>
                                 <Accordion.Item eventKey="0">
                                     <Accordion.Header>Business model</Accordion.Header>
