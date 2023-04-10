@@ -26,8 +26,8 @@ function DisplayZoomInfoSearchResults() {
 							onClick={() => {
 								setShowProfileArea(true);
 							}}>
-                            <h1>{companyInfo[index].name}</h1>
-                            <p>{companyInfo[index].city}, {companyInfo[index].country}</p>
+                            <h1>{companyInfo.name}</h1>
+                            <p>{companyInfo.city}, {companyInfo.country}</p>
 							
 							{showProfileArea && (
 								<div>
