@@ -35,9 +35,10 @@ function ZoomInfoSearch() {
 			setIsLoading(true);
 			
 			const data = await response.json();
-			const resultArray = data.message;
+			console.log(data);
+			// const resultArray = data.message;
 
-			setResultArray(resultArray);	
+			setResultArray(data);	
 			setJobFinished(true);
 
 		} catch (error) {
@@ -64,7 +65,7 @@ function ZoomInfoSearch() {
 										value={companyName}
 										onChange={(e) => setCompanyName(e.target.value)} />
 									<Form.Text className="text-muted">
-										Company name you want to search (Optional)
+										Company name you want to search
 									</Form.Text>
 								</FloatingLabel>
 							</Form.Group>
