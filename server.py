@@ -406,7 +406,7 @@ def GetLeadInfo(cookie_dict, leads_list, member_urn_id_list):
 
 # ================================================ ROUTES START =============================================
 
-@app.route('/search-zoominfo', methods=['GET'])
+@app.route('/search-zoominfo')
 def search_zoominfo():
 
     company_name = request.json['companyName'] # type: ignore
