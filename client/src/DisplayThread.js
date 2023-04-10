@@ -13,7 +13,7 @@ function DisplayThread() {
 	const threadName = location.state?.threadName;
 	const threadId = location.state?.threadId;
 
-	// const [isLoadingThread, setIsLoadingThread] = useState(null);	
+	const [isLoadingReply, setIsLoadingReply] = useState(null);	
 	
 	const [convoArray, setConvoArray] = useState([]);
 	const [replyTextArea, setReplyTextArea] = useState([]);
@@ -48,7 +48,7 @@ function DisplayThread() {
 	
 	const handleMakingReply = async() => {
 		const prompt = "Reply to this: " + convoArray[convoArray.length-1];
-		
+		isLoadingReply(true);
 		try {
 			const response = await fetch("https://sak-productivity-suite.herokuapp.com/use-bingai", {
 				method: "POST",
@@ -64,6 +64,7 @@ function DisplayThread() {
 			const jobId = data.message;
 			CheckJobStatus(jobId, (resultArray) => {
 				setReplyTextArea(resultArray);	
+				isLoadingReply(false);
 			});
 
 		}catch(error){
@@ -118,7 +119,7 @@ function DisplayThread() {
         //     <button onClick={handleMakingReply}>Reply</button>
         //     <button onClick={handleSendingMessage}>Send Message</button>
 		// </div>
-		<Container>
+		<Container style={{ paddingBottom: '20px'}}>
 			<Card>
 				<Card.Header>
 				<Card.Title>{threadName}</Card.Title>
@@ -132,6 +133,7 @@ function DisplayThread() {
 				<Form.Group>
 					<Form.Control
 					as="textarea"
+					style={{ height: '150px' }}
 					value={replyTextArea}
 					onChange={(event) => {
 						handleReplyTextAreaChange(event);
@@ -141,7 +143,7 @@ function DisplayThread() {
 				<Button onClick={ (event) => {
 					handleMakingReply(event)
 				}}>
-					Reply
+					{isLoadingReply ? <p>Generating reply...</p> : <p>Generate Reply:</p>}
 				</Button>
 				<Button onClick={ (event) => {
 					handleSendingMessage(event)
