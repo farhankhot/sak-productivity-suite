@@ -38,7 +38,7 @@ function ZoomInfoSearch() {
 			setIsLoading(true);
 			
 			const data = await response.json();
-			// console.log(data);
+			console.log(data);
 			const resultArray = data['data']['result'];
 
 			setResultArray(resultArray);	
