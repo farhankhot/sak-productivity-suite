@@ -7,7 +7,7 @@ function DisplayZoomInfoSearchResults() {
 	
 	const location = useLocation();
 	const resultArray = location.state?.resultArray;
-    console.log("DisplayZoomInfoSearchResults resultArray: ", resultArray);
+    // console.log("DisplayZoomInfoSearchResults resultArray: ", resultArray);
 		
 	const [showProfileArea, setShowProfileArea] = useState(false);
 	const [profileInfoArray, setProfileInfoArray] = useState([]);
