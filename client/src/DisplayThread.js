@@ -48,7 +48,7 @@ function DisplayThread() {
 	}, []);
 	
 	const handleMakingReply = async() => {
-		const prompt = "Reply to this: " + convoArray[convoArray.length-1];
+		const prompt = "Reply to this: " + convoArray;
 		try {
 			setIsLoadingReply(true);
 			const response = await fetch("https://sak-productivity-suite.herokuapp.com/use-chatgpt", {
