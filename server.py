@@ -411,8 +411,8 @@ def search_zoominfo():
 
     company_name = request.json['companyName'] # type: ignore
     data = requests.get(f"http://167.99.250.232:5555/{company_name}")   
-    print(data.json())
-    return jsonify(success=True, message=data)
+    # print(data.json())
+    return data.json()
 
 @app.route('/search-leads-in-db', methods=['POST'])
 def search_leads_in_db():
