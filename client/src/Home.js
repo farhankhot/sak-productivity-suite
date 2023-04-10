@@ -241,8 +241,8 @@ function Home(props) {
 			{showCreateConnectNoteButton && <Button variant="primary" type="button" onClick={() => handleAutoCreatingNotes(sessionId, leadsArray[0][4])}>
 				{isLoadingAutoCreatingNotes ? 'Creating Notes...' : 'Auto Create notes for all leads'}
             </Button>}
-		
-			<div style={{ maxWidth: "600px" }}>
+
+			<div className="mx-auto" style={{ maxWidth: "800px"}}>
 			<h1>Sales Navigator List:</h1>
 			<Accordion alwaysOpen>
 				{leadsArray.map((leadInfo, index) => (
