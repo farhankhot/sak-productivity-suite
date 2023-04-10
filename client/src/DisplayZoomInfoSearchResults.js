@@ -32,7 +32,7 @@ function DisplayZoomInfoSearchResults() {
                             <p>{companyInfo.descriptionList[0].description}</p>
 							<p>Employee Count: {companyInfo.employeeCount}</p>
                             <p>Revenue Range: {companyInfo.revenueRange}</p>
-                            <p>Website: <a href={companyInfo.website}>Link</a></p>
+                            <p>Website: <a>{companyInfo.website}</a></p>
                             <Accordion>
                                 <Accordion.Item eventKey="0">
                                     <Accordion.Header>Business model</Accordion.Header>
@@ -44,7 +44,7 @@ function DisplayZoomInfoSearchResults() {
                                         </ul>
                                     </Accordion.Body>
                                 </Accordion.Item>
-                                <Accordion.Item eventKey="0">
+                                <Accordion.Item eventKey="1">
                                     <Accordion.Header>Competitors</Accordion.Header>
                                     <Accordion.Body>
                                         <ul>
@@ -54,7 +54,7 @@ function DisplayZoomInfoSearchResults() {
                                         </ul>
                                     </Accordion.Body>
                                 </Accordion.Item>
-                                <Accordion.Item eventKey="0">
+                                <Accordion.Item eventKey="2">
                                     <Accordion.Header>Primary Industries</Accordion.Header>
                                     <Accordion.Body>
                                         <ul>
@@ -64,7 +64,7 @@ function DisplayZoomInfoSearchResults() {
                                         </ul>
                                     </Accordion.Body>
                                 </Accordion.Item>
-                                <Accordion.Item eventKey="0">
+                                <Accordion.Item eventKey="3">
                                     <Accordion.Header>Sub Unit Industries</Accordion.Header>
                                     <Accordion.Body>
                                         <ul>
