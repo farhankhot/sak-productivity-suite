@@ -5,6 +5,7 @@ import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
+import { ButtonGroup, ListGroup } from 'react-bootstrap';
 
 function DisplayThread() {
 
@@ -141,16 +142,18 @@ function DisplayThread() {
 					}}
 					/>
 				</Form.Group>
-				<Button onClick={ () => {
-					handleMakingReply()
-				}}>
-					{isLoadingReply ? <p>Generating reply...</p> : <p>Generate Reply</p>}
-				</Button>
-				<Button onClick={ () => {
-					handleSendingMessage()
-				}}>
-					Send Message
-				</Button>
+				<ButtonGroup aria-label="Basic example" className="mb-2">
+					<Button onClick={ () => {
+						handleMakingReply()
+					}}>
+						{isLoadingReply ? <p>Generating reply...</p> : <p>Generate Reply</p>}
+					</Button>
+					<Button onClick={ () => {
+						handleSendingMessage()
+					}}>
+						Send Message
+					</Button>
+				</ButtonGroup>
 				</Card.Body>
 			</Card>
 		</Container>
