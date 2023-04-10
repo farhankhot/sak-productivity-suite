@@ -309,23 +309,25 @@ def SalesNavigatorLeadsInfo(api):
         if match:
             member_urn_id = match.group(1)
             # print(member_urn_id, type(member_urn_id))
-            print(lead['fullName'], lead['currentPositions'])
-            title, companyName, geoRegion = '', '', ''
+            # print(lead['fullName'], lead['currentPositions'])
+            title, company_name, geo_region = '', '', ''
 
+            # Checks if geoRegion, companyName, title are present
             if lead['geoRegion']:
-                geoRegion = lead['geoRegion']
+                geo_region = lead['geoRegion']
 
             if len(lead['currentPositions']) > 0:
                 if lead['currentPositions'][0]['title']:
                     title = lead['currentPositions'][0]['title']
                 if lead['currentPositions'][0]['companyName']:
-                    companyName = lead['currentPositions'][0]['companyName']
+                    company_name = lead['currentPositions'][0]['companyName']
             
+            # Add to lead_list
             lead_list.append([
                 lead['fullName'],
                 title,
-                companyName,
-                geoRegion,
+                company_name,
+                geo_region,
                 member_urn_id,
             ])
             member_urn_id_list.append(member_urn_id)
