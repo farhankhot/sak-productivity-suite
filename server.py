@@ -346,7 +346,7 @@ def GetLeadInfo(cookie_dict, leads_list, member_urn_id_list):
         
         # Testing
         print(lead_idx)
-        if lead_idx == 1:
+        if lead_idx == 4:
             break   
 
         lead_info = []
@@ -412,7 +412,8 @@ def GetLeadInfo(cookie_dict, leads_list, member_urn_id_list):
             " Include something useful about the interests and use it in the request. " + \
             " Write a request to connect with them. Make it casual but eyecatching. The goal is to ask about their current Salesforce implementation. Use only 50 words."
 
-        connect_note = asyncio.run(UseBingAI(prompt))
+        # connect_note = asyncio.run(UseBingAI(prompt))
+        connect_note = UseChatGPT(prompt)
         # print(connect_note)
         # connect_note = "hi," + leads_list[lead_idx][0]
         t.append(connect_note)
