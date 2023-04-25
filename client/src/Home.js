@@ -200,7 +200,7 @@ function Home(props) {
 		
 		}
 		else {
-			const prompt = "You are an Account Executive. This is the profile of a person: " + fullName
+			const prompt = "You are a Account Executive. This is the profile of a person: " + fullName
 			+ " Write a request to connect with them. Make it casual but eyecatching. Use only 50 words.";	
 			console.log("Not selected", prompt);
 			try {
