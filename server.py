@@ -288,6 +288,7 @@ def SalesNavigatorLeadsInfo(api):
         f"/sales-api/salesApiLists?q=listType&listType=LEAD&listSources=List(MANUAL,SYSTEM,CRM_AT_RISK_OPPORTUNITY,CRM_SYNC,CRM_BLUEBIRD,BUYER_INTEREST,LINKEDIN_SALES_INSIGHTS,CSV_IMPORT,RECOMMENDATION,NEW_EXECS_IN_SAVED_ACCOUNTS,LEADS_TO_FOLLOW_UP,CRM_PERSON_ACCOUNT,BOOK_OF_BUSINESS)&isMetadataNeeded=true&start=0&count=25&sortCriteria=LAST_MODIFIED&sortOrder=DESCENDING&decoration=%28id%2ClistType%2ClistSource%2Cname%2Cdescription%2CcreatedAt%2Crole%2ClastModifiedAt%2ClastViewedAt%2CentityCount%2CunsavedEntityCount%2Cshared%2Csubscribed%2ClistCsvImportTask%2CmockList%2Ccreator~fs_salesProfile%28entityUrn%2CfullName%2CprofilePictureDisplayImage%29%2ClastModifiedBy~fs_salesProfile%28entityUrn%2CfullName%29%29"
         , base_request=True)
     res_leads_list_json = res_leads_list.json()
+    print(res_leads_list_json)
     latest_list_id = res_leads_list_json["elements"][0]["id"]
 
     # Get the leads from the latest list
