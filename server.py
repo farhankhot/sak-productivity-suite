@@ -403,7 +403,7 @@ def GetLeadInfo(cookie_dict, leads_list, member_urn_id_list):
             temp = api.get_company(company_id)
             company_name = temp['universalName']
             lead_interests.append([company_name, company_id])
-        
+        print(lead_interests)
         lead_info.append(lead_interests)
         # ============= Getting interests =================================
         
@@ -414,7 +414,6 @@ def GetLeadInfo(cookie_dict, leads_list, member_urn_id_list):
         #     " Write a connect note to them. Make it casual but eyecatching. Use only 50 words."
         
         prompt = "This is the profile of a person: " + leads_list[lead_idx][0] + \
-            " These are their interests: " + ",".join(lead_interests) + \
             " Include something useful about the interests and use it in the request. " + \
             " Write a connect note to them. Make it casual but eyecatching. Use only 50 words."
 
