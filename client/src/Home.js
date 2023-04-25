@@ -268,13 +268,16 @@ function Home(props) {
 
 	return (
 		<>
-            <Button variant="primary" type="button" onClick={handleGettingLeads} style={{ padding: '10px' }}>
-				{isLoadingLeads ? 'Getting Leads...' : 'Get Leads'}
-            </Button>
 
-			{showCreateConnectNoteButton && <Button variant="primary" type="button" style={{ padding: '10px' }} onClick={() => handleAutoCreatingNotes(sessionId, leadsArray[0][4])}>
-				{isLoadingAutoCreatingNotes ? 'Creating Notes...' : 'Auto Create notes for all leads'}
-            </Button>}
+			<div style={{ padding: '20px' }}>
+				<Button variant="primary" type="button" onClick={handleGettingLeads}>
+					{isLoadingLeads ? 'Getting Leads...' : 'Get Leads'}
+				</Button>
+
+				{showCreateConnectNoteButton && <Button variant="primary" type="button" onClick={() => handleAutoCreatingNotes(sessionId, leadsArray[0][4])}>
+					{isLoadingAutoCreatingNotes ? 'Creating Notes...' : 'Auto Create notes for all leads'}
+				</Button>}
+			</div>
 
 			<div className="mx-auto" style={{ maxWidth: "800px", paddingBottom: '20px'}}>
 			
