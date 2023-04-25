@@ -319,34 +319,6 @@ function Home(props) {
 									</Button>
 								</ButtonGroup>
 
-								{/* {peopleInterestsArray[index].length > 0 && (
-									<ListGroup.Item>
-										<Form.Control
-										as="select"
-										multiple
-										onChange={handleInterestsSelection}
-										>
-										{peopleInterestsArray[index].map((interest) => (
-											<option key={interest}>{interest[0]}</option>
-										))}
-										</Form.Control>
-									</ListGroup.Item>
-								)}
-								
-								{companyInterestsArray[index].length > 0 && (
-									<ListGroup.Item>
-										<Form.Control
-										as="select"
-										multiple
-										onChange={handleInterestsSelection}
-										>
-										{companyInterestsArray[index].map((interest) => (
-											<option key={interest}>{interest[0]}</option>
-										))}
-										</Form.Control>
-									</ListGroup.Item>
-								)} */}
-
 								{peopleInterestsArray[index].length > 0 && (
 								<ListGroup.Item>
 									{peopleInterestsArray[index].map((interest, i) => (
@@ -372,20 +344,6 @@ function Home(props) {
 									))}
 								</ListGroup.Item>
 								)}
-								
-								{/* {activityInterestsArray.length > 0 && (
-									<ListGroup.Item>
-										<Form.Control
-										as="select"
-										multiple
-										onChange={handleInterestsSelection}
-										>
-										{activityInterestsArray.map((interest) => (
-											<option key={interest}>{interest[0]}</option>
-										))}
-										</Form.Control>
-									</ListGroup.Item>
-								)} */}
 
 							</div>
 						</Accordion.Body>

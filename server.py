@@ -50,6 +50,8 @@ async def UseBingAI(prompt):
 # TODO: Check context length usage in the conversation, if token limit is near, start a new conversation
 def UseChatGPT(prompt):
 
+    print("ss", prompt)
+
     openai_key = "sk-BFk5W7jx2pZjz0Y1vhsjT3BlbkFJRXRp7HrXqrAZoVgnri8"
     openai_key = openai_key + "T"
     openai.api_key = openai_key
