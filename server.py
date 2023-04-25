@@ -378,15 +378,21 @@ def GetLeadInfo(cookie_dict, leads_list, member_urn_id_list):
         interests = interests.json()
         interests_json = json.dumps(interests)
 
+        print(interests_json)
+
         pattern = re.compile(r'"(urn:li:fsd_profile:[^"]*)"')
         matches = re.findall(pattern, interests_json)
         people_the_profile_is_interested_in_set = set(matches)
         people_the_profile_is_interested_in = [s.split(':')[-1] for s in people_the_profile_is_interested_in_set]
 
+        print(people_the_profile_is_interested_in)
+
         pattern_for_company = re.compile(r'"(urn:li:fsd_company:[^"]*)"')
         matches_for_company = re.findall(pattern_for_company, interests_json)
         companies_the_profile_is_interested_in_set = set(matches_for_company)
         companies_the_profile_is_interested_in = [s.split(':')[-1] for s in companies_the_profile_is_interested_in_set]
+
+        print(companies_the_profile_is_interested_in)
 
         for i, profile_urn in enumerate(people_the_profile_is_interested_in):
             if i == 1:
@@ -459,7 +465,7 @@ def get_lead_info():
     leads_list = request.json['leadsArray'] # type: ignore
     member_urn_id_list = request.json['memberUrnIdArray'] # type: ignore
  
-    data = q.enqueue(GetLeadInfo, cookie_dict, leads_list, member_urn_id_list)
+    data = q.enqueue(GetLeadInfo, cookie_dict, leads_list, member_urn_id_list, job_timeout=600)
     job_id = data.get_id()
 
     return jsonify(success=True, message=job_id)
