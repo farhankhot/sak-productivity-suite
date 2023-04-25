@@ -173,7 +173,7 @@ function Home(props) {
 		const prompt = "This is the profile of a person: " + fullName
 		+ " These are their interests: " + selectedInterests
 		+ " Use the internet to get something useful about the interests and use it in the request. "
-		+ " Write a request to connect with them. Make it casual but eyecatching. The goal is to ask about their current Salesforce implementation. Use only 50 words.";
+		+ " Write a request to connect with them. Make it casual but eyecatching. Use only 50 words.";
 		try {
 			setIsLoadingMakingNote(true);
 			const response = await fetch("https://sak-productivity-suite.herokuapp.com/use-bingai", {
