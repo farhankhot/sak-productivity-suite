@@ -20,7 +20,7 @@ function Home(props) {
 		
 	const [peopleInterestsArray, setPeopleInterestsArray] = useState(Array.from({length: 25}, () => []));
 	const [companyInterestsArray, setCompanyInterestsArray] = useState(Array.from({length: 25}, () => []));
-	const [selectedInterests, setSelectedInterests] = useState("");
+	const [selectedInterests, setSelectedInterests] = useState(Array.from({length: 25}, () => []));
 
 	const [showProfileArea, setShowProfileArea] = useState(false);
 
@@ -152,7 +152,8 @@ function Home(props) {
 		}
 	};
 				
-	const handleInterestsSelection = (event) => {
+	const handleInterestsSelection = (event, index) => {
+		console.log("index", index);
 		var selections = event.target.options;
 		const updatedInterestsArray = [];
 		for (var i = 0; i < selections.length; i++){
@@ -322,7 +323,7 @@ function Home(props) {
 										key={i}
 										type="checkbox"
 										label={interest[0]}
-										onChange={handleInterestsSelection}
+										onChange={handleInterestsSelection(index)}
 									/>
 									))}
 								</ListGroup.Item>
@@ -335,7 +336,7 @@ function Home(props) {
 										key={i}
 										type="checkbox"
 										label={interest}
-										onChange={handleInterestsSelection}
+										onChange={handleInterestsSelection(index)}
 									/>
 									))}
 								</ListGroup.Item>
