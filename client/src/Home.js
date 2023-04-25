@@ -154,7 +154,7 @@ function Home(props) {
 				
 	const handleInterestsSelection = (index) => (event) => {
 		const newArray = [...selectedInterests];
-		newArray[index].push(event.target.name);
+		newArray[index].push(event.target.label);
 		setSelectedInterests(newArray);
 	};
 
