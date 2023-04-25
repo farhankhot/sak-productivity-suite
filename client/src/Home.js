@@ -154,7 +154,7 @@ function Home(props) {
 				
 	const handleInterestsSelection = (index) => (event) => {
 		const newArray = [...selectedInterests];
-		newArray[index].push(event.target.label);
+		newArray[index].push(event.target.name);
 		setSelectedInterests(newArray);
 	};
 
@@ -167,6 +167,7 @@ function Home(props) {
 			const prompt = "You are an Account Executive. This is the profile of a person: " + fullName
 			+ " These are their interests: " + selectedInterests[index].toString()
 			+ " Write a request to connect with them. Make it casual but eyecatching. Use only 50 words.";
+			console.log(prompt);
 			try {
 				setIsLoadingMakingNote(true);
 				const response = await fetch("https://sak-productivity-suite.herokuapp.com/use-chatgpt", {
