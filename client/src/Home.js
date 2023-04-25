@@ -268,16 +268,16 @@ function Home(props) {
 
 	return (
 		<>
-            <Button variant="primary" type="button" onClick={handleGettingLeads}>
+            <Button variant="primary" type="button" onClick={handleGettingLeads} style={{ padding: '10px' }}>
 				{isLoadingLeads ? 'Getting Leads...' : 'Get Leads'}
             </Button>
 
-			{showCreateConnectNoteButton && <Button variant="primary" type="button" onClick={() => handleAutoCreatingNotes(sessionId, leadsArray[0][4])}>
+			{showCreateConnectNoteButton && <Button variant="primary" type="button" style={{ padding: '10px' }} onClick={() => handleAutoCreatingNotes(sessionId, leadsArray[0][4])}>
 				{isLoadingAutoCreatingNotes ? 'Creating Notes...' : 'Auto Create notes for all leads'}
             </Button>}
 
 			<div className="mx-auto" style={{ maxWidth: "800px", paddingBottom: '20px'}}>
-			<h1>Sales Navigator List:</h1>
+			
 			<Accordion alwaysOpen>
 				{leadsArray.map((leadInfo, index) => (
 					<Accordion.Item eventKey = {index.toString()}
