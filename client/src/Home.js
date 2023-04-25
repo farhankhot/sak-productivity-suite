@@ -154,7 +154,7 @@ function Home(props) {
 				
 	const handleInterestsSelection = (index) => (event) => {
 		const newArray = [...selectedInterests];
-		newArray[index].push(event.target.value);
+		newArray[index].push(event.target.label);
 		setSelectedInterests(newArray);
 	};
 
@@ -165,7 +165,7 @@ function Home(props) {
 
 		if (selectedInterests[index].length !== 0){
 			const prompt = "You are an Account Executive. This is the profile of a person: " + fullName
-			+ " These are their interests: " + selectedInterests[index]
+			+ " These are their interests: " + selectedInterests[index].toString()
 			+ " Write a request to connect with them. Make it casual but eyecatching. Use only 50 words.";
 			try {
 				setIsLoadingMakingNote(true);
