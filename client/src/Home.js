@@ -270,7 +270,7 @@ function Home(props) {
 		<>
 
 			{/* <div style={{ padding: '20px' }}> */}
-			<div style={{ display: 'flex', justifyContent: 'center' }}>
+			<div style={{ display: 'flex', justifyContent: 'center', padding: '20px'}}>
 				<Button variant="primary" type="button" onClick={handleGettingLeads}>
 					{isLoadingLeads ? 'Getting Leads...' : 'Get Leads'}
 				</Button>
