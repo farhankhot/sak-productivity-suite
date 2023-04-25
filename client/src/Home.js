@@ -175,6 +175,7 @@ function Home(props) {
 			const prompt = "You are an Account Executive. This is the profile of a person: " + fullName
 			+ " These are their interests: " + selectedInterests
 			+ " Write a request to connect with them. Make it casual but eyecatching. Use only 50 words.";
+			console.log("selected", prompt);
 			try {
 				setIsLoadingMakingNote(true);
 				const response = await fetch("https://sak-productivity-suite.herokuapp.com/use-chatgpt", {
@@ -205,6 +206,7 @@ function Home(props) {
 		else {
 			const prompt = "You are an Account Executive. This is the profile of a person: " + fullName
 			+ " Write a request to connect with them. Make it casual but eyecatching. Use only 50 words.";	
+			console.log("Not selected", prompt);
 			try {
 				setIsLoadingMakingNote(true);
 				const response = await fetch("https://sak-productivity-suite.herokuapp.com/use-chatgpt", {
@@ -351,7 +353,7 @@ function Home(props) {
 									<Form.Check
 										key={i}
 										type="checkbox"
-										label={interest}
+										label={interest[0]}
 										onChange={handleInterestsSelection}
 									/>
 									))}
