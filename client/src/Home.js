@@ -170,9 +170,17 @@ function Home(props) {
 
 	// ================ Create and Send Connect Note(s) ===============================
 	const handleMakingConnectNote = async (fullName, index) => {
-		const prompt = "This is the profile of a person: " + fullName
-		+ " These are their interests: " + selectedInterests
-		+ " Write a request to connect with them. Make it casual but eyecatching. Use only 50 words.";
+
+		if (selectedInterests.length > 0){
+			const prompt = "This is the profile of a person: " + fullName
+			+ " These are their interests: " + selectedInterests
+			+ " Write a request to connect with them. Make it casual but eyecatching. Use only 50 words.";	
+		}
+		else {
+			const prompt = "This is the profile of a person: " + fullName
+			+ " Write a request to connect with them. Make it casual but eyecatching. Use only 50 words.";	
+		}
+
 		try {
 			setIsLoadingMakingNote(true);
 			const response = await fetch("https://sak-productivity-suite.herokuapp.com/use-chatgpt", {
