@@ -167,7 +167,7 @@ function Home(props) {
 	// ================ Create and Send Connect Note(s) ===============================
 	const handleMakingConnectNote = async (fullName, index) => {
 
-		if (selectedInterests.length > 0){
+		if (selectedInterests !== ""){
 			const prompt = "You are an Account Executive. This is the profile of a person: " + fullName
 			+ " These are their interests: " + selectedInterests
 			+ " Write a request to connect with them. Make it casual but eyecatching. Use only 50 words.";
