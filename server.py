@@ -407,9 +407,14 @@ def GetLeadInfo(cookie_dict, leads_list, member_urn_id_list):
         lead_info.append(lead_interests)
         # ============= Getting interests =================================
         
+        # prompt = "This is the profile of a person: " + leads_list[lead_idx][0] + \
+        #     " These are their interests: " + ",".join(lead_interests) + \
+        #     " These are our mutual connections: " + "" + \
+        #     " Include something useful about the interests and use it in the request. " + \
+        #     " Write a connect note to them. Make it casual but eyecatching. Use only 50 words."
+        
         prompt = "This is the profile of a person: " + leads_list[lead_idx][0] + \
             " These are their interests: " + ",".join(lead_interests) + \
-            " These are our mutual connections: " + "" + \
             " Include something useful about the interests and use it in the request. " + \
             " Write a connect note to them. Make it casual but eyecatching. Use only 50 words."
 
