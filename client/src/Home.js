@@ -160,6 +160,7 @@ function Home(props) {
 		} else {
 		  selectedInterests[index] = selectedInterests[index].filter((item) => item !== label);
 		}
+		setSelectedInterests(selectedInterests);
 	};
 
 	// ================ Create and Send Connect Note(s) ===============================
