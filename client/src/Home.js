@@ -154,9 +154,17 @@ function Home(props) {
 				
 	const handleInterestsSelection = (index) => (event) => {
 		const newArray = [...selectedInterests];
-		newArray[index].push(event.target.value);
+		const value = event.target.value;
+		const isChecked = event.target.checked;
+		if (isChecked) {
+		  newArray[index].push(value);
+		} else {
+		  const indexToRemove = newArray[index].indexOf(value);
+		  newArray[index].splice(indexToRemove, 1);
+		}
 		setSelectedInterests(newArray);
 	};
+	  
 
 	// ================ Create and Send Connect Note(s) ===============================
 	const handleMakingConnectNote = async (fullName, index) => {
