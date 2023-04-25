@@ -61,7 +61,7 @@ def UseChatGPT(prompt):
         ]
     )
     
-    # print(completion['choices'][0]['message']['content']) # type: ignore
+    print(completion['choices'][0]['message']['content']) # type: ignore
     
     return completion['choices'][0]['message']['content'] # type: ignore
 
