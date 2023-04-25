@@ -164,7 +164,6 @@ function Home(props) {
 		}
 		setSelectedInterests(newArray);
 	};
-	  
 
 	// ================ Create and Send Connect Note(s) ===============================
 	const handleMakingConnectNote = async (fullName, index) => {
