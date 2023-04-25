@@ -153,12 +153,9 @@ function Home(props) {
 	};
 				
 	const handleInterestsSelection = (index) => (event) => {
-		const label = event.target.label;
-		const checked = event.target.checked;
-		if (checked) {
-		  selectedInterests[index].push(label);
-		}
-		setSelectedInterests(selectedInterests);
+		const newArray = [...selectedInterests];
+		newArray[index] = event.target.value;
+		setSelectedInterests(newArray);
 	};
 
 	// ================ Create and Send Connect Note(s) ===============================
@@ -168,7 +165,6 @@ function Home(props) {
 			const prompt = "You are an Account Executive. This is the profile of a person: " + fullName
 			+ " These are their interests: " + selectedInterests[index]
 			+ " Write a request to connect with them. Make it casual but eyecatching. Use only 50 words.";
-			console.log("selected", prompt);
 			try {
 				setIsLoadingMakingNote(true);
 				const response = await fetch("https://sak-productivity-suite.herokuapp.com/use-chatgpt", {
