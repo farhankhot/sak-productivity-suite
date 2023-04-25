@@ -172,39 +172,65 @@ function Home(props) {
 	const handleMakingConnectNote = async (fullName, index) => {
 
 		if (selectedInterests.length > 0){
-			const prompt = "This is the profile of a person: " + fullName
+			const prompt = "You are an Account Executive. This is the profile of a person: " + fullName
 			+ " These are their interests: " + selectedInterests
-			+ " Write a request to connect with them. Make it casual but eyecatching. Use only 50 words.";	
+			+ " Write a request to connect with them. Make it casual but eyecatching. Use only 50 words.";
+			try {
+				setIsLoadingMakingNote(true);
+				const response = await fetch("https://sak-productivity-suite.herokuapp.com/use-chatgpt", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json"
+					},
+					body: JSON.stringify({
+						prompt: prompt
+					})
+				});
+				
+				const data = await response.json();
+				const jobId = data.message;
+	
+				CheckJobStatus(jobId, (resultArray) => {
+					const newArray = [...connectNoteArray];
+					newArray[index] = resultArray;
+					setConnectNoteArray(newArray);	
+					setIsLoadingMakingNote(false);
+				});
+	
+			}catch(error){
+				console.log(error);
+			}
+		
 		}
 		else {
-			const prompt = "This is the profile of a person: " + fullName
+			const prompt = "You are an Account Executive. This is the profile of a person: " + fullName
 			+ " Write a request to connect with them. Make it casual but eyecatching. Use only 50 words.";	
-		}
-
-		try {
-			setIsLoadingMakingNote(true);
-			const response = await fetch("https://sak-productivity-suite.herokuapp.com/use-chatgpt", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json"
-				},
-				body: JSON.stringify({
-					prompt: prompt
-				})
-			});
-			
-			const data = await response.json();
-			const jobId = data.message;
-
-			CheckJobStatus(jobId, (resultArray) => {
-				const newArray = [...connectNoteArray];
-				newArray[index] = resultArray;
-				setConnectNoteArray(newArray);	
-				setIsLoadingMakingNote(false);
-			});
-
-		}catch(error){
-			console.log(error);
+			try {
+				setIsLoadingMakingNote(true);
+				const response = await fetch("https://sak-productivity-suite.herokuapp.com/use-chatgpt", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json"
+					},
+					body: JSON.stringify({
+						prompt: prompt
+					})
+				});
+				
+				const data = await response.json();
+				const jobId = data.message;
+	
+				CheckJobStatus(jobId, (resultArray) => {
+					const newArray = [...connectNoteArray];
+					newArray[index] = resultArray;
+					setConnectNoteArray(newArray);	
+					setIsLoadingMakingNote(false);
+				});
+	
+			}catch(error){
+				console.log(error);
+			}
+	
 		}
 	};
 
