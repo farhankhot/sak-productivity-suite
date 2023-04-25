@@ -317,7 +317,7 @@ function Home(props) {
 									</Button>
 								</ButtonGroup>
 
-								{peopleInterestsArray[index].length > 0 && (
+								{/* {peopleInterestsArray[index].length > 0 && (
 									<ListGroup.Item>
 										<Form.Control
 										as="select"
@@ -343,6 +343,32 @@ function Home(props) {
 										))}
 										</Form.Control>
 									</ListGroup.Item>
+								)} */}
+
+								{peopleInterestsArray[index].length > 0 && (
+								<ListGroup.Item>
+									{peopleInterestsArray[index].map((interest, i) => (
+									<Form.Check
+										key={i}
+										type="checkbox"
+										label={interest}
+										onChange={handleInterestsSelection}
+									/>
+									))}
+								</ListGroup.Item>
+								)}
+
+								{companyInterestsArray[index].length > 0 && (
+								<ListGroup.Item>
+									{companyInterestsArray[index].map((interest, i) => (
+									<Form.Check
+										key={i}
+										type="checkbox"
+										label={interest}
+										onChange={handleInterestsSelection}
+									/>
+									))}
+								</ListGroup.Item>
 								)}
 								
 								{/* {activityInterestsArray.length > 0 && (
