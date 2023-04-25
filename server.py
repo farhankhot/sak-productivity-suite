@@ -347,8 +347,8 @@ def GetLeadInfo(cookie_dict, leads_list, member_urn_id_list):
         
         # Testing
         # print(lead_idx)
-        if lead_idx == 4:
-            break   
+        # if lead_idx == 4:
+        #     break   
 
         lead_info = []
         # ============= Getting Relationships =============================        
@@ -378,21 +378,21 @@ def GetLeadInfo(cookie_dict, leads_list, member_urn_id_list):
         interests = interests.json()
         interests_json = json.dumps(interests)
 
-        print(interests_json)
+        # print(interests_json)
 
         pattern = re.compile(r'"(urn:li:fsd_profile:[^"]*)"')
         matches = re.findall(pattern, interests_json)
         people_the_profile_is_interested_in_set = set(matches)
         people_the_profile_is_interested_in = [s.split(':')[-1] for s in people_the_profile_is_interested_in_set]
 
-        print(people_the_profile_is_interested_in)
+        # print(people_the_profile_is_interested_in)
 
         pattern_for_company = re.compile(r'"(urn:li:fsd_company:[^"]*)"')
         matches_for_company = re.findall(pattern_for_company, interests_json)
         companies_the_profile_is_interested_in_set = set(matches_for_company)
         companies_the_profile_is_interested_in = [s.split(':')[-1] for s in companies_the_profile_is_interested_in_set]
 
-        print(companies_the_profile_is_interested_in)
+        # print(companies_the_profile_is_interested_in)
 
         for i, profile_urn in enumerate(people_the_profile_is_interested_in):
             if i == 1:
