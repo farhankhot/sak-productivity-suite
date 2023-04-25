@@ -154,12 +154,14 @@ function Home(props) {
 				
 	const handleInterestsSelection = (index) => (event) => {
 		const newArray = [...selectedInterests];
-		newArray[index] = event.target.value;
+		newArray[index].push(event.target.value);
 		setSelectedInterests(newArray);
 	};
 
 	// ================ Create and Send Connect Note(s) ===============================
 	const handleMakingConnectNote = async (fullName, index) => {
+		console.log(selectedInterests);
+		console.log(selectedInterests[index]);
 
 		if (selectedInterests[index].length !== 0){
 			const prompt = "You are an Account Executive. This is the profile of a person: " + fullName
