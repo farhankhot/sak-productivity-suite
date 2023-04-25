@@ -152,25 +152,22 @@ function Home(props) {
 		}
 	};
 				
-	const handleInterestsSelection = (event, index) => {
-		console.log("index", index);
-		var selections = event.target.options;
-		const updatedInterestsArray = [];
-		for (var i = 0; i < selections.length; i++){
-			if(selections[i].selected){
-				updatedInterestsArray.push(selections[i].value);
-			}
+	const handleInterestsSelection = (index) => (event) => {
+		const label = event.target.label;
+		const checked = event.target.checked;
+		if (checked) {
+		  selectedInterests[index] = [...selectedInterests[index], label];
+		} else {
+		  selectedInterests[index] = selectedInterests[index].filter((item) => item !== label);
 		}
-		console.log(updatedInterestsArray);
-		setSelectedInterests(updatedInterestsArray);
-	}
+	};
 
 	// ================ Create and Send Connect Note(s) ===============================
 	const handleMakingConnectNote = async (fullName, index) => {
 
-		if (selectedInterests !== ""){
+		if (selectedInterests[index].length !== 0){
 			const prompt = "You are an Account Executive. This is the profile of a person: " + fullName
-			+ " These are their interests: " + selectedInterests
+			+ " These are their interests: " + selectedInterests[index]
 			+ " Write a request to connect with them. Make it casual but eyecatching. Use only 50 words.";
 			console.log("selected", prompt);
 			try {
