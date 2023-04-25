@@ -269,12 +269,13 @@ function Home(props) {
 	return (
 		<>
 
-			<div style={{ padding: '20px' }}>
+			{/* <div style={{ padding: '20px' }}> */}
+			<div style={{ display: 'flex', justifyContent: 'center' }}>
 				<Button variant="primary" type="button" onClick={handleGettingLeads}>
 					{isLoadingLeads ? 'Getting Leads...' : 'Get Leads'}
 				</Button>
 
-				{showCreateConnectNoteButton && <Button variant="primary" type="button" onClick={() => handleAutoCreatingNotes(sessionId, leadsArray[0][4])}>
+				{showCreateConnectNoteButton && <Button variant="primary" type="button" onClick={() => handleAutoCreatingNotes(sessionId, leadsArray[0][4])} style={{marginLeft: '10px'}}>
 					{isLoadingAutoCreatingNotes ? 'Creating Notes...' : 'Auto Create notes for all leads'}
 				</Button>}
 			</div>
