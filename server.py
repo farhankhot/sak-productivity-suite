@@ -347,8 +347,8 @@ def GetLeadInfo(cookie_dict, leads_list, member_urn_id_list):
         
         # Testing
         # print(lead_idx)
-        # if lead_idx == 1:
-        #     break   
+        if lead_idx == 1:
+            break   
 
         lead_info = []
         # ============= Getting Relationships =============================        
@@ -403,7 +403,7 @@ def GetLeadInfo(cookie_dict, leads_list, member_urn_id_list):
             temp = api.get_company(company_id)
             company_name = temp['universalName']
             lead_interests.append([company_name, company_id])
-        print(lead_interests)
+        
         lead_info.append(lead_interests)
         # ============= Getting interests =================================
         
