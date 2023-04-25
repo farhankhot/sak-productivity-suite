@@ -20,7 +20,6 @@ function Home(props) {
 		
 	const [peopleInterestsArray, setPeopleInterestsArray] = useState(Array.from({length: 25}, () => []));
 	const [companyInterestsArray, setCompanyInterestsArray] = useState(Array.from({length: 25}, () => []));
-	// const [activityInterestsArray, setActivityInterestsArray] = useState(Array.from({length: 25}, () => []));
 	const [selectedInterests, setSelectedInterests] = useState("");
 
 	const [showProfileArea, setShowProfileArea] = useState(false);
@@ -152,11 +151,7 @@ function Home(props) {
 			console.error(error);
 		}
 	};
-	
-	// TODO
-	// const handleGettingActivityInterests = () => { };
-			
-	// TODO: Gets all of the selected interests, not just the current lead's
+				
 	const handleInterestsSelection = (event) => {
 		var selections = event.target.options;
 		const updatedInterestsArray = [];
@@ -165,6 +160,7 @@ function Home(props) {
 				updatedInterestsArray.push(selections[i].value);
 			}
 		}
+		console.log(updatedInterestsArray);
 		setSelectedInterests(updatedInterestsArray);
 	}
 
@@ -344,7 +340,6 @@ function Home(props) {
 									))}
 								</ListGroup.Item>
 								)}
-
 							</div>
 						</Accordion.Body>
 						
