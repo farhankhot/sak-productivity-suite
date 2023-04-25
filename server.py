@@ -39,7 +39,7 @@ CORS(app, resources={r"/*": {"origins": "*"}})
 async def UseBingAI(prompt):
     
     # This is getting my own bing cookies
-    bot = Chatbot(cookiePath='./cookie.json')
+    bot = Chatbot(cookie_path='./cookie.json') # type: ignore
 
     ans_json = await bot.ask(prompt=prompt)
     ans = ans_json['item']['messages'][1]['text']
