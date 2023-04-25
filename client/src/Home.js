@@ -317,6 +317,7 @@ function Home(props) {
 									<Form.Check
 										key={i}
 										type="checkbox"
+										value={interest[0]}
 										label={interest[0]}
 										onChange={handleInterestsSelection(index)}
 									/>
@@ -330,7 +331,8 @@ function Home(props) {
 									<Form.Check
 										key={i}
 										type="checkbox"
-										label={interest}
+										value={interest[0]}
+										label={interest[0]}
 										onChange={handleInterestsSelection(index)}
 									/>
 									))}
