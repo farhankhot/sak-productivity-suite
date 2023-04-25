@@ -156,9 +156,7 @@ function Home(props) {
 		const label = event.target.label;
 		const checked = event.target.checked;
 		if (checked) {
-		  selectedInterests[index] = [...selectedInterests[index], label];
-		} else {
-		  selectedInterests[index] = selectedInterests[index].filter((item) => item !== label);
+		  selectedInterests[index].push(label);
 		}
 		setSelectedInterests(selectedInterests);
 	};
