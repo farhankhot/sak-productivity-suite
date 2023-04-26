@@ -15,10 +15,10 @@ function Home(props) {
 
 	const [isLoadingLeads, setIsLoadingLeads] = useState(false);
 	const [isLoadingAutoCreatingNotes, setIsLoadingAutoCreatingNotes] = useState(false);
-	const [isLoadingPeopleInterests, setIsLoadingPeopleInterests] = useState(false);
-	const [isLoadingCompanyInterests, setIsLoadingCompanyInterests] = useState(false);
-	const [isLoadingMakingNote, setIsLoadingMakingNote] = useState(false);
-	const [isLoadingSendingNote, setIsLoadingSendingNote] = useState(false);
+	const [isLoadingPeopleInterests, setIsLoadingPeopleInterests] = useState(Array.from({length: 25}, () => false));
+	const [isLoadingCompanyInterests, setIsLoadingCompanyInterests] = useState(Array.from({length: 25}, () => false));
+	const [isLoadingMakingNote, setIsLoadingMakingNote] = useState(Array.from({length: 25}, () => false));
+	const [isLoadingSendingNote, setIsLoadingSendingNote] = useState(Array.from({length: 25}, () => false));
 		
 	const [peopleInterestsArray, setPeopleInterestsArray] = useState(Array.from({length: 25}, () => []));
 	const [companyInterestsArray, setCompanyInterestsArray] = useState(Array.from({length: 25}, () => []));
@@ -95,7 +95,15 @@ function Home(props) {
 		const endIndex = profileUrnStr.indexOf(",");
 		const profileUrn = profileUrnStr.substring(startIndex, endIndex);
 		try {
-			setIsLoadingPeopleInterests(true);
+
+			// setIsLoadingPeopleInterests(true);
+			
+			const newIsLoadingPeopleInterests = [...isLoadingPeopleInterests];
+			for (let i = 0; i < newIsLoadingPeopleInterests.length; i++){
+				newIsLoadingPeopleInterests[index] = true;
+			}
+			setIsLoadingPeopleInterests(newIsLoadingPeopleInterests);
+
 			setAutoCreatingNotesDisabled(true);
 			const response = await fetch("https://sak-productivity-suite.herokuapp.com/get-people-interests", {
 				method: "POST",
@@ -116,7 +124,14 @@ function Home(props) {
 					newArray[index].push(resultArray[i]);
 				}
 				setPeopleInterestsArray(newArray);
-				setIsLoadingPeopleInterests(false);
+
+				// setIsLoadingPeopleInterests(false);
+				const newIsLoadingPeopleInterests = [...isLoadingPeopleInterests];
+				for (let i = 0; i < newIsLoadingPeopleInterests.length; i++){
+					newIsLoadingPeopleInterests[index] = false;
+				}
+				
+				setIsLoadingPeopleInterests(newIsLoadingPeopleInterests);
 				setAutoCreatingNotesDisabled(false);
 			});
 
@@ -290,7 +305,7 @@ function Home(props) {
 						<>
 							<Spinner animation="border" size="sm" />
 							Getting Leads...
-						</> : 'Get Leads'}
+						</> : ' Get Leads'}
 				</Button>
 
 				{showCreateConnectNoteButton && <Button className="myButton" variant="primary" type="button" onClick={() => handleAutoCreatingNotes(sessionId, leadsArray[0][4])} style={{marginLeft: '10px'}} disabled={autoCreatingNotesDisabled}>
@@ -298,7 +313,7 @@ function Home(props) {
 					<>
 						<Spinner animation="border" size="sm" />
 						Creating Notes...
-					</>: 'Auto Create notes for all leads'}
+					</>: ' Auto Create notes for all leads'}
 				</Button>}
 			</div>
 
@@ -320,15 +335,17 @@ function Home(props) {
 										/>
 									</Form.Group>
 									<div style={{ display: 'flex', justifyContent: 'center', padding: '20px'}} >
+											
 											<Button className="myButton" onClick={ () => {
 												handleGettingPeopleInterests(sessionId, leadInfo[4], index)
-											}} disabled={isLoadingPeopleInterests} style={{marginLeft: '10px'}}>
-												{isLoadingPeopleInterests ? 
+											}} disabled={isLoadingPeopleInterests[index]} style={{marginLeft: '10px'}}>
+												{isLoadingPeopleInterests[index] ? 
 												<>
 													<Spinner animation="border" size="sm" />
 													Loading...
-												</>: 'Get people interests'}
+												</>: ' Get people interests'}
 											</Button>{' '}
+
 											<Button className="myButton" onClick={ () => {
 												handleGettingCompanyInterests(sessionId, leadInfo[4], index)
 											}} disabled={isLoadingCompanyInterests} style={{marginLeft: '20px'}}>
@@ -336,8 +353,9 @@ function Home(props) {
 												<>
 													<Spinner animation="border" size="sm" />
 													Loading...
-												</> : 'Get company interests'}
+												</> : ' Get company interests'}
 											</Button>{' '}
+
 											<Button className="myButton" onClick={ () => {
 												handleMakingConnectNote(leadInfo[0], index)
 											}} disabled={isLoadingMakingNote} style={{marginLeft: '30px'}}>
@@ -345,8 +363,9 @@ function Home(props) {
 												<>
 													<Spinner animation="border" size="sm" />
 													Making note...
-												</> : 'Make Connect Note'}
-											</Button>{' '}									
+												</> : ' Make Connect Note'}
+											</Button>{' '}
+
 											<Button className="myButton" onClick={ () => {
 												handleSendingConnectNote(sessionId, leadInfo[4], index)
 											}} disabled={isLoadingSendingNote} style={{marginLeft: '40px'}}>
@@ -354,7 +373,7 @@ function Home(props) {
 												<>
 													<Spinner animation="border" size="sm" />
 													Sending Connect Note...
-												</> : 'Send Connect Note'}
+												</> : ' Send Connect Note'}
 											</Button>
 									</div>
 
