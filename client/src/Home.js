@@ -357,16 +357,16 @@ function Home(props) {
 					{isLoadingLeads ? 
 						<>
 							<Spinner animation="border" size="sm" />
-							Getting Leads...
-						</> : ' Get Leads'}
+							 Getting Leads...
+						</> : 'Get Leads'}
 				</Button>
 
 				{showCreateConnectNoteButton && <Button className="myButton" variant="primary" type="button" onClick={() => handleAutoCreatingNotes(sessionId, leadsArray[0][4])} style={{marginLeft: '10px'}} disabled={autoCreatingNotesDisabled}>
 					{isLoadingAutoCreatingNotes ? 
 					<>
 						<Spinner animation="border" size="sm" />
-						Creating Notes...
-					</>: ' Auto Create notes for all leads'}
+						 Creating Notes...
+					</>: 'Auto Create notes for all leads'}
 				</Button>}
 			</div>
 
@@ -395,8 +395,8 @@ function Home(props) {
 												{isLoadingPeopleInterests[index] ? 
 												<>
 													<Spinner animation="border" size="sm" />
-													Loading...
-												</>: ' Get people interests'}
+													 Loading...
+												</>: 'Get people interests'}
 											</Button>{' '}
 
 											<Button className="myButton" onClick={ () => {
@@ -405,8 +405,8 @@ function Home(props) {
 												{isLoadingCompanyInterests ? 
 												<>
 													<Spinner animation="border" size="sm" />
-													Loading...
-												</> : ' Get company interests'}
+													 Loading...
+												</> : 'Get company interests'}
 											</Button>{' '}
 
 											<Button className="myButton" onClick={ () => {
@@ -415,8 +415,8 @@ function Home(props) {
 												{isLoadingMakingNote ? 
 												<>
 													<Spinner animation="border" size="sm" />
-													Making note...
-												</> : ' Make Connect Note'}
+													 Making note...
+												</> : 'Make Connect Note'}
 											</Button>{' '}
 
 											<Button className="myButton" onClick={ () => {
@@ -425,8 +425,8 @@ function Home(props) {
 												{isLoadingSendingNote ? 
 												<>
 													<Spinner animation="border" size="sm" />
-													Sending Connect Note...
-												</> : ' Send Connect Note'}
+													 Sending Connect Note...
+												</> : 'Send Connect Note'}
 											</Button>
 									</div>
 
