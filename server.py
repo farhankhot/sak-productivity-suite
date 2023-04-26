@@ -301,6 +301,7 @@ def SalesNavigatorLeadsInfo(api):
     # print(res.json())
 
     leads_list_unparsed = res.json()["elements"]
+    print(leads_list_unparsed)
 
     regex = r"urn:li:fs_salesProfile:(.+)" 
 
