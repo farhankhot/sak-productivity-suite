@@ -1,3 +1,4 @@
 .myButton:disabled:hover {
-  cursor: not-allowed;
-}
+    cursor: not-allowed !important;
+  }
+  
