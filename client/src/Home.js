@@ -29,6 +29,8 @@ function Home(props) {
 
 	const [showCreateConnectNoteButton, setShowCreateConnectNoteButton] = useState(false);
 	const [connectNoteArray, setConnectNoteArray] = useState([]);
+
+	const [autoCreatingNotesDisabled, setAutoCreatingNotesDisabled] = useState(false);
 		
 	const handleGettingLeads = async() => {
         try {
@@ -92,6 +94,7 @@ function Home(props) {
 		const profileUrn = profileUrnStr.substring(startIndex, endIndex);
 		try {
 			setIsLoadingPeopleInterests(true);
+			setAutoCreatingNotesDisabled(true);
 			const response = await fetch("https://sak-productivity-suite.herokuapp.com/get-people-interests", {
 				method: "POST",
 				headers: {
@@ -112,6 +115,7 @@ function Home(props) {
 				}
 				setPeopleInterestsArray(newArray);
 				setIsLoadingPeopleInterests(false);
+				setAutoCreatingNotesDisabled(false);
 			});
 
 		} catch (error) {
