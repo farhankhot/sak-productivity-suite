@@ -314,22 +314,22 @@ function Home(props) {
 										{/* <ButtonGroup aria-label="Basic example" className="mb-2" style={{ margin: '0 10px' }}> */}
 											<Button onClick={ () => {
 												handleGettingPeopleInterests(sessionId, leadInfo[4], index)
-											}} disabled={isLoadingPeopleInterests}>
+											}} disabled={isLoadingPeopleInterests} style={{marginLeft: '10px'}}>
 												{isLoadingPeopleInterests ? 'Loading...' : 'Get people interests'}
 											</Button>{' '}
 											<Button className="mr-2" onClick={ () => {
 												handleGettingCompanyInterests(sessionId, leadInfo[4], index)
-											}} disabled={isLoadingCompanyInterests}>
+											}} disabled={isLoadingCompanyInterests} style={{marginLeft: '20px'}}>
 												{isLoadingCompanyInterests ? 'Loading...' : 'Get company interests'}
 											</Button>{' '}
 											<Button className="mr-2" onClick={ () => {
 												handleMakingConnectNote(leadInfo[0], index)
-											}} disabled={isLoadingMakingNote}>
+											}} disabled={isLoadingMakingNote} style={{marginLeft: '30px'}}>
 												{isLoadingMakingNote ? 'Making note...' : 'Make Connect Note'}
 											</Button>{' '}									
 											<Button onClick={ () => {
 												handleSendingConnectNote(sessionId, leadInfo[4], index)
-											}} disabled={isLoadingSendingNote}>
+											}} disabled={isLoadingSendingNote} style={{marginLeft: '40px'}}>
 												{isLoadingSendingNote ? 'Sending note...' : 'Send Connect Note'}
 											</Button>
 										{/* </ButtonGroup> */}
