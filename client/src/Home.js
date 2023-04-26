@@ -310,28 +310,30 @@ function Home(props) {
 											}}
 										/>
 									</Form.Group>
-									<ButtonGroup aria-label="Basic example" className="mb-2">
-										<Button onClick={ () => {
-											handleGettingPeopleInterests(sessionId, leadInfo[4], index)
-										}} disabled={isLoadingPeopleInterests}>
-											{isLoadingPeopleInterests ? 'Loading...' : 'Get people interests'}
-										</Button>
-										<Button onClick={ () => {
-											handleGettingCompanyInterests(sessionId, leadInfo[4], index)
-										}} disabled={isLoadingCompanyInterests}>
-											{isLoadingCompanyInterests ? 'Loading...' : 'Get company interests'}
-										</Button>
-										<Button onClick={ () => {
-											handleMakingConnectNote(leadInfo[0], index)
-										}} disabled={isLoadingMakingNote}>
-											{isLoadingMakingNote ? 'Making note...' : 'Make Connect Note'}
-										</Button>										
-										<Button onClick={ () => {
-											handleSendingConnectNote(sessionId, leadInfo[4], index)
-										}} disabled={isLoadingSendingNote}>
-											{isLoadingSendingNote ? 'Sending note...' : 'Send Connect Note'}
-										</Button>
-									</ButtonGroup>
+									<div style={{ display: 'flex', justifyContent: 'center', padding: '20px'}} >
+										<ButtonGroup aria-label="Basic example" className="mb-2">
+											<Button onClick={ () => {
+												handleGettingPeopleInterests(sessionId, leadInfo[4], index)
+											}} disabled={isLoadingPeopleInterests}>
+												{isLoadingPeopleInterests ? 'Loading...' : 'Get people interests'}
+											</Button>
+											<Button onClick={ () => {
+												handleGettingCompanyInterests(sessionId, leadInfo[4], index)
+											}} disabled={isLoadingCompanyInterests}>
+												{isLoadingCompanyInterests ? 'Loading...' : 'Get company interests'}
+											</Button>
+											<Button onClick={ () => {
+												handleMakingConnectNote(leadInfo[0], index)
+											}} disabled={isLoadingMakingNote}>
+												{isLoadingMakingNote ? 'Making note...' : 'Make Connect Note'}
+											</Button>										
+											<Button onClick={ () => {
+												handleSendingConnectNote(sessionId, leadInfo[4], index)
+											}} disabled={isLoadingSendingNote}>
+												{isLoadingSendingNote ? 'Sending note...' : 'Send Connect Note'}
+											</Button>
+										</ButtonGroup>
+									</div>
 
 									{peopleInterestsArray[index].length > 0 && (
 									<ListGroup.Item>
