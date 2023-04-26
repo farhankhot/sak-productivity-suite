@@ -67,6 +67,14 @@ function Home(props) {
 	const handleAutoCreatingNotes = async(sessionId, memberUrnId) => {
 		try {
 			setIsLoadingAutoCreatingNotes(true);
+			
+			// This disables all other buttons when Auto Create notes button is clicked
+			for (let i = 0; i < 25; i++){
+				isLoadingPeopleInterests[i] = false;
+				isLoadingCompanyInterests[i] = false;
+				isLoadingMakingNote[i] = false;
+				isLoadingSendingNote[i] = false;
+			}
 			const response = await fetch("https://sak-productivity-suite.herokuapp.com/get-lead-info", {
 				method: "POST",
 				headers: {
