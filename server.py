@@ -347,8 +347,9 @@ def GetLeadInfo(cookie_dict, leads_list, member_urn_id_list):
     t = []
     for lead_idx, profile_urn in enumerate(member_urn_id_list):
 
-        lead_profile = api.get_profile(profile_urn)
-        print("lead_profile", lead_profile)
+        # lead_profile = api.get_profile(profile_urn)
+        # print("lead_profile", lead_profile)
+        print(leads_list[0])
         
         # Testing
         # print(lead_idx)
