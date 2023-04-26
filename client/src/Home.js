@@ -317,19 +317,22 @@ function Home(props) {
 											}} disabled={isLoadingPeopleInterests}>
 												{isLoadingPeopleInterests ? 'Loading...' : 'Get people interests'}
 											</Button>
+											{' '}
 											<Button onClick={ () => {
 												handleGettingCompanyInterests(sessionId, leadInfo[4], index)
-											}} disabled={isLoadingCompanyInterests} style={{marginLeft: '10px'}}>
+											}} disabled={isLoadingCompanyInterests}>
 												{isLoadingCompanyInterests ? 'Loading...' : 'Get company interests'}
 											</Button>
+											{' '}
 											<Button onClick={ () => {
 												handleMakingConnectNote(leadInfo[0], index)
-											}} disabled={isLoadingMakingNote} style={{marginLeft: '20px'}}>
+											}} disabled={isLoadingMakingNote}>
 												{isLoadingMakingNote ? 'Making note...' : 'Make Connect Note'}
 											</Button>										
+											{' '}
 											<Button onClick={ () => {
 												handleSendingConnectNote(sessionId, leadInfo[4], index)
-											}} disabled={isLoadingSendingNote} style={{marginLeft: '30px'}}>
+											}} disabled={isLoadingSendingNote}>
 												{isLoadingSendingNote ? 'Sending note...' : 'Send Connect Note'}
 											</Button>
 										</ButtonGroup>
