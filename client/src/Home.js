@@ -70,10 +70,10 @@ function Home(props) {
 			
 			// This disables all other buttons when Auto Create notes button is clicked
 			for (let i = 0; i < 25; i++){
-				isLoadingPeopleInterests[i] = false;
-				isLoadingCompanyInterests[i] = false;
-				isLoadingMakingNote[i] = false;
-				isLoadingSendingNote[i] = false;
+				isLoadingPeopleInterests[i] = true;
+				isLoadingCompanyInterests[i] = true;
+				isLoadingMakingNote[i] = true;
+				isLoadingSendingNote[i] = true;
 			}
 			const response = await fetch("https://sak-productivity-suite.herokuapp.com/get-lead-info", {
 				method: "POST",
