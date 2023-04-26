@@ -130,8 +130,8 @@ function Home(props) {
 				for (let i = 0; i < newIsLoadingPeopleInterests.length; i++){
 					newIsLoadingPeopleInterests[index] = false;
 				}
-				
 				setIsLoadingPeopleInterests(newIsLoadingPeopleInterests);
+				
 				setAutoCreatingNotesDisabled(false);
 			});
 
@@ -145,7 +145,14 @@ function Home(props) {
 		const endIndex = profileUrnStr.indexOf(",");
 		const profileUrn = profileUrnStr.substring(startIndex, endIndex);
 		try {
-			setIsLoadingCompanyInterests(true);
+			// setIsLoadingCompanyInterests(true);
+			
+			const newIsLoadingCompanyInterests = [...isLoadingCompanyInterests];
+			for (let i = 0; i < newIsLoadingCompanyInterests.length; i++){
+				newIsLoadingCompanyInterests[index] = true;
+			}
+			setIsLoadingCompanyInterests(newIsLoadingCompanyInterests);
+			
 			setAutoCreatingNotesDisabled(true);
 			const response = await fetch("https://sak-productivity-suite.herokuapp.com/get-company-interests", {
 				method: "POST",
@@ -166,7 +173,14 @@ function Home(props) {
 					newArray[index].push(resultArray[i]);
 				}
 				setCompanyInterestsArray(newArray);
-				setIsLoadingCompanyInterests(false);	
+
+				// setIsLoadingCompanyInterests(false);	
+				const newIsLoadingCompanyInterests = [...isLoadingCompanyInterests];
+				for (let i = 0; i < newIsLoadingCompanyInterests.length; i++){
+					newIsLoadingCompanyInterests[index] = false;
+				}
+				setIsLoadingCompanyInterests(newIsLoadingCompanyInterests);
+				
 				setAutoCreatingNotesDisabled(false);
 			});
 		
@@ -199,7 +213,13 @@ function Home(props) {
 			+ " Write a request to connect with them. Make it casual but eyecatching. Use only 50 words.";
 			console.log(prompt);
 			try {
-				setIsLoadingMakingNote(true);
+				// setIsLoadingMakingNote(true);
+				const newIsLoadingMakingNote = [...isLoadingMakingNote];
+				for (let i = 0; i < newIsLoadingMakingNote.length; i++){
+					newIsLoadingMakingNote[index] = true;
+				}
+				setIsLoadingMakingNote(newIsLoadingMakingNote);
+
 				setAutoCreatingNotesDisabled(true);
 				const response = await fetch("https://sak-productivity-suite.herokuapp.com/use-chatgpt", {
 					method: "POST",
@@ -217,8 +237,15 @@ function Home(props) {
 				CheckJobStatus(jobId, (resultArray) => {
 					const newArray = [...connectNoteArray];
 					newArray[index] = resultArray;
-					setConnectNoteArray(newArray);	
-					setIsLoadingMakingNote(false);
+					setConnectNoteArray(newArray);
+
+					// setIsLoadingMakingNote(false);
+					const newIsLoadingMakingNote = [...isLoadingMakingNote];
+					for (let i = 0; i < newIsLoadingMakingNote.length; i++){
+						newIsLoadingMakingNote[index] = false;
+					}
+					setIsLoadingMakingNote(newIsLoadingMakingNote);
+					
 					setAutoCreatingNotesDisabled(false);
 				});
 	
@@ -232,7 +259,13 @@ function Home(props) {
 			+ " Write a request to connect with them. Make it casual but eyecatching. Use only 50 words.";	
 			console.log("Not selected", prompt);
 			try {
-				setIsLoadingMakingNote(true);
+				// setIsLoadingMakingNote(true);
+				const newIsLoadingMakingNote = [...isLoadingMakingNote];
+				for (let i = 0; i < newIsLoadingMakingNote.length; i++){
+					newIsLoadingMakingNote[index] = true;
+				}
+				setIsLoadingMakingNote(newIsLoadingMakingNote);
+
 				setAutoCreatingNotesDisabled(true);
 				const response = await fetch("https://sak-productivity-suite.herokuapp.com/use-chatgpt", {
 					method: "POST",
@@ -251,7 +284,14 @@ function Home(props) {
 					const newArray = [...connectNoteArray];
 					newArray[index] = resultArray;
 					setConnectNoteArray(newArray);	
-					setIsLoadingMakingNote(false);
+
+					// setIsLoadingMakingNote(false);
+					const newIsLoadingMakingNote = [...isLoadingMakingNote];
+					for (let i = 0; i < newIsLoadingMakingNote.length; i++){
+						newIsLoadingMakingNote[index] = false;
+					}
+					setIsLoadingMakingNote(newIsLoadingMakingNote);
+					
 					setAutoCreatingNotesDisabled(false);
 				});
 	
@@ -264,7 +304,14 @@ function Home(props) {
 
 	const handleSendingConnectNote = async (sessionId, profileId, index) => {
 		try {
-			setIsLoadingSendingNote(true);
+
+			// setIsLoadingSendingNote(true);
+			const newIsLoadingSendingNote = [...isLoadingSendingNote];
+			for (let i = 0; i < newIsLoadingSendingNote.length; i++){
+				newIsLoadingSendingNote[index] = true;
+			}
+			setIsLoadingSendingNote(newIsLoadingSendingNote);
+			
 			setAutoCreatingNotesDisabled(true);
 			const response = await fetch("https://sak-productivity-suite.herokuapp.com/send-connect", {
 				method: "POST",
@@ -283,7 +330,13 @@ function Home(props) {
 		}catch(error){
 			console.log(error);
 		} finally {
-			setIsLoadingSendingNote(false);
+			// setIsLoadingSendingNote(false);
+			const newIsLoadingSendingNote = [...isLoadingSendingNote];
+			for (let i = 0; i < newIsLoadingSendingNote.length; i++){
+				setIsLoadingSendingNote[index] = false;
+			}
+			setIsLoadingSendingNote(newIsLoadingSendingNote);
+
 			setAutoCreatingNotesDisabled(false);
 		}
 	};
