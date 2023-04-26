@@ -401,8 +401,8 @@ function Home(props) {
 
 											<Button className="myButton" onClick={ () => {
 												handleGettingCompanyInterests(sessionId, leadInfo[4], index)
-											}} disabled={isLoadingCompanyInterests} style={{marginLeft: '20px'}}>
-												{isLoadingCompanyInterests ? 
+											}} disabled={isLoadingCompanyInterests[index]} style={{marginLeft: '20px'}}>
+												{isLoadingCompanyInterests[index] ? 
 												<>
 													<Spinner animation="border" size="sm" />
 													 Loading...
@@ -411,8 +411,8 @@ function Home(props) {
 
 											<Button className="myButton" onClick={ () => {
 												handleMakingConnectNote(leadInfo[0], index)
-											}} disabled={isLoadingMakingNote} style={{marginLeft: '30px'}}>
-												{isLoadingMakingNote ? 
+											}} disabled={isLoadingMakingNote[index]} style={{marginLeft: '30px'}}>
+												{isLoadingMakingNote[index] ? 
 												<>
 													<Spinner animation="border" size="sm" />
 													 Making note...
@@ -421,8 +421,8 @@ function Home(props) {
 
 											<Button className="myButton" onClick={ () => {
 												handleSendingConnectNote(sessionId, leadInfo[4], index)
-											}} disabled={isLoadingSendingNote} style={{marginLeft: '40px'}}>
-												{isLoadingSendingNote ? 
+											}} disabled={isLoadingSendingNote[index]} style={{marginLeft: '40px'}}>
+												{isLoadingSendingNote[index] ? 
 												<>
 													<Spinner animation="border" size="sm" />
 													 Sending Connect Note...
