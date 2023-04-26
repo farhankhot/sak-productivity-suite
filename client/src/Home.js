@@ -288,13 +288,17 @@ function Home(props) {
 				<Button className="myButton" variant="primary" type="button" onClick={handleGettingLeads} disabled={isLoadingLeads}>
 					{isLoadingLeads ? 
 						<>
-						<Spinner animation="border" size="sm" />
-						'Getting Leads...'
+							<Spinner animation="border" size="sm" />
+							Getting Leads...
 						</> : 'Get Leads'}
 				</Button>
 
 				{showCreateConnectNoteButton && <Button className="myButton" variant="primary" type="button" onClick={() => handleAutoCreatingNotes(sessionId, leadsArray[0][4])} style={{marginLeft: '10px'}} disabled={autoCreatingNotesDisabled}>
-					{isLoadingAutoCreatingNotes ? 'Creating Notes...' : 'Auto Create notes for all leads'}
+					{isLoadingAutoCreatingNotes ? 
+					<>
+						<Spinner animation="border" size="sm" />
+						Creating Notes...
+					</>: 'Auto Create notes for all leads'}
 				</Button>}
 			</div>
 
@@ -319,22 +323,38 @@ function Home(props) {
 											<Button className="myButton" onClick={ () => {
 												handleGettingPeopleInterests(sessionId, leadInfo[4], index)
 											}} disabled={isLoadingPeopleInterests} style={{marginLeft: '10px'}}>
-												{isLoadingPeopleInterests ? 'Loading...' : 'Get people interests'}
+												{isLoadingPeopleInterests ? 
+												<>
+													<Spinner animation="border" size="sm" />
+													Loading...
+												</>: 'Get people interests'}
 											</Button>{' '}
 											<Button className="myButton" onClick={ () => {
 												handleGettingCompanyInterests(sessionId, leadInfo[4], index)
 											}} disabled={isLoadingCompanyInterests} style={{marginLeft: '20px'}}>
-												{isLoadingCompanyInterests ? 'Loading...' : 'Get company interests'}
+												{isLoadingCompanyInterests ? 
+												<>
+													<Spinner animation="border" size="sm" />
+													Loading...
+												</> : 'Get company interests'}
 											</Button>{' '}
 											<Button className="myButton" onClick={ () => {
 												handleMakingConnectNote(leadInfo[0], index)
 											}} disabled={isLoadingMakingNote} style={{marginLeft: '30px'}}>
-												{isLoadingMakingNote ? 'Making note...' : 'Make Connect Note'}
+												{isLoadingMakingNote ? 
+												<>
+													<Spinner animation="border" size="sm" />
+													Making note...
+												</> : 'Make Connect Note'}
 											</Button>{' '}									
 											<Button className="myButton" onClick={ () => {
 												handleSendingConnectNote(sessionId, leadInfo[4], index)
 											}} disabled={isLoadingSendingNote} style={{marginLeft: '40px'}}>
-												{isLoadingSendingNote ? 'Sending note...' : 'Send Connect Note'}
+												{isLoadingSendingNote ? 
+												<>
+													<Spinner animation="border" size="sm" />
+													Sending Connect Note...
+												</> : 'Send Connect Note'}
 											</Button>
 									</div>
 
