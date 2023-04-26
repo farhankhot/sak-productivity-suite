@@ -6,6 +6,7 @@ import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Accordion from 'react-bootstrap/Accordion';
 
+import './Home.css';
 
 function Home(props) {
 	const {sessionId} = props;
@@ -283,11 +284,11 @@ function Home(props) {
 
 			{/* <div style={{ padding: '20px' }}> */}
 			<div style={{ display: 'flex', justifyContent: 'center', padding: '20px'}}>
-				<Button variant="primary" type="button" onClick={handleGettingLeads} disabled={isLoadingLeads}>
+				<Button className="myButton" variant="primary" type="button" onClick={handleGettingLeads} disabled={isLoadingLeads}>
 					{isLoadingLeads ? 'Getting Leads...' : 'Get Leads'}
 				</Button>
 
-				{showCreateConnectNoteButton && <Button variant="primary" type="button" onClick={() => handleAutoCreatingNotes(sessionId, leadsArray[0][4])} style={{marginLeft: '10px'}} disabled={autoCreatingNotesDisabled}>
+				{showCreateConnectNoteButton && <Button className="myButton" variant="primary" type="button" onClick={() => handleAutoCreatingNotes(sessionId, leadsArray[0][4])} style={{marginLeft: '10px'}} disabled={autoCreatingNotesDisabled}>
 					{isLoadingAutoCreatingNotes ? 'Creating Notes...' : 'Auto Create notes for all leads'}
 				</Button>}
 			</div>
@@ -298,7 +299,6 @@ function Home(props) {
 						<Accordion.Item eventKey = {index.toString()}
 							>
 							<Accordion.Header>{leadInfo[0]}, {leadInfo[1]}</Accordion.Header>
-							
 							<Accordion.Body>
 								<div>
 									<Form.Group>
@@ -311,28 +311,26 @@ function Home(props) {
 										/>
 									</Form.Group>
 									<div style={{ display: 'flex', justifyContent: 'center', padding: '20px'}} >
-										{/* <ButtonGroup aria-label="Basic example" className="mb-2" style={{ margin: '0 10px' }}> */}
-											<Button onClick={ () => {
+											<Button className="myButton" onClick={ () => {
 												handleGettingPeopleInterests(sessionId, leadInfo[4], index)
 											}} disabled={isLoadingPeopleInterests} style={{marginLeft: '10px'}}>
 												{isLoadingPeopleInterests ? 'Loading...' : 'Get people interests'}
 											</Button>{' '}
-											<Button className="mr-2" onClick={ () => {
+											<Button className="myButton" onClick={ () => {
 												handleGettingCompanyInterests(sessionId, leadInfo[4], index)
 											}} disabled={isLoadingCompanyInterests} style={{marginLeft: '20px'}}>
 												{isLoadingCompanyInterests ? 'Loading...' : 'Get company interests'}
 											</Button>{' '}
-											<Button className="mr-2" onClick={ () => {
+											<Button className="myButton" onClick={ () => {
 												handleMakingConnectNote(leadInfo[0], index)
 											}} disabled={isLoadingMakingNote} style={{marginLeft: '30px'}}>
 												{isLoadingMakingNote ? 'Making note...' : 'Make Connect Note'}
 											</Button>{' '}									
-											<Button onClick={ () => {
+											<Button className="myButton" onClick={ () => {
 												handleSendingConnectNote(sessionId, leadInfo[4], index)
 											}} disabled={isLoadingSendingNote} style={{marginLeft: '40px'}}>
 												{isLoadingSendingNote ? 'Sending note...' : 'Send Connect Note'}
 											</Button>
-										{/* </ButtonGroup> */}
 									</div>
 
 									{peopleInterestsArray[index].length > 0 && (
