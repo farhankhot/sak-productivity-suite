@@ -248,6 +248,7 @@ function Home(props) {
 	const handleSendingConnectNote = async (sessionId, profileId, index) => {
 		try {
 			setIsLoadingSendingNote(true);
+			setAutoCreatingNotesDisabled(true);
 			const response = await fetch("https://sak-productivity-suite.herokuapp.com/send-connect", {
 				method: "POST",
 				headers: {
@@ -266,6 +267,7 @@ function Home(props) {
 			console.log(error);
 		} finally {
 			setIsLoadingSendingNote(false);
+			setAutoCreatingNotesDisabled(false);
 		}
 	};
 	// ================ Create and Send Connect Note(s) ===============================
@@ -281,7 +283,7 @@ function Home(props) {
 
 			{/* <div style={{ padding: '20px' }}> */}
 			<div style={{ display: 'flex', justifyContent: 'center', padding: '20px'}}>
-				<Button variant="primary" type="button" onClick={handleGettingLeads}>
+				<Button variant="primary" type="button" onClick={handleGettingLeads} disabled={isLoadingLeads}>
 					{isLoadingLeads ? 'Getting Leads...' : 'Get Leads'}
 				</Button>
 
@@ -291,80 +293,78 @@ function Home(props) {
 			</div>
 
 			<div className="mx-auto" style={{ maxWidth: "800px", paddingBottom: '20px'}}>
-			
-			<Accordion alwaysOpen>
-				{leadsArray.map((leadInfo, index) => (
-					<Accordion.Item eventKey = {index.toString()}
-						>
-						<Accordion.Header>{leadInfo[0]}, {leadInfo[1]}</Accordion.Header>
-						
-						<Accordion.Body>
-							<div>
-								<Form.Group>
-									<Form.Control
-										as="textarea"
-										value={connectNoteArray[index]} 
-										onChange={ (event) => {
-											handleNoteTextAreaChange(event, index)
-										}}
-									/>
-								</Form.Group>
-								<ButtonGroup aria-label="Basic example" className="mb-2">
-									<Button onClick={ () => {
-										handleGettingPeopleInterests(sessionId, leadInfo[4], index)
-									}}>
-										{isLoadingPeopleInterests ? 'Loading...' : 'Get people interests'}
-									</Button>
-									<Button onClick={ () => {
-										handleGettingCompanyInterests(sessionId, leadInfo[4], index)
-									}}>
-										{isLoadingCompanyInterests ? 'Loading...' : 'Get company interests'}
-									</Button>
-									<Button onClick={ () => {
-										handleMakingConnectNote(leadInfo[0], index)
-									}}>
-										{isLoadingMakingNote ? 'Making note...' : 'Make Connect Note'}
-									</Button>										
-									<Button onClick={ () => {
-										handleSendingConnectNote(sessionId, leadInfo[4], index)
-									}}>
-										{isLoadingSendingNote ? 'Sending note...' : 'Send Connect Note'}
-									</Button>
-								</ButtonGroup>
+				<Accordion alwaysOpen>
+					{leadsArray.map((leadInfo, index) => (
+						<Accordion.Item eventKey = {index.toString()}
+							>
+							<Accordion.Header>{leadInfo[0]}, {leadInfo[1]}</Accordion.Header>
+							
+							<Accordion.Body>
+								<div>
+									<Form.Group>
+										<Form.Control
+											as="textarea"
+											value={connectNoteArray[index]} 
+											onChange={ (event) => {
+												handleNoteTextAreaChange(event, index)
+											}}
+										/>
+									</Form.Group>
+									<ButtonGroup aria-label="Basic example" className="mb-2">
+										<Button onClick={ () => {
+											handleGettingPeopleInterests(sessionId, leadInfo[4], index)
+										}} disabled={isLoadingPeopleInterests}>
+											{isLoadingPeopleInterests ? 'Loading...' : 'Get people interests'}
+										</Button>
+										<Button onClick={ () => {
+											handleGettingCompanyInterests(sessionId, leadInfo[4], index)
+										}} disabled={isLoadingCompanyInterests}>
+											{isLoadingCompanyInterests ? 'Loading...' : 'Get company interests'}
+										</Button>
+										<Button onClick={ () => {
+											handleMakingConnectNote(leadInfo[0], index)
+										}} disabled={isLoadingMakingNote}>
+											{isLoadingMakingNote ? 'Making note...' : 'Make Connect Note'}
+										</Button>										
+										<Button onClick={ () => {
+											handleSendingConnectNote(sessionId, leadInfo[4], index)
+										}} disabled={isLoadingSendingNote}>
+											{isLoadingSendingNote ? 'Sending note...' : 'Send Connect Note'}
+										</Button>
+									</ButtonGroup>
 
-								{peopleInterestsArray[index].length > 0 && (
-								<ListGroup.Item>
-									{peopleInterestsArray[index].map((interest, i) => (
-									<Form.Check
-										key={i}
-										type="checkbox"
-										value={interest[0]}
-										label={interest[0]}
-										onChange={handleInterestsSelection(index)}
-									/>
-									))}
-								</ListGroup.Item>
-								)}
+									{peopleInterestsArray[index].length > 0 && (
+									<ListGroup.Item>
+										{peopleInterestsArray[index].map((interest, i) => (
+										<Form.Check
+											key={i}
+											type="checkbox"
+											value={interest[0]}
+											label={interest[0]}
+											onChange={handleInterestsSelection(index)}
+										/>
+										))}
+									</ListGroup.Item>
+									)}
 
-								{companyInterestsArray[index].length > 0 && (
-								<ListGroup.Item>
-									{companyInterestsArray[index].map((interest, i) => (
-									<Form.Check
-										key={i}
-										type="checkbox"
-										value={interest[0]}
-										label={interest[0]}
-										onChange={handleInterestsSelection(index)}
-									/>
-									))}
-								</ListGroup.Item>
-								)}
-							</div>
-						</Accordion.Body>
-						
-					</Accordion.Item>
-				))}
-			</Accordion>
+									{companyInterestsArray[index].length > 0 && (
+									<ListGroup.Item>
+										{companyInterestsArray[index].map((interest, i) => (
+										<Form.Check
+											key={i}
+											type="checkbox"
+											value={interest[0]}
+											label={interest[0]}
+											onChange={handleInterestsSelection(index)}
+										/>
+										))}
+									</ListGroup.Item>
+									)}
+								</div>
+							</Accordion.Body>
+						</Accordion.Item>
+					))}
+				</Accordion>
 			</div>
 		</>
 	)
