@@ -311,28 +311,28 @@ function Home(props) {
 										/>
 									</Form.Group>
 									<div style={{ display: 'flex', justifyContent: 'center', padding: '20px'}} >
-										<ButtonGroup aria-label="Basic example" className="mb-2" style={{ margin: '0 10px' }}>
+										{/* <ButtonGroup aria-label="Basic example" className="mb-2" style={{ margin: '0 10px' }}> */}
 											<Button onClick={ () => {
 												handleGettingPeopleInterests(sessionId, leadInfo[4], index)
 											}} disabled={isLoadingPeopleInterests}>
 												{isLoadingPeopleInterests ? 'Loading...' : 'Get people interests'}
-											</Button>
+											</Button>{' '}
 											<Button className="mr-2" onClick={ () => {
 												handleGettingCompanyInterests(sessionId, leadInfo[4], index)
 											}} disabled={isLoadingCompanyInterests}>
 												{isLoadingCompanyInterests ? 'Loading...' : 'Get company interests'}
-											</Button>
+											</Button>{' '}
 											<Button className="mr-2" onClick={ () => {
 												handleMakingConnectNote(leadInfo[0], index)
 											}} disabled={isLoadingMakingNote}>
 												{isLoadingMakingNote ? 'Making note...' : 'Make Connect Note'}
-											</Button>										
+											</Button>{' '}									
 											<Button onClick={ () => {
 												handleSendingConnectNote(sessionId, leadInfo[4], index)
 											}} disabled={isLoadingSendingNote}>
 												{isLoadingSendingNote ? 'Sending note...' : 'Send Connect Note'}
 											</Button>
-										</ButtonGroup>
+										{/* </ButtonGroup> */}
 									</div>
 
 									{peopleInterestsArray[index].length > 0 && (
