@@ -2,7 +2,6 @@ import React, {useState, useEffect} from "react";
 import {CheckJobStatus} from "./CheckJobStatus.js";
 import Button from 'react-bootstrap/Button';
 import { ButtonGroup, ListGroup } from 'react-bootstrap';
-import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Accordion from 'react-bootstrap/Accordion';
 import Spinner from 'react-bootstrap/Spinner';
@@ -33,6 +32,7 @@ function Home(props) {
 	const [connectNoteArray, setConnectNoteArray] = useState([]);
 
 	const [autoCreatingNotesDisabled, setAutoCreatingNotesDisabled] = useState(false);
+	const [loadingLeadsButtonDisabled, setLoadingLeadsButtonDisabled] = useState(false);
 	const [peopleInterestsButtonDisabled, setPeopleInterestsButtonDisabled] = useState(Array.from({length: 25}, () => false));
 	const [companyInterestsButtonDisabled, setCompanyInterestsButtonDisabled] = useState(Array.from({length: 25}, () => false));
 	const [makingConnectNoteButtonDisabled, setMakingConnectNoteButtonDisabled] = useState(Array.from({length: 25}, () => false));
@@ -72,6 +72,7 @@ function Home(props) {
 	const handleAutoCreatingNotes = async(sessionId, memberUrnId) => {
 		try {
 			setIsLoadingAutoCreatingNotes(true);
+			setLoadingLeadsButtonDisabled(true);
 			
 			// This disables all other buttons when Auto Create notes button is clicked
 			// I could create a copy of each array, change element and set it. But for now, this works
@@ -98,6 +99,7 @@ function Home(props) {
 				setShowProfileArea(true);
 				console.log("Successfully gotten Connect note array: ", resultArray);
 				setIsLoadingAutoCreatingNotes(false);
+				setLoadingLeadsButtonDisabled(false);
 	
 				for (let i = 0; i < 25; i++){
 					peopleInterestsButtonDisabled[i] = false;
@@ -372,9 +374,8 @@ function Home(props) {
 	return (
 		<>
 
-			{/* <div style={{ padding: '20px' }}> */}
 			<div style={{ display: 'flex', justifyContent: 'center', padding: '20px'}}>
-				<Button className="myButton" variant="primary" type="button" onClick={handleGettingLeads} disabled={isLoadingLeads}>
+				<Button className="myButton" variant="primary" type="button" onClick={handleGettingLeads} disabled={isLoadingLeads || loadingLeadsButtonDisabled}>
 					{isLoadingLeads ? 
 						<>
 							<Spinner animation="border" size="sm" />

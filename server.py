@@ -316,7 +316,7 @@ def SalesNavigatorLeadsInfo(api):
             title, company_name, geo_region = '', '', ''
 
             # Checks if geoRegion, companyName, title are present
-            if lead['geoRegion']:
+            if 'geoRegion' in lead:
                 geo_region = lead['geoRegion']
 
             if len(lead['currentPositions']) > 0:
