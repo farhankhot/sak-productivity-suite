@@ -73,6 +73,7 @@ function Home(props) {
 		try {
 			setIsLoadingAutoCreatingNotes(true);
 			setLoadingLeadsButtonDisabled(true);
+			setAutoCreatingNotesDisabled(true);
 			
 			// This disables all other buttons when Auto Create notes button is clicked
 			// I could create a copy of each array, change element and set it. But for now, this works
@@ -100,6 +101,7 @@ function Home(props) {
 				console.log("Successfully gotten Connect note array: ", resultArray);
 				setIsLoadingAutoCreatingNotes(false);
 				setLoadingLeadsButtonDisabled(false);
+				setAutoCreatingNotesDisabled(false);
 	
 				for (let i = 0; i < 25; i++){
 					peopleInterestsButtonDisabled[i] = false;
