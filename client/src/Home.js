@@ -33,6 +33,11 @@ function Home(props) {
 	const [connectNoteArray, setConnectNoteArray] = useState([]);
 
 	const [autoCreatingNotesDisabled, setAutoCreatingNotesDisabled] = useState(false);
+	const [peopleInterestsButtonDisabled, setPeopleInterestsButtonDisabled] = useState(Array.from({length: 25}, () => false));
+	const [companyInterestsButtonDisabled, setCompanyInterestsButtonDisabled] = useState(Array.from({length: 25}, () => false));
+	const [makingConnectNoteButtonDisabled, setMakingConnectNoteButtonDisabled] = useState(Array.from({length: 25}, () => false));
+	const [sendingConnectNoteButtonDisabled, setSendingConnectNoteButtonDisabled] = useState(Array.from({length: 25}, () => false));
+
 		
 	const handleGettingLeads = async() => {
         try {
@@ -69,11 +74,12 @@ function Home(props) {
 			setIsLoadingAutoCreatingNotes(true);
 			
 			// This disables all other buttons when Auto Create notes button is clicked
+			// I could create a copy of each array, change element and set it. But for now, this works
 			for (let i = 0; i < 25; i++){
-				isLoadingPeopleInterests[i] = true;
-				isLoadingCompanyInterests[i] = true;
-				isLoadingMakingNote[i] = true;
-				isLoadingSendingNote[i] = true;
+				peopleInterestsButtonDisabled[i] = true;
+				companyInterestsButtonDisabled[i] = true;
+				makingConnectNoteButtonDisabled[i] = true;
+				sendingConnectNoteButtonDisabled[i] = true;
 			}
 			const response = await fetch("https://sak-productivity-suite.herokuapp.com/get-lead-info", {
 				method: "POST",
@@ -92,6 +98,13 @@ function Home(props) {
 				setShowProfileArea(true);
 				console.log("Successfully gotten Connect note array: ", resultArray);
 				setIsLoadingAutoCreatingNotes(false);
+	
+				for (let i = 0; i < 25; i++){
+					peopleInterestsButtonDisabled[i] = false;
+					companyInterestsButtonDisabled[i] = false;
+					makingConnectNoteButtonDisabled[i] = false;
+					sendingConnectNoteButtonDisabled[i] = false;
+				}
 			});
 		}catch(error){
 			console.log(error);
@@ -399,7 +412,7 @@ function Home(props) {
 											
 											<Button className="myButton" onClick={ () => {
 												handleGettingPeopleInterests(sessionId, leadInfo[4], index)
-											}} disabled={isLoadingPeopleInterests[index]} style={{marginLeft: '10px'}}>
+											}} disabled={isLoadingPeopleInterests[index] || peopleInterestsButtonDisabled[index] } style={{marginLeft: '10px'}}>
 												{isLoadingPeopleInterests[index] ? 
 												<>
 													<Spinner animation="border" size="sm" />
@@ -409,7 +422,7 @@ function Home(props) {
 
 											<Button className="myButton" onClick={ () => {
 												handleGettingCompanyInterests(sessionId, leadInfo[4], index)
-											}} disabled={isLoadingCompanyInterests[index]} style={{marginLeft: '20px'}}>
+											}} disabled={isLoadingCompanyInterests[index] || companyInterestsButtonDisabled[index] } style={{marginLeft: '20px'}}>
 												{isLoadingCompanyInterests[index] ? 
 												<>
 													<Spinner animation="border" size="sm" />
@@ -419,7 +432,7 @@ function Home(props) {
 
 											<Button className="myButton" onClick={ () => {
 												handleMakingConnectNote(leadInfo[0], index)
-											}} disabled={isLoadingMakingNote[index]} style={{marginLeft: '30px'}}>
+											}} disabled={isLoadingMakingNote[index] || makingConnectNoteButtonDisabled[index] } style={{marginLeft: '30px'}}>
 												{isLoadingMakingNote[index] ? 
 												<>
 													<Spinner animation="border" size="sm" />
@@ -429,7 +442,7 @@ function Home(props) {
 
 											<Button className="myButton" onClick={ () => {
 												handleSendingConnectNote(sessionId, leadInfo[4], index)
-											}} disabled={isLoadingSendingNote[index]} style={{marginLeft: '40px'}}>
+											}} disabled={isLoadingSendingNote[index] || sendingConnectNoteButtonDisabled[index] } style={{marginLeft: '40px'}}>
 												{isLoadingSendingNote[index] ? 
 												<>
 													<Spinner animation="border" size="sm" />
