@@ -129,6 +129,7 @@ function Home(props) {
 		const profileUrn = profileUrnStr.substring(startIndex, endIndex);
 		try {
 			setIsLoadingCompanyInterests(true);
+			setAutoCreatingNotesDisabled(true);
 			const response = await fetch("https://sak-productivity-suite.herokuapp.com/get-company-interests", {
 				method: "POST",
 				headers: {
@@ -149,6 +150,7 @@ function Home(props) {
 				}
 				setCompanyInterestsArray(newArray);
 				setIsLoadingCompanyInterests(false);	
+				setAutoCreatingNotesDisabled(false);
 			});
 		
 		} catch (error) {
@@ -181,6 +183,7 @@ function Home(props) {
 			console.log(prompt);
 			try {
 				setIsLoadingMakingNote(true);
+				setAutoCreatingNotesDisabled(true);
 				const response = await fetch("https://sak-productivity-suite.herokuapp.com/use-chatgpt", {
 					method: "POST",
 					headers: {
@@ -199,6 +202,7 @@ function Home(props) {
 					newArray[index] = resultArray;
 					setConnectNoteArray(newArray);	
 					setIsLoadingMakingNote(false);
+					setAutoCreatingNotesDisabled(false);
 				});
 	
 			}catch(error){
@@ -212,6 +216,7 @@ function Home(props) {
 			console.log("Not selected", prompt);
 			try {
 				setIsLoadingMakingNote(true);
+				setAutoCreatingNotesDisabled(true);
 				const response = await fetch("https://sak-productivity-suite.herokuapp.com/use-chatgpt", {
 					method: "POST",
 					headers: {
@@ -230,6 +235,7 @@ function Home(props) {
 					newArray[index] = resultArray;
 					setConnectNoteArray(newArray);	
 					setIsLoadingMakingNote(false);
+					setAutoCreatingNotesDisabled(false);
 				});
 	
 			}catch(error){
