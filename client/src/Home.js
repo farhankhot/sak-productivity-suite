@@ -285,7 +285,11 @@ function Home(props) {
 			{/* <div style={{ padding: '20px' }}> */}
 			<div style={{ display: 'flex', justifyContent: 'center', padding: '20px'}}>
 				<Button className="myButton" variant="primary" type="button" onClick={handleGettingLeads} disabled={isLoadingLeads}>
-					{isLoadingLeads ? 'Getting Leads...' : 'Get Leads'}
+					{isLoadingLeads ? 
+						<>
+						<Spinner animation="border" size="sm" />
+						'Getting Leads...'
+						</> : 'Get Leads'}
 				</Button>
 
 				{showCreateConnectNoteButton && <Button className="myButton" variant="primary" type="button" onClick={() => handleAutoCreatingNotes(sessionId, leadsArray[0][4])} style={{marginLeft: '10px'}} disabled={autoCreatingNotesDisabled}>
