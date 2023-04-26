@@ -319,17 +319,17 @@ function Home(props) {
 											</Button>
 											<Button onClick={ () => {
 												handleGettingCompanyInterests(sessionId, leadInfo[4], index)
-											}} disabled={isLoadingCompanyInterests}>
+											}} disabled={isLoadingCompanyInterests} style={{marginLeft: '10px'}}>
 												{isLoadingCompanyInterests ? 'Loading...' : 'Get company interests'}
 											</Button>
 											<Button onClick={ () => {
 												handleMakingConnectNote(leadInfo[0], index)
-											}} disabled={isLoadingMakingNote}>
+											}} disabled={isLoadingMakingNote} style={{marginLeft: '20px'}}>
 												{isLoadingMakingNote ? 'Making note...' : 'Make Connect Note'}
 											</Button>										
 											<Button onClick={ () => {
 												handleSendingConnectNote(sessionId, leadInfo[4], index)
-											}} disabled={isLoadingSendingNote}>
+											}} disabled={isLoadingSendingNote} style={{marginLeft: '30px'}}>
 												{isLoadingSendingNote ? 'Sending note...' : 'Send Connect Note'}
 											</Button>
 										</ButtonGroup>
