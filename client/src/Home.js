@@ -29,7 +29,7 @@ function Home(props) {
 	const [memberUrnIdArray, setMemberUrnIdArray] = useState([]);
 
 	const [showCreateConnectNoteButton, setShowCreateConnectNoteButton] = useState(false);
-	const [connectNoteArray, setConnectNoteArray] = useState([]);
+	const [connectNoteArray, setConnectNoteArray] = useState(Array.from({length: 25}, () => []));
 
 	const [autoCreatingNotesDisabled, setAutoCreatingNotesDisabled] = useState(false);
 	const [loadingLeadsButtonDisabled, setLoadingLeadsButtonDisabled] = useState(false);
@@ -117,12 +117,9 @@ function Home(props) {
 				CheckJobStatus(jobIdArray.message[i], (resultArray) => {
 
 					// === Change ===
-					setConnectNoteArray(resultArray);
-					setShowProfileArea(true);
 					console.log("Successfully gotten Connect note array: ", resultArray);
-					setIsLoadingAutoCreatingNotes(false);
-					setLoadingLeadsButtonDisabled(false);
-					setAutoCreatingNotesDisabled(false);
+					setConnectNoteArray[i] = resultArray;
+					setShowProfileArea(true);
 					// === Change ===
 
 					peopleInterestsButtonDisabled[i] = false;
@@ -135,6 +132,10 @@ function Home(props) {
 			
 		}catch(error){
 			console.log(error);
+		}finally {
+			setIsLoadingAutoCreatingNotes(false);
+			setLoadingLeadsButtonDisabled(false);
+			setAutoCreatingNotesDisabled(false);
 		}
 	};
 
