@@ -387,6 +387,7 @@ def GetLeadInfo(cookie_dict, leads_list, member_urn_id_list):
         lead_headline = lead_profile_json["headline"]
         lead_location = lead_profile_json["location"]
         lead_summary = lead_profile_json["summary"]
+        print(lead_summary)
 
         # ============= Getting interests =================================
         lead_interests = []
