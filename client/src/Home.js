@@ -127,7 +127,7 @@ function Home(props) {
 					makingConnectNoteButtonDisabled[i] = false;
 					sendingConnectNoteButtonDisabled[i] = false;
 					
-					if (i === jobIdArray.message.length){
+					if (i === (jobIdArray.message.length - 1) ){
 						setIsLoadingAutoCreatingNotes(false);
 						setLoadingLeadsButtonDisabled(false);
 						setAutoCreatingNotesDisabled(false);
