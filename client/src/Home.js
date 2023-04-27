@@ -94,22 +94,44 @@ function Home(props) {
 					memberUrnIdArray: memberUrnIdArray
 				})
 			});
-			const jobId = await response.json();
-			CheckJobStatus(jobId.message, (resultArray) => {
-				setConnectNoteArray(resultArray);
-				setShowProfileArea(true);
-				console.log("Successfully gotten Connect note array: ", resultArray);
-				setIsLoadingAutoCreatingNotes(false);
-				setLoadingLeadsButtonDisabled(false);
-				setAutoCreatingNotesDisabled(false);
+			// const jobId = await response.json();
+			// CheckJobStatus(jobId.message, (resultArray) => {
+			// 	setConnectNoteArray(resultArray);
+			// 	setShowProfileArea(true);
+			// 	console.log("Successfully gotten Connect note array: ", resultArray);
+			// 	setIsLoadingAutoCreatingNotes(false);
+			// 	setLoadingLeadsButtonDisabled(false);
+			// 	setAutoCreatingNotesDisabled(false);
 	
-				for (let i = 0; i < 25; i++){
+			// 	for (let i = 0; i < 25; i++){
+			// 		peopleInterestsButtonDisabled[i] = false;
+			// 		companyInterestsButtonDisabled[i] = false;
+			// 		makingConnectNoteButtonDisabled[i] = false;
+			// 		sendingConnectNoteButtonDisabled[i] = false;
+			// 	}
+			// });
+			const jobIdArray = await response.json();
+			for(let i = 0; i < jobIdArray.length; i++){
+
+				CheckJobStatus(jobIdArray[i].message, (resultArray) => {
+
+					// === Change ===
+					setConnectNoteArray(resultArray);
+					setShowProfileArea(true);
+					console.log("Successfully gotten Connect note array: ", resultArray);
+					setIsLoadingAutoCreatingNotes(false);
+					setLoadingLeadsButtonDisabled(false);
+					setAutoCreatingNotesDisabled(false);
+					// === Change ===
+
 					peopleInterestsButtonDisabled[i] = false;
 					companyInterestsButtonDisabled[i] = false;
 					makingConnectNoteButtonDisabled[i] = false;
 					sendingConnectNoteButtonDisabled[i] = false;
-				}
-			});
+					
+				});
+			}
+			
 		}catch(error){
 			console.log(error);
 		}

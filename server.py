@@ -339,114 +339,212 @@ def SalesNavigatorLeadsInfo(api):
 
     return lead_list, member_urn_id_list
 
-# TODO: Change function name to show that this is returning Connect note not info
-# TODO: Add summary
-# TODO: Add relationships
-# TODO: Get interests at random
-def GetLeadInfo(cookie_dict, leads_list, member_urn_id_list):
+# # TODO: Change function name to show that this is returning Connect note not info
+# # TODO: Add relationships
+# # TODO: Get interests at random
+# def GetLeadInfo(cookie_dict, leads_list, member_urn_id_list):
+
+#     api = Linkedin(cookies=cookie_dict) # type: ignore
+#     t = []
+#     for lead_idx, profile_urn in enumerate(member_urn_id_list):
+        
+#         # Testing
+#         # print(leads_list[0])
+#         # print("profile_urn: ", profile_urn, type(profile_urn))
+#         # print(lead_idx)
+#         if lead_idx == 4:
+#             break   
+
+#         lead_info = []
+
+#         # ============= Getting Relationships =============================        
+#         # res_for_shared_relationships = api._fetch(f"/sales-api/salesApiProfileHighlights/{profile_urn}?decoration=%28sharedConnection%28sharedConnectionUrns*~fs_salesProfile%28entityUrn%2CfirstName%2ClastName%2CfullName%2CpictureInfo%2CprofilePictureDisplayImage%29%29%2CteamlinkInfo%28totalCount%29%2CsharedEducations*%28overlapInfo%2CentityUrn~fs_salesSchool%28entityUrn%2ClogoId%2Cname%2Curl%2CschoolPictureDisplayImage%29%29%2CsharedExperiences*%28overlapInfo%2CentityUrn~fs_salesCompany%28entityUrn%2CpictureInfo%2Cname%2CcompanyPictureDisplayImage%29%29%2CsharedGroups*%28entityUrn~fs_salesGroup%28entityUrn%2Cname%2ClargeLogoId%2CsmallLogoId%2CgroupPictureDisplayImage%29%29%29"
+#         #         ,base_request=True)
+#         # print(res_for_shared_relationships.text)
+#         # print(res_for_shared_relationships.json())
+
+#         # # Get the first relationship that LinkedIn recommends
+#         # lead_relationships = []
+#         # shared_connections = res_for_shared_relationships.json()['sharedConnection']['sharedConnectionUrnsResolutionResults']
+#         # if len(shared_connections.values()) > 0:
+#         #     shared_connection = shared_connections.values()[0]['fullName']
+#         #     lead_relationships.append(shared_connection)
+
+#         # shared_groups = res_for_shared_relationships.json()['sharedGroup']['entityUrnResolutionResult']
+#         # if len(shared_groups) >= 1:
+#         #     shared_group = shared_groups[1]['entityUrnResolutionResult']['name'] 
+#         #     lead_relationships.append(shared_group)
+        
+#         # lead_info.append(lead_relationships)
+#         # ============= Getting Relationships =============================
+
+#         # ============= Getting Misc info =============================
+#         my_tuple = tuple(profile_urn.strip("()").split(","))
+
+#         actual_profile_urn, auth_type, auth_token = my_tuple 
+#         profile_urn_for_lead_profile = "profileId:"+actual_profile_urn
+#         auth_type_for_lead_profile = "authType:"+auth_type
+#         auth_token_for_lead_profile = "authToken:"+auth_token 
+#         lead_profile = api._fetch(f"/sales-api/salesApiProfiles/({profile_urn_for_lead_profile},{auth_type_for_lead_profile},{auth_token_for_lead_profile})?decoration=%28%0A%20%20entityUrn%2C%0A%20%20objectUrn%2C%0A%20%20firstName%2C%0A%20%20lastName%2C%0A%20%20fullName%2C%0A%20%20headline%2C%0A%20%20memberBadges%2C%0A%20%20pronoun%2C%0A%20%20degree%2C%0A%20%20profileUnlockInfo%2C%0A%20%20latestTouchPointActivity%2C%0A%20%20location%2C%0A%20%20listCount%2C%0A%20%20summary%2C%0A%20%20savedLead%2C%0A%20%20defaultPosition%2C%0A%20%20contactInfo%2C%0A%20%20crmStatus%2C%0A%20%20pendingInvitation%2C%0A%20%20unlocked%2C%0A%20%20flagshipProfileUrl%2C%0A%20%20fullNamePronunciationAudio%2C%0A%20%20memorialized%2C%0A%20%20numOfConnections%2C%0A%20%20numOfSharedConnections%2C%0A%20%20showTotalConnectionsPage%2C%0A%20%20profilePictureDisplayImage%2C%0A%20%20profileBackgroundPicture%2C%0A%20%20relatedColleagueCompanyId%2C%0A%20%20blockThirdPartyDataSharing%2C%0A%20%20noteCount%2C%0A%20%20positions*%28%0A%20%20%20%20companyName%2C%0A%20%20%20%20current%2C%0A%20%20%20%20new%2C%0A%20%20%20%20description%2C%0A%20%20%20%20endedOn%2C%0A%20%20%20%20posId%2C%0A%20%20%20%20startedOn%2C%0A%20%20%20%20title%2C%0A%20%20%20%20location%2C%0A%20%20%20%20richMedia*%2C%0A%20%20%20%20companyUrn~fs_salesCompany%28entityUrn%2Cname%2CcompanyPictureDisplayImage%29%0A%20%20%29%2C%0A%20%20educations*%28%0A%20%20%20%20degree%2C%0A%20%20%20%20eduId%2C%0A%20%20%20%20endedOn%2C%0A%20%20%20%20schoolName%2C%0A%20%20%20%20startedOn%2C%0A%20%20%20%20fieldsOfStudy*%2C%0A%20%20%20%20richMedia*%2C%0A%20%20%20%20school~fs_salesSchool%28entityUrn%2ClogoId%2Cname%2Curl%2CschoolPictureDisplayImage%29%0A%20%20%29%2C%0A%20%20languages*%0A%29"
+#                                   ,base_request=True)
+#         # print("lead_profile: ", lead_profile.json())
+#         lead_profile_json = lead_profile.json()
+#         lead_headline = lead_profile_json["headline"]
+#         lead_location = lead_profile_json["location"]
+#         lead_summary = lead_profile_json["summary"]
+#         # ============= Getting Misc info =============================
+
+#         # ============= Getting interests =================================
+#         lead_interests = []
+#         interests = api._fetch(f"/graphql?includeWebMetadata=True&variables=(profileUrn:urn%3Ali%3Afsd_profile%3A{profile_urn},sectionType:interests,tabIndex:1,locale:en_US)&&queryId=voyagerIdentityDashProfileComponents.38247e27f7b9b2ecbd8e8452e3c1a02c")
+#         interests = interests.json()
+#         interests_json = json.dumps(interests)
+
+#         # print(interests_json)
+
+#         pattern = re.compile(r'"(urn:li:fsd_profile:[^"]*)"')
+#         matches = re.findall(pattern, interests_json)
+#         people_the_profile_is_interested_in_set = set(matches)
+#         people_the_profile_is_interested_in = [s.split(':')[-1] for s in people_the_profile_is_interested_in_set]
+
+#         # print(people_the_profile_is_interested_in)
+
+#         pattern_for_company = re.compile(r'"(urn:li:fsd_company:[^"]*)"')
+#         matches_for_company = re.findall(pattern_for_company, interests_json)
+#         companies_the_profile_is_interested_in_set = set(matches_for_company)
+#         companies_the_profile_is_interested_in = [s.split(':')[-1] for s in companies_the_profile_is_interested_in_set]
+
+#         # print(companies_the_profile_is_interested_in)
+
+#         for i, profile_urn in enumerate(people_the_profile_is_interested_in):
+#             if i == 1:
+#                 break
+#             temp = api.get_profile(profile_urn)
+#             first_name = temp['firstName']
+#             last_name = temp['lastName']
+#             full_name = first_name + " " + last_name 
+#             lead_interests.append(full_name)
+        
+#         for i, company_id in enumerate(companies_the_profile_is_interested_in):
+#             if i == 1:
+#                 break
+#             temp = api.get_company(company_id)
+#             company_name = temp['universalName']
+#             lead_interests.append([company_name, company_id])
+        
+#         lead_info.append(lead_interests)
+#         # ============= Getting interests =================================
+        
+#         full_lead_profile = leads_list[lead_idx][0] + " " + lead_headline + \
+#             " " + lead_summary + " " + lead_location + " ".join(lead_info)
+        
+#         prompt = "You are an Account Executive. This is the profile of a person: " + full_lead_profile + \
+#             " Include something useful about the interests and use it in the request. " + \
+#             " Write a connect note to them. Make it casual but eyecatching. Use only 50 words."
+
+#         # connect_note = asyncio.run(UseBingAI(prompt))
+#         connect_note = UseChatGPT(prompt)
+#         # print(connect_note)
+#         # connect_note = "hi," + leads_list[lead_idx][0]
+#         t.append(connect_note)
+#     return t
+
+def GetLeadInfo(cookie_dict, lead, profile_urn):
 
     api = Linkedin(cookies=cookie_dict) # type: ignore
-    t = []
-    for lead_idx, profile_urn in enumerate(member_urn_id_list):
-
-        print(leads_list[0])
-        print("profile_urn: ", profile_urn, type(profile_urn))
         
-        # Testing
-        # print(lead_idx)
-        if lead_idx == 4:
-            break   
+    lead_info = []
 
-        lead_info = []
-        # ============= Getting Relationships =============================        
-        # res_for_shared_relationships = api._fetch(f"/sales-api/salesApiProfileHighlights/{profile_urn}?decoration=%28sharedConnection%28sharedConnectionUrns*~fs_salesProfile%28entityUrn%2CfirstName%2ClastName%2CfullName%2CpictureInfo%2CprofilePictureDisplayImage%29%29%2CteamlinkInfo%28totalCount%29%2CsharedEducations*%28overlapInfo%2CentityUrn~fs_salesSchool%28entityUrn%2ClogoId%2Cname%2Curl%2CschoolPictureDisplayImage%29%29%2CsharedExperiences*%28overlapInfo%2CentityUrn~fs_salesCompany%28entityUrn%2CpictureInfo%2Cname%2CcompanyPictureDisplayImage%29%29%2CsharedGroups*%28entityUrn~fs_salesGroup%28entityUrn%2Cname%2ClargeLogoId%2CsmallLogoId%2CgroupPictureDisplayImage%29%29%29"
-        #         ,base_request=True)
-        # print(res_for_shared_relationships.text)
-        # print(res_for_shared_relationships.json())
+    # ============= Getting Relationships =============================        
+    # res_for_shared_relationships = api._fetch(f"/sales-api/salesApiProfileHighlights/{profile_urn}?decoration=%28sharedConnection%28sharedConnectionUrns*~fs_salesProfile%28entityUrn%2CfirstName%2ClastName%2CfullName%2CpictureInfo%2CprofilePictureDisplayImage%29%29%2CteamlinkInfo%28totalCount%29%2CsharedEducations*%28overlapInfo%2CentityUrn~fs_salesSchool%28entityUrn%2ClogoId%2Cname%2Curl%2CschoolPictureDisplayImage%29%29%2CsharedExperiences*%28overlapInfo%2CentityUrn~fs_salesCompany%28entityUrn%2CpictureInfo%2Cname%2CcompanyPictureDisplayImage%29%29%2CsharedGroups*%28entityUrn~fs_salesGroup%28entityUrn%2Cname%2ClargeLogoId%2CsmallLogoId%2CgroupPictureDisplayImage%29%29%29"
+    #         ,base_request=True)
+    # print(res_for_shared_relationships.text)
+    # print(res_for_shared_relationships.json())
 
-        # # Get the first relationship that LinkedIn recommends
-        # lead_relationships = []
-        # shared_connections = res_for_shared_relationships.json()['sharedConnection']['sharedConnectionUrnsResolutionResults']
-        # if len(shared_connections.values()) > 0:
-        #     shared_connection = shared_connections.values()[0]['fullName']
-        #     lead_relationships.append(shared_connection)
+    # # Get the first relationship that LinkedIn recommends
+    # lead_relationships = []
+    # shared_connections = res_for_shared_relationships.json()['sharedConnection']['sharedConnectionUrnsResolutionResults']
+    # if len(shared_connections.values()) > 0:
+    #     shared_connection = shared_connections.values()[0]['fullName']
+    #     lead_relationships.append(shared_connection)
 
-        # shared_groups = res_for_shared_relationships.json()['sharedGroup']['entityUrnResolutionResult']
-        # if len(shared_groups) >= 1:
-        #     shared_group = shared_groups[1]['entityUrnResolutionResult']['name'] 
-        #     lead_relationships.append(shared_group)
-        
-        # lead_info.append(lead_relationships)
-        # ============= Getting Relationships =============================
+    # shared_groups = res_for_shared_relationships.json()['sharedGroup']['entityUrnResolutionResult']
+    # if len(shared_groups) >= 1:
+    #     shared_group = shared_groups[1]['entityUrnResolutionResult']['name'] 
+    #     lead_relationships.append(shared_group)
+    
+    # lead_info.append(lead_relationships)
+    # ============= Getting Relationships =============================
 
-        my_tuple = tuple(profile_urn.strip("()").split(","))
+    # ============= Getting Misc info =============================
+    my_tuple = tuple(profile_urn.strip("()").split(","))
 
-        actual_profile_urn, auth_type, auth_token = my_tuple 
-        profile_urn_for_lead_profile = "profileId:"+actual_profile_urn
-        auth_type_for_lead_profile = "authType:"+auth_type
-        auth_token_for_lead_profile = "authToken:"+auth_token 
-        lead_profile = api._fetch(f"/sales-api/salesApiProfiles/({profile_urn_for_lead_profile},{auth_type_for_lead_profile},{auth_token_for_lead_profile})?decoration=%28%0A%20%20entityUrn%2C%0A%20%20objectUrn%2C%0A%20%20firstName%2C%0A%20%20lastName%2C%0A%20%20fullName%2C%0A%20%20headline%2C%0A%20%20memberBadges%2C%0A%20%20pronoun%2C%0A%20%20degree%2C%0A%20%20profileUnlockInfo%2C%0A%20%20latestTouchPointActivity%2C%0A%20%20location%2C%0A%20%20listCount%2C%0A%20%20summary%2C%0A%20%20savedLead%2C%0A%20%20defaultPosition%2C%0A%20%20contactInfo%2C%0A%20%20crmStatus%2C%0A%20%20pendingInvitation%2C%0A%20%20unlocked%2C%0A%20%20flagshipProfileUrl%2C%0A%20%20fullNamePronunciationAudio%2C%0A%20%20memorialized%2C%0A%20%20numOfConnections%2C%0A%20%20numOfSharedConnections%2C%0A%20%20showTotalConnectionsPage%2C%0A%20%20profilePictureDisplayImage%2C%0A%20%20profileBackgroundPicture%2C%0A%20%20relatedColleagueCompanyId%2C%0A%20%20blockThirdPartyDataSharing%2C%0A%20%20noteCount%2C%0A%20%20positions*%28%0A%20%20%20%20companyName%2C%0A%20%20%20%20current%2C%0A%20%20%20%20new%2C%0A%20%20%20%20description%2C%0A%20%20%20%20endedOn%2C%0A%20%20%20%20posId%2C%0A%20%20%20%20startedOn%2C%0A%20%20%20%20title%2C%0A%20%20%20%20location%2C%0A%20%20%20%20richMedia*%2C%0A%20%20%20%20companyUrn~fs_salesCompany%28entityUrn%2Cname%2CcompanyPictureDisplayImage%29%0A%20%20%29%2C%0A%20%20educations*%28%0A%20%20%20%20degree%2C%0A%20%20%20%20eduId%2C%0A%20%20%20%20endedOn%2C%0A%20%20%20%20schoolName%2C%0A%20%20%20%20startedOn%2C%0A%20%20%20%20fieldsOfStudy*%2C%0A%20%20%20%20richMedia*%2C%0A%20%20%20%20school~fs_salesSchool%28entityUrn%2ClogoId%2Cname%2Curl%2CschoolPictureDisplayImage%29%0A%20%20%29%2C%0A%20%20languages*%0A%29"
-                                  ,base_request=True)
-        # print("lead_profile: ", lead_profile.json())
-        lead_profile_json = lead_profile.json()
-        lead_headline = lead_profile_json["headline"]
-        lead_location = lead_profile_json["location"]
-        lead_summary = lead_profile_json["summary"]
+    actual_profile_urn, auth_type, auth_token = my_tuple 
+    profile_urn_for_lead_profile = "profileId:"+actual_profile_urn
+    auth_type_for_lead_profile = "authType:"+auth_type
+    auth_token_for_lead_profile = "authToken:"+auth_token 
+    lead_profile = api._fetch(f"/sales-api/salesApiProfiles/({profile_urn_for_lead_profile},{auth_type_for_lead_profile},{auth_token_for_lead_profile})?decoration=%28%0A%20%20entityUrn%2C%0A%20%20objectUrn%2C%0A%20%20firstName%2C%0A%20%20lastName%2C%0A%20%20fullName%2C%0A%20%20headline%2C%0A%20%20memberBadges%2C%0A%20%20pronoun%2C%0A%20%20degree%2C%0A%20%20profileUnlockInfo%2C%0A%20%20latestTouchPointActivity%2C%0A%20%20location%2C%0A%20%20listCount%2C%0A%20%20summary%2C%0A%20%20savedLead%2C%0A%20%20defaultPosition%2C%0A%20%20contactInfo%2C%0A%20%20crmStatus%2C%0A%20%20pendingInvitation%2C%0A%20%20unlocked%2C%0A%20%20flagshipProfileUrl%2C%0A%20%20fullNamePronunciationAudio%2C%0A%20%20memorialized%2C%0A%20%20numOfConnections%2C%0A%20%20numOfSharedConnections%2C%0A%20%20showTotalConnectionsPage%2C%0A%20%20profilePictureDisplayImage%2C%0A%20%20profileBackgroundPicture%2C%0A%20%20relatedColleagueCompanyId%2C%0A%20%20blockThirdPartyDataSharing%2C%0A%20%20noteCount%2C%0A%20%20positions*%28%0A%20%20%20%20companyName%2C%0A%20%20%20%20current%2C%0A%20%20%20%20new%2C%0A%20%20%20%20description%2C%0A%20%20%20%20endedOn%2C%0A%20%20%20%20posId%2C%0A%20%20%20%20startedOn%2C%0A%20%20%20%20title%2C%0A%20%20%20%20location%2C%0A%20%20%20%20richMedia*%2C%0A%20%20%20%20companyUrn~fs_salesCompany%28entityUrn%2Cname%2CcompanyPictureDisplayImage%29%0A%20%20%29%2C%0A%20%20educations*%28%0A%20%20%20%20degree%2C%0A%20%20%20%20eduId%2C%0A%20%20%20%20endedOn%2C%0A%20%20%20%20schoolName%2C%0A%20%20%20%20startedOn%2C%0A%20%20%20%20fieldsOfStudy*%2C%0A%20%20%20%20richMedia*%2C%0A%20%20%20%20school~fs_salesSchool%28entityUrn%2ClogoId%2Cname%2Curl%2CschoolPictureDisplayImage%29%0A%20%20%29%2C%0A%20%20languages*%0A%29"
+                                ,base_request=True)
+    # print("lead_profile: ", lead_profile.json())
+    lead_profile_json = lead_profile.json()
+    lead_headline = lead_profile_json["headline"]
+    lead_location = lead_profile_json["location"]
+    lead_summary = lead_profile_json["summary"]
+    # ============= Getting Misc info =============================
 
-        # ============= Getting interests =================================
-        lead_interests = []
-        interests = api._fetch(f"/graphql?includeWebMetadata=True&variables=(profileUrn:urn%3Ali%3Afsd_profile%3A{profile_urn},sectionType:interests,tabIndex:1,locale:en_US)&&queryId=voyagerIdentityDashProfileComponents.38247e27f7b9b2ecbd8e8452e3c1a02c")
-        interests = interests.json()
-        interests_json = json.dumps(interests)
+    # ============= Getting interests =================================
+    lead_interests = []
+    interests = api._fetch(f"/graphql?includeWebMetadata=True&variables=(profileUrn:urn%3Ali%3Afsd_profile%3A{profile_urn},sectionType:interests,tabIndex:1,locale:en_US)&&queryId=voyagerIdentityDashProfileComponents.38247e27f7b9b2ecbd8e8452e3c1a02c")
+    interests = interests.json()
+    interests_json = json.dumps(interests)
 
-        # print(interests_json)
+    # print(interests_json)
 
-        pattern = re.compile(r'"(urn:li:fsd_profile:[^"]*)"')
-        matches = re.findall(pattern, interests_json)
-        people_the_profile_is_interested_in_set = set(matches)
-        people_the_profile_is_interested_in = [s.split(':')[-1] for s in people_the_profile_is_interested_in_set]
+    pattern = re.compile(r'"(urn:li:fsd_profile:[^"]*)"')
+    matches = re.findall(pattern, interests_json)
+    people_the_profile_is_interested_in_set = set(matches)
+    people_the_profile_is_interested_in = [s.split(':')[-1] for s in people_the_profile_is_interested_in_set]
 
-        # print(people_the_profile_is_interested_in)
+    # print(people_the_profile_is_interested_in)
 
-        pattern_for_company = re.compile(r'"(urn:li:fsd_company:[^"]*)"')
-        matches_for_company = re.findall(pattern_for_company, interests_json)
-        companies_the_profile_is_interested_in_set = set(matches_for_company)
-        companies_the_profile_is_interested_in = [s.split(':')[-1] for s in companies_the_profile_is_interested_in_set]
+    pattern_for_company = re.compile(r'"(urn:li:fsd_company:[^"]*)"')
+    matches_for_company = re.findall(pattern_for_company, interests_json)
+    companies_the_profile_is_interested_in_set = set(matches_for_company)
+    companies_the_profile_is_interested_in = [s.split(':')[-1] for s in companies_the_profile_is_interested_in_set]
 
-        # print(companies_the_profile_is_interested_in)
+    # print(companies_the_profile_is_interested_in)
 
-        for i, profile_urn in enumerate(people_the_profile_is_interested_in):
-            if i == 1:
-                break
-            temp = api.get_profile(profile_urn)
-            first_name = temp['firstName']
-            last_name = temp['lastName']
-            full_name = first_name + " " + last_name 
-            lead_interests.append(full_name)
-        
-        for i, company_id in enumerate(companies_the_profile_is_interested_in):
-            if i == 1:
-                break
-            temp = api.get_company(company_id)
-            company_name = temp['universalName']
-            lead_interests.append([company_name, company_id])
-        
-        lead_info.append(lead_interests)
-        # ============= Getting interests =================================
-        
-        full_lead_profile = leads_list[lead_idx][0] + " " + lead_headline + \
-            " " + lead_summary + " " + lead_location
-        
-        prompt = "You are an Account Executive. This is the profile of a person: " + full_lead_profile + \
-            " Include something useful about the interests and use it in the request. " + \
-            " Write a connect note to them. Make it casual but eyecatching. Use only 50 words."
+    for i, profile_urn in enumerate(people_the_profile_is_interested_in):
+        if i == 1:
+            break
+        temp = api.get_profile(profile_urn)
+        first_name = temp['firstName']
+        last_name = temp['lastName']
+        full_name = first_name + " " + last_name 
+        lead_interests.append(full_name)
+    
+    for i, company_id in enumerate(companies_the_profile_is_interested_in):
+        if i == 1:
+            break
+        temp = api.get_company(company_id)
+        company_name = temp['universalName']
+        lead_interests.append([company_name, company_id])
+    
+    lead_info.append(lead_interests)
+    # ============= Getting interests =================================
+    
+    full_lead_profile = lead[0] + " " + lead_headline + \
+        " " + lead_summary + " " + lead_location + " ".join(lead_info)
+    
+    prompt = "You are an Account Executive. This is the profile of a person: " + full_lead_profile + \
+        " Include something useful about the interests and use it in the request. " + \
+        " Write a connect note to them. Make it casual but eyecatching. Use only 50 words."
 
-        # connect_note = asyncio.run(UseBingAI(prompt))
-        connect_note = UseChatGPT(prompt)
-        # print(connect_note)
-        # connect_note = "hi," + leads_list[lead_idx][0]
-        t.append(connect_note)
-    return t
+    # connect_note = asyncio.run(UseBingAI(prompt))
+    connect_note = UseChatGPT(prompt)
+    # print(connect_note)
+    # connect_note = "hi," + leads_list[lead_idx][0]
+    return connect_note
 
 # ================================================ ROUTES START =============================================
 
@@ -470,6 +568,24 @@ def search_leads_in_db():
     
     return jsonify(success=True, message=data)
 
+# @app.route('/get-lead-info', methods=['POST'])
+# def get_lead_info():
+
+#     session_id = request.json['sessionId'] # type: ignore
+#     # print("get_lead_info session_id: ", session_id)
+
+#     # TODO: error handling
+#     cookie_dict = dbCon.get_cookie_from_user_sessions(session_id)
+#     # print("get_lead_info cookie_dict: ", cookie_dict)
+
+#     leads_list = request.json['leadsArray'] # type: ignore
+#     member_urn_id_list = request.json['memberUrnIdArray'] # type: ignore
+ 
+#     data = q.enqueue(GetLeadInfo, cookie_dict, leads_list, member_urn_id_list, job_timeout=600)
+#     job_id = data.get_id()
+
+#     return jsonify(success=True, message=job_id)
+
 @app.route('/get-lead-info', methods=['POST'])
 def get_lead_info():
 
@@ -482,11 +598,15 @@ def get_lead_info():
 
     leads_list = request.json['leadsArray'] # type: ignore
     member_urn_id_list = request.json['memberUrnIdArray'] # type: ignore
- 
-    data = q.enqueue(GetLeadInfo, cookie_dict, leads_list, member_urn_id_list, job_timeout=600)
-    job_id = data.get_id()
 
-    return jsonify(success=True, message=job_id)
+    job_ids=[]
+    for i, profile_urn in enumerate(member_urn_id_list):
+ 
+        data = q.enqueue(GetLeadInfo, cookie_dict, leads_list[i], profile_urn, job_timeout=600)
+        job_id = data.get_id()
+        job_ids.append(job_id)
+
+    return jsonify(success=True, message=job_ids)
 
 @app.route('/get-leads', methods=['POST'])
 def get_leads():
