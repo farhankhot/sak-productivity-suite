@@ -112,9 +112,9 @@ function Home(props) {
 			// });
 			const jobIdArray = await response.json();
 			console.log(jobIdArray);
-			for(let i = 0; i < jobIdArray.length; i++){
+			for(let i = 0; i < jobIdArray.message.length; i++){
 
-				CheckJobStatus(jobIdArray[i].message, (resultArray) => {
+				CheckJobStatus(jobIdArray.message[i], (resultArray) => {
 
 					// === Change ===
 					setConnectNoteArray(resultArray);
