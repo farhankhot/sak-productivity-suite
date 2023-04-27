@@ -121,13 +121,12 @@ function Home(props) {
 					connectNoteArray[i] = resultArray;
 					setShowProfileArea(true);
 					// === Change ===
-
-					peopleInterestsButtonDisabled[i] = false;
-					companyInterestsButtonDisabled[i] = false;
-					makingConnectNoteButtonDisabled[i] = false;
-					sendingConnectNoteButtonDisabled[i] = false;
 					
 					if (i === (jobIdArray.message.length - 1) ){
+						peopleInterestsButtonDisabled[i] = false;
+						companyInterestsButtonDisabled[i] = false;
+						makingConnectNoteButtonDisabled[i] = false;
+						sendingConnectNoteButtonDisabled[i] = false;
 						setIsLoadingAutoCreatingNotes(false);
 						setLoadingLeadsButtonDisabled(false);
 						setAutoCreatingNotesDisabled(false);
