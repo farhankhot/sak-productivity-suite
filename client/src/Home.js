@@ -145,6 +145,7 @@ function Home(props) {
 			for(let i = 0; i < jobIdArray.message.length; i++){
 
 				if (stopAutoCreatingNotes){
+					console.log(stopAutoCreatingNotes);
 					break;
 				}
 
