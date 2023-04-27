@@ -111,29 +111,34 @@ function Home(props) {
 			// });
 			const jobIdArray = await response.json();
 			console.log(jobIdArray);
-			// const promises = jobIdArray.message.map((jobId, index) => {
-			// 	return new Promise((resolve) => {
-			// 		CheckJobStatus(jobId, (resultArray) => {
-			// 		console.log("Successfully gotten Connect note array: ", resultArray);
-			// 		connectNoteArray[index] = resultArray;
-			// 		setShowProfileArea(true);
-			// 		resolve();
+
+			// const promisesArray = [];
+			// for(let i = 0; i < jobIdArray.message.length; i++){
+			// 	promisesArray.push(new Promise((resolve) => {
+			// 		CheckJobStatus(jobIdArray.message[i], (resultArray) => {
+			// 			console.log("Successfully gotten Connect note array: ", resultArray);
+			// 			resolve({resultArray, index: i});             
 			// 		});
-			// 	});
-			// });
-			  
-			// Promise.all(promises).then(() => {
-			// 	setIsLoadingAutoCreatingNotes(false);
-			// 	setLoadingLeadsButtonDisabled(false);
-			// 	setAutoCreatingNotesDisabled(false);
-			// 	setConnectNoteArray(connectNoteArray);
-			// 	for (let i = 0; i < 25; i++) {
-			// 		peopleInterestsButtonDisabled[i] = false;
-			// 		companyInterestsButtonDisabled[i] = false;
-			// 		makingConnectNoteButtonDisabled[i] = false;
-			// 		sendingConnectNoteButtonDisabled[i] = false;
-			// 	}
-			// });			  
+			// 	}));
+			// }
+			// const results = await Promise.all(promisesArray);
+
+			// const sortedResults = results.sort((a, b) => a.index - b.index);
+			// const sortedConnectNoteArray = sortedResults.map(result => result.resultArray);
+
+			// setConnectNoteArray(sortedConnectNoteArray);
+			// setShowProfileArea(true);
+
+			// for (let i = 0; i < 25; i++){
+			// 	peopleInterestsButtonDisabled[i] = false;
+			// 	companyInterestsButtonDisabled[i] = false;
+			// 	makingConnectNoteButtonDisabled[i] = false;
+			// 	sendingConnectNoteButtonDisabled[i] = false;
+			// }
+
+			// setIsLoadingAutoCreatingNotes(false);
+			// setLoadingLeadsButtonDisabled(false);
+			// setAutoCreatingNotesDisabled(false);
 
 			for(let i = 0; i < jobIdArray.message.length; i++){
 
@@ -141,7 +146,10 @@ function Home(props) {
 
 					console.log("Successfully gotten Connect note array: ", resultArray);
 					// connectNoteArray[i] = resultArray;
-					setConnectNoteArray(prevArray => [...prevArray.slice(0, i), resultArray, ...prevArray.slice(i+1)]);
+					const newConnectNoteArray = [...connectNoteArray];
+					newConnectNoteArray[i] = resultArray;
+					setConnectNoteArray(newConnectNoteArray);
+					// setConnectNoteArray(prevArray => [...prevArray.slice(0, i), resultArray, ...prevArray.slice(i+1)]);
 					setShowProfileArea(true);
 
 					peopleInterestsButtonDisabled[i] = false;
