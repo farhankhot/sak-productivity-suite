@@ -29,7 +29,7 @@ function Home(props) {
 	const [memberUrnIdArray, setMemberUrnIdArray] = useState([]);
 
 	const [showCreateConnectNoteButton, setShowCreateConnectNoteButton] = useState(false);
-	const [connectNoteArray, setConnectNoteArray] = useState(Array.from({length: 25}, () => []));
+	const [connectNoteArray, setConnectNoteArray] = useState([]);
 
 	const [autoCreatingNotesDisabled, setAutoCreatingNotesDisabled] = useState(false);
 	const [loadingLeadsButtonDisabled, setLoadingLeadsButtonDisabled] = useState(false);
@@ -38,7 +38,6 @@ function Home(props) {
 	const [makingConnectNoteButtonDisabled, setMakingConnectNoteButtonDisabled] = useState(Array.from({length: 25}, () => false));
 	const [sendingConnectNoteButtonDisabled, setSendingConnectNoteButtonDisabled] = useState(Array.from({length: 25}, () => false));
 
-		
 	const handleGettingLeads = async() => {
         try {
 			setIsLoadingLeads(true);
