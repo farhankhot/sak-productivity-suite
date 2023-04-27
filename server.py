@@ -378,7 +378,10 @@ def GetLeadInfo(cookie_dict, leads_list, member_urn_id_list):
         
         # lead_info.append(lead_relationships)
         # ============= Getting Relationships =============================
-        actual_profile_urn, auth_type, auth_token = profile_urn 
+
+        my_tuple = tuple(profile_urn.strip("()").split(","))
+
+        actual_profile_urn, auth_type, auth_token = my_tuple 
         profile_urn_for_lead_profile = "profileId:"+actual_profile_urn
         auth_type_for_lead_profile = "authType:"+auth_type
         auth_token_for_lead_profile = "authToken:"+auth_token 
