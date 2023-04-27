@@ -302,7 +302,7 @@ def SalesNavigatorLeadsInfo(api):
 
     leads_list_unparsed = res.json()["elements"]
     print(leads_list_unparsed)
-    print(api.get_profile("urn:li:member:15647628"))
+    print(api.get_profile("15647628"))
 
     regex = r"urn:li:fs_salesProfile:(.+)" 
 
