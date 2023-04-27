@@ -350,7 +350,7 @@ def GetLeadInfo(cookie_dict, leads_list, member_urn_id_list):
     for lead_idx, profile_urn in enumerate(member_urn_id_list):
 
         print(leads_list[0])
-        print("profile_urn: ", profile_urn)
+        print("profile_urn: ", profile_urn, type(profile_urn))
         
         # Testing
         # print(lead_idx)
