@@ -534,7 +534,7 @@ def GetLeadInfo(cookie_dict, lead, profile_urn):
     # ============= Getting interests =================================
     
     full_lead_profile = lead[0] + " " + lead_headline + \
-        " " + lead_summary + " " + lead_location + " ".join(lead_info)
+        " " + lead_summary + " " + lead_location + " ".join(str(x) for x in lead_info)
     
     prompt = "You are an Account Executive. This is the profile of a person: " + full_lead_profile + \
         " Include something useful about the interests and use it in the request. " + \
