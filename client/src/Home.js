@@ -458,7 +458,7 @@ function Home(props) {
 					</>: 'Auto Create notes for all leads'}
 				</Button>}
 
-				{isLoadingAutoCreatingNotes && <Button className="myButton" variant="primary" type="button" onClick={handleStopAutoCreatingNotes} style={{marginLeft: '20px'}} disabled={autoCreatingNotesDisabled}>
+				{isLoadingAutoCreatingNotes && <Button className="myButton" variant="primary" type="button" onClick={handleStopAutoCreatingNotes} style={{marginLeft: '20px'}}>
 					Stop Auto Create notes
 				</Button>}
 
