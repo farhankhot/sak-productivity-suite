@@ -118,7 +118,7 @@ function Home(props) {
 
 					// === Change ===
 					console.log("Successfully gotten Connect note array: ", resultArray);
-					setConnectNoteArray[i] = resultArray;
+					connectNoteArray[i] = resultArray;
 					setShowProfileArea(true);
 					// === Change ===
 
@@ -129,13 +129,12 @@ function Home(props) {
 					
 				});
 			}
-			
-		}catch(error){
-			console.log(error);
-		}finally {
 			setIsLoadingAutoCreatingNotes(false);
 			setLoadingLeadsButtonDisabled(false);
 			setAutoCreatingNotesDisabled(false);
+			
+		}catch(error){
+			console.log(error);
 		}
 	};
 
