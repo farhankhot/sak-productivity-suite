@@ -111,51 +111,52 @@ function Home(props) {
 			// });
 			const jobIdArray = await response.json();
 			console.log(jobIdArray);
-			const promises = jobIdArray.message.map((jobId, index) => {
-				return new Promise((resolve) => {
-					CheckJobStatus(jobId, (resultArray) => {
-					console.log("Successfully gotten Connect note array: ", resultArray);
-					connectNoteArray[index] = resultArray;
-					setShowProfileArea(true);
-					resolve();
-					});
-				});
-			});
-			  
-			Promise.all(promises).then(() => {
-				setIsLoadingAutoCreatingNotes(false);
-				setLoadingLeadsButtonDisabled(false);
-				setAutoCreatingNotesDisabled(false);
-				setConnectNoteArray(connectNoteArray);
-				for (let i = 0; i < 25; i++) {
-					peopleInterestsButtonDisabled[i] = false;
-					companyInterestsButtonDisabled[i] = false;
-					makingConnectNoteButtonDisabled[i] = false;
-					sendingConnectNoteButtonDisabled[i] = false;
-				}
-			});			  
-
-			// for(let i = 0; i < jobIdArray.message.length; i++){
-
-			// 	CheckJobStatus(jobIdArray.message[i], (resultArray) => {
-
+			// const promises = jobIdArray.message.map((jobId, index) => {
+			// 	return new Promise((resolve) => {
+			// 		CheckJobStatus(jobId, (resultArray) => {
 			// 		console.log("Successfully gotten Connect note array: ", resultArray);
-			// 		connectNoteArray[i] = resultArray;
+			// 		connectNoteArray[index] = resultArray;
 			// 		setShowProfileArea(true);
-
+			// 		resolve();
+			// 		});
+			// 	});
+			// });
+			  
+			// Promise.all(promises).then(() => {
+			// 	setIsLoadingAutoCreatingNotes(false);
+			// 	setLoadingLeadsButtonDisabled(false);
+			// 	setAutoCreatingNotesDisabled(false);
+			// 	setConnectNoteArray(connectNoteArray);
+			// 	for (let i = 0; i < 25; i++) {
 			// 		peopleInterestsButtonDisabled[i] = false;
 			// 		companyInterestsButtonDisabled[i] = false;
 			// 		makingConnectNoteButtonDisabled[i] = false;
 			// 		sendingConnectNoteButtonDisabled[i] = false;
-					
-			// 		if (i === (jobIdArray.message.length - 1) ){
-			// 			setIsLoadingAutoCreatingNotes(false);
-			// 			setLoadingLeadsButtonDisabled(false);
-			// 			setAutoCreatingNotesDisabled(false);
-			// 		}
+			// 	}
+			// });			  
 
-			// 	});
-			// }
+			for(let i = 0; i < jobIdArray.message.length; i++){
+
+				CheckJobStatus(jobIdArray.message[i], (resultArray) => {
+
+					console.log("Successfully gotten Connect note array: ", resultArray);
+					// connectNoteArray[i] = resultArray;
+					setConnectNoteArray(prevArray => [...prevArray.slice(0, i), resultArray, ...prevArray.slice(i+1)]);
+					setShowProfileArea(true);
+
+					peopleInterestsButtonDisabled[i] = false;
+					companyInterestsButtonDisabled[i] = false;
+					makingConnectNoteButtonDisabled[i] = false;
+					sendingConnectNoteButtonDisabled[i] = false;
+					
+					if (i === (jobIdArray.message.length - 1) ){
+						setIsLoadingAutoCreatingNotes(false);
+						setLoadingLeadsButtonDisabled(false);
+						setAutoCreatingNotesDisabled(false);
+					}
+
+				});
+			}
 		}catch(error){
 			console.log(error);
 		}
