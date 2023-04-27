@@ -144,6 +144,8 @@ function Home(props) {
 
 			for(let i = 0; i < jobIdArray.message.length; i++){
 
+				console.log(stopAutoCreatingNotes);
+
 				if (stopAutoCreatingNotes){
 					console.log(stopAutoCreatingNotes);
 					break;
@@ -436,9 +438,7 @@ function Home(props) {
 	};	  
 
 	const handleStopAutoCreatingNotes = () => {
-		// console.log("button clicked");
 		setStopAutoCreatingNotes(true);
-		console.log(stopAutoCreatingNotes);
 	}
 
 	return (
