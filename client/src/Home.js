@@ -436,8 +436,9 @@ function Home(props) {
 	};	  
 
 	const handleStopAutoCreatingNotes = () => {
-		console.log("button clicked");
+		// console.log("button clicked");
 		setStopAutoCreatingNotes(true);
+		console.log(stopAutoCreatingNotes);
 	}
 
 	return (
