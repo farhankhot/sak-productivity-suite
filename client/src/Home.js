@@ -111,6 +111,7 @@ function Home(props) {
 			// 	}
 			// });
 			const jobIdArray = await response.json();
+			console.log(jobIdArray);
 			for(let i = 0; i < jobIdArray.length; i++){
 
 				CheckJobStatus(jobIdArray[i].message, (resultArray) => {
