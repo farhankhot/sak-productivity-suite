@@ -38,6 +38,8 @@ function Home(props) {
 	const [makingConnectNoteButtonDisabled, setMakingConnectNoteButtonDisabled] = useState(Array.from({length: 25}, () => false));
 	const [sendingConnectNoteButtonDisabled, setSendingConnectNoteButtonDisabled] = useState(Array.from({length: 25}, () => false));
 
+	const [stopAutoCreatingNotes, setStopAutoCreatingNotes] = useState(false);
+
 	const handleGettingLeads = async() => {
         try {
 			setIsLoadingLeads(true);
@@ -141,6 +143,10 @@ function Home(props) {
 			// setAutoCreatingNotesDisabled(false);
 
 			for(let i = 0; i < jobIdArray.message.length; i++){
+
+				if (stopAutoCreatingNotes){
+					break;
+				}
 
 				CheckJobStatus(jobIdArray.message[i], (resultArray) => {
 
@@ -428,6 +434,10 @@ function Home(props) {
 		setConnectNoteArray(updatedConnectNoteArray);
 	};	  
 
+	const handleStopAutoCreatingNotes = () => {
+		setStopAutoCreatingNotes(true);
+	}
+
 	return (
 		<>
 
@@ -447,6 +457,11 @@ function Home(props) {
 						 Creating Notes...
 					</>: 'Auto Create notes for all leads'}
 				</Button>}
+
+				{isLoadingAutoCreatingNotes && <Button className="myButton" variant="primary" type="button" onClick={handleStopAutoCreatingNotes} style={{marginLeft: '20px'}} disabled={autoCreatingNotesDisabled}>
+					Stop Auto Create notes
+				</Button>}
+
 			</div>
 
 			<div className="mx-auto" style={{ maxWidth: "800px", paddingBottom: '20px'}}>
