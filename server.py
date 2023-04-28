@@ -19,6 +19,8 @@ import emoji
 from rq import Queue
 from worker import conn
 
+from rq.job import Job
+
 import openai
 from EdgeGPT import Chatbot
 
@@ -585,6 +587,26 @@ def search_leads_in_db():
 #     job_id = data.get_id()
 
 #     return jsonify(success=True, message=job_id)
+
+@app.route('/stop-jobs-in-array', methods=['POST'])
+def stop_jobs_in_array():
+
+    session_id = request.json['sessionId'] # type: ignore
+    # print("get_lead_info session_id: ", session_id)
+
+    # TODO: error handling
+    cookie_dict = dbCon.get_cookie_from_user_sessions(session_id)
+    # print("get_lead_info cookie_dict: ", cookie_dict)
+
+    job_id_list = request.json['jobIdArray'] # type: ignore
+
+    for i, job_id in enumerate(job_id_list):
+        job = Job.fetch(job_id, connection=conn)
+        job.cancel()
+        job.delete()
+
+
+    return jsonify(success=True, message="success")
 
 @app.route('/get-lead-info', methods=['POST'])
 def get_lead_info():

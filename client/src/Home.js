@@ -40,6 +40,38 @@ function Home(props) {
 
 	const [stopAutoCreatingNotes, setStopAutoCreatingNotes] = useState(false);
 
+	const [jobIdArray, setJobIdArray] = useState([]);
+
+	useEffect( async () => {
+		if (stopAutoCreatingNotes) {
+			try {
+				const response = await fetch("https://sak-productivity-suite.herokuapp.com/stop-jobs-in-array", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json"
+					},
+					body: JSON.stringify({
+						sessionId: sessionId,
+						jobIdArray: jobIdArray
+					})
+				});
+	
+				const data = await response.json();
+				const leadsArray = data.lead_list;
+				// console.log("Successfully gotten leads: ", data);
+				const memberUrnIdArray = data.member_urn_id_list; 
+	
+				setLeadsArray(leadsArray);
+				setMemberUrnIdArray(memberUrnIdArray);
+				setShowCreateConnectNoteButton(true);
+			
+			}catch(error){
+				console.log(error);
+			}
+		  
+		}
+	  }, [stopAutoCreatingNotes]);
+
 	const handleGettingLeads = async() => {
         try {
 			setIsLoadingLeads(true);
@@ -114,6 +146,8 @@ function Home(props) {
 			const jobIdArray = await response.json();
 			console.log(jobIdArray);
 
+			setJobIdArray(jobIdArray);
+
 			// const promisesArray = [];
 			// for(let i = 0; i < jobIdArray.message.length; i++){
 			// 	promisesArray.push(new Promise((resolve) => {
@@ -143,13 +177,6 @@ function Home(props) {
 			// setAutoCreatingNotesDisabled(false);
 
 			for(let i = 0; i < jobIdArray.message.length; i++){
-
-				console.log(stopAutoCreatingNotes);
-
-				if (stopAutoCreatingNotes){
-					console.log(stopAutoCreatingNotes);
-					break;
-				}
 
 				CheckJobStatus(jobIdArray.message[i], (resultArray) => {
 
