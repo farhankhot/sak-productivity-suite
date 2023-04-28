@@ -258,6 +258,7 @@ function Home(props) {
 
 							// Remove this i from currentJobIdArray
 							currentJobIdArray.splice(i, 1);
+							console.log("current", currentJobIdArray.length);
 						} 
 					}catch(error){
 						console.log("An error has occured (CheckJobStatus): ", error);
