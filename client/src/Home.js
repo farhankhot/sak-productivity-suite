@@ -179,6 +179,7 @@ function Home(props) {
 			// setAutoCreatingNotesDisabled(false);
 
 			const jobIdCheck = setInterval( async () => {
+
 				// for(let i = 0; i < jobIdArray.message.length; i++){
 				for(let i = 0; i < currentJobIdArray.length; i++){
 				
@@ -234,7 +235,7 @@ function Home(props) {
 								"Content-Type": "application/json"
 							},
 							body: JSON.stringify({
-								jobId: jobIdArray.message[i]
+								jobId: currentJobIdArray[i]
 							})
 						});
 						
@@ -297,9 +298,7 @@ function Home(props) {
 	
 					// });
 				}
-
 			}, 500);
-			
 		}catch(error){
 			console.log(error);
 		}
