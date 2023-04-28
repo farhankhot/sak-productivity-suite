@@ -181,6 +181,7 @@ function Home(props) {
 			const jobIdCheck = setInterval( async () => {
 
 				// for(let i = 0; i < jobIdArray.message.length; i++){
+				let j = 0;
 				for(let i = 0; i < currentJobIdArray.length; i++){
 				
 					console.log(stopAutoCreatingNotesRef.current);
@@ -247,15 +248,15 @@ function Home(props) {
 							console.log("Successfully gotten Connect note array: ", resultArray);
 
 							const newConnectNoteArray = [...connectNoteArray];
-							newConnectNoteArray[i] = resultArray;
+							newConnectNoteArray[j] = resultArray;
 							setConnectNoteArray(newConnectNoteArray);
 
 							setShowProfileArea(true);
 	
-							peopleInterestsButtonDisabled[i] = false;
-							companyInterestsButtonDisabled[i] = false;
-							makingConnectNoteButtonDisabled[i] = false;
-							sendingConnectNoteButtonDisabled[i] = false;
+							peopleInterestsButtonDisabled[j] = false;
+							companyInterestsButtonDisabled[j] = false;
+							makingConnectNoteButtonDisabled[j] = false;
+							sendingConnectNoteButtonDisabled[j] = false;
 
 							// Remove this i from currentJobIdArray
 							currentJobIdArray.splice(i, 1);
@@ -264,6 +265,8 @@ function Home(props) {
 					}catch(error){
 						console.log("An error has occured (CheckJobStatus): ", error);
 					}
+
+					j += 1;
 	
 					// if (i === (jobIdArray.message.length - 1) ){
 					// 	setIsLoadingAutoCreatingNotes(false);
