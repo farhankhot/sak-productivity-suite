@@ -599,7 +599,7 @@ def stop_jobs_in_array():
     # print("get_lead_info cookie_dict: ", cookie_dict)
 
     job_id_list = request.json['jobIdArray'] # type: ignore
-    job_id_list = job_id_list['message']
+    # job_id_list = job_id_list['message']
     print("job_id_list", job_id_list)
 
     for i, job_id in enumerate(job_id_list):
