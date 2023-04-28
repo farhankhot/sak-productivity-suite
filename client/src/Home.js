@@ -43,6 +43,7 @@ function Home(props) {
 	const [jobIdArray, setJobIdArray] = useState([]);
 
 	useEffect( async () => {
+		
 		if (stopAutoCreatingNotes) {
 			try {
 				const response = await fetch("https://sak-productivity-suite.herokuapp.com/stop-jobs-in-array", {
