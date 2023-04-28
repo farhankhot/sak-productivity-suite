@@ -181,13 +181,29 @@ function Home(props) {
 
 			const jobIdCheck = setInterval( async () => {
 
-				// for(let i = 0; i < jobIdArray.message.length; i++){
+				if (currentJobIdArray.length === 0) {
+					clearInterval(jobIdCheck);
+						
+					setIsLoadingAutoCreatingNotes(false);
+					setLoadingLeadsButtonDisabled(false);
+					setAutoCreatingNotesDisabled(false);
+
+					for (let i = 0; i < 25; i++){
+						peopleInterestsButtonDisabled[i] = false;
+						companyInterestsButtonDisabled[i] = false;
+						makingConnectNoteButtonDisabled[i] = false;
+						sendingConnectNoteButtonDisabled[i] = false;
+					}
+					
+				}
+				else {
+				
 				for(let i = 0; i < currentJobIdArray.length; i++){
 				
 					console.log(stopAutoCreatingNotesRef.current);
 					console.log(currentJobIdArray.length);
 
-					if (stopAutoCreatingNotesRef.current || currentJobIdArray.length === 0) {
+					if (stopAutoCreatingNotesRef.current) {
 						if (currentJobIdArray.length > 0){
 							try {
 								const response = await fetch("https://sak-productivity-suite.herokuapp.com/stop-jobs-in-array", {
@@ -299,6 +315,7 @@ function Home(props) {
 					// 	}
 	
 					// });
+				}
 				}
 			}, 500);
 		}catch(error){
