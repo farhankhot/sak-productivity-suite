@@ -184,7 +184,6 @@ function Home(props) {
 					console.log(stopAutoCreatingNotesRef.current);
 
 					if (stopAutoCreatingNotesRef.current || currentJobIdArray.length === 0) {
-						// TODO: send request to kill all the jobs remaining in currentJobIdArray
 						if (currentJobIdArray.length > 0){
 							try {
 								const response = await fetch("https://sak-productivity-suite.herokuapp.com/stop-jobs-in-array", {
@@ -218,6 +217,9 @@ function Home(props) {
 							makingConnectNoteButtonDisabled[i] = false;
 							sendingConnectNoteButtonDisabled[i] = false;
 						}
+
+						// Set back to false if this button is clicked again
+						stopAutoCreatingNotesRef.current = false;
 
 						break;
 					}
