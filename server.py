@@ -341,9 +341,6 @@ def SalesNavigatorLeadsInfo(api):
 
     return lead_list, member_urn_id_list
 
-# # TODO: Change function name to show that this is returning Connect note not info
-# # TODO: Add relationships
-# # TODO: Get interests at random
 # def GetLeadInfo(cookie_dict, leads_list, member_urn_id_list):
 
 #     api = Linkedin(cookies=cookie_dict) # type: ignore
@@ -451,6 +448,9 @@ def SalesNavigatorLeadsInfo(api):
 #         t.append(connect_note)
 #     return t
 
+# TODO: Change function name to show that this is returning Connect note not info
+# TODO: Add relationships
+# TODO: Get interests at random
 def GetLeadInfo(cookie_dict, lead, profile_urn):
 
     api = Linkedin(cookies=cookie_dict) # type: ignore
