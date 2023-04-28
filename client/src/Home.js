@@ -174,7 +174,7 @@ function Home(props) {
 			// setAutoCreatingNotesDisabled(false);
 
 			for(let i = 0; i < jobIdArray.message.length; i++){
-
+				console.log(stopAutoCreatingNotesRef);
 				if (stopAutoCreatingNotesRef) {
 					break;
 				}
