@@ -627,7 +627,7 @@ def get_lead_info():
     for i, profile_urn in enumerate(member_urn_id_list):
 
         # Testing
-        if i == 2:
+        if i == 5:
             break
  
         data = q.enqueue(GetLeadInfo, cookie_dict, leads_list[i], profile_urn, result_ttl = 1, job_timeout=600)
