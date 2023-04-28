@@ -28,7 +28,8 @@ import dbCon
 
 import requests
 
-q = Queue(connection=conn)
+q = Queue('default', connection=conn)
+high_priority_q = Queue('high', connection=conn)
 
 app = Flask(
     __name__,
@@ -734,7 +735,7 @@ def get_people_interests():
 
     profile_urn = request.json['profileUrn'] # type: ignore
     
-    data = q.enqueue(GetPeopleInterests, cookie_dict, profile_urn)
+    data = high_priority_q.enqueue(GetPeopleInterests, cookie_dict, profile_urn)
     
     job_id = data.get_id()
     
@@ -752,7 +753,7 @@ def get_company_interests():
     
     profile_urn = request.json['profileUrn'] # type: ignore
 
-    data = q.enqueue(GetCompanyInterests, cookie_dict, profile_urn)
+    data = high_priority_q.enqueue(GetCompanyInterests, cookie_dict, profile_urn)
     
     job_id = data.get_id()
     
