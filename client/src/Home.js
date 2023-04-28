@@ -180,8 +180,10 @@ function Home(props) {
 
 			const jobIdCheck = setInterval( async () => {
 				for(let i = 0; i < jobIdArray.message.length; i++){
+				// for(let i = 0; i < currentJobIdArray.length; i++){
 				
 					console.log(stopAutoCreatingNotesRef.current);
+					console.log(currentJobIdArray.length);
 
 					if (stopAutoCreatingNotesRef.current || currentJobIdArray.length === 0) {
 						if (currentJobIdArray.length > 0){
