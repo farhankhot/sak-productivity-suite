@@ -179,8 +179,8 @@ function Home(props) {
 			// setAutoCreatingNotesDisabled(false);
 
 			const jobIdCheck = setInterval( async () => {
-				for(let i = 0; i < jobIdArray.message.length; i++){
-				// for(let i = 0; i < currentJobIdArray.length; i++){
+				// for(let i = 0; i < jobIdArray.message.length; i++){
+				for(let i = 0; i < currentJobIdArray.length; i++){
 				
 					console.log(stopAutoCreatingNotesRef.current);
 					console.log(currentJobIdArray.length);
