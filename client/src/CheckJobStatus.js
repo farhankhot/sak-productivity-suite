@@ -18,7 +18,7 @@ export async function CheckJobStatus(jobId, onSuccess) {
 			const resultArray = data.result;
 			onSuccess(resultArray);
 		} else {
-			setTimeout(() => CheckJobStatus(jobId, onSuccess), 1000);
+			setTimeout(() => CheckJobStatus(jobId, onSuccess), 5000);
 		}
 		
 
