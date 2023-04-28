@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useRef} from "react";
 import {CheckJobStatus} from "./CheckJobStatus.js";
 import Button from 'react-bootstrap/Button';
 import { ButtonGroup, ListGroup } from 'react-bootstrap';
@@ -42,11 +42,11 @@ function Home(props) {
 
 	const [jobIdArray, setJobIdArray] = useState([]);
 
-	let stopAutoCreatingNotesRef = false; // add this at the top of your file or in the function where the loop is running
+	const stopAutoCreatingNotesRef = useRef(false);
 
-	useEffect( async () => {
-		if (stopAutoCreatingNotes) {
-			stopAutoCreatingNotesRef = stopAutoCreatingNotes;
+	// useEffect( async () => {
+	// 	if (stopAutoCreatingNotes) {
+	// 		stopAutoCreatingNotesRef.current = stopAutoCreatingNotes;
 			// try {
 			// 	const response = await fetch("https://sak-productivity-suite.herokuapp.com/stop-jobs-in-array", {
 			// 		method: "POST",
@@ -66,8 +66,8 @@ function Home(props) {
 			// 	console.log(error);
 			// }
 		  
-		}
-	  }, [stopAutoCreatingNotes]);
+	// 	}
+	//   }, [stopAutoCreatingNotes]);
 
 	const handleGettingLeads = async() => {
         try {
@@ -174,8 +174,8 @@ function Home(props) {
 			// setAutoCreatingNotesDisabled(false);
 
 			for(let i = 0; i < jobIdArray.message.length; i++){
-				console.log(stopAutoCreatingNotesRef);
-				if (stopAutoCreatingNotesRef) {
+				console.log(stopAutoCreatingNotesRef.current);
+				if (stopAutoCreatingNotesRef.current) {
 					break;
 				}
 
@@ -198,6 +198,8 @@ function Home(props) {
 						setIsLoadingAutoCreatingNotes(false);
 						setLoadingLeadsButtonDisabled(false);
 						setAutoCreatingNotesDisabled(false);
+
+						// TODO: set all the other buttons (people, company, making, sending) to true if they aren't
 					}
 
 				});
@@ -466,8 +468,8 @@ function Home(props) {
 	};	  
 
 	const handleStopAutoCreatingNotes = () => {
+		stopAutoCreatingNotesRef.current = true;
 		setStopAutoCreatingNotes(true);
-		stopAutoCreatingNotesRef = true;
 	}
 
 	return (
