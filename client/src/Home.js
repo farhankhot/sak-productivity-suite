@@ -148,6 +148,8 @@ function Home(props) {
 			console.log(jobIdArray);
 			setJobIdArray(jobIdArray);
 
+			let currentJobIdArray = [...jobIdArray];
+
 			// const promisesArray = [];
 			// for(let i = 0; i < jobIdArray.message.length; i++){
 			// 	promisesArray.push(new Promise((resolve) => {
@@ -180,8 +182,43 @@ function Home(props) {
 				for(let i = 0; i < jobIdArray.message.length; i++){
 				
 					console.log(stopAutoCreatingNotesRef.current);
-					if (stopAutoCreatingNotesRef.current) {
+
+					if (stopAutoCreatingNotesRef.current || currentJobIdArray.length === 0) {
+						// TODO: send request to kill all the jobs remaining in currentJobIdArray
+						if (currentJobIdArray.length > 0){
+							try {
+								const response = await fetch("https://sak-productivity-suite.herokuapp.com/stop-jobs-in-array", {
+									method: "POST",
+									headers: {
+										"Content-Type": "application/json"
+									},
+									body: JSON.stringify({
+										sessionId: sessionId,
+										jobIdArray: currentJobIdArray
+									})
+								});
+					
+								const data = await response.json();
+								console.log("data from stopAutoCreatingNotes", data);
+								
+							}catch(error){
+								console.log(error);
+							}
+						}
+						
 						clearInterval(jobIdCheck);
+						
+						setIsLoadingAutoCreatingNotes(false);
+						setLoadingLeadsButtonDisabled(false);
+						setAutoCreatingNotesDisabled(false);
+
+						for (let i = 0; i < 25; i++){
+							peopleInterestsButtonDisabled[i] = false;
+							companyInterestsButtonDisabled[i] = false;
+							makingConnectNoteButtonDisabled[i] = false;
+							sendingConnectNoteButtonDisabled[i] = false;
+						}
+
 						break;
 					}
 	
@@ -203,17 +240,20 @@ function Home(props) {
 						if (status === "finished") {
 							const resultArray = data.result;
 							console.log("Successfully gotten Connect note array: ", resultArray);
-							// connectNoteArray[i] = resultArray;
+
 							const newConnectNoteArray = [...connectNoteArray];
 							newConnectNoteArray[i] = resultArray;
 							setConnectNoteArray(newConnectNoteArray);
-							// setConnectNoteArray(prevArray => [...prevArray.slice(0, i), resultArray, ...prevArray.slice(i+1)]);
+
 							setShowProfileArea(true);
 	
 							peopleInterestsButtonDisabled[i] = false;
 							companyInterestsButtonDisabled[i] = false;
 							makingConnectNoteButtonDisabled[i] = false;
 							sendingConnectNoteButtonDisabled[i] = false;
+
+							// Remove this i from currentJobIdArray
+							currentJobIdArray.splice(i, 1);
 						} 
 					}catch(error){
 						console.log("An error has occured (CheckJobStatus): ", error);
