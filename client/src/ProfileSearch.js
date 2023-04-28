@@ -7,6 +7,7 @@ import Form from 'react-bootstrap/Form';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 
 import './ProfileSearch.css';
+import ErrorModal from "./ErrorModal.js";
 
 function ProfileSearch(props) {
 	
@@ -44,12 +45,16 @@ function ProfileSearch(props) {
 			setIsLoading(true);
 			
 			const data = await response.json();
-			const resultArray = data.message;
+			if (data.success === true) {
+				const resultArray = data.message;
 
-			setResultArray(resultArray);	
-			setJobFinished(true);
-
+				setResultArray(resultArray);	
+				setJobFinished(true);
+			}else {
+				<ErrorModal errorMessage={data.message}/>
+			}
 		} catch (error) {
+			<ErrorModal errorMessage={error}/>
 			console.error(error);
 		}
 	};

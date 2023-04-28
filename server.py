@@ -468,24 +468,6 @@ def search_leads_in_db():
     except Exception as e:
         return jsonify(success=False, message=str(e))
 
-# @app.route('/get-lead-info', methods=['POST'])
-# def get_lead_info():
-
-#     session_id = request.json['sessionId'] # type: ignore
-#     # print("get_lead_info session_id: ", session_id)
-
-#     # TODO: error handling
-#     cookie_dict = dbCon.get_cookie_from_user_sessions(session_id)
-#     # print("get_lead_info cookie_dict: ", cookie_dict)
-
-#     leads_list = request.json['leadsArray'] # type: ignore
-#     member_urn_id_list = request.json['memberUrnIdArray'] # type: ignore
- 
-#     data = q.enqueue(GetLeadInfo, cookie_dict, leads_list, member_urn_id_list, job_timeout=600)
-#     job_id = data.get_id()
-
-#     return jsonify(success=True, message=job_id)
-
 @app.route('/stop-jobs-in-array', methods=['POST'])
 def stop_jobs_in_array():
     try:

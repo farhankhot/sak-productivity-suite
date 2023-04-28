@@ -7,6 +7,7 @@ import Form from 'react-bootstrap/Form';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 
 import './ProfileSearch.css';
+import ErrorModal from "./ErrorModal.js";
 
 function ZoomInfoSearch() {
 	
@@ -38,14 +39,18 @@ function ZoomInfoSearch() {
 			setIsLoading(true);
 			
 			const data = await response.json();
-			// console.log(data);
-			const resultArray = data['data']['result'][0]['data'];
-			// console.log(resultArray);
+			if (data.success === true){
+				// console.log(data);
+				const resultArray = data['data']['result'][0]['data'];
+				// console.log(resultArray);
 
-			setResultArray(resultArray);	
-			setJobFinished(true);
-
+				setResultArray(resultArray);	
+				setJobFinished(true);
+			}else {
+				<ErrorModal errorMessage={data.message}/>
+			}
 		} catch (error) {
+			<ErrorModal errorMessage={error}/>
 			console.error(error);
 		}
 	};
@@ -73,21 +78,6 @@ function ZoomInfoSearch() {
 									</Form.Text>
 								</FloatingLabel>
 							</Form.Group>
-
-							{/* <Form.Group className="mb-3" controlId="formLocation">
-								<FloatingLabel 
-										controlId="floatingInput" 
-										label="Enter location"
-										className="mb-3" >
-									<Form.Control 
-										type="text"
-										value={location} 
-										onChange={(e) => setLocation(e.target.value)} />
-									<Form.Text className="text-muted">
-										The location you want to search
-									</Form.Text>
-								</FloatingLabel>
-							</Form.Group> */}
 							
 							<Button variant="primary" type="button" onClick={handleZoomInfoSearchRequest}>
 								{isLoading ? 'Results Loading...' : 'Search'}

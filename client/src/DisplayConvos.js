@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from "react";
 import {useNavigate} from 'react-router-dom';
+import ErrorModal from "./ErrorModal.js";
 
 function DisplayConvos(props) {
 
@@ -28,9 +29,13 @@ function DisplayConvos(props) {
 			});
 
 			const data = await response.json();
-			const thread = data.message;
-			setThreadArray(thread);
-			setIsLoadingConvos(false);
+			if (data.success === true){
+				const thread = data.message;
+				setThreadArray(thread);
+				setIsLoadingConvos(false);
+			}else {
+				<ErrorModal errorMessage={data.message}/>
+			}
 		};	
 		if (sessionId) {
 			handleGetThreads();

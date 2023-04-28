@@ -6,6 +6,7 @@ import Container from 'react-bootstrap/Container';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import { ButtonGroup, ListGroup } from 'react-bootstrap';
+import ErrorModal from "./ErrorModal.js";
 
 function DisplayThread() {
 
@@ -33,11 +34,13 @@ function DisplayThread() {
 					threadId: threadId
 				})
 			});
-
 			const data = await response.json();
-			const thread = data.message;
-			setConvoArray(thread);
-			// setIsLoadingThread(false);
+			if (data.success === true) {
+				const thread = data.message;
+				setConvoArray(thread);
+			}else {
+				<ErrorModal errorMessage={data.message}/>
+			}
 		};	
 		getSingleThread();
 		// The 2 lines below deal with auto refresh of messages.
@@ -60,15 +63,18 @@ function DisplayThread() {
 					prompt: prompt
 				})
 			});
-			
 			const data = await response.json();
-			const jobId = data.message;
-			CheckJobStatus(jobId, (resultArray) => {
-				setReplyTextArea(resultArray);	
-				setIsLoadingReply(false);
-			});
-
+			if (data.success === true){
+				const jobId = data.message;
+				CheckJobStatus(jobId, (resultArray) => {
+					setReplyTextArea(resultArray);	
+					setIsLoadingReply(false);
+				});
+			}else {
+				<ErrorModal errorMessage={data.message}/>
+			}
 		}catch(error){
+			<ErrorModal errorMessage={error}/>
 			console.log(error);
 		}
 	};
@@ -87,11 +93,14 @@ function DisplayThread() {
 					text: replyTextArea
 				})
 			});
-
 			const data = await response.json();
-			console.log("Successfully sent the message to the person", data.message);
-			
+			if (data.success === true) {
+				console.log("Successfully sent the message to the person", data.message);
+			}else {
+				<ErrorModal errorMessage={data.message}/>
+			}
 		}catch(error){
+			<ErrorModal errorMessage={error}/>
 			console.log(error);
 		}
 	};
@@ -101,25 +110,7 @@ function DisplayThread() {
 	};
 		
 	return (
-		// <div>
-		// 	{/* {isLoadingThread ? <p>Refreshing...</p> : <p>Conversation:</p>} */}
-        //     <h1>{threadName}</h1>
-		// 	{convoArray.map( (message) => (
-		// 		<p>{message[1]}: {message[0]}</p>
-		// 	))}
-        //     {/* <textarea value={replyTextArea} onChange={handleReplyTextAreaChange}></textarea> */}
-		// 	<Form.Group>
-		// 		<Form.Control
-		// 			as="textarea"
-		// 			value={replyTextArea} 
-		// 			onChange={ (event) => {
-		// 				handleReplyTextAreaChange(event)
-		// 			}}
-		// 		/>
-		// 	</Form.Group>
-        //     <button onClick={handleMakingReply}>Reply</button>
-        //     <button onClick={handleSendingMessage}>Send Message</button>
-		// </div>
+
 		<Container style={{ paddingTop: '20px', paddingBottom: '20px'}}>
 			<Card>
 				<Card.Header>

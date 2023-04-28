@@ -5,6 +5,7 @@ import { ButtonGroup, ListGroup } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
+import ErrorModal from "./ErrorModal.js";
 
 function DisplaySearchResults() {
 	
@@ -53,18 +54,22 @@ function DisplaySearchResults() {
 			});
 			
 			const data = await response.json();			
-			const jobId = data.message;
-			
-			CheckJobStatus(jobId, (resultArray) => {
-				setIsLoading(false);
-				const newArray = [...peopleInterestsArray];
-				for (let i = 0; i < resultArray.length; i++){
-					newArray[index].push(resultArray[i]);
-				}
-				setPeopleInterestsArray(newArray);	
-			});
-
+			if (data.success === true){
+				const jobId = data.message;
+				
+				CheckJobStatus(jobId, (resultArray) => {
+					setIsLoading(false);
+					const newArray = [...peopleInterestsArray];
+					for (let i = 0; i < resultArray.length; i++){
+						newArray[index].push(resultArray[i]);
+					}
+					setPeopleInterestsArray(newArray);	
+				});
+			}else {
+				<ErrorModal errorMessage={data.message}/>
+			}
 		} catch (error) {
+			<ErrorModal errorMessage={error}/>
 			console.error(error);
 		}
 	};
@@ -90,17 +95,22 @@ function DisplaySearchResults() {
 			});
 			
 			const data = await response.json();
-			const jobId = data.message;
-			
-			CheckJobStatus(jobId, (resultArray) => {
-				setIsLoading(false);
-				const newArray = [...companyInterestsArray];
-				for (let i = 0; i < resultArray.length; i++){
-					newArray[index].push(resultArray[i]);
-				}
-				setCompanyInterestsArray(newArray);
-			});
+			if (data.success === true){
+				const jobId = data.message;
+				
+				CheckJobStatus(jobId, (resultArray) => {
+					setIsLoading(false);
+					const newArray = [...companyInterestsArray];
+					for (let i = 0; i < resultArray.length; i++){
+						newArray[index].push(resultArray[i]);
+					}
+					setCompanyInterestsArray(newArray);
+				});
+			}else{
+				<ErrorModal errorMessage={data.message}/>
+			}
 		} catch (error) {
+			<ErrorModal errorMessage={error}/>
 			console.error(error);
 		}
 	};

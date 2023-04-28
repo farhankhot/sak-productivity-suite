@@ -15,7 +15,6 @@ function LinkedInCookie() {
 	}, [cookie]);	
 		
 	const handleLinkedinCookie = () => {
-		
 		chrome.cookies.getAll({ url: "https://www.linkedin.com/feed/" }, (cookie) => {
 					
 			fetch("https://sak-productivity-suite.herokuapp.com/save-cookie", {
@@ -29,28 +28,12 @@ function LinkedInCookie() {
 			})
 			.then((response) => response.json())
 			.then((data) => {
-				
 				setCookie(cookie);
-				
 			});
-
 		});
-	
 	};
 	
 	return (
-		// {cookie === "" ? (
-		// 	<div>
-		// 		<h1>MAKE SURE YOU ARE LOGGED IN TO LINKEDIN BEFORE CLICKING BELOW</h1>
-		// 		<button onClick={handleLinkedinCookie}>Get LinkedIn Cookies</button>
-		// 		<AudioRetrieval />
-		// 	</div>
-		// ) : (
-		// 	<div>
-		// 		<button onClick={() => window.open( "https://sak-productivity-suite.herokuapp.com/dashboard") }>Open Dashboard</button>
-		// 		<Route exact path="/dashboard" element={<ProfileSearch />} />
-		// 	</div>
-		// )}
 		<>
 		<Router>
 			<Route path="/dashboard" element={<ProfileSearch />} />			
