@@ -181,6 +181,7 @@ function Home(props) {
 				
 					console.log(stopAutoCreatingNotesRef.current);
 					if (stopAutoCreatingNotesRef.current) {
+						clearInterval(jobIdCheck);
 						break;
 					}
 	
