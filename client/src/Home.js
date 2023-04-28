@@ -468,8 +468,8 @@ function Home(props) {
 	};	  
 
 	const handleStopAutoCreatingNotes = () => {
-		stopAutoCreatingNotesRef.current = true;
 		setStopAutoCreatingNotes(true);
+		stopAutoCreatingNotesRef.current = true;
 	}
 
 	return (
