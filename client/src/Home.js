@@ -219,13 +219,13 @@ function Home(props) {
 						console.log("An error has occured (CheckJobStatus): ", error);
 					}
 	
-					if (i === (jobIdArray.message.length - 1) ){
-						setIsLoadingAutoCreatingNotes(false);
-						setLoadingLeadsButtonDisabled(false);
-						setAutoCreatingNotesDisabled(false);
+					// if (i === (jobIdArray.message.length - 1) ){
+					// 	setIsLoadingAutoCreatingNotes(false);
+					// 	setLoadingLeadsButtonDisabled(false);
+					// 	setAutoCreatingNotesDisabled(false);
 	
-						// TODO: set all the other buttons (people, company, making, sending) to true if they aren't
-					}
+					// 	// TODO: set all the other buttons (people, company, making, sending) to true if they aren't
+					// }
 	
 					// CheckJobStatus(jobIdArray.message[i], (resultArray) => {
 	
