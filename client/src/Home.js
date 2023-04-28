@@ -1,5 +1,7 @@
 import React, {useState, useEffect, useRef} from "react";
 import {CheckJobStatus} from "./CheckJobStatus.js";
+import {CheckJobStatusArray} from "./CheckJobStatusArray.js";
+
 import Button from 'react-bootstrap/Button';
 import { ButtonGroup, ListGroup } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
@@ -178,8 +180,11 @@ function Home(props) {
 				if (stopAutoCreatingNotesRef.current) {
 					break;
 				}
+				const resultPromise = Promise.race([CheckJobStatusArray(jobIdArray.message[i]), stopSignal]);
 
-				CheckJobStatus(jobIdArray.message[i], (resultArray) => {
+				resultPromise.then((resultArray) => {
+
+				// CheckJobStatus(jobIdArray.message[i], (resultArray) => {
 
 					console.log("Successfully gotten Connect note array: ", resultArray);
 					// connectNoteArray[i] = resultArray;
@@ -467,9 +472,11 @@ function Home(props) {
 		setConnectNoteArray(updatedConnectNoteArray);
 	};	  
 
+	let stopSignal = new Promise(resolve => {});
 	const handleStopAutoCreatingNotes = () => {
 		setStopAutoCreatingNotes(true);
 		stopAutoCreatingNotesRef.current = true;
+		stopSignal = new Promise(resolve => resolve("stop"));
 	}
 
 	return (
