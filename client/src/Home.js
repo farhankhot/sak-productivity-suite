@@ -57,13 +57,7 @@ function Home(props) {
 				});
 	
 				const data = await response.json();
-				const leadsArray = data.lead_list;
-				// console.log("Successfully gotten leads: ", data);
-				const memberUrnIdArray = data.member_urn_id_list; 
-	
-				setLeadsArray(leadsArray);
-				setMemberUrnIdArray(memberUrnIdArray);
-				setShowCreateConnectNoteButton(true);
+				console.log("data from stopAutoCreatingNotes", data);
 			
 			}catch(error){
 				console.log(error);
