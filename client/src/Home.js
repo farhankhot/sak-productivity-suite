@@ -148,7 +148,7 @@ function Home(props) {
 			console.log(jobIdArray);
 			setJobIdArray(jobIdArray);
 
-			let currentJobIdArray = [...jobIdArray];
+			let currentJobIdArray = [...jobIdArray.message];
 
 			// const promisesArray = [];
 			// for(let i = 0; i < jobIdArray.message.length; i++){
