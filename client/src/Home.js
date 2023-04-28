@@ -1,6 +1,5 @@
 import React, {useState, useEffect, useRef} from "react";
 import {CheckJobStatus} from "./CheckJobStatus.js";
-import {CheckJobStatusArray} from "./CheckJobStatusArray.js";
 
 import Button from 'react-bootstrap/Button';
 import { ButtonGroup, ListGroup } from 'react-bootstrap';

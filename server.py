@@ -138,31 +138,31 @@ def cookies_list_to_cookie_dict(cookies_list):
     
     # return final_topics
 
-def GetProfile(cookie_dict, search_params, location, mutual_connections_boolean):
+# def GetProfile(cookie_dict, search_params, location, mutual_connections_boolean):
     
-    api = Linkedin(cookies=cookie_dict) # type: ignore
+#     api = Linkedin(cookies=cookie_dict) # type: ignore
     
-    list_of_people = api.search_people(keyword_title = search_params['title'],
-                                        regions = [location if location != '' else ''],
-                                        keyword_company = search_params['currentCompany'],
-                                        network_depth = "S" if mutual_connections_boolean == True else "O",
-                                        limit=5)
+#     list_of_people = api.search_people(keyword_title = search_params['title'],
+#                                         regions = [location if location != '' else ''],
+#                                         keyword_company = search_params['currentCompany'],
+#                                         network_depth = "S" if mutual_connections_boolean == True else "O",
+#                                         limit=5)
     
-    # print(list_of_people)
+#     # print(list_of_people)
     
-    full_profile_list = []
+#     full_profile_list = []
 
-    for person in list_of_people[0:5]:
-        profile_info = {}
-        profile_info['full_name'] = person['name']
-        profile_info['latest_title'] = person['jobtitle']       
-        profile_info['public_id'] = person['public_id']
-        profile_info['profile_urn'] = person['urn_id']
-        # profile_info['profile_id'] = person['profile_id']
+#     for person in list_of_people[0:5]:
+#         profile_info = {}
+#         profile_info['full_name'] = person['name']
+#         profile_info['latest_title'] = person['jobtitle']       
+#         profile_info['public_id'] = person['public_id']
+#         profile_info['profile_urn'] = person['urn_id']
+#         # profile_info['profile_id'] = person['profile_id']
        
-        full_profile_list.append(profile_info)
+#         full_profile_list.append(profile_info)
 
-    return full_profile_list
+#     return full_profile_list
     
 def GetGeoUrn(api, location):
 
@@ -341,113 +341,6 @@ def SalesNavigatorLeadsInfo(api):
 
     return lead_list, member_urn_id_list
 
-# def GetLeadInfo(cookie_dict, leads_list, member_urn_id_list):
-
-#     api = Linkedin(cookies=cookie_dict) # type: ignore
-#     t = []
-#     for lead_idx, profile_urn in enumerate(member_urn_id_list):
-        
-#         # Testing
-#         # print(leads_list[0])
-#         # print("profile_urn: ", profile_urn, type(profile_urn))
-#         # print(lead_idx)
-#         if lead_idx == 4:
-#             break   
-
-#         lead_info = []
-
-#         # ============= Getting Relationships =============================        
-#         # res_for_shared_relationships = api._fetch(f"/sales-api/salesApiProfileHighlights/{profile_urn}?decoration=%28sharedConnection%28sharedConnectionUrns*~fs_salesProfile%28entityUrn%2CfirstName%2ClastName%2CfullName%2CpictureInfo%2CprofilePictureDisplayImage%29%29%2CteamlinkInfo%28totalCount%29%2CsharedEducations*%28overlapInfo%2CentityUrn~fs_salesSchool%28entityUrn%2ClogoId%2Cname%2Curl%2CschoolPictureDisplayImage%29%29%2CsharedExperiences*%28overlapInfo%2CentityUrn~fs_salesCompany%28entityUrn%2CpictureInfo%2Cname%2CcompanyPictureDisplayImage%29%29%2CsharedGroups*%28entityUrn~fs_salesGroup%28entityUrn%2Cname%2ClargeLogoId%2CsmallLogoId%2CgroupPictureDisplayImage%29%29%29"
-#         #         ,base_request=True)
-#         # print(res_for_shared_relationships.text)
-#         # print(res_for_shared_relationships.json())
-
-#         # # Get the first relationship that LinkedIn recommends
-#         # lead_relationships = []
-#         # shared_connections = res_for_shared_relationships.json()['sharedConnection']['sharedConnectionUrnsResolutionResults']
-#         # if len(shared_connections.values()) > 0:
-#         #     shared_connection = shared_connections.values()[0]['fullName']
-#         #     lead_relationships.append(shared_connection)
-
-#         # shared_groups = res_for_shared_relationships.json()['sharedGroup']['entityUrnResolutionResult']
-#         # if len(shared_groups) >= 1:
-#         #     shared_group = shared_groups[1]['entityUrnResolutionResult']['name'] 
-#         #     lead_relationships.append(shared_group)
-        
-#         # lead_info.append(lead_relationships)
-#         # ============= Getting Relationships =============================
-
-#         # ============= Getting Misc info =============================
-#         my_tuple = tuple(profile_urn.strip("()").split(","))
-
-#         actual_profile_urn, auth_type, auth_token = my_tuple 
-#         profile_urn_for_lead_profile = "profileId:"+actual_profile_urn
-#         auth_type_for_lead_profile = "authType:"+auth_type
-#         auth_token_for_lead_profile = "authToken:"+auth_token 
-#         lead_profile = api._fetch(f"/sales-api/salesApiProfiles/({profile_urn_for_lead_profile},{auth_type_for_lead_profile},{auth_token_for_lead_profile})?decoration=%28%0A%20%20entityUrn%2C%0A%20%20objectUrn%2C%0A%20%20firstName%2C%0A%20%20lastName%2C%0A%20%20fullName%2C%0A%20%20headline%2C%0A%20%20memberBadges%2C%0A%20%20pronoun%2C%0A%20%20degree%2C%0A%20%20profileUnlockInfo%2C%0A%20%20latestTouchPointActivity%2C%0A%20%20location%2C%0A%20%20listCount%2C%0A%20%20summary%2C%0A%20%20savedLead%2C%0A%20%20defaultPosition%2C%0A%20%20contactInfo%2C%0A%20%20crmStatus%2C%0A%20%20pendingInvitation%2C%0A%20%20unlocked%2C%0A%20%20flagshipProfileUrl%2C%0A%20%20fullNamePronunciationAudio%2C%0A%20%20memorialized%2C%0A%20%20numOfConnections%2C%0A%20%20numOfSharedConnections%2C%0A%20%20showTotalConnectionsPage%2C%0A%20%20profilePictureDisplayImage%2C%0A%20%20profileBackgroundPicture%2C%0A%20%20relatedColleagueCompanyId%2C%0A%20%20blockThirdPartyDataSharing%2C%0A%20%20noteCount%2C%0A%20%20positions*%28%0A%20%20%20%20companyName%2C%0A%20%20%20%20current%2C%0A%20%20%20%20new%2C%0A%20%20%20%20description%2C%0A%20%20%20%20endedOn%2C%0A%20%20%20%20posId%2C%0A%20%20%20%20startedOn%2C%0A%20%20%20%20title%2C%0A%20%20%20%20location%2C%0A%20%20%20%20richMedia*%2C%0A%20%20%20%20companyUrn~fs_salesCompany%28entityUrn%2Cname%2CcompanyPictureDisplayImage%29%0A%20%20%29%2C%0A%20%20educations*%28%0A%20%20%20%20degree%2C%0A%20%20%20%20eduId%2C%0A%20%20%20%20endedOn%2C%0A%20%20%20%20schoolName%2C%0A%20%20%20%20startedOn%2C%0A%20%20%20%20fieldsOfStudy*%2C%0A%20%20%20%20richMedia*%2C%0A%20%20%20%20school~fs_salesSchool%28entityUrn%2ClogoId%2Cname%2Curl%2CschoolPictureDisplayImage%29%0A%20%20%29%2C%0A%20%20languages*%0A%29"
-#                                   ,base_request=True)
-#         # print("lead_profile: ", lead_profile.json())
-#         lead_profile_json = lead_profile.json()
-#         lead_headline = lead_profile_json["headline"]
-#         lead_location = lead_profile_json["location"]
-#         lead_summary = lead_profile_json["summary"]
-#         # ============= Getting Misc info =============================
-
-#         # ============= Getting interests =================================
-#         lead_interests = []
-#         interests = api._fetch(f"/graphql?includeWebMetadata=True&variables=(profileUrn:urn%3Ali%3Afsd_profile%3A{profile_urn},sectionType:interests,tabIndex:1,locale:en_US)&&queryId=voyagerIdentityDashProfileComponents.38247e27f7b9b2ecbd8e8452e3c1a02c")
-#         interests = interests.json()
-#         interests_json = json.dumps(interests)
-
-#         # print(interests_json)
-
-#         pattern = re.compile(r'"(urn:li:fsd_profile:[^"]*)"')
-#         matches = re.findall(pattern, interests_json)
-#         people_the_profile_is_interested_in_set = set(matches)
-#         people_the_profile_is_interested_in = [s.split(':')[-1] for s in people_the_profile_is_interested_in_set]
-
-#         # print(people_the_profile_is_interested_in)
-
-#         pattern_for_company = re.compile(r'"(urn:li:fsd_company:[^"]*)"')
-#         matches_for_company = re.findall(pattern_for_company, interests_json)
-#         companies_the_profile_is_interested_in_set = set(matches_for_company)
-#         companies_the_profile_is_interested_in = [s.split(':')[-1] for s in companies_the_profile_is_interested_in_set]
-
-#         # print(companies_the_profile_is_interested_in)
-
-#         for i, profile_urn in enumerate(people_the_profile_is_interested_in):
-#             if i == 1:
-#                 break
-#             temp = api.get_profile(profile_urn)
-#             first_name = temp['firstName']
-#             last_name = temp['lastName']
-#             full_name = first_name + " " + last_name 
-#             lead_interests.append(full_name)
-        
-#         for i, company_id in enumerate(companies_the_profile_is_interested_in):
-#             if i == 1:
-#                 break
-#             temp = api.get_company(company_id)
-#             company_name = temp['universalName']
-#             lead_interests.append([company_name, company_id])
-        
-#         lead_info.append(lead_interests)
-#         # ============= Getting interests =================================
-        
-#         full_lead_profile = leads_list[lead_idx][0] + " " + lead_headline + \
-#             " " + lead_summary + " " + lead_location + " ".join(lead_info)
-        
-#         prompt = "You are an Account Executive. This is the profile of a person: " + full_lead_profile + \
-#             " Include something useful about the interests and use it in the request. " + \
-#             " Write a connect note to them. Make it casual but eyecatching. Use only 50 words."
-
-#         # connect_note = asyncio.run(UseBingAI(prompt))
-#         connect_note = UseChatGPT(prompt)
-#         # print(connect_note)
-#         # connect_note = "hi," + leads_list[lead_idx][0]
-#         t.append(connect_note)
-#     return t
-
 # TODO: Change function name to show that this is returning Connect note not info
 # TODO: Add relationships
 # TODO: Get interests at random
@@ -552,23 +445,28 @@ def GetLeadInfo(cookie_dict, lead, profile_urn):
 
 @app.route('/search-zoominfo', methods=['POST'])
 def search_zoominfo():
-
-    company_name = request.json['companyName'] # type: ignore
-    data = requests.get(f"http://167.99.250.232:5555/{company_name}")   
-    # print(data.json())
-    return data.json()
+    try:
+        company_name = request.json['companyName'] # type: ignore
+        data = requests.get(f"http://167.99.250.232:5555/{company_name}")   
+        # print(data.json())
+        return data.json()
+    except Exception as e:
+        return jsonify(success=False, message=str(e))
 
 @app.route('/search-leads-in-db', methods=['POST'])
 def search_leads_in_db():
 
-    lead_name = request.json['leadName'] # type: ignore
-    title = request.json['title'] # type: ignore
-    current_company = request.json['currentCompany'] # type: ignore
-    location = request.json['location'] # type: ignore
- 
-    data = dbCon.search_leads(lead_name, title, current_company, location) # type: ignore
+    try:
+        lead_name = request.json['leadName'] # type: ignore
+        title = request.json['title'] # type: ignore
+        current_company = request.json['currentCompany'] # type: ignore
+        location = request.json['location'] # type: ignore
     
-    return jsonify(success=True, message=data)
+        data = dbCon.search_leads(lead_name, title, current_company, location) # type: ignore
+        
+        return jsonify(success=True, message=data)
+    except Exception as e:
+        return jsonify(success=False, message=str(e))
 
 # @app.route('/get-lead-info', methods=['POST'])
 # def get_lead_info():
@@ -590,113 +488,96 @@ def search_leads_in_db():
 
 @app.route('/stop-jobs-in-array', methods=['POST'])
 def stop_jobs_in_array():
+    try:
+        session_id = request.json['sessionId'] # type: ignore
+        # print("get_lead_info session_id: ", session_id)
 
-    session_id = request.json['sessionId'] # type: ignore
-    # print("get_lead_info session_id: ", session_id)
+        cookie_dict = dbCon.get_cookie_from_user_sessions(session_id)
+        # print("get_lead_info cookie_dict: ", cookie_dict)
 
-    # TODO: error handling
-    cookie_dict = dbCon.get_cookie_from_user_sessions(session_id)
-    # print("get_lead_info cookie_dict: ", cookie_dict)
+        job_id_list = request.json['jobIdArray'] # type: ignore
+        # job_id_list = job_id_list['message']
+        # print("job_id_list", job_id_list)
 
-    job_id_list = request.json['jobIdArray'] # type: ignore
-    # job_id_list = job_id_list['message']
-    print("job_id_list", job_id_list)
+        for i, job_id in enumerate(job_id_list):
+            job = Job.fetch(job_id, connection=conn)
+            job.cancel()
+            job.delete()
 
-    for i, job_id in enumerate(job_id_list):
-        job = Job.fetch(job_id, connection=conn)
-        job.cancel()
-        job.delete()
+        return jsonify(success=True, message="success")
+    except Exception as e:
+        return jsonify(success=False, message=str(e))
 
-
-    return jsonify(success=True, message="success")
 
 @app.route('/get-lead-info', methods=['POST'])
 def get_lead_info():
 
-    session_id = request.json['sessionId'] # type: ignore
-    # print("get_lead_info session_id: ", session_id)
+    try:
+        session_id = request.json['sessionId'] # type: ignore
+        # print("get_lead_info session_id: ", session_id)
 
-    # TODO: error handling
-    cookie_dict = dbCon.get_cookie_from_user_sessions(session_id)
-    # print("get_lead_info cookie_dict: ", cookie_dict)
+        cookie_dict = dbCon.get_cookie_from_user_sessions(session_id)
+        # print("get_lead_info cookie_dict: ", cookie_dict)
 
-    leads_list = request.json['leadsArray'] # type: ignore
-    member_urn_id_list = request.json['memberUrnIdArray'] # type: ignore
+        leads_list = request.json['leadsArray'] # type: ignore
+        member_urn_id_list = request.json['memberUrnIdArray'] # type: ignore
 
-    job_ids=[]
-    for i, profile_urn in enumerate(member_urn_id_list):
+        job_ids=[]
+        for i, profile_urn in enumerate(member_urn_id_list):
 
-        # Testing
-        if i == 2:
-            break
- 
-        data = q.enqueue(GetLeadInfo, cookie_dict, leads_list[i], profile_urn, result_ttl = 1, job_timeout=600)
-        job_id = data.get_id()
-        job_ids.append(job_id)
+            # Testing
+            if i == 2:
+                break
+    
+            data = q.enqueue(GetLeadInfo, cookie_dict, leads_list[i], profile_urn, result_ttl = 1, job_timeout=600)
+            job_id = data.get_id()
+            job_ids.append(job_id)
 
-    return jsonify(success=True, message=job_ids)
+        return jsonify(success=True, message=job_ids)
+    except Exception as e:
+        return jsonify(success=False, message=str(e))
+
 
 @app.route('/get-leads', methods=['POST'])
 def get_leads():
+    try:
+        session_id = request.json['sessionId'] # type: ignore
+        # print("get_leads session_id: ", session_id)
 
-    session_id = request.json['sessionId'] # type: ignore
-    # print("get_leads session_id: ", session_id)
+        cookie_dict = dbCon.get_cookie_from_user_sessions(session_id)
+        # print("get_leads cookie_dict: ", cookie_dict)
+        
+        api = Linkedin(cookies=cookie_dict) # type: ignore
+        lead_list, member_urn_id_list = SalesNavigatorLeadsInfo(api)
+        dbCon.store_leads(lead_list)
 
-    # TODO: error handling
-    cookie_dict = dbCon.get_cookie_from_user_sessions(session_id)
-    # print("get_leads cookie_dict: ", cookie_dict)
-    
-    api = Linkedin(cookies=cookie_dict) # type: ignore
-    lead_list, member_urn_id_list = SalesNavigatorLeadsInfo(api)
-    dbCon.store_leads(lead_list)
+        return jsonify(success=True, lead_list=lead_list, member_urn_id_list=member_urn_id_list)
+    except Exception as e:
+        return jsonify(success=False, message=str(e))
 
-    return jsonify(success=True, lead_list=lead_list, member_urn_id_list=member_urn_id_list)
 
 @app.route('/use-bingai', methods=['POST'])
 def use_bingai():
+    try:
+        prompt = request.json['prompt'] # type: ignore    
+        data = q.enqueue(UseBingAI, prompt)
+        job_id = data.get_id()
 
-    prompt = request.json['prompt'] # type: ignore    
-    data = q.enqueue(UseBingAI, prompt)
-    job_id = data.get_id()
+        return jsonify(success=True, message=job_id)
+    except Exception as e:
+        return jsonify(success=False, message=str(e))
 
-    return jsonify(success=True, message=job_id)
 
 @app.route('/use-chatgpt', methods=['POST'])
 def use_chatgpt():
-
-    prompt = request.json['prompt'] # type: ignore   
-    data = q.enqueue(UseChatGPT, prompt)
-    job_id = data.get_id()
+    try:
+        prompt = request.json['prompt'] # type: ignore   
+        data = q.enqueue(UseChatGPT, prompt)
+        job_id = data.get_id()
+        return jsonify(success=True, message=job_id)
     
-    return jsonify(success=True, message=job_id)
-
-# @app.route('/receive-link', methods=['POST'])
-# def receive_link():
-
-#     session_id = request.json['sessionId'] # type: ignore
-#     # print("receive_link session_id: ", session_id)
-
-#     # TODO: error handling
-#     cookie_dict = dbCon.get_cookie_from_user_sessions(session_id)
-#     # print("receive_link cookie_dict: ", cookie_dict)
-    
-#     # cookie_dict = request.json['cookie'] # type: ignore
-#     api = Linkedin(cookies=cookie_dict) # type: ignore
-
-#     search_params = request.json
-#     location = request.json['location'] # type: ignore
-#     mutual_connections_boolean = request.json['mutualConnections'] # type: ignore
-    
-#     if location != '':
-#         location_geo_urn = GetGeoUrn(api, location)
-#         data = q.enqueue(GetProfile, cookie_dict, search_params, location_geo_urn, mutual_connections_boolean)
-
-#     else:
-#         data = q.enqueue(GetProfile, cookie_dict, search_params, '', mutual_connections_boolean)
-            
-#     job_id = data.get_id()
-    
-#     return jsonify(success=True, message=job_id)
+    except Exception as e:
+        return jsonify(success=False, message=str(e))
     
 # @app.route('/get-interests', methods=['POST'])
 # def get_interests():
@@ -715,123 +596,142 @@ def use_chatgpt():
 @app.route('/job-status', methods=['POST'])
 def job_status():
 
-    job_id = request.json['jobId'] # type: ignore
-    job = q.fetch_job(job_id)
-    job_status = job.get_status() # type: ignore
-    result = job.result # type: ignore
+    try:
+        job_id = request.json['jobId'] # type: ignore
+        job = q.fetch_job(job_id)
+        job_status = job.get_status() # type: ignore
+        result = job.result # type: ignore    
+        return jsonify(success=True, status=job_status, result=result)
     
-    return jsonify(success=True, status=job_status, result=result)
+    except Exception as e:
+        return jsonify(success=False, message=str(e))
 
 @app.route('/get-people-interests', methods=['POST'])
 def get_people_interests():
-    
-    session_id = request.json['sessionId'] # type: ignore
-    # print("get_people_interests session_id: ", session_id)
 
-    # TODO: error handling
-    cookie_dict = dbCon.get_cookie_from_user_sessions(session_id)
-    # print("get_people_interests cookie_dict: ", cookie_dict)
+    try:    
+        session_id = request.json['sessionId'] # type: ignore
+        # print("get_people_interests session_id: ", session_id)
 
-    profile_urn = request.json['profileUrn'] # type: ignore
+        cookie_dict = dbCon.get_cookie_from_user_sessions(session_id)
+        # print("get_people_interests cookie_dict: ", cookie_dict)
+
+        profile_urn = request.json['profileUrn'] # type: ignore
+        
+        data = q.enqueue(GetPeopleInterests, cookie_dict, profile_urn)
+        
+        job_id = data.get_id()
+        
+        return jsonify(success=True, message=job_id)
     
-    data = q.enqueue(GetPeopleInterests, cookie_dict, profile_urn)
-    
-    job_id = data.get_id()
-    
-    return jsonify(success=True, message=job_id)
+    except Exception as e:
+        return jsonify(success=False, message=str(e))
 
 @app.route('/get-company-interests', methods=['POST'])
 def get_company_interests():
-    
-    session_id = request.json['sessionId'] # type: ignore
-    # print("get_company_interests session_id: ", session_id)
 
-    # TODO: error handling
-    cookie_dict = dbCon.get_cookie_from_user_sessions(session_id)
-    # print("get_company_interests cookie_dict: ", cookie_dict)
-    
-    profile_urn = request.json['profileUrn'] # type: ignore
+    try:
+        session_id = request.json['sessionId'] # type: ignore
+        # print("get_company_interests session_id: ", session_id)
 
-    data = q.enqueue(GetCompanyInterests, cookie_dict, profile_urn)
-    
-    job_id = data.get_id()
-    
-    return jsonify(success=True, message=job_id)
+        cookie_dict = dbCon.get_cookie_from_user_sessions(session_id)
+        # print("get_company_interests cookie_dict: ", cookie_dict)
+        
+        profile_urn = request.json['profileUrn'] # type: ignore
+
+        data = q.enqueue(GetCompanyInterests, cookie_dict, profile_urn)
+        
+        job_id = data.get_id()
+        
+        return jsonify(success=True, message=job_id)
+
+    except Exception as e:
+        return jsonify(success=False, message=str(e))
      
 @app.route('/get-convo-threads', methods=['POST'])
 def get_convo_threads():
 
-    session_id = request.json['sessionId'] # type: ignore
-    # print("get_convo_threads session_id: ", session_id)
+    try:
+        session_id = request.json['sessionId'] # type: ignore
+        # print("get_convo_threads session_id: ", session_id)
 
-    # TODO: error handling
-    cookie_dict = dbCon.get_cookie_from_user_sessions(session_id)
-    # print("get_convo_threads cookie_dict: ", cookie_dict)
+        cookie_dict = dbCon.get_cookie_from_user_sessions(session_id)
+        # print("get_convo_threads cookie_dict: ", cookie_dict)
 
-    api = Linkedin(cookies=cookie_dict) # type: ignore
+        api = Linkedin(cookies=cookie_dict) # type: ignore
+        
+        data = GetConversationThreads(api)
+        # print("GetConversationThreads output: ", data)
+        
+        return jsonify(success=True, message=data)
     
-    data = GetConversationThreads(api)
-    # print("GetConversationThreads output: ", data)
-    
-    return jsonify(success=True, message=data)
+    except Exception as e:
+        return jsonify(success=False, message=str(e))
 
 @app.route('/get-convo-messages', methods=['POST'])
 def get_convo_messages():
-    
-    session_id = request.json['sessionId'] # type: ignore
-    # print("get_convo_messages session_id: ", session_id)
 
-    # TODO: error handling
-    cookie_dict = dbCon.get_cookie_from_user_sessions(session_id)
-    # print("get_convo_messages cookie_dict: ", cookie_dict)
+    try:    
+        session_id = request.json['sessionId'] # type: ignore
+        # print("get_convo_messages session_id: ", session_id)
 
-    thread_id = request.json['threadId'] # type: ignore
+        cookie_dict = dbCon.get_cookie_from_user_sessions(session_id)
+        # print("get_convo_messages cookie_dict: ", cookie_dict)
+
+        thread_id = request.json['threadId'] # type: ignore
+        
+        data = GetConversationMessages(cookie_dict, thread_id)
     
-    data = GetConversationMessages(cookie_dict, thread_id)
-   
-    return jsonify(success=True, message=data)
+        return jsonify(success=True, message=data)
+    
+    except Exception as e:
+        return jsonify(success=False, message=str(e))
 
 @app.route('/send-connect', methods=['POST'])
 def send_connect():
+    try:
+        cookie_dict = request.json['cookie'] # type: ignore
+        api = Linkedin(cookies=cookie_dict) # type: ignore
 
-    cookie_dict = request.json['cookie'] # type: ignore
-    api = Linkedin(cookies=cookie_dict) # type: ignore
-
-    profile_id = request.json['profileId'] # type: ignore
-    text = request.json['text'] # type: ignore
+        profile_id = request.json['profileId'] # type: ignore
+        text = request.json['text'] # type: ignore
+        
+        error_boolean = api.add_connection(profile_id, text)
+        return jsonify(success=True, message=error_boolean)
     
-    error_boolean = api.add_connection(profile_id, text)
-    return jsonify(success=True, message=error_boolean)
+    except Exception as e:
+        return jsonify(success=False, message=str(e))
 
 @app.route('/send-message', methods=['POST'])
 def send_message():
-    
-    cookie_dict = request.json['cookie'] # type: ignore
-    api = Linkedin(cookies=cookie_dict) # type: ignore
+    try:
+        cookie_dict = request.json['cookie'] # type: ignore
+        api = Linkedin(cookies=cookie_dict) # type: ignore
 
-    profile_id = request.json['profileId'] # type: ignore
-    text = request.json['text'] # type: ignore
-    data = api.send_message(message_body = text, recipients=[profile_id])
+        profile_id = request.json['profileId'] # type: ignore
+        text = request.json['text'] # type: ignore
+        data = api.send_message(message_body = text, recipients=[profile_id])
 
-    # TODO: Error handling of data variable
-
-    return jsonify(success=True, message='sent message')
+        return jsonify(success=True, message='sent message')
+    except Exception as e:
+        return jsonify(success=False, message=str(e))
 
 @app.route('/save-cookie', methods=['POST'])
 def save_cookie():
-    
-    cookies_list = request.json['cookie'] # type: ignore  
-    cookie_dict = cookies_list_to_cookie_dict(cookies_list)
+    try:
+        cookies_list = request.json['cookie'] # type: ignore  
+        cookie_dict = cookies_list_to_cookie_dict(cookies_list)
 
-    # TODO: Error handling (check if api is possible)
-    api = Linkedin(cookies=cookie_dict) # type: ignore
+        api = Linkedin(cookies=cookie_dict) # type: ignore
 
-    # Save the cookie_dict in DB and return a session_id for the user
-    # The session_id will be passed back by the user, it will be checked against the DB
-    # and will return the cookie_dict to be passed in the LinkedIn API.
-    session_id = dbCon.store_cookie_return_sessionid(cookie_dict)
+        # Save the cookie_dict in DB and return a session_id for the user
+        # The session_id will be passed back by the user, it will be checked against the DB
+        # and will return the cookie_dict to be passed in the LinkedIn API.
+        session_id = dbCon.store_cookie_return_sessionid(cookie_dict)
 
-    return jsonify(success=True, message="success", session_id=session_id)
+        return jsonify(success=True, message="success", session_id=session_id)
+    except Exception as e:
+        return jsonify(success=False, message=str(e))
 
 @app.errorhandler(404)
 def not_found(e):
