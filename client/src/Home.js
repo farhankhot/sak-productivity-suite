@@ -177,11 +177,11 @@ function Home(props) {
 			// setIsLoadingAutoCreatingNotes(false);
 			// setLoadingLeadsButtonDisabled(false);
 			// setAutoCreatingNotesDisabled(false);
+			let j = 0;
 
 			const jobIdCheck = setInterval( async () => {
 
 				// for(let i = 0; i < jobIdArray.message.length; i++){
-				let j = 0;
 				for(let i = 0; i < currentJobIdArray.length; i++){
 				
 					console.log(stopAutoCreatingNotesRef.current);
@@ -261,13 +261,12 @@ function Home(props) {
 							// Remove this i from currentJobIdArray
 							currentJobIdArray.splice(i, 1);
 							console.log("current", currentJobIdArray.length);
+
+							j += 1;
 						} 
 					}catch(error){
 						console.log("An error has occured (CheckJobStatus): ", error);
 					}
-
-					j += 1;
-	
 					// if (i === (jobIdArray.message.length - 1) ){
 					// 	setIsLoadingAutoCreatingNotes(false);
 					// 	setLoadingLeadsButtonDisabled(false);
