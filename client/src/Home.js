@@ -44,30 +44,30 @@ function Home(props) {
 
 	let stopAutoCreatingNotesRef = false; // add this at the top of your file or in the function where the loop is running
 
-	useEffect( async () => {
-		stopAutoCreatingNotesRef = stopAutoCreatingNotes;
-		if (stopAutoCreatingNotes) {
-			try {
-				const response = await fetch("https://sak-productivity-suite.herokuapp.com/stop-jobs-in-array", {
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json"
-					},
-					body: JSON.stringify({
-						sessionId: sessionId,
-						jobIdArray: jobIdArray
-					})
-				});
+	// useEffect( async () => {
+	// 	if (stopAutoCreatingNotes) {
+	// 		stopAutoCreatingNotesRef = stopAutoCreatingNotes;
+	// 		// try {
+	// 		// 	const response = await fetch("https://sak-productivity-suite.herokuapp.com/stop-jobs-in-array", {
+	// 		// 		method: "POST",
+	// 		// 		headers: {
+	// 		// 			"Content-Type": "application/json"
+	// 		// 		},
+	// 		// 		body: JSON.stringify({
+	// 		// 			sessionId: sessionId,
+	// 		// 			jobIdArray: jobIdArray
+	// 		// 		})
+	// 		// 	});
 	
-				const data = await response.json();
-				console.log("data from stopAutoCreatingNotes", data);
+	// 		// 	const data = await response.json();
+	// 		// 	console.log("data from stopAutoCreatingNotes", data);
 			
-			}catch(error){
-				console.log(error);
-			}
+	// 		// }catch(error){
+	// 		// 	console.log(error);
+	// 		// }
 		  
-		}
-	  }, [stopAutoCreatingNotes]);
+	// 	}
+	//   }, [stopAutoCreatingNotes]);
 
 	const handleGettingLeads = async() => {
         try {
@@ -467,6 +467,7 @@ function Home(props) {
 
 	const handleStopAutoCreatingNotes = () => {
 		setStopAutoCreatingNotes(true);
+		stopAutoCreatingNotesRef = true;
 	}
 
 	return (
