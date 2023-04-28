@@ -42,8 +42,10 @@ function Home(props) {
 
 	const [jobIdArray, setJobIdArray] = useState([]);
 
+	let stopAutoCreatingNotesRef = false; // add this at the top of your file or in the function where the loop is running
+
 	useEffect( async () => {
-		
+		stopAutoCreatingNotesRef = stopAutoCreatingNotes;
 		if (stopAutoCreatingNotes) {
 			try {
 				const response = await fetch("https://sak-productivity-suite.herokuapp.com/stop-jobs-in-array", {
@@ -172,6 +174,10 @@ function Home(props) {
 			// setAutoCreatingNotesDisabled(false);
 
 			for(let i = 0; i < jobIdArray.message.length; i++){
+
+				if (stopAutoCreatingNotesRef) {
+					break;
+				}
 
 				CheckJobStatus(jobIdArray.message[i], (resultArray) => {
 
