@@ -382,9 +382,22 @@ def GetLeadInfo(cookie_dict, lead, profile_urn):
                                 ,base_request=True)
     # print("lead_profile: ", lead_profile.json())
     lead_profile_json = lead_profile.json()
-    lead_headline = lead_profile_json["headline"]
-    lead_location = lead_profile_json["location"]
-    lead_summary = lead_profile_json["summary"]
+    
+    if "headline" in lead_profile:
+        lead_headline = lead_profile_json["headline"]
+    else:
+        lead_headline = ''
+
+    if "location" in lead_profile_json["location"]:     
+        lead_location = lead_profile_json["location"]
+    else:
+        lead_location = ''
+
+    if "summary" in lead_profile_json["summary"]:
+        lead_summary = lead_profile_json["summary"]
+    else:
+        lead_summary = ''
+    
     # ============= Getting Misc info =============================
 
     # ============= Getting interests =================================
