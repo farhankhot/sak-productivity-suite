@@ -388,12 +388,12 @@ def GetLeadInfo(cookie_dict, lead, profile_urn):
     else:
         lead_headline = ''
 
-    if "location" in lead_profile_json["location"]:     
+    if "location" in lead_profile_json:     
         lead_location = lead_profile_json["location"]
     else:
         lead_location = ''
 
-    if "summary" in lead_profile_json["summary"]:
+    if "summary" in lead_profile_json:
         lead_summary = lead_profile_json["summary"]
     else:
         lead_summary = ''
