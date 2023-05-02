@@ -346,6 +346,9 @@ def SalesNavigatorLeadsInfo(api):
 # TODO: Get interests at random
 def GetLeadInfo(cookie_dict, lead, profile_urn):
 
+    import time
+    time.sleep(3)
+
     api = Linkedin(cookies=cookie_dict) # type: ignore
         
     lead_info = []
