@@ -499,28 +499,25 @@ def search_leads_in_db():
 
 @app.route('/stop-jobs-in-array', methods=['POST'])
 def stop_jobs_in_array():
-    try:
-        session_id = request.json['sessionId'] # type: ignore
-        # print("get_lead_info session_id: ", session_id)
+    
+    session_id = request.json['sessionId'] # type: ignore
+    # print("get_lead_info session_id: ", session_id)
 
-        cookie_dict = dbCon.get_cookie_from_user_sessions(session_id)
-        # print("get_lead_info cookie_dict: ", cookie_dict)
+    cookie_dict = dbCon.get_cookie_from_user_sessions(session_id)
+    # print("get_lead_info cookie_dict: ", cookie_dict)
 
-        job_id_list = request.json['jobIdArray'] # type: ignore
-        # job_id_list = job_id_list['message']
-        # print("job_id_list", job_id_list)
+    job_id_list = request.json['jobIdArray'] # type: ignore
+    # job_id_list = job_id_list['message']
+    # print("job_id_list", job_id_list)
 
-        print(job_id_list)
+    print(job_id_list)
 
-        for i, job_id in enumerate(job_id_list):
-            job = Job.fetch(job_id, connection=conn)
-            job.cancel()
-            job.delete()
+    for i, job_id in enumerate(job_id_list):
+        job = Job.fetch(job_id, connection=conn)
+        job.cancel()
+        job.delete()
 
-        return jsonify(success=True, message="success")
-    except Exception as e:
-        return jsonify(success=False, message=str(e))
-
+    return jsonify(success=True, message="success")
 
 @app.route('/get-lead-info', methods=['POST'])
 def get_lead_info():
