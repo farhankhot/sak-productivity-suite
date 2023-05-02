@@ -132,10 +132,27 @@ function Home(props) {
 					}
 				}
 				else {
+					let finishCount = 0;
 					for(let i = 0; i < currentJobIdArray.length; i++){
 						// console.log(stopAutoCreatingNotesRef.current);
 						// console.log(currentJobIdArray.length);
-						console.log(i);
+						// console.log(i);
+						if (currentJobIdArray[i] == "None"){
+							finishCount += 1;
+						}
+						if (finishCount === 24){
+							clearInterval(jobIdCheck);
+							setIsLoadingAutoCreatingNotes(false);
+							setLoadingLeadsButtonDisabled(false);
+							setAutoCreatingNotesDisabled(false);
+
+							for (let i = 0; i < 25; i++){
+								peopleInterestsButtonDisabled[i] = false;
+								companyInterestsButtonDisabled[i] = false;
+								makingConnectNoteButtonDisabled[i] = false;
+								sendingConnectNoteButtonDisabled[i] = false;
+							}
+						}
 
 						if (currentJobIdArray[i] != "None"){
 							if (stopAutoCreatingNotesRef.current) {
