@@ -208,8 +208,8 @@ function Home(props) {
 									sendingConnectNoteButtonDisabled[j] = false;
 
 									// Remove this i from currentJobIdArray
-									currentJobIdArray.splice(i, 1);
-									console.log("current", currentJobIdArray.length);
+									// currentJobIdArray.splice(i, 1);
+									// console.log("current", currentJobIdArray.length);
 
 									j += 1;
 								} 
