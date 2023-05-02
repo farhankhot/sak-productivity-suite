@@ -116,9 +116,10 @@ function Home(props) {
 				let currentJobIdArray = [...jobIdArray.message];
 				let j = 0;
 
-				async function x() {
+				async function processJobs(currentJobIdArray) {
 					if (currentJobIdArray.length === 0) {
-						clearInterval(runEveryTwoSeconds);
+						// All jobs processed successfully
+						// clearInterval(runEveryTwoSeconds);
 							
 						setIsLoadingAutoCreatingNotes(false);
 						setLoadingLeadsButtonDisabled(false);
@@ -131,104 +132,201 @@ function Home(props) {
 							sendingConnectNoteButtonDisabled[i] = false;
 						}
 					}
-					else {
-						for(let i = 0; i < currentJobIdArray.length; i++){
-							// console.log(stopAutoCreatingNotesRef.current);
-							// console.log(currentJobIdArray.length);
+					
+					const jobId = currentJobIdArray[0];
+					// const response = await sendJobAndGetResponse(jobId);
+					try {
+						const response = await fetch("https://sak-productivity-suite.herokuapp.com/job-status", {
+							method: "POST",
+							headers: {
+								"Content-Type": "application/json"
+							},
+							body: JSON.stringify({
+								jobId: jobId
+							})
+						});
+						
+						const data = await response.json();
+						const status = data.status;
 
-							if (stopAutoCreatingNotesRef.current) {
-								if (currentJobIdArray.length > 0){
-									try {
-										const response = await fetch("https://sak-productivity-suite.herokuapp.com/stop-jobs-in-array", {
-											method: "POST",
-											headers: {
-												"Content-Type": "application/json"
-											},
-											body: JSON.stringify({
-												sessionId: sessionId,
-												jobIdArray: currentJobIdArray
-											})
-										});
+						if (stopAutoCreatingNotesRef.current) {
+							if (currentJobIdArray.length > 0){
+								try {
+									const response = await fetch("https://sak-productivity-suite.herokuapp.com/stop-jobs-in-array", {
+										method: "POST",
+										headers: {
+											"Content-Type": "application/json"
+										},
+										body: JSON.stringify({
+											sessionId: sessionId,
+											jobIdArray: currentJobIdArray
+										})
+									});
+						
+									const data = await response.json();
+									console.log("data from stopAutoCreatingNotesRef", data);
+									
+								}catch(error){
+									console.log(error);
+								}
+							}
 							
-										const data = await response.json();
-										console.log("data from stopAutoCreatingNotesRef", data);
-										
-									}catch(error){
-										console.log(error);
-									}
-								}
-								
-								clearInterval(runEveryTwoSeconds);
-								
-								setIsLoadingAutoCreatingNotes(false);
-								setLoadingLeadsButtonDisabled(false);
-								setAutoCreatingNotesDisabled(false);
+							// clearInterval(runEveryTwoSeconds);
+							
+							setIsLoadingAutoCreatingNotes(false);
+							setLoadingLeadsButtonDisabled(false);
+							setAutoCreatingNotesDisabled(false);
 
-								for (let i = 0; i < 25; i++){
-									peopleInterestsButtonDisabled[i] = false;
-									companyInterestsButtonDisabled[i] = false;
-									makingConnectNoteButtonDisabled[i] = false;
-									sendingConnectNoteButtonDisabled[i] = false;
-								}
-								// Set back to false if this button is clicked again
-								stopAutoCreatingNotesRef.current = false;
-								break;
+							for (let i = 0; i < 25; i++){
+								peopleInterestsButtonDisabled[i] = false;
+								companyInterestsButtonDisabled[i] = false;
+								makingConnectNoteButtonDisabled[i] = false;
+								sendingConnectNoteButtonDisabled[i] = false;
 							}
-							try {
-								const response = await fetch("https://sak-productivity-suite.herokuapp.com/job-status", {
-									method: "POST",
-									headers: {
-										"Content-Type": "application/json"
-									},
-									body: JSON.stringify({
-										jobId: currentJobIdArray[i]
-									})
-								});
-								
-								const data = await response.json();
-								const status = data.status;
-								
-								if (status === "finished") {
-									const resultArray = data.result;
-									console.log("Successfully gotten Connect note array: ", resultArray);
-
-									const newConnectNoteArray = [...connectNoteArray];
-									newConnectNoteArray[j] = resultArray;
-									setConnectNoteArray(newConnectNoteArray);
-
-									setShowProfileArea(true);
-			
-									peopleInterestsButtonDisabled[j] = false;
-									companyInterestsButtonDisabled[j] = false;
-									makingConnectNoteButtonDisabled[j] = false;
-									sendingConnectNoteButtonDisabled[j] = false;
-
-									// Remove this i from currentJobIdArray
-									// currentJobIdArray.splice(i, 1);
-									// console.log("current", currentJobIdArray.length);
-									j += 1;
-								} 
-							}catch(error){
-								console.log("An error has occured (CheckJobStatus): ", error);
-							}
+							// Set back to false if this button is clicked again
+							stopAutoCreatingNotesRef.current = false;
 						}
+						
+						if (status === "finished") {
+							const resultArray = data.result;
+							console.log("Successfully gotten Connect note array: ", resultArray);
+
+							const newConnectNoteArray = [...connectNoteArray];
+							newConnectNoteArray[j] = resultArray;
+							setConnectNoteArray(newConnectNoteArray);
+
+							setShowProfileArea(true);
+	
+							peopleInterestsButtonDisabled[j] = false;
+							companyInterestsButtonDisabled[j] = false;
+							makingConnectNoteButtonDisabled[j] = false;
+							sendingConnectNoteButtonDisabled[j] = false;
+
+							// Remove this i from currentJobIdArray
+							// currentJobIdArray.splice(i, 1);
+							// console.log("current", currentJobIdArray.length);
+							j += 1;
+							await processJobs(currentJobIdArray.slice(1));
+						}
+						else {
+							await processJobs(jobId)
+						} 
+					}catch(error){
+						console.log("An error has occured (CheckJobStatus): ", error);
 					}
 				}
+				processJobs(currentJobIdArray);
 
-				// const jobIdCheck = setInterval( 
-				// }, 500);
-				async function runEveryTwoSeconds() {
-					// Wait for the previous execution to complete
-					await new Promise(resolve => setTimeout(resolve, 2000));
+				// async function x() {
+				// 	if (currentJobIdArray.length === 0) {
+				// 		clearInterval(runEveryTwoSeconds);
+							
+				// 		setIsLoadingAutoCreatingNotes(false);
+				// 		setLoadingLeadsButtonDisabled(false);
+				// 		setAutoCreatingNotesDisabled(false);
+
+				// 		for (let i = 0; i < 25; i++){
+				// 			peopleInterestsButtonDisabled[i] = false;
+				// 			companyInterestsButtonDisabled[i] = false;
+				// 			makingConnectNoteButtonDisabled[i] = false;
+				// 			sendingConnectNoteButtonDisabled[i] = false;
+				// 		}
+				// 	}
+				// 	else {
+				// 		for(let i = 0; i < currentJobIdArray.length; i++){
+				// 			// console.log(stopAutoCreatingNotesRef.current);
+				// 			// console.log(currentJobIdArray.length);
+
+				// 			if (stopAutoCreatingNotesRef.current) {
+				// 				if (currentJobIdArray.length > 0){
+				// 					try {
+				// 						const response = await fetch("https://sak-productivity-suite.herokuapp.com/stop-jobs-in-array", {
+				// 							method: "POST",
+				// 							headers: {
+				// 								"Content-Type": "application/json"
+				// 							},
+				// 							body: JSON.stringify({
+				// 								sessionId: sessionId,
+				// 								jobIdArray: currentJobIdArray
+				// 							})
+				// 						});
+							
+				// 						const data = await response.json();
+				// 						console.log("data from stopAutoCreatingNotesRef", data);
+										
+				// 					}catch(error){
+				// 						console.log(error);
+				// 					}
+				// 				}
+								
+				// 				clearInterval(runEveryTwoSeconds);
+								
+				// 				setIsLoadingAutoCreatingNotes(false);
+				// 				setLoadingLeadsButtonDisabled(false);
+				// 				setAutoCreatingNotesDisabled(false);
+
+				// 				for (let i = 0; i < 25; i++){
+				// 					peopleInterestsButtonDisabled[i] = false;
+				// 					companyInterestsButtonDisabled[i] = false;
+				// 					makingConnectNoteButtonDisabled[i] = false;
+				// 					sendingConnectNoteButtonDisabled[i] = false;
+				// 				}
+				// 				// Set back to false if this button is clicked again
+				// 				stopAutoCreatingNotesRef.current = false;
+				// 				break;
+				// 			}
+				// 			try {
+				// 				const response = await fetch("https://sak-productivity-suite.herokuapp.com/job-status", {
+				// 					method: "POST",
+				// 					headers: {
+				// 						"Content-Type": "application/json"
+				// 					},
+				// 					body: JSON.stringify({
+				// 						jobId: currentJobIdArray[i]
+				// 					})
+				// 				});
+								
+				// 				const data = await response.json();
+				// 				const status = data.status;
+								
+				// 				if (status === "finished") {
+				// 					const resultArray = data.result;
+				// 					console.log("Successfully gotten Connect note array: ", resultArray);
+
+				// 					const newConnectNoteArray = [...connectNoteArray];
+				// 					newConnectNoteArray[j] = resultArray;
+				// 					setConnectNoteArray(newConnectNoteArray);
+
+				// 					setShowProfileArea(true);
+			
+				// 					peopleInterestsButtonDisabled[j] = false;
+				// 					companyInterestsButtonDisabled[j] = false;
+				// 					makingConnectNoteButtonDisabled[j] = false;
+				// 					sendingConnectNoteButtonDisabled[j] = false;
+
+				// 					// Remove this i from currentJobIdArray
+				// 					// currentJobIdArray.splice(i, 1);
+				// 					// console.log("current", currentJobIdArray.length);
+				// 					j += 1;
+				// 				} 
+				// 			}catch(error){
+				// 				console.log("An error has occured (CheckJobStatus): ", error);
+				// 			}
+				// 		}
+				// 	}
+				// }
+
+				// async function runEveryTwoSeconds() {
+				// 	// Wait for the previous execution to complete
+				// 	await new Promise(resolve => setTimeout(resolve, 10000));
 					
-					// Run the async function
-					await x();
+				// 	// Run the async function
+				// 	await x();
 					
-					// Call this function again
-					runEveryTwoSeconds();
-				}
-				  
-				runEveryTwoSeconds();
+				// 	// Call this function again
+				// 	runEveryTwoSeconds();
+				// }				  
+				// runEveryTwoSeconds();
 				  
 			}
 			else {
