@@ -107,8 +107,8 @@ function Home(props) {
 					memberUrnIdArray: memberUrnIdArray
 				})
 			});
-
 			const jobIdArray = await response.json();
+			
 			if (jobIdArray.success === true){
 				console.log(jobIdArray);
 				setJobIdArray(jobIdArray);
@@ -116,9 +116,9 @@ function Home(props) {
 				let currentJobIdArray = [...jobIdArray.message];
 				let j = 0;
 
-				const jobIdCheck = setInterval( async () => {
+				async function x() {
 					if (currentJobIdArray.length === 0) {
-						clearInterval(jobIdCheck);
+						clearInterval(runEveryTwoSeconds);
 							
 						setIsLoadingAutoCreatingNotes(false);
 						setLoadingLeadsButtonDisabled(false);
@@ -158,7 +158,7 @@ function Home(props) {
 									}
 								}
 								
-								clearInterval(jobIdCheck);
+								clearInterval(runEveryTwoSeconds);
 								
 								setIsLoadingAutoCreatingNotes(false);
 								setLoadingLeadsButtonDisabled(false);
@@ -170,15 +170,11 @@ function Home(props) {
 									makingConnectNoteButtonDisabled[i] = false;
 									sendingConnectNoteButtonDisabled[i] = false;
 								}
-
 								// Set back to false if this button is clicked again
 								stopAutoCreatingNotesRef.current = false;
-
 								break;
 							}
-			
 							try {
-					
 								const response = await fetch("https://sak-productivity-suite.herokuapp.com/job-status", {
 									method: "POST",
 									headers: {
@@ -210,7 +206,6 @@ function Home(props) {
 									// Remove this i from currentJobIdArray
 									// currentJobIdArray.splice(i, 1);
 									// console.log("current", currentJobIdArray.length);
-
 									j += 1;
 								} 
 							}catch(error){
@@ -218,7 +213,23 @@ function Home(props) {
 							}
 						}
 					}
-				}, 500);
+				}
+
+				// const jobIdCheck = setInterval( 
+				// }, 500);
+				async function runEveryTwoSeconds() {
+					// Wait for the previous execution to complete
+					await new Promise(resolve => setTimeout(resolve, 2000));
+					
+					// Run the async function
+					await x();
+					
+					// Call this function again
+					runEveryTwoSeconds();
+				}
+				  
+				runEveryTwoSeconds();
+				  
 			}
 			else {
 				<ErrorModal errorMessage={jobIdArray.message}/>
