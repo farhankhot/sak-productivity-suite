@@ -445,13 +445,13 @@ def GetLeadInfo(cookie_dict, lead, profile_urn):
     #     " " + lead_summary + " " + lead_location + " ".join(str(x) for x in lead_info)
     # print(full_lead_profile)
 
-    if len(lead_info) == 0:
+    if len(lead_info) == 0 and lead_summary != "":
         full_lead_profile = lead[0] + " " + lead_headline + \
         " " + lead_summary + " " + lead_location
         prompt = "You are an Account Executive. This is the profile of a person: " + full_lead_profile + \
         " Write a connect note to them. Make it casual but eyecatching. Use only 50 words."
     
-    elif len(lead_info) == 0 and lead_summary != "":
+    elif len(lead_info) == 0 and lead_summary == "":
         full_lead_profile = lead[0] + " " + lead_headline + \
         " " + lead_location
         prompt = "You are an Account Executive. This is the profile of a person: " + full_lead_profile + \
