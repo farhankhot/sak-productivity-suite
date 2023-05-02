@@ -32,7 +32,7 @@ function Home(props) {
 	const [memberUrnIdArray, setMemberUrnIdArray] = useState([]);
 
 	const [showCreateConnectNoteButton, setShowCreateConnectNoteButton] = useState(false);
-	const [connectNoteArray, setConnectNoteArray] = useState([]);
+	const [connectNoteArray, setConnectNoteArray] = useState({});
 
 	const [autoCreatingNotesDisabled, setAutoCreatingNotesDisabled] = useState(false);
 	const [loadingLeadsButtonDisabled, setLoadingLeadsButtonDisabled] = useState(false);
@@ -95,6 +95,7 @@ function Home(props) {
 				companyInterestsButtonDisabled[i] = true;
 				makingConnectNoteButtonDisabled[i] = true;
 				sendingConnectNoteButtonDisabled[i] = true;
+
 			}
 			const response = await fetch("https://sak-productivity-suite.herokuapp.com/get-lead-info", {
 				method: "POST",
@@ -108,35 +109,35 @@ function Home(props) {
 				})
 			});
 			const jobIdArray = await response.json();
-			
 			if (jobIdArray.success === true){
 				console.log(jobIdArray);
 				setJobIdArray(jobIdArray);
 
 				let currentJobIdArray = [...jobIdArray.message];
 				let j = 0;
-				console.log(currentJobIdArray);
 
-				async function x() {
-					if (currentJobIdArray.length === 0) {
-						clearInterval(runEveryTwoSeconds);
-							
-						setIsLoadingAutoCreatingNotes(false);
-						setLoadingLeadsButtonDisabled(false);
-						setAutoCreatingNotesDisabled(false);
+				const jobIdCheck = setInterval( async () => {
+				if (currentJobIdArray.length === 0) {
+					clearInterval(jobIdCheck);
+						
+					setIsLoadingAutoCreatingNotes(false);
+					setLoadingLeadsButtonDisabled(false);
+					setAutoCreatingNotesDisabled(false);
 
-						for (let i = 0; i < 25; i++){
-							peopleInterestsButtonDisabled[i] = false;
-							companyInterestsButtonDisabled[i] = false;
-							makingConnectNoteButtonDisabled[i] = false;
-							sendingConnectNoteButtonDisabled[i] = false;
-						}
+					for (let i = 0; i < 25; i++){
+						peopleInterestsButtonDisabled[i] = false;
+						companyInterestsButtonDisabled[i] = false;
+						makingConnectNoteButtonDisabled[i] = false;
+						sendingConnectNoteButtonDisabled[i] = false;
 					}
-					else {
-						for(let i = 0; i < currentJobIdArray.length; i++){
-							// console.log(stopAutoCreatingNotesRef.current);
-							// console.log(currentJobIdArray.length);
+				}
+				else {
+					for(let i = 0; i < currentJobIdArray.length; i++){
+						// console.log(stopAutoCreatingNotesRef.current);
+						// console.log(currentJobIdArray.length);
+						console.log(i);
 
+						if (currentJobIdArray[i] != "None"){
 							if (stopAutoCreatingNotesRef.current) {
 								if (currentJobIdArray.length > 0){
 									try {
@@ -159,12 +160,12 @@ function Home(props) {
 									}
 								}
 								
-								clearInterval(runEveryTwoSeconds);
+								clearInterval(jobIdCheck);
 								
 								setIsLoadingAutoCreatingNotes(false);
 								setLoadingLeadsButtonDisabled(false);
 								setAutoCreatingNotesDisabled(false);
-
+	
 								for (let i = 0; i < 25; i++){
 									peopleInterestsButtonDisabled[i] = false;
 									companyInterestsButtonDisabled[i] = false;
@@ -175,6 +176,7 @@ function Home(props) {
 								stopAutoCreatingNotesRef.current = false;
 								break;
 							}
+			
 							try {
 								const response = await fetch("https://sak-productivity-suite.herokuapp.com/job-status", {
 									method: "POST",
@@ -192,39 +194,150 @@ function Home(props) {
 								if (status === "finished") {
 									const resultArray = data.result;
 									console.log("Successfully gotten Connect note array: ", resultArray);
-
+	
 									const newConnectNoteArray = [...connectNoteArray];
-									newConnectNoteArray[j] = resultArray;
+									newConnectNoteArray[i] = resultArray;
 									setConnectNoteArray(newConnectNoteArray);
-
+	
 									setShowProfileArea(true);
 			
-									peopleInterestsButtonDisabled[j] = false;
-									companyInterestsButtonDisabled[j] = false;
-									makingConnectNoteButtonDisabled[j] = false;
-									sendingConnectNoteButtonDisabled[j] = false;
-
+									peopleInterestsButtonDisabled[i] = false;
+									companyInterestsButtonDisabled[i] = false;
+									makingConnectNoteButtonDisabled[i] = false;
+									sendingConnectNoteButtonDisabled[i] = false;
+	
 									// Remove this i from currentJobIdArray
 									// currentJobIdArray.splice(i, 1);
-									// console.log("current", currentJobIdArray.length);
-									j += 1;
+									currentJobIdArray[i] = "None"
+									console.log("current", currentJobIdArray.length);
+									// j += 1;
 								} 
 							}catch(error){
 								console.log("An error has occured (CheckJobStatus): ", error);
 							}
+	
 						}
+
 					}
 				}
+			}, 500);
+			
+			// if (jobIdArray.success === true){
+			// 	console.log(jobIdArray);
+			// 	setJobIdArray(jobIdArray);
 
-				async function runEveryTwoSeconds() {
-					// Wait for the previous execution to complete
-					await new Promise(resolve => setTimeout(resolve, 10000));
-					// Run the async function
-					await x();
-					// Call this function again
-					runEveryTwoSeconds();
-				}				  
-				runEveryTwoSeconds();
+			// 	let currentJobIdArray = [...jobIdArray.message];
+			// 	let j = 0;
+			// 	console.log(currentJobIdArray);
+
+			// 	async function x() {
+			// 		if (currentJobIdArray.length === 0) {
+			// 			clearInterval(runEveryTwoSeconds);
+							
+			// 			setIsLoadingAutoCreatingNotes(false);
+			// 			setLoadingLeadsButtonDisabled(false);
+			// 			setAutoCreatingNotesDisabled(false);
+
+			// 			for (let i = 0; i < 25; i++){
+			// 				peopleInterestsButtonDisabled[i] = false;
+			// 				companyInterestsButtonDisabled[i] = false;
+			// 				makingConnectNoteButtonDisabled[i] = false;
+			// 				sendingConnectNoteButtonDisabled[i] = false;
+			// 			}
+			// 		}
+			// 		else {
+			// 			for(let i = 0; i < currentJobIdArray.length; i++){
+			// 				// console.log(stopAutoCreatingNotesRef.current);
+			// 				// console.log(currentJobIdArray.length);
+
+			// 				if (stopAutoCreatingNotesRef.current) {
+			// 					if (currentJobIdArray.length > 0){
+			// 						try {
+			// 							const response = await fetch("https://sak-productivity-suite.herokuapp.com/stop-jobs-in-array", {
+			// 								method: "POST",
+			// 								headers: {
+			// 									"Content-Type": "application/json"
+			// 								},
+			// 								body: JSON.stringify({
+			// 									sessionId: sessionId,
+			// 									jobIdArray: currentJobIdArray
+			// 								})
+			// 							});
+							
+			// 							const data = await response.json();
+			// 							console.log("data from stopAutoCreatingNotesRef", data);
+										
+			// 						}catch(error){
+			// 							console.log(error);
+			// 						}
+			// 					}
+								
+			// 					clearInterval(runEveryTwoSeconds);
+								
+			// 					setIsLoadingAutoCreatingNotes(false);
+			// 					setLoadingLeadsButtonDisabled(false);
+			// 					setAutoCreatingNotesDisabled(false);
+
+			// 					for (let i = 0; i < 25; i++){
+			// 						peopleInterestsButtonDisabled[i] = false;
+			// 						companyInterestsButtonDisabled[i] = false;
+			// 						makingConnectNoteButtonDisabled[i] = false;
+			// 						sendingConnectNoteButtonDisabled[i] = false;
+			// 					}
+			// 					// Set back to false if this button is clicked again
+			// 					stopAutoCreatingNotesRef.current = false;
+			// 					break;
+			// 				}
+			// 				try {
+			// 					const response = await fetch("https://sak-productivity-suite.herokuapp.com/job-status", {
+			// 						method: "POST",
+			// 						headers: {
+			// 							"Content-Type": "application/json"
+			// 						},
+			// 						body: JSON.stringify({
+			// 							jobId: currentJobIdArray[i]
+			// 						})
+			// 					});
+								
+			// 					const data = await response.json();
+			// 					const status = data.status;
+								
+			// 					if (status === "finished") {
+			// 						const resultArray = data.result;
+			// 						console.log("Successfully gotten Connect note array: ", resultArray);
+
+			// 						const newConnectNoteArray = [...connectNoteArray];
+			// 						newConnectNoteArray[j] = resultArray;
+			// 						setConnectNoteArray(newConnectNoteArray);
+
+			// 						setShowProfileArea(true);
+			
+			// 						peopleInterestsButtonDisabled[j] = false;
+			// 						companyInterestsButtonDisabled[j] = false;
+			// 						makingConnectNoteButtonDisabled[j] = false;
+			// 						sendingConnectNoteButtonDisabled[j] = false;
+
+			// 						// Remove this i from currentJobIdArray
+			// 						// currentJobIdArray.splice(i, 1);
+			// 						// console.log("current", currentJobIdArray.length);
+			// 						j += 1;
+			// 					} 
+			// 				}catch(error){
+			// 					console.log("An error has occured (CheckJobStatus): ", error);
+			// 				}
+			// 			}
+			// 		}
+			// 	}
+
+				// async function runEveryTwoSeconds() {
+				// 	// Wait for the previous execution to complete
+				// 	await new Promise(resolve => setTimeout(resolve, 10000));
+				// 	// Run the async function
+				// 	await x();
+				// 	// Call this function again
+				// 	runEveryTwoSeconds();
+				// }				  
+				// runEveryTwoSeconds();
 				  
 			}
 			else {
