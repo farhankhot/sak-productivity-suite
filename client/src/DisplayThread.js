@@ -20,6 +20,8 @@ function DisplayThread() {
 	const [convoArray, setConvoArray] = useState([]);
 	const [replyTextArea, setReplyTextArea] = useState([]);
 
+	const [error, setError] = useState(null);
+
 	useEffect( () => {
 		
 		const getSingleThread = async () => {
@@ -39,7 +41,7 @@ function DisplayThread() {
 				const thread = data.message;
 				setConvoArray(thread);
 			}else {
-				<ErrorModal errorMessage={data.message}/>
+				setError(data.message);
 			}
 		};	
 		getSingleThread();
@@ -110,7 +112,9 @@ function DisplayThread() {
 	};
 		
 	return (
-
+		<>
+		{error && <ErrorModal errorMessage={error}/>}
+		
 		<Container style={{ paddingTop: '20px', paddingBottom: '20px'}}>
 			<Card>
 				<Card.Header>
@@ -148,6 +152,7 @@ function DisplayThread() {
 				</Card.Body>
 			</Card>
 		</Container>
+		</>
 	)
 }
 export default DisplayThread;
