@@ -32,7 +32,7 @@ function Home(props) {
 	const [memberUrnIdArray, setMemberUrnIdArray] = useState([]);
 
 	const [showCreateConnectNoteButton, setShowCreateConnectNoteButton] = useState(false);
-	const [connectNoteArray, setConnectNoteArray] = useState({});
+	const [connectNoteArray, setConnectNoteArray] = useState([]);
 
 	const [autoCreatingNotesDisabled, setAutoCreatingNotesDisabled] = useState(false);
 	const [loadingLeadsButtonDisabled, setLoadingLeadsButtonDisabled] = useState(false);
