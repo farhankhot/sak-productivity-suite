@@ -510,6 +510,8 @@ def stop_jobs_in_array():
         # job_id_list = job_id_list['message']
         # print("job_id_list", job_id_list)
 
+        print(job_id_list)
+
         for i, job_id in enumerate(job_id_list):
             job = Job.fetch(job_id, connection=conn)
             job.cancel()
