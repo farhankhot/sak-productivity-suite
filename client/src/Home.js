@@ -134,6 +134,7 @@ function Home(props) {
 					}
 					
 					const jobId = currentJobIdArray[0];
+					console.log(jobId);
 					// const response = await sendJobAndGetResponse(jobId);
 					try {
 						const response = await fetch("https://sak-productivity-suite.herokuapp.com/job-status", {
