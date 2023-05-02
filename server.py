@@ -396,7 +396,7 @@ def GetLeadInfo(cookie_dict, lead, profile_urn):
     if "summary" in lead_profile_json:
         lead_summary = lead_profile_json["summary"]
     else:
-        lead_summary = ''
+        lead_summary = ""
     
     # ============= Getting Misc info =============================
 
@@ -441,14 +441,28 @@ def GetLeadInfo(cookie_dict, lead, profile_urn):
     lead_info.append(lead_interests)
     # ============= Getting interests =================================
     
-    full_lead_profile = lead[0] + " " + lead_headline + \
-        " " + lead_summary + " " + lead_location + " ".join(str(x) for x in lead_info)
-    
-    print(full_lead_profile)
-    
-    prompt = "You are an Account Executive. This is the profile of a person: " + full_lead_profile + \
-        " Include something useful about the interests and use it in the request. " + \
+    # full_lead_profile = lead[0] + " " + lead_headline + \
+    #     " " + lead_summary + " " + lead_location + " ".join(str(x) for x in lead_info)
+    # print(full_lead_profile)
+
+    if len(lead_info) == 0:
+        full_lead_profile = lead[0] + " " + lead_headline + \
+        " " + lead_summary + " " + lead_location
+        prompt = "You are an Account Executive. This is the profile of a person: " + full_lead_profile + \
         " Write a connect note to them. Make it casual but eyecatching. Use only 50 words."
+    
+    elif len(lead_info) == 0 and lead_summary != "":
+        full_lead_profile = lead[0] + " " + lead_headline + \
+        " " + lead_location
+        prompt = "You are an Account Executive. This is the profile of a person: " + full_lead_profile + \
+        " Write a connect note to them. Do not make up information. Make it casual but eyecatching. Use only 50 words."
+
+    else:    
+        full_lead_profile = lead[0] + " " + lead_headline + \
+        " " + lead_summary + " " + lead_location + " ".join(str(x) for x in lead_info)
+        prompt = "You are an Account Executive. This is the profile of a person: " + full_lead_profile + \
+            " Include something useful about the interests and use it in the request. " + \
+            " Write a connect note to them. Make it casual but eyecatching. Use only 50 words."
 
     # connect_note = asyncio.run(UseBingAI(prompt))
     connect_note = UseChatGPT(prompt)
