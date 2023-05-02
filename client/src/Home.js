@@ -115,6 +115,7 @@ function Home(props) {
 
 				let currentJobIdArray = [...jobIdArray.message];
 				let j = 0;
+				console.log(currentJobIdArray);
 
 				async function processJobs(currentJobIdArray) {
 					if (currentJobIdArray.length === 0) {
