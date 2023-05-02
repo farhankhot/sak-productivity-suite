@@ -383,7 +383,7 @@ def GetLeadInfo(cookie_dict, lead, profile_urn):
     # print("lead_profile: ", lead_profile.json())
     lead_profile_json = lead_profile.json()
     
-    if "headline" in lead_profile:
+    if "headline" in lead_profile_json:
         lead_headline = lead_profile_json["headline"]
     else:
         lead_headline = ''
@@ -443,6 +443,8 @@ def GetLeadInfo(cookie_dict, lead, profile_urn):
     
     full_lead_profile = lead[0] + " " + lead_headline + \
         " " + lead_summary + " " + lead_location + " ".join(str(x) for x in lead_info)
+    
+    print(full_lead_profile)
     
     prompt = "You are an Account Executive. This is the profile of a person: " + full_lead_profile + \
         " Include something useful about the interests and use it in the request. " + \
