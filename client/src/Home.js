@@ -140,7 +140,7 @@ function Home(props) {
 						if (currentJobIdArray[i] == "None"){
 							finishCount += 1;
 						}
-						if (finishCount === 24){
+						if (finishCount === 25){
 							clearInterval(jobIdCheck);
 							setIsLoadingAutoCreatingNotes(false);
 							setLoadingLeadsButtonDisabled(false);
