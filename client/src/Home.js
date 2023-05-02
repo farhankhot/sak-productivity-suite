@@ -148,6 +148,8 @@ function Home(props) {
 						
 						const data = await response.json();
 						const status = data.status;
+						console.log(data);
+						console.log(status);
 
 						if (stopAutoCreatingNotesRef.current) {
 							if (currentJobIdArray.length > 0){
