@@ -540,7 +540,7 @@ def get_lead_info():
             # if i == 2:
             #     break
     
-            data = q.enqueue(GetLeadInfo, cookie_dict, leads_list[i], profile_urn, result_ttl = 1, job_timeout=600)
+            data = q.enqueue(GetLeadInfo, cookie_dict, leads_list[i], profile_urn, result_ttl = 0, job_timeout=600)
             job_id = data.get_id()
             job_ids.append(job_id)
 
