@@ -457,32 +457,44 @@ def GetLeadInfo(cookie_dict, lead, profile_urn):
     # my_prof = api.get_user_profile()
     # ============= Get my info =================================
 
-    
     # full_lead_profile = lead[0] + " " + lead_headline + \
     #     " " + lead_summary + " " + lead_location + " ".join(str(x) for x in lead_info)
     # print(full_lead_profile)
 
-    if len(lead_info) == 0 and lead_summary != "":
-        full_lead_profile = lead[0] + " " + lead_headline + \
-        " " + lead_summary + " " + lead_location
-        prompt = "You are an Account Executive in Toronto. This is the profile of a person: " + full_lead_profile + \
-        " Write a connect note to them. Make it casual but eyecatching. Keep in mind to always only use 50 words."
-    
-    elif len(lead_info) == 0 and lead_summary == "":
-        full_lead_profile = lead[0] + " " + lead_headline + \
-        " " + lead_location
-        prompt = "You are an Account Executive in Toronto. This is the profile of a person: " + full_lead_profile + \
-        " Write a connect note to them. Do not make up information. Make it casual but eyecatching. Keep in mind to always only use 50 words."
+    full_lead_profile = "You are an Account Executive at DTC Force, located in Toronto. This is the profile of a person:"
 
-    else:    
-        full_lead_profile = lead[0] + " " + lead_headline + \
-        " " + lead_summary + " " + lead_location + " ".join(str(x) for x in lead_info)
-        prompt = "You are an Account Executive in Toronto. This is the profile of a person: " + full_lead_profile + \
-            " Include something useful about the interests and use it in the request. " + \
-            " Write a connect note to them. Make it casual but eyecatching. Keep in mind to always only use 50 words."
+    if lead_headline != "":
+        full_lead_profile += " About: " + lead_headline
+    if lead_summary != "":
+        full_lead_profile += " Summary: " + lead_summary
+    if lead_location != "":
+        full_lead_profile += " Location: " + lead_location
+    if len(lead_interests) > 0:
+        full_lead_profile += " Interests: " + " ".join(str(x) for x in lead_info)
+    
+    full_lead_profile += " Write a connect note to them. Make it casual but eyecatching. Do not use more than 50 words."
+
+    # if len(lead_info) == 0 and lead_summary != "":
+    #     full_lead_profile = lead[0] + " " + lead_headline + \
+    #     " " + lead_summary + " " + lead_location
+    #     prompt = "You are an Account Executive in Toronto. This is the profile of a person: " + full_lead_profile + \
+    #     " Write a connect note to them. Make it casual but eyecatching. Keep in mind to always only use 50 words."
+    
+    # elif len(lead_info) == 0 and lead_summary == "":
+    #     full_lead_profile = lead[0] + " " + lead_headline + \
+    #     " " + lead_location
+    #     prompt = "You are an Account Executive in Toronto. This is the profile of a person: " + full_lead_profile + \
+    #     " Write a connect note to them. Do not make up information. Make it casual but eyecatching. Keep in mind to always only use 50 words."
+
+    # else:    
+    #     full_lead_profile = lead[0] + " " + lead_headline + \
+    #     " " + lead_summary + " " + lead_location + " ".join(str(x) for x in lead_info)
+    #     prompt = "You are an Account Executive in Toronto. This is the profile of a person: " + full_lead_profile + \
+    #         " Include something useful about the interests and use it in the request. " + \
+    #         " Write a connect note to them. Make it casual but eyecatching. Keep in mind to always only use 50 words."
 
     # connect_note = asyncio.run(UseBingAI(prompt))
-    connect_note = UseChatGPT(prompt)
+    connect_note = UseChatGPT(full_lead_profile)
     # print(connect_note)
     # connect_note = "hi," + leads_list[lead_idx][0]
     return connect_note
