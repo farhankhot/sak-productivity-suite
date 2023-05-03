@@ -478,7 +478,7 @@ def GetLeadInfo(cookie_dict, lead, profile_urn, additional_info_text="", interes
         full_lead_profile += " Interests: " + interests
     elif interests != "":
         full_lead_profile += " Interests: " + interests
-        
+
     if len(lead_relationships) > 0:
         full_lead_profile += " Mutual relationships: " + " ".join(str(x) for x in lead_relationships)
     if additional_info_text != "":
@@ -578,6 +578,7 @@ def get_lead_info():
         # print("additional_info_text is ", additional_info_text)
         interests = request.json['interests'] # type: ignore
 
+        print(interests)
         job_ids=[]
         for i, profile_urn in enumerate(member_urn_id_list):
 
