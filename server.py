@@ -357,20 +357,24 @@ def GetLeadInfo(cookie_dict, lead, profile_urn):
     # ============= Getting Relationships =============================        
     res_for_shared_relationships = api._fetch(f"/sales-api/salesApiProfileHighlights/{profile_urn}?decoration=%28sharedConnection%28sharedConnectionUrns*~fs_salesProfile%28entityUrn%2CfirstName%2ClastName%2CfullName%2CpictureInfo%2CprofilePictureDisplayImage%29%29%2CteamlinkInfo%28totalCount%29%2CsharedEducations*%28overlapInfo%2CentityUrn~fs_salesSchool%28entityUrn%2ClogoId%2Cname%2Curl%2CschoolPictureDisplayImage%29%29%2CsharedExperiences*%28overlapInfo%2CentityUrn~fs_salesCompany%28entityUrn%2CpictureInfo%2Cname%2CcompanyPictureDisplayImage%29%29%2CsharedGroups*%28entityUrn~fs_salesGroup%28entityUrn%2Cname%2ClargeLogoId%2CsmallLogoId%2CgroupPictureDisplayImage%29%29%29"
             ,base_request=True)
-    print(res_for_shared_relationships.text)
-    print(res_for_shared_relationships.json())
+    print("res_for_shared_relationships text", res_for_shared_relationships.text)
+    print("res_for_shared_relationships json", res_for_shared_relationships.json())
 
     # Get the first relationship that LinkedIn recommends
     lead_relationships = []
-    shared_connections = res_for_shared_relationships.json()['sharedConnection']['sharedConnectionUrnsResolutionResults']
-    if len(shared_connections.values()) > 0:
-        shared_connection = shared_connections.values()[0]['fullName']
-        lead_relationships.append(shared_connection)
-
-    shared_groups = res_for_shared_relationships.json()['sharedGroup']['entityUrnResolutionResult']
-    if len(shared_groups) >= 1:
-        shared_group = shared_groups[1]['entityUrnResolutionResult']['name'] 
-        lead_relationships.append(shared_group)
+    if 'sharedConnection' in res_for_shared_relationships.json():
+        if 'sharedConnectionUrnsResolutionResults' in res_for_shared_relationships.json()['sharedConnection']:  
+            shared_connections = res_for_shared_relationships.json()['sharedConnection']['sharedConnectionUrnsResolutionResults']
+            if len(shared_connections.values()) > 0:
+                shared_connection = shared_connections.values()[0]['fullName']
+                lead_relationships.append(shared_connection)
+    
+    if 'sharedGroup' in res_for_shared_relationships.json():
+        if 'entityUrnResolutionResult' in res_for_shared_relationships.json()['sharedGroup']:
+            shared_groups = res_for_shared_relationships.json()['sharedGroup']['entityUrnResolutionResult']
+            if len(shared_groups) >= 1:
+                shared_group = shared_groups[1]['entityUrnResolutionResult']['name'] 
+                lead_relationships.append(shared_group)
     
     lead_info.append(lead_relationships)
     # ============= Getting Relationships =============================
