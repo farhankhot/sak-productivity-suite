@@ -344,7 +344,7 @@ def SalesNavigatorLeadsInfo(api):
 # TODO: Change function name to show that this is returning Connect note not info
 # TODO: Get interests at random
 # TODO: Use my profile info as well
-def GetLeadInfo(cookie_dict, lead, profile_urn):
+def GetLeadInfo(cookie_dict, lead, profile_urn, additional_info_text=""):
 
     import time
     time.sleep(3)
@@ -475,6 +475,8 @@ def GetLeadInfo(cookie_dict, lead, profile_urn):
         full_lead_profile += " Interests: " + " ".join(str(x) for x in lead_info)
     if len(lead_relationships) > 0:
         full_lead_profile += " Mutual relationships: " + " ".join(str(x) for x in lead_relationships)
+    if additional_info_text != "":
+        full_lead_profile += " Additional info: " + additional_info_text
     
     full_lead_profile += " Write a connect note to them. Make it casual but eyecatching. Do not use more than 50 words."
 
@@ -566,6 +568,8 @@ def get_lead_info():
         leads_list = request.json['leadsArray'] # type: ignore
         member_urn_id_list = request.json['memberUrnIdArray'] # type: ignore
 
+        additional_info_text = request.json['additionalInfoText'] # type: ignore
+
         job_ids=[]
         for i, profile_urn in enumerate(member_urn_id_list):
 
@@ -573,7 +577,7 @@ def get_lead_info():
             if i == 1:
                 break
     
-            data = q.enqueue(GetLeadInfo, cookie_dict, leads_list[i], profile_urn, result_ttl = 1, job_timeout=600)
+            data = q.enqueue(GetLeadInfo, cookie_dict, leads_list[i], profile_urn, additional_info_text, result_ttl = 1, job_timeout=600)
             job_id = data.get_id()
             job_ids.append(job_id)
 

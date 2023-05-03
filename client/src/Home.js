@@ -45,7 +45,7 @@ function Home(props) {
 
 	const stopAutoCreatingNotesRef = useRef(false);
 
-	const [additionalInfoTextArea, setAdditionalInfoTextArea] = useState("");
+	const [additionalInfoText, setAdditionalInfoText] = useState("");
 
 	const handleGettingLeads = async() => {
         try {
@@ -107,7 +107,8 @@ function Home(props) {
 				body: JSON.stringify({
 					sessionId: sessionId,
 					leadsArray: leadsArray,
-					memberUrnIdArray: memberUrnIdArray
+					memberUrnIdArray: memberUrnIdArray,
+					...(additionalInfoText ? {additionalInfoText: additionalInfoText} : "")
 				})
 			});
 			const jobIdArray = await response.json();
@@ -543,7 +544,7 @@ function Home(props) {
 
 	const handleAdditionalInfoTextAreaChange = (event) => {
 		const changedInfo = event.target.value;
-		setAdditionalInfoTextArea(changedInfo);
+		setAdditionalInfoText(changedInfo);
 	};
 
 	return (
@@ -576,7 +577,7 @@ function Home(props) {
 					<Form.Group>
 						<Form.Control
 							as="textarea"
-							value={additionalInfoTextArea} 
+							value={additionalInfoText} 
 							onChange={ (event) => {
 								handleAdditionalInfoTextAreaChange(event)
 							}}
