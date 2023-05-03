@@ -351,11 +351,19 @@ def GetLeadInfo(cookie_dict, lead, profile_urn):
     time.sleep(3)
 
     api = Linkedin(cookies=cookie_dict) # type: ignore
+
+    my_tuple = tuple(profile_urn.strip("()").split(","))
+
+    actual_profile_urn, auth_type, auth_token = my_tuple 
+    profile_urn_for_lead_profile = "profileId:"+actual_profile_urn
+    auth_type_for_lead_profile = "authType:"+auth_type
+    auth_token_for_lead_profile = "authToken:"+auth_token 
+
         
     lead_info = []
     print(profile_urn)
     # ============= Getting Relationships =============================        
-    res_for_shared_relationships = api._fetch(f"/sales-api/salesApiProfileHighlights/{profile_urn}?decoration=%28sharedConnection%28sharedConnectionUrns*~fs_salesProfile%28entityUrn%2CfirstName%2ClastName%2CfullName%2CpictureInfo%2CprofilePictureDisplayImage%29%29%2CteamlinkInfo%28totalCount%29%2CsharedEducations*%28overlapInfo%2CentityUrn~fs_salesSchool%28entityUrn%2ClogoId%2Cname%2Curl%2CschoolPictureDisplayImage%29%29%2CsharedExperiences*%28overlapInfo%2CentityUrn~fs_salesCompany%28entityUrn%2CpictureInfo%2Cname%2CcompanyPictureDisplayImage%29%29%2CsharedGroups*%28entityUrn~fs_salesGroup%28entityUrn%2Cname%2ClargeLogoId%2CsmallLogoId%2CgroupPictureDisplayImage%29%29%29"
+    res_for_shared_relationships = api._fetch(f"/sales-api/salesApiProfileHighlights/{actual_profile_urn}?decoration=%28sharedConnection%28sharedConnectionUrns*~fs_salesProfile%28entityUrn%2CfirstName%2ClastName%2CfullName%2CpictureInfo%2CprofilePictureDisplayImage%29%29%2CteamlinkInfo%28totalCount%29%2CsharedEducations*%28overlapInfo%2CentityUrn~fs_salesSchool%28entityUrn%2ClogoId%2Cname%2Curl%2CschoolPictureDisplayImage%29%29%2CsharedExperiences*%28overlapInfo%2CentityUrn~fs_salesCompany%28entityUrn%2CpictureInfo%2Cname%2CcompanyPictureDisplayImage%29%29%2CsharedGroups*%28entityUrn~fs_salesGroup%28entityUrn%2Cname%2ClargeLogoId%2CsmallLogoId%2CgroupPictureDisplayImage%29%29%29"
             ,base_request=True)
     print("res_for_shared_relationships text", res_for_shared_relationships.text)
     print("res_for_shared_relationships json", res_for_shared_relationships.json())
@@ -377,15 +385,10 @@ def GetLeadInfo(cookie_dict, lead, profile_urn):
                 lead_relationships.append(shared_group)
     
     lead_info.append(lead_relationships)
+    print(lead_relationships)
     # ============= Getting Relationships =============================
 
     # ============= Getting Misc info =============================
-    my_tuple = tuple(profile_urn.strip("()").split(","))
-
-    actual_profile_urn, auth_type, auth_token = my_tuple 
-    profile_urn_for_lead_profile = "profileId:"+actual_profile_urn
-    auth_type_for_lead_profile = "authType:"+auth_type
-    auth_token_for_lead_profile = "authToken:"+auth_token 
     lead_profile = api._fetch(f"/sales-api/salesApiProfiles/({profile_urn_for_lead_profile},{auth_type_for_lead_profile},{auth_token_for_lead_profile})?decoration=%28%0A%20%20entityUrn%2C%0A%20%20objectUrn%2C%0A%20%20firstName%2C%0A%20%20lastName%2C%0A%20%20fullName%2C%0A%20%20headline%2C%0A%20%20memberBadges%2C%0A%20%20pronoun%2C%0A%20%20degree%2C%0A%20%20profileUnlockInfo%2C%0A%20%20latestTouchPointActivity%2C%0A%20%20location%2C%0A%20%20listCount%2C%0A%20%20summary%2C%0A%20%20savedLead%2C%0A%20%20defaultPosition%2C%0A%20%20contactInfo%2C%0A%20%20crmStatus%2C%0A%20%20pendingInvitation%2C%0A%20%20unlocked%2C%0A%20%20flagshipProfileUrl%2C%0A%20%20fullNamePronunciationAudio%2C%0A%20%20memorialized%2C%0A%20%20numOfConnections%2C%0A%20%20numOfSharedConnections%2C%0A%20%20showTotalConnectionsPage%2C%0A%20%20profilePictureDisplayImage%2C%0A%20%20profileBackgroundPicture%2C%0A%20%20relatedColleagueCompanyId%2C%0A%20%20blockThirdPartyDataSharing%2C%0A%20%20noteCount%2C%0A%20%20positions*%28%0A%20%20%20%20companyName%2C%0A%20%20%20%20current%2C%0A%20%20%20%20new%2C%0A%20%20%20%20description%2C%0A%20%20%20%20endedOn%2C%0A%20%20%20%20posId%2C%0A%20%20%20%20startedOn%2C%0A%20%20%20%20title%2C%0A%20%20%20%20location%2C%0A%20%20%20%20richMedia*%2C%0A%20%20%20%20companyUrn~fs_salesCompany%28entityUrn%2Cname%2CcompanyPictureDisplayImage%29%0A%20%20%29%2C%0A%20%20educations*%28%0A%20%20%20%20degree%2C%0A%20%20%20%20eduId%2C%0A%20%20%20%20endedOn%2C%0A%20%20%20%20schoolName%2C%0A%20%20%20%20startedOn%2C%0A%20%20%20%20fieldsOfStudy*%2C%0A%20%20%20%20richMedia*%2C%0A%20%20%20%20school~fs_salesSchool%28entityUrn%2ClogoId%2Cname%2Curl%2CschoolPictureDisplayImage%29%0A%20%20%29%2C%0A%20%20languages*%0A%29"
                                 ,base_request=True)
     # print("lead_profile: ", lead_profile.json())
@@ -463,23 +466,21 @@ def GetLeadInfo(cookie_dict, lead, profile_urn):
         full_lead_profile = lead[0] + " " + lead_headline + \
         " " + lead_summary + " " + lead_location
         prompt = "You are an Account Executive in Toronto. This is the profile of a person: " + full_lead_profile + \
-            " These are our mutual relationships: " + lead_relationships + \
-            "Write a connect note to them. Make it casual but eyecatching. Keep in mind to always only use 50 words."
+        " Write a connect note to them. Make it casual but eyecatching. Keep in mind to always only use 50 words."
     
     elif len(lead_info) == 0 and lead_summary == "":
         full_lead_profile = lead[0] + " " + lead_headline + \
         " " + lead_location
         prompt = "You are an Account Executive in Toronto. This is the profile of a person: " + full_lead_profile + \
-            " These are our mutual relationships: " + lead_relationships + \
-            "Write a connect note to them. Make it casual but eyecatching. Keep in mind to always only use 50 words."
+        " Write a connect note to them. Do not make up information. Make it casual but eyecatching. Keep in mind to always only use 50 words."
+
     else:    
         full_lead_profile = lead[0] + " " + lead_headline + \
         " " + lead_summary + " " + lead_location + " ".join(str(x) for x in lead_info)
         prompt = "You are an Account Executive in Toronto. This is the profile of a person: " + full_lead_profile + \
             " Include something useful about the interests and use it in the request. " + \
-            " These are our mutual relationships: " + lead_relationships + \
-            "Write a connect note to them. Make it casual but eyecatching. Keep in mind to always only use 50 words."
-        
+            " Write a connect note to them. Make it casual but eyecatching. Keep in mind to always only use 50 words."
+
     # connect_note = asyncio.run(UseBingAI(prompt))
     connect_note = UseChatGPT(prompt)
     # print(connect_note)
