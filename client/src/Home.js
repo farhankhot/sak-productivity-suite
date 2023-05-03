@@ -108,7 +108,7 @@ function Home(props) {
 					sessionId: sessionId,
 					leadsArray: leadsArray,
 					memberUrnIdArray: memberUrnIdArray,
-					...(additionalInfoText ? {additionalInfoText: additionalInfoText} : "")
+					...(additionalInfoText !== "" ? {additionalInfoText: additionalInfoText} : {additionalInfoText: ""})
 				})
 			});
 			const jobIdArray = await response.json();
