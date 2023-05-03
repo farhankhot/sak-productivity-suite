@@ -384,7 +384,7 @@ def GetLeadInfo(cookie_dict, lead, profile_urn):
                 shared_group = shared_groups[1]['entityUrnResolutionResult']['name'] 
                 lead_relationships.append(shared_group)
     
-    lead_info.append(lead_relationships)
+    # lead_info.append(lead_relationships)
     print(lead_relationships)
     # ============= Getting Relationships =============================
 
@@ -471,6 +471,8 @@ def GetLeadInfo(cookie_dict, lead, profile_urn):
         full_lead_profile += " Location: " + lead_location
     if len(lead_interests) > 0:
         full_lead_profile += " Interests: " + " ".join(str(x) for x in lead_info)
+    if len(lead_relationships) > 0:
+        full_lead_profile += " Mutual relationships: " + " ".join(str(x) for x in lead_relationships)
     
     full_lead_profile += " Write a connect note to them. Make it casual but eyecatching. Do not use more than 50 words."
 
