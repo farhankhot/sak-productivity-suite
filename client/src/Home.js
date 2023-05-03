@@ -132,15 +132,17 @@ function Home(props) {
 					}
 				}
 				else {
-					let finishCount = 0;
+					// let finishCount = 0;
 					for(let i = 0; i < currentJobIdArray.length; i++){
 						// console.log(stopAutoCreatingNotesRef.current);
 						// console.log(currentJobIdArray.length);
 						// console.log(i);
-						if (currentJobIdArray[i] == "None"){
-							finishCount += 1;
-						}
-						if (finishCount === 25){
+						// if (currentJobIdArray[i] == "None"){
+						// 	finishCount += 1;
+						// }
+						const allAreNone = currentJobIdArray.every((val) => val === "None");
+
+						if (allAreNone){
 							clearInterval(jobIdCheck);
 							setIsLoadingAutoCreatingNotes(false);
 							setLoadingLeadsButtonDisabled(false);

@@ -344,6 +344,7 @@ def SalesNavigatorLeadsInfo(api):
 # TODO: Change function name to show that this is returning Connect note not info
 # TODO: Add relationships
 # TODO: Get interests at random
+# TODO: Use my profile info as well
 def GetLeadInfo(cookie_dict, lead, profile_urn):
 
     import time
@@ -354,24 +355,24 @@ def GetLeadInfo(cookie_dict, lead, profile_urn):
     lead_info = []
 
     # ============= Getting Relationships =============================        
-    # res_for_shared_relationships = api._fetch(f"/sales-api/salesApiProfileHighlights/{profile_urn}?decoration=%28sharedConnection%28sharedConnectionUrns*~fs_salesProfile%28entityUrn%2CfirstName%2ClastName%2CfullName%2CpictureInfo%2CprofilePictureDisplayImage%29%29%2CteamlinkInfo%28totalCount%29%2CsharedEducations*%28overlapInfo%2CentityUrn~fs_salesSchool%28entityUrn%2ClogoId%2Cname%2Curl%2CschoolPictureDisplayImage%29%29%2CsharedExperiences*%28overlapInfo%2CentityUrn~fs_salesCompany%28entityUrn%2CpictureInfo%2Cname%2CcompanyPictureDisplayImage%29%29%2CsharedGroups*%28entityUrn~fs_salesGroup%28entityUrn%2Cname%2ClargeLogoId%2CsmallLogoId%2CgroupPictureDisplayImage%29%29%29"
-    #         ,base_request=True)
-    # print(res_for_shared_relationships.text)
-    # print(res_for_shared_relationships.json())
+    res_for_shared_relationships = api._fetch(f"/sales-api/salesApiProfileHighlights/{profile_urn}?decoration=%28sharedConnection%28sharedConnectionUrns*~fs_salesProfile%28entityUrn%2CfirstName%2ClastName%2CfullName%2CpictureInfo%2CprofilePictureDisplayImage%29%29%2CteamlinkInfo%28totalCount%29%2CsharedEducations*%28overlapInfo%2CentityUrn~fs_salesSchool%28entityUrn%2ClogoId%2Cname%2Curl%2CschoolPictureDisplayImage%29%29%2CsharedExperiences*%28overlapInfo%2CentityUrn~fs_salesCompany%28entityUrn%2CpictureInfo%2Cname%2CcompanyPictureDisplayImage%29%29%2CsharedGroups*%28entityUrn~fs_salesGroup%28entityUrn%2Cname%2ClargeLogoId%2CsmallLogoId%2CgroupPictureDisplayImage%29%29%29"
+            ,base_request=True)
+    print(res_for_shared_relationships.text)
+    print(res_for_shared_relationships.json())
 
-    # # Get the first relationship that LinkedIn recommends
-    # lead_relationships = []
-    # shared_connections = res_for_shared_relationships.json()['sharedConnection']['sharedConnectionUrnsResolutionResults']
-    # if len(shared_connections.values()) > 0:
-    #     shared_connection = shared_connections.values()[0]['fullName']
-    #     lead_relationships.append(shared_connection)
+    # Get the first relationship that LinkedIn recommends
+    lead_relationships = []
+    shared_connections = res_for_shared_relationships.json()['sharedConnection']['sharedConnectionUrnsResolutionResults']
+    if len(shared_connections.values()) > 0:
+        shared_connection = shared_connections.values()[0]['fullName']
+        lead_relationships.append(shared_connection)
 
-    # shared_groups = res_for_shared_relationships.json()['sharedGroup']['entityUrnResolutionResult']
-    # if len(shared_groups) >= 1:
-    #     shared_group = shared_groups[1]['entityUrnResolutionResult']['name'] 
-    #     lead_relationships.append(shared_group)
+    shared_groups = res_for_shared_relationships.json()['sharedGroup']['entityUrnResolutionResult']
+    if len(shared_groups) >= 1:
+        shared_group = shared_groups[1]['entityUrnResolutionResult']['name'] 
+        lead_relationships.append(shared_group)
     
-    # lead_info.append(lead_relationships)
+    lead_info.append(lead_relationships)
     # ============= Getting Relationships =============================
 
     # ============= Getting Misc info =============================
@@ -443,6 +444,12 @@ def GetLeadInfo(cookie_dict, lead, profile_urn):
     
     lead_info.append(lead_interests)
     # ============= Getting interests =================================
+
+    # ============= Get my info =================================
+    # Check if my info is in the database, if it is use that. If not, use api
+    # my_prof = api.get_user_profile()
+    # ============= Get my info =================================
+
     
     # full_lead_profile = lead[0] + " " + lead_headline + \
     #     " " + lead_summary + " " + lead_location + " ".join(str(x) for x in lead_info)
@@ -540,8 +547,8 @@ def get_lead_info():
         for i, profile_urn in enumerate(member_urn_id_list):
 
             # Testing
-            # if i == 2:
-            #     break
+            if i == 1:
+                break
     
             data = q.enqueue(GetLeadInfo, cookie_dict, leads_list[i], profile_urn, result_ttl = 1, job_timeout=600)
             job_id = data.get_id()
