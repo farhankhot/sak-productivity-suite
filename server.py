@@ -454,7 +454,8 @@ def GetLeadInfo(cookie_dict, lead, profile_urn):
 
     # ============= Get my info =================================
     # Check if my info is in the database, if it is use that. If not, use api
-    # my_prof = api.get_user_profile()
+    my_prof = api.get_user_profile()
+    print(my_prof)
     # ============= Get my info =================================
 
     # full_lead_profile = lead[0] + " " + lead_headline + \
