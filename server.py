@@ -342,7 +342,6 @@ def SalesNavigatorLeadsInfo(api):
     return lead_list, member_urn_id_list
 
 # TODO: Change function name to show that this is returning Connect note not info
-# TODO: Add relationships
 # TODO: Get interests at random
 # TODO: Use my profile info as well
 def GetLeadInfo(cookie_dict, lead, profile_urn):
@@ -455,14 +454,16 @@ def GetLeadInfo(cookie_dict, lead, profile_urn):
     # ============= Get my info =================================
     # Check if my info is in the database, if it is use that. If not, use api
     my_prof = api.get_user_profile()
-    print(my_prof)
+    my_prof_mini_profile = my_prof['miniProfile'] # type: ignore
+    my_prof_full_name = my_prof_mini_profile['firstName'] + " " + my_prof_mini_profile['lastName']
+    my_prof_occupation = my_prof_mini_profile['occupation'] 
     # ============= Get my info =================================
 
     # full_lead_profile = lead[0] + " " + lead_headline + \
     #     " " + lead_summary + " " + lead_location + " ".join(str(x) for x in lead_info)
     # print(full_lead_profile)
 
-    full_lead_profile = "You are an Account Executive at DTC Force, located in Toronto. This is the profile of a person:"
+    full_lead_profile = f"You are {my_prof_full_name}, a {my_prof_occupation} at DTC Force, located in Toronto. This is the profile of a person:"
 
     if lead_headline != "":
         full_lead_profile += " About: " + lead_headline
