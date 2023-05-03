@@ -87,11 +87,10 @@ function Home(props) {
 	const handleAutoCreatingNotes = async(sessionId, index = null) => {
 		try {
 
-			setIsLoadingAutoCreatingNotes(true);
-			setLoadingLeadsButtonDisabled(true);
-			setAutoCreatingNotesDisabled(true);
-
 			if (index === null){
+				setIsLoadingAutoCreatingNotes(true);
+				setLoadingLeadsButtonDisabled(true);
+				setAutoCreatingNotesDisabled(true);
 				// This disables all other buttons when Auto Create notes button is clicked
 				// I could create a copy of each array, change element and set it. But for now, this works
 				for (let i = 0; i < 25; i++){
@@ -106,6 +105,12 @@ function Home(props) {
 				companyInterestsButtonDisabled[index] = false;
 				makingConnectNoteButtonDisabled[index] = false;
 				sendingConnectNoteButtonDisabled[index] = false;
+
+				const newIsLoadingMakingNote = [...isLoadingMakingNote];
+				newIsLoadingMakingNote[index] = true;
+				setIsLoadingMakingNote(newIsLoadingMakingNote);
+				setAutoCreatingNotesDisabled(true);
+				setLoadingLeadsButtonDisabled(true);
 			}
 			let interests = "";
 			if (index !== null && selectedInterests[index].length !== 0){
@@ -131,7 +136,6 @@ function Home(props) {
 				setJobIdArray(jobIdArray);
 
 				let currentJobIdArray = [...jobIdArray.message];
-				let j = 0;
 
 				const jobIdCheck = setInterval( async () => {
 				if (currentJobIdArray.length === 0) {
@@ -154,6 +158,12 @@ function Home(props) {
 						companyInterestsButtonDisabled[index] = false;
 						makingConnectNoteButtonDisabled[index] = false;
 						sendingConnectNoteButtonDisabled[index] = false;
+
+						const newIsLoadingMakingNote = [...isLoadingMakingNote];
+						newIsLoadingMakingNote[index] = false;
+						setIsLoadingMakingNote(newIsLoadingMakingNote);
+						setAutoCreatingNotesDisabled(false);
+						setLoadingLeadsButtonDisabled(false);
 					}
 				}
 				else {
@@ -162,9 +172,7 @@ function Home(props) {
 						// console.log(stopAutoCreatingNotesRef.current);
 						// console.log(currentJobIdArray.length);
 						// console.log(i);
-						// if (currentJobIdArray[i] == "None"){
-						// 	finishCount += 1;
-						// }
+
 						const allAreNone = currentJobIdArray.every((val) => val === "None");
 
 						if (allAreNone){
@@ -186,6 +194,12 @@ function Home(props) {
 								companyInterestsButtonDisabled[index] = false;
 								makingConnectNoteButtonDisabled[index] = false;
 								sendingConnectNoteButtonDisabled[index] = false;
+
+								const newIsLoadingMakingNote = [...isLoadingMakingNote];
+								newIsLoadingMakingNote[index] = false;
+								setIsLoadingMakingNote(newIsLoadingMakingNote);
+								setAutoCreatingNotesDisabled(false);
+								setLoadingLeadsButtonDisabled(false);
 							}
 						}
 
@@ -231,6 +245,12 @@ function Home(props) {
 									companyInterestsButtonDisabled[index] = false;
 									makingConnectNoteButtonDisabled[index] = false;
 									sendingConnectNoteButtonDisabled[index] = false;
+
+									const newIsLoadingMakingNote = [...isLoadingMakingNote];
+									newIsLoadingMakingNote[index] = false;
+									setIsLoadingMakingNote(newIsLoadingMakingNote);
+									setAutoCreatingNotesDisabled(false);
+									setLoadingLeadsButtonDisabled(false);
 								}
 								// Set back to false if this button is clicked again
 								stopAutoCreatingNotesRef.current = false;
@@ -270,8 +290,7 @@ function Home(props) {
 										sendingConnectNoteButtonDisabled[i] = false;
 		
 										currentJobIdArray[i] = "None"
-										console.log("current", currentJobIdArray.length);
-										// j += 1;
+										// console.log("current", currentJobIdArray.length);
 									}else {
 										newConnectNoteArray[index] = resultArray;
 										setConnectNoteArray(newConnectNoteArray);
@@ -284,7 +303,7 @@ function Home(props) {
 										sendingConnectNoteButtonDisabled[index] = false;
 		
 										currentJobIdArray[index] = "None"
-										console.log("current", currentJobIdArray.length);
+										// console.log("current", currentJobIdArray.length);
 									}
 								} 
 							}catch(error){
