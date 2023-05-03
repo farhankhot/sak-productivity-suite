@@ -644,9 +644,10 @@ function Home(props) {
 			</div>
 
 			<div style={{ display: 'flex', justifyContent: 'flex-end', paddingRight: '10px' }}>
-				<h2>Add info</h2>
+				
 				{leadsArray.length > 0 && 
 					<Form.Group>
+						<Form.Label>Add info</Form.Label>
 						<Form.Control
 							as="textarea"
 							value={additionalInfoText} 
