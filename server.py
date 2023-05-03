@@ -569,6 +569,7 @@ def get_lead_info():
         member_urn_id_list = request.json['memberUrnIdArray'] # type: ignore
 
         additional_info_text = request.json['additionalInfoText'] # type: ignore
+        print("additional_info_text is ", additional_info_text)
 
         job_ids=[]
         for i, profile_urn in enumerate(member_urn_id_list):
