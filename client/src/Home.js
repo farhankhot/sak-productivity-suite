@@ -643,22 +643,21 @@ function Home(props) {
 				</Button>}
 			</div>
 
-			<div style={{ display: 'flex', justifyContent: 'flex-end', paddingRight: '10px' }}>
-				{leadsArray.length > 0 && 
-					<Form.Group>
-						<Form.Label className="text-center">Add info</Form.Label>
-						<Form.Control
-							as="textarea"
-							value={additionalInfoText} 
-							onChange={ (event) => {
-								handleAdditionalInfoTextAreaChange(event)
-							}}
-						/>
-					</Form.Group>
-				}
-			</div>
-
 			<div className="mx-auto" style={{ maxWidth: '800px', paddingBottom: '20px'}}>
+				<div style={{ display: 'flex', justifyContent: 'flex-end', paddingRight: '10px' }}>
+					{leadsArray.length > 0 && 
+						<Form.Group>
+							<Form.Label>Add info</Form.Label>
+							<Form.Control
+								as="textarea"
+								value={additionalInfoText} 
+								onChange={ (event) => {
+									handleAdditionalInfoTextAreaChange(event)
+								}}
+							/>
+						</Form.Group>
+					}
+				</div>
 				<Accordion alwaysOpen>
 					{leadsArray.map((leadInfo, index) => (
 						<Accordion.Item eventKey = {index.toString()}
