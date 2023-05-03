@@ -452,113 +452,113 @@ function Home(props) {
 	};
 
 	// ================ Create and Send Connect Note(s) ===============================
-	const handleMakingConnectNote = async (fullName, index) => {
-		console.log(selectedInterests);
-		console.log(selectedInterests[index]);
+	// const handleMakingConnectNote = async (fullName, index) => {
+	// 	console.log(selectedInterests);
+	// 	console.log(selectedInterests[index]);
 
-		if (selectedInterests[index].length !== 0){
-			const prompt = "You are an Account Executive. This is the profile of a person: " + fullName
-			+ " These are their interests: " + selectedInterests[index].toString()
-			+ " Write a request to connect with them. Make it casual but eyecatching. Use only 50 words.";
-			console.log(prompt);
-			try {
-				// setIsLoadingMakingNote(true);
-				const newIsLoadingMakingNote = [...isLoadingMakingNote];
-				for (let i = 0; i < newIsLoadingMakingNote.length; i++){
-					newIsLoadingMakingNote[index] = true;
-				}
-				setIsLoadingMakingNote(newIsLoadingMakingNote);
+	// 	if (selectedInterests[index].length !== 0){
+	// 		const prompt = "You are an Account Executive. This is the profile of a person: " + fullName
+	// 		+ " These are their interests: " + selectedInterests[index].toString()
+	// 		+ " Write a request to connect with them. Make it casual but eyecatching. Use only 50 words.";
+	// 		console.log(prompt);
+	// 		try {
+	// 			// setIsLoadingMakingNote(true);
+	// 			const newIsLoadingMakingNote = [...isLoadingMakingNote];
+	// 			for (let i = 0; i < newIsLoadingMakingNote.length; i++){
+	// 				newIsLoadingMakingNote[index] = true;
+	// 			}
+	// 			setIsLoadingMakingNote(newIsLoadingMakingNote);
 
-				setAutoCreatingNotesDisabled(true);
-				const response = await fetch("https://sak-productivity-suite.herokuapp.com/use-chatgpt", {
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json"
-					},
-					body: JSON.stringify({
-						prompt: prompt
-					})
-				});
+	// 			setAutoCreatingNotesDisabled(true);
+	// 			const response = await fetch("https://sak-productivity-suite.herokuapp.com/use-chatgpt", {
+	// 				method: "POST",
+	// 				headers: {
+	// 					"Content-Type": "application/json"
+	// 				},
+	// 				body: JSON.stringify({
+	// 					prompt: prompt
+	// 				})
+	// 			});
 				
-				const data = await response.json();
-				if (data.success === true) {
-					const jobId = data.message;
+	// 			const data = await response.json();
+	// 			if (data.success === true) {
+	// 				const jobId = data.message;
 		
-					CheckJobStatus(jobId, (resultArray) => {
-						const newArray = [...connectNoteArray];
-						newArray[index] = resultArray;
-						setConnectNoteArray(newArray);
+	// 				CheckJobStatus(jobId, (resultArray) => {
+	// 					const newArray = [...connectNoteArray];
+	// 					newArray[index] = resultArray;
+	// 					setConnectNoteArray(newArray);
 
-						// setIsLoadingMakingNote(false);
-						const newIsLoadingMakingNote = [...isLoadingMakingNote];
-						for (let i = 0; i < newIsLoadingMakingNote.length; i++){
-							newIsLoadingMakingNote[index] = false;
-						}
-						setIsLoadingMakingNote(newIsLoadingMakingNote);
+	// 					// setIsLoadingMakingNote(false);
+	// 					const newIsLoadingMakingNote = [...isLoadingMakingNote];
+	// 					for (let i = 0; i < newIsLoadingMakingNote.length; i++){
+	// 						newIsLoadingMakingNote[index] = false;
+	// 					}
+	// 					setIsLoadingMakingNote(newIsLoadingMakingNote);
 						
-						setAutoCreatingNotesDisabled(false);
-					});
-				}
-				else {
-					<ErrorModal errorMessage={data.message}/>
-				}
-			}catch(error){
-				<ErrorModal errorMessage={error}/>
-				console.log(error);
-			}
-		}
-		else {
-			const prompt = "You are a Account Executive. This is the profile of a person: " + fullName
-			+ " Write a request to connect with them. Make it casual but eyecatching. Use only 50 words.";	
-			console.log("Not selected", prompt);
-			try {
-				// setIsLoadingMakingNote(true);
-				const newIsLoadingMakingNote = [...isLoadingMakingNote];
-				for (let i = 0; i < newIsLoadingMakingNote.length; i++){
-					newIsLoadingMakingNote[index] = true;
-				}
-				setIsLoadingMakingNote(newIsLoadingMakingNote);
+	// 					setAutoCreatingNotesDisabled(false);
+	// 				});
+	// 			}
+	// 			else {
+	// 				<ErrorModal errorMessage={data.message}/>
+	// 			}
+	// 		}catch(error){
+	// 			<ErrorModal errorMessage={error}/>
+	// 			console.log(error);
+	// 		}
+	// 	}
+	// 	else {
+	// 		const prompt = "You are a Account Executive. This is the profile of a person: " + fullName
+	// 		+ " Write a request to connect with them. Make it casual but eyecatching. Use only 50 words.";	
+	// 		console.log("Not selected", prompt);
+	// 		try {
+	// 			// setIsLoadingMakingNote(true);
+	// 			const newIsLoadingMakingNote = [...isLoadingMakingNote];
+	// 			for (let i = 0; i < newIsLoadingMakingNote.length; i++){
+	// 				newIsLoadingMakingNote[index] = true;
+	// 			}
+	// 			setIsLoadingMakingNote(newIsLoadingMakingNote);
 
-				setAutoCreatingNotesDisabled(true);
-				const response = await fetch("https://sak-productivity-suite.herokuapp.com/use-chatgpt", {
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json"
-					},
-					body: JSON.stringify({
-						prompt: prompt
-					})
-				});
+	// 			setAutoCreatingNotesDisabled(true);
+	// 			const response = await fetch("https://sak-productivity-suite.herokuapp.com/use-chatgpt", {
+	// 				method: "POST",
+	// 				headers: {
+	// 					"Content-Type": "application/json"
+	// 				},
+	// 				body: JSON.stringify({
+	// 					prompt: prompt
+	// 				})
+	// 			});
 				
-				const data = await response.json();
-				if (data.success === true){
-					const jobId = data.message;
+	// 			const data = await response.json();
+	// 			if (data.success === true){
+	// 				const jobId = data.message;
 		
-					CheckJobStatus(jobId, (resultArray) => {
-						const newArray = [...connectNoteArray];
-						newArray[index] = resultArray;
-						setConnectNoteArray(newArray);	
+	// 				CheckJobStatus(jobId, (resultArray) => {
+	// 					const newArray = [...connectNoteArray];
+	// 					newArray[index] = resultArray;
+	// 					setConnectNoteArray(newArray);	
 
-						// setIsLoadingMakingNote(false);
-						const newIsLoadingMakingNote = [...isLoadingMakingNote];
-						for (let i = 0; i < newIsLoadingMakingNote.length; i++){
-							newIsLoadingMakingNote[index] = false;
-						}
-						setIsLoadingMakingNote(newIsLoadingMakingNote);
+	// 					// setIsLoadingMakingNote(false);
+	// 					const newIsLoadingMakingNote = [...isLoadingMakingNote];
+	// 					for (let i = 0; i < newIsLoadingMakingNote.length; i++){
+	// 						newIsLoadingMakingNote[index] = false;
+	// 					}
+	// 					setIsLoadingMakingNote(newIsLoadingMakingNote);
 						
-						setAutoCreatingNotesDisabled(false);
-					});
-				}
-				else {
-					<ErrorModal errorMessage={data.message}/>
-				}
+	// 					setAutoCreatingNotesDisabled(false);
+	// 				});
+	// 			}
+	// 			else {
+	// 				<ErrorModal errorMessage={data.message}/>
+	// 			}
 	
-			}catch(error){
-				<ErrorModal errorMessage={error}/>
-				console.log(error);
-			}
-		}
-	};
+	// 		}catch(error){
+	// 			<ErrorModal errorMessage={error}/>
+	// 			console.log(error);
+	// 		}
+	// 	}
+	// };
 
 	const handleSendingConnectNote = async (sessionId, profileId, index) => {
 		try {
@@ -643,7 +643,8 @@ function Home(props) {
 				</Button>}
 			</div>
 
-			<div style={{ display: "flex", justifyContent: "flex-end" }}>
+			<div style={{ display: 'flex', justifyContent: 'flex-end', paddingRight: '10px' }}>
+				<h2>Add info</h2>
 				{leadsArray.length > 0 && 
 					<Form.Group>
 						<Form.Control
@@ -709,7 +710,11 @@ function Home(props) {
 											<Button className="myButton" onClick={ () => {
 												handleAutoCreatingNotes(sessionId, index)
 											}} disabled={isLoadingMakingNote[index] || makingConnectNoteButtonDisabled[index] } style={{marginLeft: '30px'}}>
-												Make connect note
+												{isLoadingMakingNote[index] ? 
+												<>
+													<Spinner animation="border" size="sm" />
+													 Making note...
+												</> : 'Make Connect Note'}
 											</Button>{' '}
 
 
