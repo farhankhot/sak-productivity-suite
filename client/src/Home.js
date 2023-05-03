@@ -107,9 +107,9 @@ function Home(props) {
 				makingConnectNoteButtonDisabled[index] = false;
 				sendingConnectNoteButtonDisabled[index] = false;
 			}
-			const interests = "";
+			let interests = "";
 			if (index !== null && selectedInterests[index].length !== 0){
-				interests = selectedInterests[index].toString()
+				interests = selectedInterests[index].toString();
 			}
 			const response = await fetch("https://sak-productivity-suite.herokuapp.com/get-lead-info", {
 				method: "POST",
