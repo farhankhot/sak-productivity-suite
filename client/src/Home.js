@@ -45,6 +45,8 @@ function Home(props) {
 
 	const stopAutoCreatingNotesRef = useRef(false);
 
+	const [additionalInfoTextArea, setAdditionalInfoTextArea] = useState("");
+
 	const handleGettingLeads = async() => {
         try {
 			setIsLoadingLeads(true);
@@ -234,130 +236,10 @@ function Home(props) {
 							}catch(error){
 								console.log("An error has occured (CheckJobStatus): ", error);
 							}
-	
 						}
-
 					}
 				}
-			}, 500);
-			
-			// if (jobIdArray.success === true){
-			// 	console.log(jobIdArray);
-			// 	setJobIdArray(jobIdArray);
-
-			// 	let currentJobIdArray = [...jobIdArray.message];
-			// 	let j = 0;
-			// 	console.log(currentJobIdArray);
-
-			// 	async function x() {
-			// 		if (currentJobIdArray.length === 0) {
-			// 			clearInterval(runEveryTwoSeconds);
-							
-			// 			setIsLoadingAutoCreatingNotes(false);
-			// 			setLoadingLeadsButtonDisabled(false);
-			// 			setAutoCreatingNotesDisabled(false);
-
-			// 			for (let i = 0; i < 25; i++){
-			// 				peopleInterestsButtonDisabled[i] = false;
-			// 				companyInterestsButtonDisabled[i] = false;
-			// 				makingConnectNoteButtonDisabled[i] = false;
-			// 				sendingConnectNoteButtonDisabled[i] = false;
-			// 			}
-			// 		}
-			// 		else {
-			// 			for(let i = 0; i < currentJobIdArray.length; i++){
-			// 				// console.log(stopAutoCreatingNotesRef.current);
-			// 				// console.log(currentJobIdArray.length);
-
-			// 				if (stopAutoCreatingNotesRef.current) {
-			// 					if (currentJobIdArray.length > 0){
-			// 						try {
-			// 							const response = await fetch("https://sak-productivity-suite.herokuapp.com/stop-jobs-in-array", {
-			// 								method: "POST",
-			// 								headers: {
-			// 									"Content-Type": "application/json"
-			// 								},
-			// 								body: JSON.stringify({
-			// 									sessionId: sessionId,
-			// 									jobIdArray: currentJobIdArray
-			// 								})
-			// 							});
-							
-			// 							const data = await response.json();
-			// 							console.log("data from stopAutoCreatingNotesRef", data);
-										
-			// 						}catch(error){
-			// 							console.log(error);
-			// 						}
-			// 					}
-								
-			// 					clearInterval(runEveryTwoSeconds);
-								
-			// 					setIsLoadingAutoCreatingNotes(false);
-			// 					setLoadingLeadsButtonDisabled(false);
-			// 					setAutoCreatingNotesDisabled(false);
-
-			// 					for (let i = 0; i < 25; i++){
-			// 						peopleInterestsButtonDisabled[i] = false;
-			// 						companyInterestsButtonDisabled[i] = false;
-			// 						makingConnectNoteButtonDisabled[i] = false;
-			// 						sendingConnectNoteButtonDisabled[i] = false;
-			// 					}
-			// 					// Set back to false if this button is clicked again
-			// 					stopAutoCreatingNotesRef.current = false;
-			// 					break;
-			// 				}
-			// 				try {
-			// 					const response = await fetch("https://sak-productivity-suite.herokuapp.com/job-status", {
-			// 						method: "POST",
-			// 						headers: {
-			// 							"Content-Type": "application/json"
-			// 						},
-			// 						body: JSON.stringify({
-			// 							jobId: currentJobIdArray[i]
-			// 						})
-			// 					});
-								
-			// 					const data = await response.json();
-			// 					const status = data.status;
-								
-			// 					if (status === "finished") {
-			// 						const resultArray = data.result;
-			// 						console.log("Successfully gotten Connect note array: ", resultArray);
-
-			// 						const newConnectNoteArray = [...connectNoteArray];
-			// 						newConnectNoteArray[j] = resultArray;
-			// 						setConnectNoteArray(newConnectNoteArray);
-
-			// 						setShowProfileArea(true);
-			
-			// 						peopleInterestsButtonDisabled[j] = false;
-			// 						companyInterestsButtonDisabled[j] = false;
-			// 						makingConnectNoteButtonDisabled[j] = false;
-			// 						sendingConnectNoteButtonDisabled[j] = false;
-
-			// 						// Remove this i from currentJobIdArray
-			// 						// currentJobIdArray.splice(i, 1);
-			// 						// console.log("current", currentJobIdArray.length);
-			// 						j += 1;
-			// 					} 
-			// 				}catch(error){
-			// 					console.log("An error has occured (CheckJobStatus): ", error);
-			// 				}
-			// 			}
-			// 		}
-			// 	}
-
-				// async function runEveryTwoSeconds() {
-				// 	// Wait for the previous execution to complete
-				// 	await new Promise(resolve => setTimeout(resolve, 10000));
-				// 	// Run the async function
-				// 	await x();
-				// 	// Call this function again
-				// 	runEveryTwoSeconds();
-				// }				  
-				// runEveryTwoSeconds();
-				  
+			}, 500);				  
 			}
 			else {
 				<ErrorModal errorMessage={jobIdArray.message}/>
@@ -655,17 +537,17 @@ function Home(props) {
 		setConnectNoteArray(updatedConnectNoteArray);
 	};	  
 
-	// let stopSignal = new Promise(resolve => {});
 	const handleStopAutoCreatingNotes = () => {
 		stopAutoCreatingNotesRef.current = true;
-
-		// setStopAutoCreatingNotes(true);
-		// stopSignal = new Promise(resolve => resolve("stop"));
 	}
+
+	const handleAdditionalInfoTextAreaChange = (event) => {
+		const changedInfo = event.target.value;
+		setAdditionalInfoTextArea(changedInfo);
+	};
 
 	return (
 		<>
-
 			<div style={{ display: 'flex', justifyContent: 'center', padding: '20px'}}>
 				<Button className="myButton" variant="primary" type="button" onClick={handleGettingLeads} disabled={isLoadingLeads || loadingLeadsButtonDisabled}>
 					{isLoadingLeads ? 
@@ -689,7 +571,18 @@ function Home(props) {
 
 			</div>
 
-			<div className="mx-auto" style={{ maxWidth: "800px", paddingBottom: '20px'}}>
+			<div className="mx-auto" style={{ maxWidth: '800px', paddingBottom: '20px'}}>
+				{leadsArray.length > 0 && 
+					<Form.Group>
+						<Form.Control
+							as="textarea"
+							value={additionalInfoTextArea} 
+							onChange={ (event) => {
+								handleAdditionalInfoTextAreaChange(event)
+							}}
+						/>
+					</Form.Group>
+				}
 				<Accordion alwaysOpen>
 					{leadsArray.map((leadInfo, index) => (
 						<Accordion.Item eventKey = {index.toString()}
