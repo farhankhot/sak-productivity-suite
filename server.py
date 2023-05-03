@@ -344,7 +344,7 @@ def SalesNavigatorLeadsInfo(api):
 # TODO: Change function name to show that this is returning Connect note not info
 # TODO: Get interests at random
 # TODO: Use my profile info as well
-def GetLeadInfo(cookie_dict, lead, profile_urn, additional_info_text=""):
+def GetLeadInfo(cookie_dict, lead, profile_urn, additional_info_text="", interests=""):
 
     import time
     time.sleep(3)
@@ -412,43 +412,45 @@ def GetLeadInfo(cookie_dict, lead, profile_urn, additional_info_text=""):
 
     # ============= Getting interests =================================
     lead_interests = []
-    interests = api._fetch(f"/graphql?includeWebMetadata=True&variables=(profileUrn:urn%3Ali%3Afsd_profile%3A{profile_urn},sectionType:interests,tabIndex:1,locale:en_US)&&queryId=voyagerIdentityDashProfileComponents.38247e27f7b9b2ecbd8e8452e3c1a02c")
-    interests = interests.json()
-    interests_json = json.dumps(interests)
+    if interests == "":
+        interests = api._fetch(f"/graphql?includeWebMetadata=True&variables=(profileUrn:urn%3Ali%3Afsd_profile%3A{profile_urn},sectionType:interests,tabIndex:1,locale:en_US)&&queryId=voyagerIdentityDashProfileComponents.38247e27f7b9b2ecbd8e8452e3c1a02c")
+        interests = interests.json()
+        interests_json = json.dumps(interests)
 
-    # print(interests_json)
+        # print(interests_json)
 
-    pattern = re.compile(r'"(urn:li:fsd_profile:[^"]*)"')
-    matches = re.findall(pattern, interests_json)
-    people_the_profile_is_interested_in_set = set(matches)
-    people_the_profile_is_interested_in = [s.split(':')[-1] for s in people_the_profile_is_interested_in_set]
+        pattern = re.compile(r'"(urn:li:fsd_profile:[^"]*)"')
+        matches = re.findall(pattern, interests_json)
+        people_the_profile_is_interested_in_set = set(matches)
+        people_the_profile_is_interested_in = [s.split(':')[-1] for s in people_the_profile_is_interested_in_set]
 
-    # print(people_the_profile_is_interested_in)
+        # print(people_the_profile_is_interested_in)
 
-    pattern_for_company = re.compile(r'"(urn:li:fsd_company:[^"]*)"')
-    matches_for_company = re.findall(pattern_for_company, interests_json)
-    companies_the_profile_is_interested_in_set = set(matches_for_company)
-    companies_the_profile_is_interested_in = [s.split(':')[-1] for s in companies_the_profile_is_interested_in_set]
+        pattern_for_company = re.compile(r'"(urn:li:fsd_company:[^"]*)"')
+        matches_for_company = re.findall(pattern_for_company, interests_json)
+        companies_the_profile_is_interested_in_set = set(matches_for_company)
+        companies_the_profile_is_interested_in = [s.split(':')[-1] for s in companies_the_profile_is_interested_in_set]
 
-    # print(companies_the_profile_is_interested_in)
+        # print(companies_the_profile_is_interested_in)
 
-    for i, profile_urn in enumerate(people_the_profile_is_interested_in):
-        if i == 1:
-            break
-        temp = api.get_profile(profile_urn)
-        first_name = temp['firstName']
-        last_name = temp['lastName']
-        full_name = first_name + " " + last_name 
-        lead_interests.append(full_name)
-    
-    for i, company_id in enumerate(companies_the_profile_is_interested_in):
-        if i == 1:
-            break
-        temp = api.get_company(company_id)
-        company_name = temp['universalName']
-        lead_interests.append([company_name, company_id])
-    
-    lead_info.append(lead_interests)
+        for i, profile_urn in enumerate(people_the_profile_is_interested_in):
+            if i == 1:
+                break
+            temp = api.get_profile(profile_urn)
+            first_name = temp['firstName']
+            last_name = temp['lastName']
+            full_name = first_name + " " + last_name 
+            lead_interests.append(full_name)
+        
+        for i, company_id in enumerate(companies_the_profile_is_interested_in):
+            if i == 1:
+                break
+            temp = api.get_company(company_id)
+            company_name = temp['universalName']
+            lead_interests.append([company_name, company_id])
+        
+        lead_info.append(lead_interests)
+        interests = " ".join(str(x) for x in lead_info)
     # ============= Getting interests =================================
 
     # ============= Get my info =================================
@@ -471,8 +473,12 @@ def GetLeadInfo(cookie_dict, lead, profile_urn, additional_info_text=""):
         full_lead_profile += " Summary: " + lead_summary
     if lead_location != "":
         full_lead_profile += " Location: " + lead_location
+    
     if len(lead_interests) > 0:
-        full_lead_profile += " Interests: " + " ".join(str(x) for x in lead_info)
+        full_lead_profile += " Interests: " + interests
+    elif interests != "":
+        full_lead_profile += " Interests: " + interests
+        
     if len(lead_relationships) > 0:
         full_lead_profile += " Mutual relationships: " + " ".join(str(x) for x in lead_relationships)
     if additional_info_text != "":
@@ -569,7 +575,8 @@ def get_lead_info():
         member_urn_id_list = request.json['memberUrnIdArray'] # type: ignore
 
         additional_info_text = request.json['additionalInfoText'] # type: ignore
-        print("additional_info_text is ", additional_info_text)
+        # print("additional_info_text is ", additional_info_text)
+        interests = request.json['interests'] # type: ignore
 
         job_ids=[]
         for i, profile_urn in enumerate(member_urn_id_list):
@@ -578,7 +585,7 @@ def get_lead_info():
             if i == 1:
                 break
     
-            data = q.enqueue(GetLeadInfo, cookie_dict, leads_list[i], profile_urn, additional_info_text, result_ttl = 1, job_timeout=600)
+            data = q.enqueue(GetLeadInfo, cookie_dict, leads_list[i], profile_urn, additional_info_text, interests, result_ttl = 1, job_timeout=600)
             job_id = data.get_id()
             job_ids.append(job_id)
 

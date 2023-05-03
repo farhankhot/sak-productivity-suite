@@ -84,20 +84,32 @@ function Home(props) {
 	};
 
 	// This button goes through the lead list and creates a Connect note for them
-	const handleAutoCreatingNotes = async(sessionId, memberUrnId) => {
+	const handleAutoCreatingNotes = async(sessionId, index = null) => {
 		try {
+
 			setIsLoadingAutoCreatingNotes(true);
 			setLoadingLeadsButtonDisabled(true);
 			setAutoCreatingNotesDisabled(true);
-			
-			// This disables all other buttons when Auto Create notes button is clicked
-			// I could create a copy of each array, change element and set it. But for now, this works
-			for (let i = 0; i < 25; i++){
-				peopleInterestsButtonDisabled[i] = true;
-				companyInterestsButtonDisabled[i] = true;
-				makingConnectNoteButtonDisabled[i] = true;
-				sendingConnectNoteButtonDisabled[i] = true;
 
+			if (index === null){
+				// This disables all other buttons when Auto Create notes button is clicked
+				// I could create a copy of each array, change element and set it. But for now, this works
+				for (let i = 0; i < 25; i++){
+					peopleInterestsButtonDisabled[i] = true;
+					companyInterestsButtonDisabled[i] = true;
+					makingConnectNoteButtonDisabled[i] = true;
+					sendingConnectNoteButtonDisabled[i] = true;
+				}
+			}
+			else {
+				peopleInterestsButtonDisabled[index] = false;
+				companyInterestsButtonDisabled[index] = false;
+				makingConnectNoteButtonDisabled[index] = false;
+				sendingConnectNoteButtonDisabled[index] = false;
+			}
+			const interests = "";
+			if (index !== null && selectedInterests[index].length !== 0){
+				interests = selectedInterests[index].toString()
 			}
 			const response = await fetch("https://sak-productivity-suite.herokuapp.com/get-lead-info", {
 				method: "POST",
@@ -108,7 +120,8 @@ function Home(props) {
 					sessionId: sessionId,
 					leadsArray: leadsArray,
 					memberUrnIdArray: memberUrnIdArray,
-					...(additionalInfoText !== "" ? {additionalInfoText: additionalInfoText} : {additionalInfoText: ""})
+					...(additionalInfoText !== "" ? {additionalInfoText: additionalInfoText} : {additionalInfoText: ""}),
+					...(interests !== "" ? {interests: interests} : {interests: ""})
 				})
 			});
 			const jobIdArray = await response.json();
@@ -127,11 +140,19 @@ function Home(props) {
 					setLoadingLeadsButtonDisabled(false);
 					setAutoCreatingNotesDisabled(false);
 
-					for (let i = 0; i < 25; i++){
-						peopleInterestsButtonDisabled[i] = false;
-						companyInterestsButtonDisabled[i] = false;
-						makingConnectNoteButtonDisabled[i] = false;
-						sendingConnectNoteButtonDisabled[i] = false;
+					if (index === null){
+						for (let i = 0; i < 25; i++){
+							peopleInterestsButtonDisabled[i] = false;
+							companyInterestsButtonDisabled[i] = false;
+							makingConnectNoteButtonDisabled[i] = false;
+							sendingConnectNoteButtonDisabled[i] = false;
+						}
+					}
+					else {
+						peopleInterestsButtonDisabled[index] = false;
+						companyInterestsButtonDisabled[index] = false;
+						makingConnectNoteButtonDisabled[index] = false;
+						sendingConnectNoteButtonDisabled[index] = false;
 					}
 				}
 				else {
@@ -151,11 +172,19 @@ function Home(props) {
 							setLoadingLeadsButtonDisabled(false);
 							setAutoCreatingNotesDisabled(false);
 
-							for (let i = 0; i < 25; i++){
-								peopleInterestsButtonDisabled[i] = false;
-								companyInterestsButtonDisabled[i] = false;
-								makingConnectNoteButtonDisabled[i] = false;
-								sendingConnectNoteButtonDisabled[i] = false;
+							if (index === null){
+								for (let i = 0; i < 25; i++){
+									peopleInterestsButtonDisabled[i] = false;
+									companyInterestsButtonDisabled[i] = false;
+									makingConnectNoteButtonDisabled[i] = false;
+									sendingConnectNoteButtonDisabled[i] = false;
+								}
+							}
+							else {
+								peopleInterestsButtonDisabled[index] = false;
+								companyInterestsButtonDisabled[index] = false;
+								makingConnectNoteButtonDisabled[index] = false;
+								sendingConnectNoteButtonDisabled[index] = false;
 							}
 						}
 
@@ -187,12 +216,20 @@ function Home(props) {
 								setIsLoadingAutoCreatingNotes(false);
 								setLoadingLeadsButtonDisabled(false);
 								setAutoCreatingNotesDisabled(false);
-	
-								for (let i = 0; i < 25; i++){
-									peopleInterestsButtonDisabled[i] = false;
-									companyInterestsButtonDisabled[i] = false;
-									makingConnectNoteButtonDisabled[i] = false;
-									sendingConnectNoteButtonDisabled[i] = false;
+
+								if (index === null) {
+									for (let i = 0; i < 25; i++){
+										peopleInterestsButtonDisabled[i] = false;
+										companyInterestsButtonDisabled[i] = false;
+										makingConnectNoteButtonDisabled[i] = false;
+										sendingConnectNoteButtonDisabled[i] = false;
+									}
+								}
+								else {
+									peopleInterestsButtonDisabled[index] = false;
+									companyInterestsButtonDisabled[index] = false;
+									makingConnectNoteButtonDisabled[index] = false;
+									sendingConnectNoteButtonDisabled[index] = false;
 								}
 								// Set back to false if this button is clicked again
 								stopAutoCreatingNotesRef.current = false;
@@ -214,25 +251,40 @@ function Home(props) {
 								const status = data.status;
 								
 								if (status === "finished") {
+
 									const resultArray = data.result;
 									console.log("Successfully gotten Connect note array: ", resultArray);
 	
 									const newConnectNoteArray = [...connectNoteArray];
-									newConnectNoteArray[i] = resultArray;
-									setConnectNoteArray(newConnectNoteArray);
-	
-									setShowProfileArea(true);
-			
-									peopleInterestsButtonDisabled[i] = false;
-									companyInterestsButtonDisabled[i] = false;
-									makingConnectNoteButtonDisabled[i] = false;
-									sendingConnectNoteButtonDisabled[i] = false;
-	
-									// Remove this i from currentJobIdArray
-									// currentJobIdArray.splice(i, 1);
-									currentJobIdArray[i] = "None"
-									console.log("current", currentJobIdArray.length);
-									// j += 1;
+
+									if (index === null) {
+										newConnectNoteArray[i] = resultArray;
+										setConnectNoteArray(newConnectNoteArray);
+		
+										setShowProfileArea(true);
+				
+										peopleInterestsButtonDisabled[i] = false;
+										companyInterestsButtonDisabled[i] = false;
+										makingConnectNoteButtonDisabled[i] = false;
+										sendingConnectNoteButtonDisabled[i] = false;
+		
+										currentJobIdArray[i] = "None"
+										console.log("current", currentJobIdArray.length);
+										// j += 1;
+									}else {
+										newConnectNoteArray[index] = resultArray;
+										setConnectNoteArray(newConnectNoteArray);
+		
+										setShowProfileArea(true);
+				
+										peopleInterestsButtonDisabled[index] = false;
+										companyInterestsButtonDisabled[index] = false;
+										makingConnectNoteButtonDisabled[index] = false;
+										sendingConnectNoteButtonDisabled[index] = false;
+		
+										currentJobIdArray[index] = "None"
+										console.log("current", currentJobIdArray.length);
+									}
 								} 
 							}catch(error){
 								console.log("An error has occured (CheckJobStatus): ", error);
@@ -558,7 +610,7 @@ function Home(props) {
 						</> : 'Get Leads'}
 				</Button>
 
-				{showCreateConnectNoteButton && <Button className="myButton" variant="primary" type="button" onClick={() => handleAutoCreatingNotes(sessionId, leadsArray[0][4])} style={{marginLeft: '10px'}} disabled={autoCreatingNotesDisabled}>
+				{showCreateConnectNoteButton && <Button className="myButton" variant="primary" type="button" onClick={() => handleAutoCreatingNotes(sessionId)} style={{marginLeft: '10px'}} disabled={autoCreatingNotesDisabled}>
 					{isLoadingAutoCreatingNotes ? 
 					<>
 						<Spinner animation="border" size="sm" />
@@ -569,10 +621,9 @@ function Home(props) {
 				{isLoadingAutoCreatingNotes && <Button className="myButton" variant="primary" type="button" onClick={handleStopAutoCreatingNotes} style={{marginLeft: '20px'}}>
 					Stop Auto Create notes
 				</Button>}
-
 			</div>
 
-			<div className="mx-auto" style={{ maxWidth: '800px', paddingBottom: '20px'}}>
+			<div style={{ display: "flex", justifyContent: "flex-end" }}>
 				{leadsArray.length > 0 && 
 					<Form.Group>
 						<Form.Control
@@ -584,6 +635,9 @@ function Home(props) {
 						/>
 					</Form.Group>
 				}
+			</div>
+
+			<div className="mx-auto" style={{ maxWidth: '800px', paddingBottom: '20px'}}>
 				<Accordion alwaysOpen>
 					{leadsArray.map((leadInfo, index) => (
 						<Accordion.Item eventKey = {index.toString()}
@@ -622,7 +676,7 @@ function Home(props) {
 												</> : 'Get company interests'}
 											</Button>{' '}
 
-											<Button className="myButton" onClick={ () => {
+											{/* <Button className="myButton" onClick={ () => {
 												handleMakingConnectNote(leadInfo[0], index)
 											}} disabled={isLoadingMakingNote[index] || makingConnectNoteButtonDisabled[index] } style={{marginLeft: '30px'}}>
 												{isLoadingMakingNote[index] ? 
@@ -630,7 +684,14 @@ function Home(props) {
 													<Spinner animation="border" size="sm" />
 													 Making note...
 												</> : 'Make Connect Note'}
+											</Button>{' '} */}
+
+											<Button className="myButton" onClick={ () => {
+												handleAutoCreatingNotes(sessionId, index)
+											}} disabled={isLoadingMakingNote[index] || makingConnectNoteButtonDisabled[index] } style={{marginLeft: '30px'}}>
+												Make connect note
 											</Button>{' '}
+
 
 											<Button className="myButton" onClick={ () => {
 												handleSendingConnectNote(sessionId, leadInfo[4], index)
