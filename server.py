@@ -463,7 +463,7 @@ def GetLeadInfo(cookie_dict, lead, profile_urn):
     #     " " + lead_summary + " " + lead_location + " ".join(str(x) for x in lead_info)
     # print(full_lead_profile)
 
-    full_lead_profile = f"You are {my_prof_full_name}, a {my_prof_occupation} at DTC Force, located in Toronto. This is the profile of a person:"
+    full_lead_profile = f"You are {my_prof_full_name}, a {my_prof_occupation} at DTC Force, located in Toronto. This is the profile of a person: Name: {lead[0]}"
 
     if lead_headline != "":
         full_lead_profile += " About: " + lead_headline
