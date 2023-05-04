@@ -47,6 +47,8 @@ function Home(props) {
 
 	const [additionalInfoText, setAdditionalInfoText] = useState("");
 
+	const [specificAdditionalInfoText, setSpecificAdditionalInfoText] = useState([]);
+
 	const handleGettingLeads = async() => {
         try {
 			setIsLoadingLeads(true);
@@ -126,7 +128,8 @@ function Home(props) {
 					sessionId: sessionId,
 					leadsArray: leadsArray,
 					memberUrnIdArray: memberUrnIdArray,
-					...(additionalInfoText !== "" ? {additionalInfoText: additionalInfoText} : {additionalInfoText: ""}),
+					...(specificAdditionalInfoText[index] !== "" && index !== null ? {additionalInfoText: specificAdditionalInfoText[index]} : {additionalInfoText: ""}),
+					...(additionalInfoText !== "" && index === null ? {additionalInfoText: additionalInfoText} : {additionalInfoText: ""}),
 					...(interests !== "" ? {interests: interests} : {interests: ""})
 				})
 			});
@@ -610,6 +613,12 @@ function Home(props) {
 		setConnectNoteArray(updatedConnectNoteArray);
 	};	  
 
+	const handleSpecificAdditionalInfoTextAreaChange = (event, index) => {
+		const updatedSpecificAdditionalInfoArray = [...specificAdditionalInfoText];
+		updatedSpecificAdditionalInfoArray[index] = event.target.value;
+		setSpecificAdditionalInfoText(updatedSpecificAdditionalInfoArray);
+	};	  
+
 	const handleStopAutoCreatingNotes = () => {
 		stopAutoCreatingNotesRef.current = true;
 	}
@@ -646,7 +655,7 @@ function Home(props) {
 			<div style={{ display: 'flex', justifyContent: 'flex-end', paddingRight: '10px' }}>
 				{leadsArray.length > 0 && 
 					<Form.Group>
-						<Form.Label>Add info</Form.Label>
+						<Form.Label>Add request</Form.Label>
 						<Form.Control
 							as="textarea"
 							value={additionalInfoText} 
@@ -672,6 +681,16 @@ function Home(props) {
 											value={connectNoteArray[index]} 
 											onChange={ (event) => {
 												handleNoteTextAreaChange(event, index)
+											}}
+										/>
+									</Form.Group>
+									<Form.Group>
+										<Form.Control
+											placeholder="Enter any additional request"
+											as="textarea"
+											value={specificAdditionalInfoText[index]} 
+											onChange={ (event) => {
+												handleSpecificAdditionalInfoTextAreaChange(event, index)
 											}}
 										/>
 									</Form.Group>
