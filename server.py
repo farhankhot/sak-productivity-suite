@@ -346,6 +346,8 @@ def SalesNavigatorLeadsInfo(api):
 # TODO: Use my profile info as well
 def GetLeadInfo(cookie_dict, lead, profile_urn, additional_info_text="", interests=""):
 
+    print("additional info: ", additional_info_text)
+
     import time
     time.sleep(3)
 
