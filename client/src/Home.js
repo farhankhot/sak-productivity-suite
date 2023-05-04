@@ -118,6 +118,13 @@ function Home(props) {
 			if (index !== null && selectedInterests[index].length !== 0){
 				interests = selectedInterests[index].toString();
 			}
+			let additionalInfo = "";
+			if (additionalInfoText !== "" && index === null){
+				additionalInfo = additionalInfoText;
+			}
+			else if(index !== null && specificAdditionalInfoText[index] !== ""){
+				additionalInfo = specificAdditionalInfoText[index];
+			}
 			console.log("test", specificAdditionalInfoText[index]);
 			const response = await fetch("https://sak-productivity-suite.herokuapp.com/get-lead-info", {
 				method: "POST",
@@ -128,8 +135,9 @@ function Home(props) {
 					sessionId: sessionId,
 					leadsArray: leadsArray,
 					memberUrnIdArray: memberUrnIdArray,
-					...(specificAdditionalInfoText[index] !== "" && index !== null ? {additionalInfoText: specificAdditionalInfoText[index]} : {additionalInfoText: ""}),
-					...(additionalInfoText !== "" && index === null ? {additionalInfoText: additionalInfoText} : {additionalInfoText: ""}),
+					additionalInfoText: additionalInfo,
+					// ...(specificAdditionalInfoText[index] !== "" && index !== null ? {additionalInfoText: specificAdditionalInfoText[index]} : {additionalInfoText: ""}),
+					// ...(additionalInfoText !== "" && index === null ? {additionalInfoText: additionalInfoText} : {additionalInfoText: ""}),
 					...(interests !== "" ? {interests: interests} : {interests: ""})
 				})
 			});
