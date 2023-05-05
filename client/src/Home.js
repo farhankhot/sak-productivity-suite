@@ -125,6 +125,7 @@ function Home(props) {
 			else if(index !== null && specificAdditionalInfoText[index] !== ""){
 				additionalInfo = specificAdditionalInfoText[index];
 			}
+
 			console.log("test", specificAdditionalInfoText[index]);
 			const response = await fetch("https://sak-productivity-suite.herokuapp.com/get-lead-info", {
 				method: "POST",
@@ -133,9 +134,13 @@ function Home(props) {
 				},
 				body: JSON.stringify({
 					sessionId: sessionId,
-					leadsArray: leadsArray,
-					memberUrnIdArray: memberUrnIdArray,
+					// leadsArray: leadsArray,
+					// memberUrnIdArray: memberUrnIdArray,
+
+					...(index === null ? {leadsArray: leadsArray} : {leadsArray: leadsArray[index]}),
+					...(index === null ? {memberUrnIdArray: memberUrnIdArray} : {memberUrnIdArray: memberUrnIdArray[index]}),
 					additionalInfoText: additionalInfo,
+					
 					// ...(specificAdditionalInfoText[index] !== "" && index !== null ? {additionalInfoText: specificAdditionalInfoText[index]} : {additionalInfoText: ""}),
 					// ...(additionalInfoText !== "" && index === null ? {additionalInfoText: additionalInfoText} : {additionalInfoText: ""}),
 					...(interests !== "" ? {interests: interests} : {interests: ""})
