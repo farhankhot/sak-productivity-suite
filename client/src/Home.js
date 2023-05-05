@@ -137,7 +137,7 @@ function Home(props) {
 					// leadsArray: leadsArray,
 					// memberUrnIdArray: memberUrnIdArray,
 
-					...(index === null ? {leadsArray: leadsArray} : {leadsArray: leadsArray[index]}),
+					...(index === null ? {leadsArray: leadsArray} : {leadsArray: [leadsArray[index]]}),
 					...(index === null ? {memberUrnIdArray: memberUrnIdArray} : {memberUrnIdArray: [memberUrnIdArray[index]]}),
 					additionalInfoText: additionalInfo,
 
