@@ -140,7 +140,7 @@ function Home(props) {
 					...(index === null ? {leadsArray: leadsArray} : {leadsArray: leadsArray[index]}),
 					...(index === null ? {memberUrnIdArray: memberUrnIdArray} : {memberUrnIdArray: memberUrnIdArray[index]}),
 					additionalInfoText: additionalInfo,
-					
+
 					// ...(specificAdditionalInfoText[index] !== "" && index !== null ? {additionalInfoText: specificAdditionalInfoText[index]} : {additionalInfoText: ""}),
 					// ...(additionalInfoText !== "" && index === null ? {additionalInfoText: additionalInfoText} : {additionalInfoText: ""}),
 					...(interests !== "" ? {interests: interests} : {interests: ""})
