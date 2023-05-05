@@ -138,7 +138,7 @@ function Home(props) {
 					// memberUrnIdArray: memberUrnIdArray,
 
 					...(index === null ? {leadsArray: leadsArray} : {leadsArray: leadsArray[index]}),
-					...(index === null ? {memberUrnIdArray: memberUrnIdArray} : {memberUrnIdArray: memberUrnIdArray[index]}),
+					...(index === null ? {memberUrnIdArray: memberUrnIdArray} : {memberUrnIdArray: [memberUrnIdArray[index]]}),
 					additionalInfoText: additionalInfo,
 
 					// ...(specificAdditionalInfoText[index] !== "" && index !== null ? {additionalInfoText: specificAdditionalInfoText[index]} : {additionalInfoText: ""}),
