@@ -343,10 +343,10 @@ def SalesNavigatorLeadsInfo(api):
 
 # TODO: Change function name to show that this is returning Connect note not info
 # TODO: Get interests at random
-# TODO: Use my profile info as well
 def GetLeadInfo(cookie_dict, lead, profile_urn, additional_info_text="", interests=""):
 
     print("additional info: ", additional_info_text)
+    print("profile_urn", profile_urn)
 
     import time
     time.sleep(3)
