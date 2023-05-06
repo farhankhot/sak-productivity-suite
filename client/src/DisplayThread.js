@@ -36,13 +36,15 @@ function DisplayThread() {
 					threadId: threadId
 				})
 			});
-			const data = await response.json();
-			if (data.success === true) {
-				const thread = data.message;
-				setConvoArray(thread);
+			if (response.ok){
+				const data = await response.json();
+				if (data.success === true) {
+					const thread = data.message;
+					setConvoArray(thread);
+				}
 			}else {
-				console.log("error occured");
-				setError(data.message);
+				console.log("error occurred");
+				setError("error occurred");
 			}
 		};	
 		getSingleThread();
