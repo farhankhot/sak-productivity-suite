@@ -26,7 +26,7 @@ function DisplayThread() {
 		
 		const getSingleThread = async () => {
 			// setIsLoadingThread(true);
-			const response = await fetch('https://sak-productivity-suite.herokuapp.com/get-convo-messages', {
+			const response = await fetch('https://sak-productivity-suite.herokuapp.com/get-convo-message', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -41,6 +41,7 @@ function DisplayThread() {
 				const thread = data.message;
 				setConvoArray(thread);
 			}else {
+				console.log("error occured");
 				setError(data.message);
 			}
 		};	
