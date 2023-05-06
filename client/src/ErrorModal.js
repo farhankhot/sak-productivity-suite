@@ -5,7 +5,7 @@ import Modal from 'react-bootstrap/Modal';
 function ErrorModal({ errorMessage }) {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
-
+  console.log("i should run");
   return (
     <>
 
