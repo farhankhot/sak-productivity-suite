@@ -26,7 +26,7 @@ function DisplayThread() {
 		
 		const getSingleThread = async () => {
 			// setIsLoadingThread(true);
-			const response = await fetch('https://sak-productivity-suite.herokuapp.com/get-convo-message', {
+			const response = await fetch('https://sak-productivity-suite.herokuapp.com/get-convo-messages', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
