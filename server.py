@@ -520,13 +520,27 @@ def GetLeadInfo(cookie_dict, lead, profile_urn, additional_info_text="", interes
 # ========== For testing ==================
 @app.route('/kill-all-jobs', methods=['POST'])
 def kill_all_jobs():
-    for i, job_id in enumerate(q.jobs):
-        print(job_id)
-        job = Job.fetch(job_id, connection=conn) # type: ignore
+    from rq.registry import StartedJobRegistry, FinishedJobRegistry, FailedJobRegistry, DeferredJobRegistry
+
+    # Get all the jobs in the queue
+    queued_jobs = q.jobs
+
+    # Get all the jobs that are currently running
+    started_job_registry = StartedJobRegistry(queue=q)
+    running_jobs = started_job_registry.get_job_ids()
+
+    # Get all the jobs that have finished
+    finished_job_registry = FinishedJobRegistry(queue=q)
+    finished_jobs = finished_job_registry.get_job_ids()
+    
+    for job in queued_jobs + running_jobs + finished_jobs:
         print(job)
-        send_stop_job_command(redis, job_id) # type: ignore
+        job = Job.fetch(job, connection=conn) # type: ignore
+        print(job)
+        send_stop_job_command(redis, job) # type: ignore
         job.cancel()
         job.delete()
+        
     print("killed all jobs")
     return jsonify(success=True, message="killed all jobs")
 # ========== For testing ==================
