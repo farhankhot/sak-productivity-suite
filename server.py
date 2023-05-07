@@ -666,7 +666,6 @@ def use_chatgpt():
 
 @app.route('/job-status', methods=['POST'])
 def job_status():
-
     try:
         job_id = request.json['jobId'] # type: ignore
         job = q.fetch_job(job_id)
@@ -674,7 +673,6 @@ def job_status():
         result = job.result # type: ignore    
         if job.is_failed: # type: ignore
             return jsonify(success=False, status=job_status, message="An error has occurred")
-        
         return jsonify(success=True, status=job_status, result=result)
     
     except Exception as e:

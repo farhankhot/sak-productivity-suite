@@ -293,6 +293,7 @@ function Home(props) {
 											const data = await response.json();
 											const status = data.status;
 											if (status === "failed"){
+												currentJobIdArray[i] = "None";
 												console.log("job status is ", status);
 												setError("An error has occurred");
 											}
