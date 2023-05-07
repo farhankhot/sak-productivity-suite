@@ -75,6 +75,10 @@ function Home(props) {
 					setMemberUrnIdArray(memberUrnIdArray);
 					setShowCreateConnectNoteButton(true);	
 				}
+				else{
+					console.log("error occurred");
+					setError("error occurred");
+				}
 			}else {
 				console.log("error occurred");
 				setError("error occurred");
