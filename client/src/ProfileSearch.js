@@ -49,6 +49,9 @@ function ProfileSearch(props) {
 					const resultArray = data.message;
 					setResultArray(resultArray);	
 					setJobFinished(true);
+				}else{
+					console.log("an error occurred");
+					setError("error occurred");
 				}
 			}else {
 				console.log("error occurred");
@@ -62,7 +65,7 @@ function ProfileSearch(props) {
 	
 	return (
 		<>
-			{error && <ErrorModal errorMessage={error}/>}
+			{error && <ErrorModal errorMessage={error} onClose={() => setError(null)} />}
 
 			{jobFinished === true ? (
 				navigate("/display-linkedin-search-results", {state: {sessionId: sessionId, resultArray: resultArray} })

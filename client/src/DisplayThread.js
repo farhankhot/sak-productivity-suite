@@ -41,6 +41,9 @@ function DisplayThread() {
 				if (data.success === true) {
 					const thread = data.message;
 					setConvoArray(thread);
+				}else{
+					console.log("an error occurred");
+					setError("error occurred");
 				}
 			}else {
 				console.log("error occurred");
@@ -76,6 +79,9 @@ function DisplayThread() {
 						setReplyTextArea(resultArray);	
 						setIsLoadingReply(false);
 					});
+				}else{
+					console.log("an error occurred");
+					setError("error occurred");
 				}
 			}else {
 				console.log("error occurred");
@@ -104,6 +110,9 @@ function DisplayThread() {
 				const data = await response.json();
 				if (data.success === true) {
 					console.log("Successfully sent the message to the person", data.message);
+				}else{
+					console.log("an error occurred");
+					setError("error occurred");
 				}
 			}else {
 				console.log("error occurred");
@@ -121,7 +130,7 @@ function DisplayThread() {
 		
 	return (
 		<>
-		{error && <ErrorModal errorMessage={error}/>}
+		{error && <ErrorModal errorMessage={error} onClose={() => setError(null)} />}
 		
 		<Container style={{ paddingTop: '20px', paddingBottom: '20px'}}>
 			<Card>

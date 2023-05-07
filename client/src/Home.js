@@ -341,6 +341,10 @@ function Home(props) {
 						}
 					}, 500);				  
 				}
+				else{
+					console.log("an error occurred");
+					setError("error occurred");
+				}
 			}
 			else {
 				console.log("error occurred");
@@ -395,6 +399,10 @@ function Home(props) {
 						
 						setAutoCreatingNotesDisabled(false);
 					});
+				}
+				else{
+					console.log("an error occurred");
+					setError("error occurred");
 				}	
 			}else {
 				console.log("error occurred");
@@ -448,7 +456,10 @@ function Home(props) {
 						
 						setAutoCreatingNotesDisabled(false);
 					});
-				}	
+				}else{
+					console.log("an error occurred");
+					setError("error occurred");
+				}
 			}else {
 				console.log("error occurred");
 				setError("error occurred");

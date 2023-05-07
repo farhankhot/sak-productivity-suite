@@ -59,6 +59,9 @@ function DisplaySearchResults() {
 						}
 						setPeopleInterestsArray(newArray);	
 					});
+				}else{
+					console.log("an error occurred");
+					setError("error occurred");
 				}
 			}else {
 				console.log("error occurred");
@@ -101,6 +104,9 @@ function DisplaySearchResults() {
 						}
 						setCompanyInterestsArray(newArray);
 					});
+				}else{
+					console.log("an error occurred");
+					setError("error occurred");
 				}
 			}else{
 				console.log("error occurred");
@@ -114,7 +120,7 @@ function DisplaySearchResults() {
 			
 	return (
 		<>
-			{error && <ErrorModal errorMessage={error}/>}
+			{error && <ErrorModal errorMessage={error} onClose={() => setError(null)} />}
 
 			<Container>
 				<h1>Search Results:</h1>

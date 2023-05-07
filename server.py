@@ -2,7 +2,6 @@
 # cookie, not cookies
 # LinkedIn, not Linkedin
 
-# TODO: Move from print to logging
 import logging
 import re
 import asyncio
@@ -27,6 +26,8 @@ from EdgeGPT import Chatbot
 import dbCon
 
 import requests
+
+import time
 
 q = Queue(connection=conn)
 
@@ -341,14 +342,12 @@ def SalesNavigatorLeadsInfo(api):
 
     return lead_list, member_urn_id_list
 
-# TODO: Change function name to show that this is returning Connect note not info
 # TODO: Get interests at random
 def GetLeadInfo(cookie_dict, lead, profile_urn, additional_info_text="", interests=""):
 
     print("additional info: ", additional_info_text)
     print("profile_urn", profile_urn)
 
-    import time
     time.sleep(3)
 
     api = Linkedin(cookies=cookie_dict) # type: ignore
@@ -515,6 +514,14 @@ def GetLeadInfo(cookie_dict, lead, profile_urn, additional_info_text="", interes
 
 # ================================================ ROUTES START =============================================
 
+# ========== For testing ==================
+@app.route('/kill-all-jobs', methods=['POST'])
+def kill_all_jobs():
+    q.empty()
+    print("killed all jobs")
+    return jsonify(success=True, message="killed all jobs")
+# ========== For testing ==================
+
 @app.route('/search-zoominfo', methods=['POST'])
 def search_zoominfo():
     try:
@@ -667,6 +674,7 @@ def job_status():
     except Exception as e:
         return jsonify(success=False, message=str(e))
 
+# Used when searching for leads in DB
 @app.route('/get-people-interests', methods=['POST'])
 def get_people_interests():
 
@@ -688,6 +696,7 @@ def get_people_interests():
     except Exception as e:
         return jsonify(success=False, message=str(e))
 
+# Used when searching for leads in DB
 @app.route('/get-company-interests', methods=['POST'])
 def get_company_interests():
 

@@ -37,6 +37,10 @@ function DisplayConvos(props) {
 					setThreadArray(thread);
 					setIsLoadingConvos(false);
 				}
+				else{
+					console.log("an error occurred");
+					setError("error occurred");
+				}
 			}else {
 				console.log("error occurred");
 				setError("error occurred");
@@ -54,7 +58,7 @@ function DisplayConvos(props) {
 	
 	return (
 		<>
-		{error && <ErrorModal errorMessage={error}/>}
+		{error && <ErrorModal errorMessage={error} onClose={() => setError(null)} />}
 
 		{ (threadName && threadId) ? (
 			navigate("/display-thread", {state: {

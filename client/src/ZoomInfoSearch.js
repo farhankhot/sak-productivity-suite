@@ -47,6 +47,9 @@ function ZoomInfoSearch() {
 	
 					setResultArray(resultArray);	
 					setJobFinished(true);
+				}else{
+					console.log("an error occurred");
+					setError("error occurred");
 				}
 			}else {
 				console.log("error occurred");
@@ -60,7 +63,7 @@ function ZoomInfoSearch() {
 	
 	return (
 		<>
-			{error && <ErrorModal errorMessage={error}/>}
+			{error && <ErrorModal errorMessage={error} onClose={() => setError(null)} />}
 
 			{jobFinished === true ? (
 				navigate("/display-zoominfo-search-results", {state: {resultArray: resultArray} })
