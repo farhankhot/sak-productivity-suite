@@ -549,7 +549,7 @@ function Home(props) {
 
 	return (
 		<>
-			{error && <ErrorModal errorMessage={error}/>}
+			{error && <ErrorModal errorMessage={error} onClose={() => setError(null)}/>}
 
 			<div style={{ display: 'flex', justifyContent: 'center', padding: '20px'}}>
 				<Button className="myButton" variant="primary" type="button" onClick={handleGettingLeads} disabled={isLoadingLeads || loadingLeadsButtonDisabled}>
