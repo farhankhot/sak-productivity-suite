@@ -347,7 +347,7 @@ def SalesNavigatorLeadsInfo(api):
 
 # TODO: Get interests at random
 def GetLeadInfo(cookie_dict, lead, profile_urn, additional_info_text="", interests=""):
-
+    kkkk
     print("additional info: ", additional_info_text)
     print("profile_urn", profile_urn)
 
@@ -518,11 +518,11 @@ def GetLeadInfo(cookie_dict, lead, profile_urn, additional_info_text="", interes
 # ================================================ ROUTES START =============================================
 
 # ========== For testing ==================
-@app.route('/kill-all-jobs', methods=['POST'])
-def kill_all_jobs():
-    q.empty()
-    print("killed all jobs")
-    return jsonify(success=True, message="killed all jobs")
+# @app.route('/kill-all-jobs', methods=['POST'])
+# def kill_all_jobs():
+#     q.empty()
+#     print("killed all jobs")
+#     return jsonify(success=True, message="killed all jobs")
 # ========== For testing ==================
 
 @app.route('/search-zoominfo', methods=['POST'])
@@ -672,6 +672,9 @@ def job_status():
         job = q.fetch_job(job_id)
         job_status = job.get_status() # type: ignore
         result = job.result # type: ignore    
+        if job.is_failed: # type: ignore
+            return jsonify(success=False, status=job_status, message="An error has occurred")
+        
         return jsonify(success=True, status=job_status, result=result)
     
     except Exception as e:

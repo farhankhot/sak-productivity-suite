@@ -292,8 +292,12 @@ function Home(props) {
 										if (response.ok){
 											const data = await response.json();
 											const status = data.status;
+											if (status === "failed"){
+												console.log("job status is ", status);
+												setError("An error has occurred");
+											}
 											
-											if (status === "finished") {
+											else if (status === "finished") {
 	
 												const resultArray = data.result;
 												console.log("Successfully gotten Connect note array: ", resultArray);
