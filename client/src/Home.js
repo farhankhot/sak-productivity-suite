@@ -80,7 +80,7 @@ function Home(props) {
 					setError("error occurred");
 				}
 			}else {
-				console.log("error occurred");
+				console.log("an error occurred");
 				setError("error occurred");
 			}
 		}catch(error){
