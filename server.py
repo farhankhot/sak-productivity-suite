@@ -2,7 +2,6 @@
 # cookie, not cookies
 # LinkedIn, not Linkedin
 
-import logging
 import re
 import asyncio
 import json
@@ -13,7 +12,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 
 # from bertopic import BERTopic
-import emoji
+# import emoji
 
 from rq import Queue
 from worker import conn
@@ -28,9 +27,6 @@ import dbCon
 import requests
 
 import time
-
-from worker import redis
-from rq.command import send_stop_job_command
 
 q = Queue(connection=conn)
 
@@ -89,84 +85,6 @@ def cookies_list_to_cookie_dict(cookies_list):
         temp = single_dict["value"].strip('"')
         cookie_dict[single_dict["name"]] = temp
     return cookie_dict    
-
-# def GenerateCorpus(api, profile):
-    
-    # convos = api.get_profile_posts(profile, post_count = 100)
-    
-    # post_corpus = []
-    # for post in convos:
-        # person_corpus = get_values_for_key("text", post)
-        # # print("ii", person_corpus)
-        # person_corpus = [item for item in person_corpus if isinstance(item, dict)]
-        # # print("jj",person_corpus)
-
-        # try:
-            # if len(person_corpus) == 1:
-                # person_corpus = get_values_for_key("text", person_corpus[0])
-            # else:
-                # person_corpus = get_values_for_key("text", person_corpus[1])
-            
-            # person_corpus = emoji.demojize(person_corpus)
-            # # print("dd", person_corpus)
-            # post_corpus.append(person_corpus)
-        # except:
-            # pass
-    
-    # print("post_corpus", post_corpus)
-    # return post_corpus
-        
-# def ModelAndReturnTopicList(api, profile_id):
-    
-    # post_corpus = GenerateCorpus(api, profile_id)
-    
-    # topic_model = BERTopic(min_topic_size=10, verbose=True)
-    # topics, _ = topic_model.fit_transform(post_corpus)
-    # freq = topic_model.get_topic_info()
-    # print(freq)
-    # print(freq.head(10))
-    # print(topic_model.get_topic(1))
-    
-    # # For now, let us send n if there are n or -1 if there are none
-    # # Need to see how can we send all? Maybe the best ones from a group
-    # final_topics = []
-    # if len(topic_model.get_topics()) == 1:
-        # for tup in topic_model.get_topic(-1):
-            # final_topics.append(tup[0])
-    # else:
-        # for topic in topic_model.get_topics():
-            # if topic != -1:
-                # for tup in topic_model.get_topic(topic):
-                    # final_topics.append(tup[0])
-    # print(final_topics)
-    
-    # return final_topics
-
-# def GetProfile(cookie_dict, search_params, location, mutual_connections_boolean):
-    
-#     api = Linkedin(cookies=cookie_dict) # type: ignore
-    
-#     list_of_people = api.search_people(keyword_title = search_params['title'],
-#                                         regions = [location if location != '' else ''],
-#                                         keyword_company = search_params['currentCompany'],
-#                                         network_depth = "S" if mutual_connections_boolean == True else "O",
-#                                         limit=5)
-    
-#     # print(list_of_people)
-    
-#     full_profile_list = []
-
-#     for person in list_of_people[0:5]:
-#         profile_info = {}
-#         profile_info['full_name'] = person['name']
-#         profile_info['latest_title'] = person['jobtitle']       
-#         profile_info['public_id'] = person['public_id']
-#         profile_info['profile_urn'] = person['urn_id']
-#         # profile_info['profile_id'] = person['profile_id']
-       
-#         full_profile_list.append(profile_info)
-
-#     return full_profile_list
     
 def GetGeoUrn(api, location):
 
@@ -465,10 +383,6 @@ def GetLeadInfo(cookie_dict, lead, profile_urn, additional_info_text="", interes
     my_prof_occupation = my_prof_mini_profile['occupation'] 
     # ============= Get my info =================================
 
-    # full_lead_profile = lead[0] + " " + lead_headline + \
-    #     " " + lead_summary + " " + lead_location + " ".join(str(x) for x in lead_info)
-    # print(full_lead_profile)
-
     full_lead_profile = f"You are {my_prof_full_name}, a {my_prof_occupation} at DTC Force, located in Toronto. This is the profile of a person: Name: {lead[0]}"
 
     if lead_headline != "":
@@ -489,25 +403,6 @@ def GetLeadInfo(cookie_dict, lead, profile_urn, additional_info_text="", interes
         full_lead_profile += " Additional info: " + additional_info_text
     
     full_lead_profile += " Write a connect note to them. Make it casual but eyecatching. Do not use more than 50 words."
-
-    # if len(lead_info) == 0 and lead_summary != "":
-    #     full_lead_profile = lead[0] + " " + lead_headline + \
-    #     " " + lead_summary + " " + lead_location
-    #     prompt = "You are an Account Executive in Toronto. This is the profile of a person: " + full_lead_profile + \
-    #     " Write a connect note to them. Make it casual but eyecatching. Keep in mind to always only use 50 words."
-    
-    # elif len(lead_info) == 0 and lead_summary == "":
-    #     full_lead_profile = lead[0] + " " + lead_headline + \
-    #     " " + lead_location
-    #     prompt = "You are an Account Executive in Toronto. This is the profile of a person: " + full_lead_profile + \
-    #     " Write a connect note to them. Do not make up information. Make it casual but eyecatching. Keep in mind to always only use 50 words."
-
-    # else:    
-    #     full_lead_profile = lead[0] + " " + lead_headline + \
-    #     " " + lead_summary + " " + lead_location + " ".join(str(x) for x in lead_info)
-    #     prompt = "You are an Account Executive in Toronto. This is the profile of a person: " + full_lead_profile + \
-    #         " Include something useful about the interests and use it in the request. " + \
-    #         " Write a connect note to them. Make it casual but eyecatching. Keep in mind to always only use 50 words."
 
     # connect_note = asyncio.run(UseBingAI(prompt))
     connect_note = UseChatGPT(full_lead_profile)
@@ -650,20 +545,6 @@ def use_chatgpt():
     except Exception as e:
         return jsonify(success=False, message=str(e))
     
-# @app.route('/get-interests', methods=['POST'])
-# def get_interests():
-
-    # email = request.json['email']
-    # password = request.json['password']
-    # api = Linkedin(email, password)
-
-    # public_id = request.json
-    # # print("get_interests", public_id['publicId'])
-    # data = ModelAndReturnTopicList(api, public_id['publicId'])
-    # # print(data)
-    
-    # return jsonify(success=True, message=data)
-
 @app.route('/job-status', methods=['POST'])
 def job_status():
     try:
