@@ -2,10 +2,13 @@ import React, {useState, useEffect} from "react";
 import {useNavigate} from 'react-router-dom';
 import ErrorModal from "./ErrorModal.js";
 
+// TODO: Add try-catch here
+
 function DisplayConvos(props) {
 
 	const {sessionId} = props;
 	// console.log("DisplayConvos sessionId: ", sessionId);
+	const [error, setError] = useState(null);
 
 	const [isLoadingConvos, setIsLoadingConvos] = useState(false);
 
@@ -27,14 +30,16 @@ function DisplayConvos(props) {
 					sessionId: sessionId
 				})
 			});
-
-			const data = await response.json();
-			if (data.success === true){
-				const thread = data.message;
-				setThreadArray(thread);
-				setIsLoadingConvos(false);
+			if (response.ok){
+				const data = await response.json();
+				if (data.success === true){
+					const thread = data.message;
+					setThreadArray(thread);
+					setIsLoadingConvos(false);
+				}
 			}else {
-				<ErrorModal errorMessage={data.message}/>
+				console.log("error occurred");
+				setError("error occurred");
 			}
 		};	
 		if (sessionId) {
@@ -49,8 +54,9 @@ function DisplayConvos(props) {
 	
 	return (
 		<>
+		{error && <ErrorModal errorMessage={error}/>}
+
 		{ (threadName && threadId) ? (
-			// <DisplayThread sessionId={sessionId} threadName={threadName} threadId={threadId} />
 			navigate("/display-thread", {state: {
 				sessionId: sessionId,
 				threadName: threadName,
@@ -71,6 +77,5 @@ function DisplayConvos(props) {
 		)}
 		</>
 	)
-
 }
 export default DisplayConvos;

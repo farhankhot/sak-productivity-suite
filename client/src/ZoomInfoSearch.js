@@ -23,6 +23,7 @@ function ZoomInfoSearch() {
 	const [isLoading, setIsLoading] = useState(false);
 
 	const navigate = useNavigate();
+	const [error, setError] = useState(null);
 		
 	const handleZoomInfoSearchRequest = async () => {
 		try {
@@ -35,28 +36,32 @@ function ZoomInfoSearch() {
 					companyName: companyName
 				})
 			});
-
-			setIsLoading(true);
+			if (response.ok){
+				setIsLoading(true);
 			
-			const data = await response.json();
-			if (data.success === true){
-				// console.log(data);
-				const resultArray = data['data']['result'][0]['data'];
-				// console.log(resultArray);
-
-				setResultArray(resultArray);	
-				setJobFinished(true);
+				const data = await response.json();
+				if (data.success === true){
+					// console.log(data);
+					const resultArray = data['data']['result'][0]['data'];
+					// console.log(resultArray);
+	
+					setResultArray(resultArray);	
+					setJobFinished(true);
+				}
 			}else {
-				<ErrorModal errorMessage={data.message}/>
+				console.log("error occurred");
+				setError("error occurred");
 			}
 		} catch (error) {
-			<ErrorModal errorMessage={error}/>
-			console.error(error);
+			console.log("error occurred");
+			setError("error occurred");
 		}
 	};
 	
 	return (
 		<>
+			{error && <ErrorModal errorMessage={error}/>}
+
 			{jobFinished === true ? (
 				navigate("/display-zoominfo-search-results", {state: {resultArray: resultArray} })
 			) : (

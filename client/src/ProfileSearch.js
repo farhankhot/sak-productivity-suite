@@ -25,6 +25,7 @@ function ProfileSearch(props) {
 	const [isLoading, setIsLoading] = useState(false);
 
 	const navigate = useNavigate();
+	const [error, setError] = useState(null);
 		
 	const handleSearchRequest = async () => {
 		try {
@@ -41,26 +42,28 @@ function ProfileSearch(props) {
 					location: location
 				})
 			});
-
-			setIsLoading(true);
-			
-			const data = await response.json();
-			if (data.success === true) {
-				const resultArray = data.message;
-
-				setResultArray(resultArray);	
-				setJobFinished(true);
+			if (response.ok){
+				setIsLoading(true);
+				const data = await response.json();
+				if (data.success === true) {
+					const resultArray = data.message;
+					setResultArray(resultArray);	
+					setJobFinished(true);
+				}
 			}else {
-				<ErrorModal errorMessage={data.message}/>
+				console.log("error occurred");
+				setError("error occurred");
 			}
 		} catch (error) {
-			<ErrorModal errorMessage={error}/>
-			console.error(error);
+			console.log("error occurred");
+			setError("error occurred");
 		}
 	};
 	
 	return (
 		<>
+			{error && <ErrorModal errorMessage={error}/>}
+
 			{jobFinished === true ? (
 				navigate("/display-linkedin-search-results", {state: {sessionId: sessionId, resultArray: resultArray} })
 			) : (

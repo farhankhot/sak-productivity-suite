@@ -13,11 +13,8 @@ function DisplaySearchResults() {
 	const sessionId = location.state?.sessionId;
 	const resultArray = location.state?.resultArray;
 	// console.log("DisplaySearchResults sessionId: ", sessionId);
-	
-	// TODO: get this information, for now backend is not returning it
-	// const [summary, setSummary] = useState("");
-	// const [skills, setSkills] = useState("");
-	
+	const [error, setError] = useState(null);
+		
 	// TODO: May come a time where results are more than 50, will cause error
 	// Solution: have useEffect and check the length of the resultArray before allocating array size
 	const [peopleInterestsArray, setPeopleInterestsArray] = useState(Array.from({length: 50}, () => []));
@@ -33,10 +30,7 @@ function DisplaySearchResults() {
 		setProfileInfoArray(resultArray);
 	}, [resultArray]);	
 		
-	const handleGettingPeopleInterests = async (sessionId, profileUrnStr, index) => {
-		
-		// setIsLoading(true);
-		
+	const handleGettingPeopleInterests = async (sessionId, profileUrnStr, index) => {		
 		const startIndex = profileUrnStr.indexOf("(") + 1;
 		const endIndex = profileUrnStr.indexOf(",");
 		const profileUrn = profileUrnStr.substring(startIndex, endIndex);
@@ -52,25 +46,26 @@ function DisplaySearchResults() {
 					profileUrn: profileUrn
 				})
 			});
-			
-			const data = await response.json();			
-			if (data.success === true){
-				const jobId = data.message;
-				
-				CheckJobStatus(jobId, (resultArray) => {
-					setIsLoading(false);
-					const newArray = [...peopleInterestsArray];
-					for (let i = 0; i < resultArray.length; i++){
-						newArray[index].push(resultArray[i]);
-					}
-					setPeopleInterestsArray(newArray);	
-				});
+			if (response.ok){
+				const data = await response.json();			
+				if (data.success === true){
+					const jobId = data.message;
+					
+					CheckJobStatus(jobId, (resultArray) => {
+						setIsLoading(false);
+						const newArray = [...peopleInterestsArray];
+						for (let i = 0; i < resultArray.length; i++){
+							newArray[index].push(resultArray[i]);
+						}
+						setPeopleInterestsArray(newArray);	
+					});
+				}
 			}else {
-				<ErrorModal errorMessage={data.message}/>
+				console.log("error occurred");
+				setError("error occurred");
 			}
 		} catch (error) {
-			<ErrorModal errorMessage={error}/>
-			console.error(error);
+			setError("error occurred");
 		}
 	};
 	
@@ -93,104 +88,106 @@ function DisplaySearchResults() {
 					profileUrn: profileUrn
 				})
 			});
-			
-			const data = await response.json();
-			if (data.success === true){
-				const jobId = data.message;
-				
-				CheckJobStatus(jobId, (resultArray) => {
-					setIsLoading(false);
-					const newArray = [...companyInterestsArray];
-					for (let i = 0; i < resultArray.length; i++){
-						newArray[index].push(resultArray[i]);
-					}
-					setCompanyInterestsArray(newArray);
-				});
+			if (response.ok){
+				const data = await response.json();
+				if (data.success === true){
+					const jobId = data.message;
+					
+					CheckJobStatus(jobId, (resultArray) => {
+						setIsLoading(false);
+						const newArray = [...companyInterestsArray];
+						for (let i = 0; i < resultArray.length; i++){
+							newArray[index].push(resultArray[i]);
+						}
+						setCompanyInterestsArray(newArray);
+					});
+				}
 			}else{
-				<ErrorModal errorMessage={data.message}/>
+				console.log("error occurred");
+				setError("error occurred");
 			}
 		} catch (error) {
-			<ErrorModal errorMessage={error}/>
-			console.error(error);
+			console.log("error occurred");
+			setError("error occurred");
 		}
 	};
-	
-	// const handleGettingActivityInterests = () => {
-		// // TODO
-	// };
-		
+			
 	return (
-		<Container>
-			<h1>Search Results:</h1>
-			<ListGroup>
-					{profileInfoArray.map((leadInfo, index) => (
-						<ListGroup.Item
-							onClick={() => {
-								setShowProfileArea(true);
-							}}>
-							{leadInfo[0]}, {leadInfo[1]} at {leadInfo[2]}
-							
-							{showProfileArea && (
-								<div>
-									
-									<ButtonGroup aria-label="Basic example" className="mb-2">
-										<Button onClick={ () => {
-											handleGettingPeopleInterests(sessionId, leadInfo[4], index)
-										}}>
-											Get people interests
-										</Button>
-										<Button onClick={ () => {
-											handleGettingCompanyInterests(sessionId, leadInfo[4], index)
-										}}>
-											Get company interests
-										</Button>
+		<>
+			{error && <ErrorModal errorMessage={error}/>}
+
+			<Container>
+				<h1>Search Results:</h1>
+				<ListGroup>
+						{profileInfoArray.map((leadInfo, index) => (
+							<ListGroup.Item
+								onClick={() => {
+									setShowProfileArea(true);
+								}}>
+								{leadInfo[0]}, {leadInfo[1]} at {leadInfo[2]}
+								
+								{showProfileArea && (
+									<div>
 										
-									</ButtonGroup>
+										<ButtonGroup aria-label="Basic example" className="mb-2">
+											<Button onClick={ () => {
+												handleGettingPeopleInterests(sessionId, leadInfo[4], index)
+											}}>
+												Get people interests
+											</Button>
+											<Button onClick={ () => {
+												handleGettingCompanyInterests(sessionId, leadInfo[4], index)
+											}}>
+												Get company interests
+											</Button>
+											
+										</ButtonGroup>
 
-									{peopleInterestsArray[index].length > 0 && (
-										<ListGroup.Item>
-											<Form.Control
-											as="select"
-											multiple>
-											{peopleInterestsArray[index].map((interest) => (
-												<option key={interest}>{interest[0]}</option>
-											))}
-											</Form.Control>
-										</ListGroup.Item>
-									)}
-									
-									{companyInterestsArray[index].length > 0 && (
-										<ListGroup.Item>
-											<Form.Control
-											as="select"
-											multiple>
-											{companyInterestsArray[index].map((interest) => (
-												<option key={interest}>{interest[0]}</option>
-											))}
-											</Form.Control>
-										</ListGroup.Item>
-									)}
-									
-									{/* {activityInterestsArray.length > 0 && (
-										<ListGroup.Item>
-											<Form.Control
-											as="select"
-											multiple
-											onChange={handleInterestsSelection}
-											>
-											{activityInterestsArray.map((interest) => (
-												<option key={interest}>{interest[0]}</option>
-											))}
-											</Form.Control>
-										</ListGroup.Item>
-									)} */}
+										{peopleInterestsArray[index].length > 0 && (
+											<ListGroup.Item>
+												<Form.Control
+												as="select"
+												multiple>
+												{peopleInterestsArray[index].map((interest) => (
+													<option key={interest}>{interest[0]}</option>
+												))}
+												</Form.Control>
+											</ListGroup.Item>
+										)}
+										
+										{companyInterestsArray[index].length > 0 && (
+											<ListGroup.Item>
+												<Form.Control
+												as="select"
+												multiple>
+												{companyInterestsArray[index].map((interest) => (
+													<option key={interest}>{interest[0]}</option>
+												))}
+												</Form.Control>
+											</ListGroup.Item>
+										)}
+										
+										{/* {activityInterestsArray.length > 0 && (
+											<ListGroup.Item>
+												<Form.Control
+												as="select"
+												multiple
+												onChange={handleInterestsSelection}
+												>
+												{activityInterestsArray.map((interest) => (
+													<option key={interest}>{interest[0]}</option>
+												))}
+												</Form.Control>
+											</ListGroup.Item>
+										)} */}
 
-								</div>
-							)}
-						</ListGroup.Item>
-					))}
-				</ListGroup>
-		</Container>
+									</div>
+								)}
+							</ListGroup.Item>
+						))}
+					</ListGroup>
+			</Container>
+		</>
 	);
 }
 export default DisplaySearchResults;

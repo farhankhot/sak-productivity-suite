@@ -49,6 +49,8 @@ function Home(props) {
 
 	const [specificAdditionalInfoText, setSpecificAdditionalInfoText] = useState([]);
 
+	const [error, setError] = useState(null);
+
 	const handleGettingLeads = async() => {
         try {
 			setIsLoadingLeads(true);
@@ -61,25 +63,25 @@ function Home(props) {
 					sessionId: sessionId
 				})
 			});
+			if (response.ok){
+				const data = await response.json();
 
-			const data = await response.json();
-
-			if (data.success === true){
-				const leadsArray = data.lead_list;
-				// console.log("Successfully gotten leads: ", data);
-				const memberUrnIdArray = data.member_urn_id_list; 
-	
-				setLeadsArray(leadsArray);
-				setMemberUrnIdArray(memberUrnIdArray);
-				setShowCreateConnectNoteButton(true);	
-			}
-			else {
-				<ErrorModal errorMessage={data.message}/>
-			}
+				if (data.success === true){
+					const leadsArray = data.lead_list;
+					// console.log("Successfully gotten leads: ", data);
+					const memberUrnIdArray = data.member_urn_id_list; 
 		
+					setLeadsArray(leadsArray);
+					setMemberUrnIdArray(memberUrnIdArray);
+					setShowCreateConnectNoteButton(true);	
+				}
+			}else {
+				console.log("error occurred");
+				setError("error occurred");
+			}
 		}catch(error){
-			console.log(error);
-			<ErrorModal errorMessage={error}/>
+			console.log("error occurred");
+			setError("error occurred");
 		}finally {
 			setIsLoadingLeads(false);
 		}
@@ -134,65 +136,25 @@ function Home(props) {
 				},
 				body: JSON.stringify({
 					sessionId: sessionId,
-					// leadsArray: leadsArray,
-					// memberUrnIdArray: memberUrnIdArray,
-
 					...(index === null ? {leadsArray: leadsArray} : {leadsArray: [leadsArray[index]]}),
 					...(index === null ? {memberUrnIdArray: memberUrnIdArray} : {memberUrnIdArray: [memberUrnIdArray[index]]}),
 					additionalInfoText: additionalInfo,
-
-					// ...(specificAdditionalInfoText[index] !== "" && index !== null ? {additionalInfoText: specificAdditionalInfoText[index]} : {additionalInfoText: ""}),
-					// ...(additionalInfoText !== "" && index === null ? {additionalInfoText: additionalInfoText} : {additionalInfoText: ""}),
 					...(interests !== "" ? {interests: interests} : {interests: ""})
 				})
 			});
-			const jobIdArray = await response.json();
-			if (jobIdArray.success === true){
-				console.log(jobIdArray);
-				setJobIdArray(jobIdArray);
 
-				let currentJobIdArray = [...jobIdArray.message];
+			if (response.ok){
+				const jobIdArray = await response.json();
+				if (jobIdArray.success === true){
+					console.log(jobIdArray);
+					setJobIdArray(jobIdArray);
 
-				const jobIdCheck = setInterval( async () => {
-				if (currentJobIdArray.length === 0) {
-					clearInterval(jobIdCheck);
-						
-					setIsLoadingAutoCreatingNotes(false);
-					setLoadingLeadsButtonDisabled(false);
-					setAutoCreatingNotesDisabled(false);
+					let currentJobIdArray = [...jobIdArray.message];
 
-					if (index === null){
-						for (let i = 0; i < 25; i++){
-							peopleInterestsButtonDisabled[i] = false;
-							companyInterestsButtonDisabled[i] = false;
-							makingConnectNoteButtonDisabled[i] = false;
-							sendingConnectNoteButtonDisabled[i] = false;
-						}
-					}
-					else {
-						peopleInterestsButtonDisabled[index] = false;
-						companyInterestsButtonDisabled[index] = false;
-						makingConnectNoteButtonDisabled[index] = false;
-						sendingConnectNoteButtonDisabled[index] = false;
-
-						const newIsLoadingMakingNote = [...isLoadingMakingNote];
-						newIsLoadingMakingNote[index] = false;
-						setIsLoadingMakingNote(newIsLoadingMakingNote);
-						setAutoCreatingNotesDisabled(false);
-						setLoadingLeadsButtonDisabled(false);
-					}
-				}
-				else {
-					// let finishCount = 0;
-					for(let i = 0; i < currentJobIdArray.length; i++){
-						// console.log(stopAutoCreatingNotesRef.current);
-						// console.log(currentJobIdArray.length);
-						// console.log(i);
-
-						const allAreNone = currentJobIdArray.every((val) => val === "None");
-
-						if (allAreNone){
+					const jobIdCheck = setInterval( async () => {
+						if (currentJobIdArray.length === 0) {
 							clearInterval(jobIdCheck);
+								
 							setIsLoadingAutoCreatingNotes(false);
 							setLoadingLeadsButtonDisabled(false);
 							setAutoCreatingNotesDisabled(false);
@@ -218,124 +180,171 @@ function Home(props) {
 								setLoadingLeadsButtonDisabled(false);
 							}
 						}
+						else {
+							for(let i = 0; i < currentJobIdArray.length; i++){
+								// console.log(stopAutoCreatingNotesRef.current);
+								// console.log(currentJobIdArray.length);
+								// console.log(i);
 
-						if (currentJobIdArray[i] != "None"){
-							if (stopAutoCreatingNotesRef.current) {
-								if (currentJobIdArray.length > 0){
+								const allAreNone = currentJobIdArray.every((val) => val === "None");
+
+								if (allAreNone){
+									clearInterval(jobIdCheck);
+									setIsLoadingAutoCreatingNotes(false);
+									setLoadingLeadsButtonDisabled(false);
+									setAutoCreatingNotesDisabled(false);
+
+									if (index === null){
+										for (let i = 0; i < 25; i++){
+											peopleInterestsButtonDisabled[i] = false;
+											companyInterestsButtonDisabled[i] = false;
+											makingConnectNoteButtonDisabled[i] = false;
+											sendingConnectNoteButtonDisabled[i] = false;
+										}
+									}
+									else {
+										peopleInterestsButtonDisabled[index] = false;
+										companyInterestsButtonDisabled[index] = false;
+										makingConnectNoteButtonDisabled[index] = false;
+										sendingConnectNoteButtonDisabled[index] = false;
+
+										const newIsLoadingMakingNote = [...isLoadingMakingNote];
+										newIsLoadingMakingNote[index] = false;
+										setIsLoadingMakingNote(newIsLoadingMakingNote);
+										setAutoCreatingNotesDisabled(false);
+										setLoadingLeadsButtonDisabled(false);
+									}
+								}
+
+								if (currentJobIdArray[i] != "None"){
+									if (stopAutoCreatingNotesRef.current) {
+										if (currentJobIdArray.length > 0){
+											try {
+												const response = await fetch("https://sak-productivity-suite.herokuapp.com/stop-jobs-in-array", {
+													method: "POST",
+													headers: {
+														"Content-Type": "application/json"
+													},
+													body: JSON.stringify({
+														sessionId: sessionId,
+														jobIdArray: currentJobIdArray
+													})
+												});
+												if (response.ok){
+													const data = await response.json();
+													console.log("data from stopAutoCreatingNotesRef", data);
+												}else {
+													console.log("error occurred");
+													setError("error occurred");								
+												}
+											}catch(error){
+												console.log("error occurred");
+												setError("error occurred");					
+											}
+										}
+										
+										clearInterval(jobIdCheck);
+										
+										setIsLoadingAutoCreatingNotes(false);
+										setLoadingLeadsButtonDisabled(false);
+										setAutoCreatingNotesDisabled(false);
+
+										if (index === null) {
+											for (let i = 0; i < 25; i++){
+												peopleInterestsButtonDisabled[i] = false;
+												companyInterestsButtonDisabled[i] = false;
+												makingConnectNoteButtonDisabled[i] = false;
+												sendingConnectNoteButtonDisabled[i] = false;
+											}
+										}
+										else {
+											peopleInterestsButtonDisabled[index] = false;
+											companyInterestsButtonDisabled[index] = false;
+											makingConnectNoteButtonDisabled[index] = false;
+											sendingConnectNoteButtonDisabled[index] = false;
+
+											const newIsLoadingMakingNote = [...isLoadingMakingNote];
+											newIsLoadingMakingNote[index] = false;
+											setIsLoadingMakingNote(newIsLoadingMakingNote);
+											setAutoCreatingNotesDisabled(false);
+											setLoadingLeadsButtonDisabled(false);
+										}
+										// Set back to false if this button is clicked again
+										stopAutoCreatingNotesRef.current = false;
+										break;
+									}
+					
 									try {
-										const response = await fetch("https://sak-productivity-suite.herokuapp.com/stop-jobs-in-array", {
+										const response = await fetch("https://sak-productivity-suite.herokuapp.com/job-status", {
 											method: "POST",
 											headers: {
 												"Content-Type": "application/json"
 											},
 											body: JSON.stringify({
-												sessionId: sessionId,
-												jobIdArray: currentJobIdArray
+												jobId: currentJobIdArray[i]
 											})
 										});
-							
-										const data = await response.json();
-										console.log("data from stopAutoCreatingNotesRef", data);
-										
-									}catch(error){
-										console.log(error);
-									}
-								}
-								
-								clearInterval(jobIdCheck);
-								
-								setIsLoadingAutoCreatingNotes(false);
-								setLoadingLeadsButtonDisabled(false);
-								setAutoCreatingNotesDisabled(false);
 
-								if (index === null) {
-									for (let i = 0; i < 25; i++){
-										peopleInterestsButtonDisabled[i] = false;
-										companyInterestsButtonDisabled[i] = false;
-										makingConnectNoteButtonDisabled[i] = false;
-										sendingConnectNoteButtonDisabled[i] = false;
-									}
-								}
-								else {
-									peopleInterestsButtonDisabled[index] = false;
-									companyInterestsButtonDisabled[index] = false;
-									makingConnectNoteButtonDisabled[index] = false;
-									sendingConnectNoteButtonDisabled[index] = false;
-
-									const newIsLoadingMakingNote = [...isLoadingMakingNote];
-									newIsLoadingMakingNote[index] = false;
-									setIsLoadingMakingNote(newIsLoadingMakingNote);
-									setAutoCreatingNotesDisabled(false);
-									setLoadingLeadsButtonDisabled(false);
-								}
-								// Set back to false if this button is clicked again
-								stopAutoCreatingNotesRef.current = false;
-								break;
-							}
-			
-							try {
-								const response = await fetch("https://sak-productivity-suite.herokuapp.com/job-status", {
-									method: "POST",
-									headers: {
-										"Content-Type": "application/json"
-									},
-									body: JSON.stringify({
-										jobId: currentJobIdArray[i]
-									})
-								});
-								
-								const data = await response.json();
-								const status = data.status;
-								
-								if (status === "finished") {
-
-									const resultArray = data.result;
-									console.log("Successfully gotten Connect note array: ", resultArray);
+										if (response.ok){
+											const data = await response.json();
+											const status = data.status;
+											
+											if (status === "finished") {
 	
-									const newConnectNoteArray = [...connectNoteArray];
-
-									if (index === null) {
-										newConnectNoteArray[i] = resultArray;
-										setConnectNoteArray(newConnectNoteArray);
-		
-										setShowProfileArea(true);
+												const resultArray = data.result;
+												console.log("Successfully gotten Connect note array: ", resultArray);
 				
-										peopleInterestsButtonDisabled[i] = false;
-										companyInterestsButtonDisabled[i] = false;
-										makingConnectNoteButtonDisabled[i] = false;
-										sendingConnectNoteButtonDisabled[i] = false;
-		
-										currentJobIdArray[i] = "None"
-										// console.log("current", currentJobIdArray.length);
-									}else {
-										newConnectNoteArray[index] = resultArray;
-										setConnectNoteArray(newConnectNoteArray);
-		
-										setShowProfileArea(true);
-				
-										peopleInterestsButtonDisabled[index] = false;
-										companyInterestsButtonDisabled[index] = false;
-										makingConnectNoteButtonDisabled[index] = false;
-										sendingConnectNoteButtonDisabled[index] = false;
-		
-										currentJobIdArray[index] = "None"
-										// console.log("current", currentJobIdArray.length);
+												const newConnectNoteArray = [...connectNoteArray];
+	
+												if (index === null) {
+													newConnectNoteArray[i] = resultArray;
+													setConnectNoteArray(newConnectNoteArray);
+					
+													setShowProfileArea(true);
+							
+													peopleInterestsButtonDisabled[i] = false;
+													companyInterestsButtonDisabled[i] = false;
+													makingConnectNoteButtonDisabled[i] = false;
+													sendingConnectNoteButtonDisabled[i] = false;
+					
+													currentJobIdArray[i] = "None"
+													// console.log("current", currentJobIdArray.length);
+												}else {
+													newConnectNoteArray[index] = resultArray;
+													setConnectNoteArray(newConnectNoteArray);
+					
+													setShowProfileArea(true);
+							
+													peopleInterestsButtonDisabled[index] = false;
+													companyInterestsButtonDisabled[index] = false;
+													makingConnectNoteButtonDisabled[index] = false;
+													sendingConnectNoteButtonDisabled[index] = false;
+					
+													currentJobIdArray[index] = "None"
+													// console.log("current", currentJobIdArray.length);
+												}
+											}
+										}else{
+											console.log("error occurred");
+											setError("error occurred");						
+										}
+									}catch(error){
+										console.log("An error has occured (CheckJobStatus): ", error);
+										setError("error occurred");			
 									}
-								} 
-							}catch(error){
-								console.log("An error has occured (CheckJobStatus): ", error);
+								}
 							}
 						}
-					}
+					}, 500);				  
 				}
-			}, 500);				  
 			}
 			else {
-				<ErrorModal errorMessage={jobIdArray.message}/>
+				console.log("error occurred");
+				setError("error occurred");
 			}
 		}catch(error){
-			<ErrorModal errorMessage={error}/>
-			console.log(error);
+			console.log("error occurred");
+			setError("error occurred");
 		}
 	};
 
@@ -344,8 +353,6 @@ function Home(props) {
 		const endIndex = profileUrnStr.indexOf(",");
 		const profileUrn = profileUrnStr.substring(startIndex, endIndex);
 		try {
-
-			// setIsLoadingPeopleInterests(true);
 			
 			const newIsLoadingPeopleInterests = [...isLoadingPeopleInterests];
 			for (let i = 0; i < newIsLoadingPeopleInterests.length; i++){
@@ -364,33 +371,34 @@ function Home(props) {
 					profileUrn: profileUrn
 				})
 			});
-			const data = await response.json();
-			if (data.success === true){
-				const jobId = data.message;
-
-				CheckJobStatus(jobId, (resultArray) => {
-					const newArray = [...peopleInterestsArray];
-					for (let i = 0; i < resultArray.length; i++){
-						newArray[index].push(resultArray[i]);
-					}
-					setPeopleInterestsArray(newArray);
+			if (response.ok){
+				const data = await response.json();
+				if (data.success === true){
+					const jobId = data.message;
 	
-					// setIsLoadingPeopleInterests(false);
-					const newIsLoadingPeopleInterests = [...isLoadingPeopleInterests];
-					for (let i = 0; i < newIsLoadingPeopleInterests.length; i++){
-						newIsLoadingPeopleInterests[index] = false;
-					}
-					setIsLoadingPeopleInterests(newIsLoadingPeopleInterests);
-					
-					setAutoCreatingNotesDisabled(false);
-				});
-			}
-			else {
-				<ErrorModal errorMessage={data.message}/>
+					CheckJobStatus(jobId, (resultArray) => {
+						const newArray = [...peopleInterestsArray];
+						for (let i = 0; i < resultArray.length; i++){
+							newArray[index].push(resultArray[i]);
+						}
+						setPeopleInterestsArray(newArray);
+		
+						const newIsLoadingPeopleInterests = [...isLoadingPeopleInterests];
+						for (let i = 0; i < newIsLoadingPeopleInterests.length; i++){
+							newIsLoadingPeopleInterests[index] = false;
+						}
+						setIsLoadingPeopleInterests(newIsLoadingPeopleInterests);
+						
+						setAutoCreatingNotesDisabled(false);
+					});
+				}	
+			}else {
+				console.log("error occurred");
+				setError("error occurred");
 			}
 		} catch (error) {
-			<ErrorModal errorMessage={error}/>
-			console.error(error);
+			console.log("error occurred");
+			setError("error occurred");
 		}
 	};
 	
@@ -398,9 +406,7 @@ function Home(props) {
 		const startIndex = profileUrnStr.indexOf("(") + 1;
 		const endIndex = profileUrnStr.indexOf(",");
 		const profileUrn = profileUrnStr.substring(startIndex, endIndex);
-		try {
-			// setIsLoadingCompanyInterests(true);
-			
+		try {			
 			const newIsLoadingCompanyInterests = [...isLoadingCompanyInterests];
 			for (let i = 0; i < newIsLoadingCompanyInterests.length; i++){
 				newIsLoadingCompanyInterests[index] = true;
@@ -418,33 +424,34 @@ function Home(props) {
 					profileUrn: profileUrn
 				})
 			});
-			const data = await response.json();
-			if (data.success === true){
-				const jobId = data.message;
-				
-				CheckJobStatus(jobId, (resultArray) => {
-					const newArray = [...companyInterestsArray];
-					for (let i = 0; i < resultArray.length; i++){
-						newArray[index].push(resultArray[i]);
-					}
-					setCompanyInterestsArray(newArray);
-
-					// setIsLoadingCompanyInterests(false);	
-					const newIsLoadingCompanyInterests = [...isLoadingCompanyInterests];
-					for (let i = 0; i < newIsLoadingCompanyInterests.length; i++){
-						newIsLoadingCompanyInterests[index] = false;
-					}
-					setIsLoadingCompanyInterests(newIsLoadingCompanyInterests);
+			if (response.ok){
+				const data = await response.json();
+				if (data.success === true){
+					const jobId = data.message;
 					
-					setAutoCreatingNotesDisabled(false);
-				});
-			}
-			else {
-				<ErrorModal errorMessage={data.message}/>
+					CheckJobStatus(jobId, (resultArray) => {
+						const newArray = [...companyInterestsArray];
+						for (let i = 0; i < resultArray.length; i++){
+							newArray[index].push(resultArray[i]);
+						}
+						setCompanyInterestsArray(newArray);
+	
+						const newIsLoadingCompanyInterests = [...isLoadingCompanyInterests];
+						for (let i = 0; i < newIsLoadingCompanyInterests.length; i++){
+							newIsLoadingCompanyInterests[index] = false;
+						}
+						setIsLoadingCompanyInterests(newIsLoadingCompanyInterests);
+						
+						setAutoCreatingNotesDisabled(false);
+					});
+				}	
+			}else {
+				console.log("error occurred");
+				setError("error occurred");
 			}
 		} catch (error) {
-			<ErrorModal errorMessage={error}/>
-			console.error(error);
+			console.log("error occurred");
+			setError("error occurred");
 		}
 	};
 				
@@ -454,128 +461,20 @@ function Home(props) {
 			const value = event.target.value;
 			const isChecked = event.target.checked;
 			if (isChecked) {
-			newArray[index].push(value);
-			} else {
-			const indexToRemove = newArray[index].indexOf(value);
-			newArray[index].splice(indexToRemove, 1);
+				newArray[index].push(value);
+			}else {
+				const indexToRemove = newArray[index].indexOf(value);
+				newArray[index].splice(indexToRemove, 1);
 			}
 			setSelectedInterests(newArray);
 		}
 		catch (error) {
-			<ErrorModal errorMessage={error}/>
-			console.error(error);
+			console.log("error occurred");
+			setError("error occurred");
 		}
 	};
 
-	// ================ Create and Send Connect Note(s) ===============================
-	// const handleMakingConnectNote = async (fullName, index) => {
-	// 	console.log(selectedInterests);
-	// 	console.log(selectedInterests[index]);
-
-	// 	if (selectedInterests[index].length !== 0){
-	// 		const prompt = "You are an Account Executive. This is the profile of a person: " + fullName
-	// 		+ " These are their interests: " + selectedInterests[index].toString()
-	// 		+ " Write a request to connect with them. Make it casual but eyecatching. Use only 50 words.";
-	// 		console.log(prompt);
-	// 		try {
-	// 			// setIsLoadingMakingNote(true);
-	// 			const newIsLoadingMakingNote = [...isLoadingMakingNote];
-	// 			for (let i = 0; i < newIsLoadingMakingNote.length; i++){
-	// 				newIsLoadingMakingNote[index] = true;
-	// 			}
-	// 			setIsLoadingMakingNote(newIsLoadingMakingNote);
-
-	// 			setAutoCreatingNotesDisabled(true);
-	// 			const response = await fetch("https://sak-productivity-suite.herokuapp.com/use-chatgpt", {
-	// 				method: "POST",
-	// 				headers: {
-	// 					"Content-Type": "application/json"
-	// 				},
-	// 				body: JSON.stringify({
-	// 					prompt: prompt
-	// 				})
-	// 			});
-				
-	// 			const data = await response.json();
-	// 			if (data.success === true) {
-	// 				const jobId = data.message;
-		
-	// 				CheckJobStatus(jobId, (resultArray) => {
-	// 					const newArray = [...connectNoteArray];
-	// 					newArray[index] = resultArray;
-	// 					setConnectNoteArray(newArray);
-
-	// 					// setIsLoadingMakingNote(false);
-	// 					const newIsLoadingMakingNote = [...isLoadingMakingNote];
-	// 					for (let i = 0; i < newIsLoadingMakingNote.length; i++){
-	// 						newIsLoadingMakingNote[index] = false;
-	// 					}
-	// 					setIsLoadingMakingNote(newIsLoadingMakingNote);
-						
-	// 					setAutoCreatingNotesDisabled(false);
-	// 				});
-	// 			}
-	// 			else {
-	// 				<ErrorModal errorMessage={data.message}/>
-	// 			}
-	// 		}catch(error){
-	// 			<ErrorModal errorMessage={error}/>
-	// 			console.log(error);
-	// 		}
-	// 	}
-	// 	else {
-	// 		const prompt = "You are a Account Executive. This is the profile of a person: " + fullName
-	// 		+ " Write a request to connect with them. Make it casual but eyecatching. Use only 50 words.";	
-	// 		console.log("Not selected", prompt);
-	// 		try {
-	// 			// setIsLoadingMakingNote(true);
-	// 			const newIsLoadingMakingNote = [...isLoadingMakingNote];
-	// 			for (let i = 0; i < newIsLoadingMakingNote.length; i++){
-	// 				newIsLoadingMakingNote[index] = true;
-	// 			}
-	// 			setIsLoadingMakingNote(newIsLoadingMakingNote);
-
-	// 			setAutoCreatingNotesDisabled(true);
-	// 			const response = await fetch("https://sak-productivity-suite.herokuapp.com/use-chatgpt", {
-	// 				method: "POST",
-	// 				headers: {
-	// 					"Content-Type": "application/json"
-	// 				},
-	// 				body: JSON.stringify({
-	// 					prompt: prompt
-	// 				})
-	// 			});
-				
-	// 			const data = await response.json();
-	// 			if (data.success === true){
-	// 				const jobId = data.message;
-		
-	// 				CheckJobStatus(jobId, (resultArray) => {
-	// 					const newArray = [...connectNoteArray];
-	// 					newArray[index] = resultArray;
-	// 					setConnectNoteArray(newArray);	
-
-	// 					// setIsLoadingMakingNote(false);
-	// 					const newIsLoadingMakingNote = [...isLoadingMakingNote];
-	// 					for (let i = 0; i < newIsLoadingMakingNote.length; i++){
-	// 						newIsLoadingMakingNote[index] = false;
-	// 					}
-	// 					setIsLoadingMakingNote(newIsLoadingMakingNote);
-						
-	// 					setAutoCreatingNotesDisabled(false);
-	// 				});
-	// 			}
-	// 			else {
-	// 				<ErrorModal errorMessage={data.message}/>
-	// 			}
-	
-	// 		}catch(error){
-	// 			<ErrorModal errorMessage={error}/>
-	// 			console.log(error);
-	// 		}
-	// 	}
-	// };
-
+	// ================ Send Connect Note ===============================
 	const handleSendingConnectNote = async (sessionId, profileId, index) => {
 		try {
 
@@ -598,17 +497,20 @@ function Home(props) {
 					text: connectNoteArray[index]
 				})
 			});
-			const data = await response.json();
-			if (data.success === true){
-				console.log("Successfully sent the connect note to the person", data.message);
-			}else {
-				<ErrorModal errorMessage={data.message}/>
+			if (response.ok){
+				const data = await response.json();
+				if (data.success === true){
+					console.log("Successfully sent the connect note to the person", data.message);
+				}else {
+					console.log("error occurred");
+					setError("error occurred");
+				}	
 			}
 		}catch(error){
-			<ErrorModal errorMessage={error}/>
-			console.log(error);
+			console.log("error occurred");
+			setError("error occurred");
 		} finally {
-			// setIsLoadingSendingNote(false);
+
 			const newIsLoadingSendingNote = [...isLoadingSendingNote];
 			for (let i = 0; i < newIsLoadingSendingNote.length; i++){
 				setIsLoadingSendingNote[index] = false;
@@ -618,7 +520,7 @@ function Home(props) {
 			setAutoCreatingNotesDisabled(false);
 		}
 	};
-	// ================ Create and Send Connect Note(s) ===============================
+	// ================ Send Connect Note(s) ===============================
 
 	const handleNoteTextAreaChange = (event, index) => {
 		const updatedConnectNoteArray = [...connectNoteArray];
@@ -643,6 +545,8 @@ function Home(props) {
 
 	return (
 		<>
+			{error && <ErrorModal errorMessage={error}/>}
+
 			<div style={{ display: 'flex', justifyContent: 'center', padding: '20px'}}>
 				<Button className="myButton" variant="primary" type="button" onClick={handleGettingLeads} disabled={isLoadingLeads || loadingLeadsButtonDisabled}>
 					{isLoadingLeads ? 

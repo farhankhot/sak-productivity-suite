@@ -68,24 +68,26 @@ function DisplayThread() {
 					prompt: prompt
 				})
 			});
-			const data = await response.json();
-			if (data.success === true){
-				const jobId = data.message;
-				CheckJobStatus(jobId, (resultArray) => {
-					setReplyTextArea(resultArray);	
-					setIsLoadingReply(false);
-				});
+			if (response.ok){
+				const data = await response.json();
+				if (data.success === true){
+					const jobId = data.message;
+					CheckJobStatus(jobId, (resultArray) => {
+						setReplyTextArea(resultArray);	
+						setIsLoadingReply(false);
+					});
+				}
 			}else {
-				<ErrorModal errorMessage={data.message}/>
+				console.log("error occurred");
+				setError("error occurred");
 			}
 		}catch(error){
-			<ErrorModal errorMessage={error}/>
 			console.log(error);
+			setError("error occurred");
 		}
 	};
 	
 	const handleSendingMessage = async () => {
-		
 		try {
 			const response = await fetch("https://sak-productivity-suite.herokuapp.com/send-message", {
 				method: "POST",
@@ -98,15 +100,18 @@ function DisplayThread() {
 					text: replyTextArea
 				})
 			});
-			const data = await response.json();
-			if (data.success === true) {
-				console.log("Successfully sent the message to the person", data.message);
+			if (response.ok){
+				const data = await response.json();
+				if (data.success === true) {
+					console.log("Successfully sent the message to the person", data.message);
+				}
 			}else {
-				<ErrorModal errorMessage={data.message}/>
+				console.log("error occurred");
+				setError("error occurred");
 			}
 		}catch(error){
-			<ErrorModal errorMessage={error}/>
 			console.log(error);
+			setError("error occurred");
 		}
 	};
 	
