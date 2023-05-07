@@ -517,7 +517,9 @@ def GetLeadInfo(cookie_dict, lead, profile_urn, additional_info_text="", interes
 # ========== For testing ==================
 @app.route('/kill-all-jobs', methods=['POST'])
 def kill_all_jobs():
-    q.delete(delete_jobs=True)
+    for job in q.jobs:
+        if job.get_status() == 'started':
+            job.cancel()
     print("killed all jobs")
     return jsonify(success=True, message="killed all jobs")
 # ========== For testing ==================
