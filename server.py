@@ -521,7 +521,9 @@ def GetLeadInfo(cookie_dict, lead, profile_urn, additional_info_text="", interes
 @app.route('/kill-all-jobs', methods=['POST'])
 def kill_all_jobs():
     for i, job_id in enumerate(q.jobs):
+        print(job_id)
         job = Job.fetch(job_id, connection=conn) # type: ignore
+        print(job)
         send_stop_job_command(redis, job_id) # type: ignore
         job.cancel()
         job.delete()
