@@ -347,7 +347,7 @@ def SalesNavigatorLeadsInfo(api):
 
 # TODO: Get interests at random
 def GetLeadInfo(cookie_dict, lead, profile_urn, additional_info_text="", interests=""):
-    kkkk
+    
     print("additional info: ", additional_info_text)
     print("profile_urn", profile_urn)
 
