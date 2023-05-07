@@ -521,7 +521,6 @@ def get_leads():
     except Exception as e:
         return jsonify(success=False, message=str(e))
 
-
 @app.route('/use-bingai', methods=['POST'])
 def use_bingai():
     try:
@@ -532,7 +531,6 @@ def use_bingai():
         return jsonify(success=True, message=job_id)
     except Exception as e:
         return jsonify(success=False, message=str(e))
-
 
 @app.route('/use-chatgpt', methods=['POST'])
 def use_chatgpt():
