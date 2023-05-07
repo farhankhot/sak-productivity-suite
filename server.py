@@ -29,6 +29,9 @@ import requests
 
 import time
 
+from worker import redis
+from rq.command import send_stop_job_command
+
 q = Queue(connection=conn)
 
 app = Flask(
@@ -519,6 +522,7 @@ def GetLeadInfo(cookie_dict, lead, profile_urn, additional_info_text="", interes
 def kill_all_jobs():
     for i, job_id in enumerate(q.jobs):
         job = Job.fetch(job_id, connection=conn) # type: ignore
+        send_stop_job_command(redis, job_id) # type: ignore
         job.cancel()
         job.delete()
     print("killed all jobs")
