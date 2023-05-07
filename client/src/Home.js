@@ -76,7 +76,7 @@ function Home(props) {
 					setShowCreateConnectNoteButton(true);	
 				}
 				else{
-					console.log("error occurred");
+					console.log("an error occurred");
 					setError("error occurred");
 				}
 			}else {
