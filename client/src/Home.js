@@ -131,7 +131,7 @@ function Home(props) {
 			else if(index !== null && specificAdditionalInfoText[index] !== ""){
 				additionalInfo = specificAdditionalInfoText[index];
 			}
-			else if(index === null && specificAdditionalInfoText[index] === "" && additionalInfoText === ""){
+			else{
 				additionalInfo = "None";
 			}
 			console.log("test", specificAdditionalInfoText[index]);
