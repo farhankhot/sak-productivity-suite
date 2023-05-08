@@ -132,7 +132,7 @@ function Home(props) {
 				additionalInfo = specificAdditionalInfoText[index];
 			}
 			else{
-				additionalInfo = "";
+				additionalInfo = "None";
 			}
 			console.log("test", specificAdditionalInfoText[index]);
 			const response = await fetch("https://sak-productivity-suite.herokuapp.com/get-lead-info", {
