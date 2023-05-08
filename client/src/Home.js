@@ -96,7 +96,6 @@ function Home(props) {
 		try {
 
 			if (index === null){
-				console.log("dddda");
 				setIsLoadingAutoCreatingNotes(true);
 				setLoadingLeadsButtonDisabled(true);
 				setAutoCreatingNotesDisabled(true);
@@ -174,7 +173,6 @@ function Home(props) {
 							setAutoCreatingNotesDisabled(false);
 
 							if (index === null){
-								console.log("dddvda");
 								for (let i = 0; i < 25; i++){
 									peopleInterestsButtonDisabled[i] = false;
 									companyInterestsButtonDisabled[i] = false;
@@ -205,11 +203,11 @@ function Home(props) {
 							for(let i = 0; i < currentJobIdArray.length; i++){
 								// console.log(stopAutoCreatingNotesRef.current);
 								// console.log(currentJobIdArray.length);
-								// console.log(i);
+								console.log(i);
 
 								const allAreNone = currentJobIdArray.every((val) => val === "None");
-								console.log(allAreNone);
-								console.log(currentJobIdArray[i]);
+								// console.log(allAreNone);
+								// console.log(currentJobIdArray[i]);
 
 								if (allAreNone && currentJobIdArray.length === 1){
 									console.log("i ran", index);
@@ -236,13 +234,13 @@ function Home(props) {
 								}
 
 								else if (allAreNone && currentJobIdArray.length > 1){
+									console.log("more than 1");
 									clearInterval(jobIdCheck);
 									setIsLoadingAutoCreatingNotes(false);
 									setLoadingLeadsButtonDisabled(false);
 									setAutoCreatingNotesDisabled(false);
 
 									if (index === null){
-										console.log("ddddqa");
 										for (let i = 0; i < 25; i++){
 											peopleInterestsButtonDisabled[i] = false;
 											companyInterestsButtonDisabled[i] = false;
@@ -304,7 +302,6 @@ function Home(props) {
 										setAutoCreatingNotesDisabled(false);
 
 										if (index === null) {
-											console.log("dddqqzxda");
 											for (let i = 0; i < 25; i++){
 												peopleInterestsButtonDisabled[i] = false;
 												companyInterestsButtonDisabled[i] = false;
@@ -365,7 +362,6 @@ function Home(props) {
 												const newConnectNoteArray = [...connectNoteArray];
 	
 												if (index === null) {
-													console.log("dddda00000");
 													newConnectNoteArray[i] = resultArray;
 													setConnectNoteArray(newConnectNoteArray);
 					
