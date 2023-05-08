@@ -207,7 +207,7 @@ function Home(props) {
 								console.log(allAreNone);
 								console.log(currentJobIdArray[i]);
 
-								if (allAreNone){
+								if (allAreNone && currentJobIdArray.length > 1){
 									clearInterval(jobIdCheck);
 									setIsLoadingAutoCreatingNotes(false);
 									setLoadingLeadsButtonDisabled(false);
