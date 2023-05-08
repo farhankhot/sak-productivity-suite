@@ -662,6 +662,7 @@ def send_connect():
         return jsonify(success=True, message=error_boolean)
     
     except Exception as e:
+        print(e)
         return jsonify(success=False, message=str(e))
 
 @app.route('/send-message', methods=['POST'])
