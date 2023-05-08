@@ -268,7 +268,7 @@ function Home(props) {
 									}
 								}
 
-								else if (!allNone && currentJobIdArray[i] != "None"){
+								else if (!allAreNone && currentJobIdArray[i] != "None"){
 									console.log("me 3");
 									if (stopAutoCreatingNotesRef.current) {
 										if (currentJobIdArray.length > 0){
