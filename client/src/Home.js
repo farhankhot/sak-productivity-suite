@@ -96,6 +96,7 @@ function Home(props) {
 		try {
 
 			if (index === null){
+				console.log("dddda");
 				setIsLoadingAutoCreatingNotes(true);
 				setLoadingLeadsButtonDisabled(true);
 				setAutoCreatingNotesDisabled(true);
@@ -163,6 +164,8 @@ function Home(props) {
 					let currentJobIdArray = [...jobIdArray.message];
 
 					const jobIdCheck = setInterval( async () => {
+
+						// Will this ever run?
 						if (currentJobIdArray.length === 0) {
 							clearInterval(jobIdCheck);
 								
@@ -171,6 +174,7 @@ function Home(props) {
 							setAutoCreatingNotesDisabled(false);
 
 							if (index === null){
+								console.log("dddvda");
 								for (let i = 0; i < 25; i++){
 									peopleInterestsButtonDisabled[i] = false;
 									companyInterestsButtonDisabled[i] = false;
@@ -238,6 +242,7 @@ function Home(props) {
 									setAutoCreatingNotesDisabled(false);
 
 									if (index === null){
+										console.log("ddddqa");
 										for (let i = 0; i < 25; i++){
 											peopleInterestsButtonDisabled[i] = false;
 											companyInterestsButtonDisabled[i] = false;
@@ -299,6 +304,7 @@ function Home(props) {
 										setAutoCreatingNotesDisabled(false);
 
 										if (index === null) {
+											console.log("dddqqzxda");
 											for (let i = 0; i < 25; i++){
 												peopleInterestsButtonDisabled[i] = false;
 												companyInterestsButtonDisabled[i] = false;
@@ -359,6 +365,7 @@ function Home(props) {
 												const newConnectNoteArray = [...connectNoteArray];
 	
 												if (index === null) {
+													console.log("dddda00000");
 													newConnectNoteArray[i] = resultArray;
 													setConnectNoteArray(newConnectNoteArray);
 					
