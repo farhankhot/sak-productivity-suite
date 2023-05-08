@@ -274,6 +274,8 @@ function Home(props) {
 											setIsLoadingMakingNote(newIsLoadingMakingNote);
 											setAutoCreatingNotesDisabled(false);
 											setLoadingLeadsButtonDisabled(false);
+
+											console.log("index", index);
 										}
 										// Set back to false if this button is clicked again
 										stopAutoCreatingNotesRef.current = false;
@@ -332,11 +334,8 @@ function Home(props) {
 													sendingConnectNoteButtonDisabled[index] = false;
 					
 													currentJobIdArray[index] = "None"
-													// console.log("current", currentJobIdArray.length);
+													console.log("current", currentJobIdArray.length);
 												}
-											}
-											else {
-												console.log("ddd", data.status);
 											}
 										}else{
 											console.log("error occurred");
