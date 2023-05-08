@@ -474,6 +474,8 @@ def stop_jobs_in_array():
 def get_lead_info():
 
     try:
+        print(request.json)
+
         session_id = request.json['sessionId'] # type: ignore
         # print("get_lead_info session_id: ", session_id)
 
