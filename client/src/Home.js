@@ -327,6 +327,7 @@ function Home(props) {
 													setConnectNoteArray(newConnectNoteArray);
 					
 													setShowProfileArea(true);
+													console.log("index", index);
 							
 													peopleInterestsButtonDisabled[index] = false;
 													companyInterestsButtonDisabled[index] = false;
