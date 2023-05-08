@@ -194,6 +194,7 @@ function Home(props) {
 
 								const allAreNone = currentJobIdArray.every((val) => val === "None");
 								console.log(allAreNone);
+								console.log(currentJobIdArray[i]);
 
 								if (allAreNone){
 									clearInterval(jobIdCheck);
