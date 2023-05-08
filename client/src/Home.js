@@ -540,6 +540,10 @@ function Home(props) {
 					setError("error occurred");
 				}	
 			}
+			else {
+				console.log("error occurred");
+				setError("error occurred");
+			}
 		}catch(error){
 			console.log("error occurred");
 			setError("error occurred");
