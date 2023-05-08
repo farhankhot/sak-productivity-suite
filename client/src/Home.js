@@ -129,7 +129,7 @@ function Home(props) {
 				console.log("me2");
 				additionalInfo = additionalInfoText;
 			}
-			else if(index !== null && specificAdditionalInfoText[index] !== ""){
+			else if(index !== null && specificAdditionalInfoText[index] !== undefined){
 				console.log("me");
 				additionalInfo = specificAdditionalInfoText[index];
 			}
