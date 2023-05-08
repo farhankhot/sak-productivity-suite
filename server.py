@@ -503,7 +503,7 @@ def get_lead_info():
 
         return jsonify(success=True, message=job_ids)
     except Exception as e:
-        print(str(e))
+        print(e)
         return jsonify(success=False, message=str(e))
 
 
