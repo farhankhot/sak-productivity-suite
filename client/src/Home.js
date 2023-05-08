@@ -124,7 +124,7 @@ function Home(props) {
 			if (index !== null && selectedInterests[index].length !== 0){
 				interests = selectedInterests[index].toString();
 			}
-			let additionalInfo = "None";
+			let additionalInfo = "";
 			if (additionalInfoText !== "" && index === null){
 				console.log("me2");
 				additionalInfo = additionalInfoText;

@@ -442,7 +442,7 @@ def search_leads_in_db():
         location = request.json['location'] # type: ignore
     
         data = dbCon.search_leads(lead_name, title, current_company, location) # type: ignore
-        
+        print(data, type(data))
         return jsonify(success=True, message=data)
     except Exception as e:
         return jsonify(success=False, message=str(e))
