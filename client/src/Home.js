@@ -131,7 +131,6 @@ function Home(props) {
 			else if(index !== null && specificAdditionalInfoText[index] !== ""){
 				additionalInfo = specificAdditionalInfoText[index];
 			}
-
 			console.log("test", specificAdditionalInfoText[index]);
 			const response = await fetch("https://sak-productivity-suite.herokuapp.com/get-lead-info", {
 				method: "POST",

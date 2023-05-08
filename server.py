@@ -490,7 +490,7 @@ def get_lead_info():
         # print(leads_list, member_urn_id_list)
 
         additional_info_text = request.json['additionalInfoText'] # type: ignore
-        # print("additional_info_text is ", additional_info_text)
+        print("additional_info_text is ", additional_info_text)
         interests = request.json['interests'] # type: ignore
 
         # print(interests)
@@ -507,7 +507,7 @@ def get_lead_info():
 
         return jsonify(success=True, message=job_ids)
     except Exception as e:
-        print(str(e))
+        # print(str(e))
         return jsonify(success=False, message=str(e))
 
 
