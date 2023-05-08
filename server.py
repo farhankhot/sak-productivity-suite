@@ -658,6 +658,7 @@ def send_connect():
         text = request.json['text'] # type: ignore
         
         error_boolean = api.add_connection(profile_id, text)
+        print(error_boolean)
         return jsonify(success=True, message=error_boolean)
     
     except Exception as e:

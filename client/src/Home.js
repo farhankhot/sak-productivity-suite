@@ -335,6 +335,9 @@ function Home(props) {
 													// console.log("current", currentJobIdArray.length);
 												}
 											}
+											else {
+												console.log("ddd", data.status);
+											}
 										}else{
 											console.log("error occurred");
 											setError("error occurred");						
