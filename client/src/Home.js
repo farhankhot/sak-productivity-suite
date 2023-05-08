@@ -113,6 +113,7 @@ function Home(props) {
 				companyInterestsButtonDisabled[index] = false;
 				makingConnectNoteButtonDisabled[index] = true;
 				sendingConnectNoteButtonDisabled[index] = false;
+				isLoadingMakingNote[index] = true;
 
 				setAutoCreatingNotesDisabled(true);
 				setLoadingLeadsButtonDisabled(true);
@@ -340,6 +341,7 @@ function Home(props) {
 													companyInterestsButtonDisabled[index] = false;
 													makingConnectNoteButtonDisabled[index] = false;
 													sendingConnectNoteButtonDisabled[index] = false;
+													isLoadingMakingNote[index] = false;
 					
 													currentJobIdArray[i] = "None"
 													console.log("current", currentJobIdArray.length);
