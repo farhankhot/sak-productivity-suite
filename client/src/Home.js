@@ -126,9 +126,11 @@ function Home(props) {
 			}
 			let additionalInfo = "None";
 			if (additionalInfoText !== "" && index === null){
+				console.log("me2");
 				additionalInfo = additionalInfoText;
 			}
 			else if(index !== null && specificAdditionalInfoText[index] !== ""){
+				console.log("me");
 				additionalInfo = specificAdditionalInfoText[index];
 			}
 			console.log(additionalInfo);
