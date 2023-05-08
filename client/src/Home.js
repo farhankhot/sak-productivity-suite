@@ -111,7 +111,7 @@ function Home(props) {
 			else {
 				peopleInterestsButtonDisabled[index] = false;
 				companyInterestsButtonDisabled[index] = false;
-				makingConnectNoteButtonDisabled[index] = false;
+				makingConnectNoteButtonDisabled[index] = true;
 				sendingConnectNoteButtonDisabled[index] = false;
 
 				setAutoCreatingNotesDisabled(true);
