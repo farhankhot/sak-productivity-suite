@@ -524,16 +524,16 @@ def get_leads():
     except Exception as e:
         return jsonify(success=False, message=str(e))
 
-@app.route('/use-bingai', methods=['POST'])
-def use_bingai():
-    try:
-        prompt = request.json['prompt'] # type: ignore    
-        data = q.enqueue(UseBingAI, prompt)
-        job_id = data.get_id()
+# @app.route('/use-bingai', methods=['POST'])
+# def use_bingai():
+#     try:
+#         prompt = request.json['prompt'] # type: ignore    
+#         data = q.enqueue(UseBingAI, prompt)
+#         job_id = data.get_id()
 
-        return jsonify(success=True, message=job_id)
-    except Exception as e:
-        return jsonify(success=False, message=str(e))
+#         return jsonify(success=True, message=job_id)
+#     except Exception as e:
+#         return jsonify(success=False, message=str(e))
 
 @app.route('/use-chatgpt', methods=['POST'])
 def use_chatgpt():
