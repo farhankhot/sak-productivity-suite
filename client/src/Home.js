@@ -208,22 +208,23 @@ function Home(props) {
 								console.log(currentJobIdArray[i]);
 
 								if (allAreNone && currentJobIdArray.length === 1){
+									console.log("i ran");
 									clearInterval(jobIdCheck);
 									setIsLoadingAutoCreatingNotes(false);
 									setLoadingLeadsButtonDisabled(false);
 									setAutoCreatingNotesDisabled(false);
 
-									peopleInterestsButtonDisabled[i] = false;
-									companyInterestsButtonDisabled[i] = false;
+									peopleInterestsButtonDisabled[index] = false;
+									companyInterestsButtonDisabled[index] = false;
 									// makingConnectNoteButtonDisabled[index] = false;
-									sendingConnectNoteButtonDisabled[i] = false;
+									sendingConnectNoteButtonDisabled[index] = false;
 
 									const newIsLoadingMakingNote = [...isLoadingMakingNote];
-									newIsLoadingMakingNote[i] = false;
+									newIsLoadingMakingNote[index] = false;
 									setMakingConnectNoteButtonDisabled(newIsLoadingMakingNote);
 
 									const x = [...makingConnectNoteButtonDisabled];
-									x[i] = false;
+									x[index] = false;
 									setMakingConnectNoteButtonDisabled(x);						
 
 									setIsLoadingMakingNote(newIsLoadingMakingNote);
