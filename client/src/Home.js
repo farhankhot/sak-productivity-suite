@@ -96,7 +96,6 @@ function Home(props) {
 		try {
 
 			if (index === null){
-				console.log("null 3");
 				setIsLoadingAutoCreatingNotes(true);
 				setLoadingLeadsButtonDisabled(true);
 				setAutoCreatingNotesDisabled(true);
@@ -174,7 +173,6 @@ function Home(props) {
 							setAutoCreatingNotesDisabled(false);
 
 							if (index === null){
-								console.log("null 2");
 								for (let i = 0; i < 25; i++){
 									peopleInterestsButtonDisabled[i] = false;
 									companyInterestsButtonDisabled[i] = false;
@@ -212,7 +210,6 @@ function Home(props) {
 								// console.log(currentJobIdArray[i]);
 
 								if (allAreNone && currentJobIdArray.length === 1){
-									console.log("i ran", index);
 									clearInterval(jobIdCheck);
 									setIsLoadingAutoCreatingNotes(false);
 									setLoadingLeadsButtonDisabled(false);
@@ -306,7 +303,6 @@ function Home(props) {
 										setAutoCreatingNotesDisabled(false);
 
 										if (index === null) {
-											console.log("null 4");
 											for (let i = 0; i < 25; i++){
 												peopleInterestsButtonDisabled[i] = false;
 												companyInterestsButtonDisabled[i] = false;
@@ -368,7 +364,6 @@ function Home(props) {
 												const newConnectNoteArray = [...connectNoteArray];
 	
 												if (index === null) {
-													console.log("null 5");
 													newConnectNoteArray[i] = resultArray;
 													setConnectNoteArray(newConnectNoteArray);
 					
@@ -380,7 +375,7 @@ function Home(props) {
 													
 													const newIsLoadingMakingNote = [...isLoadingMakingNote];
 													newIsLoadingMakingNote[i] = false;
-													setMakingConnectNoteButtonDisabled(newIsLoadingMakingNote);
+													setIsLoadingMakingNote(newIsLoadingMakingNote);
 
 													sendingConnectNoteButtonDisabled[i] = false;
 					
@@ -395,10 +390,11 @@ function Home(props) {
 							
 													peopleInterestsButtonDisabled[index] = false;
 													companyInterestsButtonDisabled[index] = false;
+													makingConnectNoteButtonDisabled[index] = false;
 
 													const newIsLoadingMakingNote = [...isLoadingMakingNote];
 													newIsLoadingMakingNote[index] = false;
-													setMakingConnectNoteButtonDisabled(newIsLoadingMakingNote);
+													setIsLoadingMakingNote(newIsLoadingMakingNote);
 
 													sendingConnectNoteButtonDisabled[index] = false;
 					
