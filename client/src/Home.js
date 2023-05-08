@@ -391,11 +391,6 @@ function Home(props) {
 													peopleInterestsButtonDisabled[index] = false;
 													companyInterestsButtonDisabled[index] = false;
 													makingConnectNoteButtonDisabled[index] = false;
-
-													const newIsLoadingMakingNote = [...isLoadingMakingNote];
-													newIsLoadingMakingNote[index] = false;
-													setIsLoadingMakingNote(newIsLoadingMakingNote);
-
 													sendingConnectNoteButtonDisabled[index] = false;
 					
 													currentJobIdArray[i] = "None"
