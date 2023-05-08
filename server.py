@@ -49,7 +49,6 @@ async def UseBingAI(prompt):
     await bot.close()
     return ans
 
-# TODO: Check context length usage in the conversation, if token limit is near, start a new conversation
 def UseChatGPT(prompt):
 
     print("ss", prompt)
@@ -209,6 +208,13 @@ def GetCompanyInterests(cookie_dict, profile_urn):
 
 def SalesNavigatorLeadsInfo(api):
 
+    # Display last 5 lead lists, along with all of their leads in a list
+    # Client-side, when one is clicked load it with it's leads
+    # Have 1 Home component, with all of its arrays variable length
+    # Disable all buttons when any 5 of the Auto Create Note Buttons is clicked
+    # Don't disable the Auto Create Note Buttons when any Auto Create Note Button is clicked
+    # Need to implement pagination first
+
     # Get the latest list created
     res_leads_list = api._fetch(
         f"/sales-api/salesApiLists?q=listType&listType=LEAD&listSources=List(MANUAL,SYSTEM,CRM_AT_RISK_OPPORTUNITY,CRM_SYNC,CRM_BLUEBIRD,BUYER_INTEREST,LINKEDIN_SALES_INSIGHTS,CSV_IMPORT,RECOMMENDATION,NEW_EXECS_IN_SAVED_ACCOUNTS,LEADS_TO_FOLLOW_UP,CRM_PERSON_ACCOUNT,BOOK_OF_BUSINESS)&isMetadataNeeded=true&start=0&count=25&sortCriteria=LAST_MODIFIED&sortOrder=DESCENDING&decoration=%28id%2ClistType%2ClistSource%2Cname%2Cdescription%2CcreatedAt%2Crole%2ClastModifiedAt%2ClastViewedAt%2CentityCount%2CunsavedEntityCount%2Cshared%2Csubscribed%2ClistCsvImportTask%2CmockList%2Ccreator~fs_salesProfile%28entityUrn%2CfullName%2CprofilePictureDisplayImage%29%2ClastModifiedBy~fs_salesProfile%28entityUrn%2CfullName%29%29"
@@ -266,8 +272,8 @@ def SalesNavigatorLeadsInfo(api):
 # TODO: Get interests at random
 def GetLeadInfo(cookie_dict, lead, profile_urn, additional_info_text="", interests=""):
     
-    print("additional info: ", additional_info_text)
-    print("profile_urn", profile_urn)
+    # print("additional info: ", additional_info_text)
+    # print("profile_urn", profile_urn)
 
     time.sleep(3)
 
@@ -306,7 +312,7 @@ def GetLeadInfo(cookie_dict, lead, profile_urn, additional_info_text="", interes
                 lead_relationships.append(shared_group)
     
     # lead_info.append(lead_relationships)
-    print(lead_relationships)
+    # print(lead_relationships)
     # ============= Getting Relationships =============================
 
     # ============= Getting Misc info =============================
@@ -458,7 +464,7 @@ def stop_jobs_in_array():
     # job_id_list = job_id_list['message']
     # print("job_id_list", job_id_list)
 
-    print(job_id_list)
+    # print(job_id_list)
 
     for i, job_id in enumerate(job_id_list):
         if job_id != "None":
@@ -481,13 +487,13 @@ def get_lead_info():
         leads_list = request.json['leadsArray'] # type: ignore
         member_urn_id_list = request.json['memberUrnIdArray'] # type: ignore
 
-        print(leads_list, member_urn_id_list)
+        # print(leads_list, member_urn_id_list)
 
         additional_info_text = request.json['additionalInfoText'] # type: ignore
         # print("additional_info_text is ", additional_info_text)
         interests = request.json['interests'] # type: ignore
 
-        print(interests)
+        # print(interests)
         job_ids=[]
         for i, profile_urn in enumerate(member_urn_id_list):
 
@@ -501,6 +507,7 @@ def get_lead_info():
 
         return jsonify(success=True, message=job_ids)
     except Exception as e:
+        print(str(e))
         return jsonify(success=False, message=str(e))
 
 
