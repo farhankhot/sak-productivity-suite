@@ -3,7 +3,7 @@
 # LinkedIn, not Linkedin
 
 import re
-import asyncio
+# import asyncio
 import json
 
 from linkedin_api import Linkedin
@@ -11,16 +11,12 @@ from linkedin_api import Linkedin
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
-# from bertopic import BERTopic
-# import emoji
-
 from rq import Queue
 from worker import conn
 
 from rq.job import Job
 
 import openai
-from EdgeGPT import Chatbot
 
 import dbCon
 
@@ -38,16 +34,16 @@ app = Flask(
 # Enables CORS (this is only needed when working with React.js, I don't know why)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
-async def UseBingAI(prompt):
+# async def UseBingAI(prompt):
     
-    # This is getting my own bing cookies
-    bot = Chatbot(cookie_path='./cookie.json') # type: ignore
+#     # This is getting my own bing cookies
+#     bot = Chatbot(cookie_path='./cookie.json') # type: ignore
 
-    ans_json = await bot.ask(prompt=prompt)
-    ans = ans_json['item']['messages'][1]['text']
+#     ans_json = await bot.ask(prompt=prompt)
+#     ans = ans_json['item']['messages'][1]['text']
     
-    await bot.close()
-    return ans
+#     await bot.close()
+#     return ans
 
 def UseChatGPT(prompt):
 
