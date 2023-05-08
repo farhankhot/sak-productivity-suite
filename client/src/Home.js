@@ -124,15 +124,12 @@ function Home(props) {
 			if (index !== null && selectedInterests[index].length !== 0){
 				interests = selectedInterests[index].toString();
 			}
-			let additionalInfo = "";
+			let additionalInfo = "None";
 			if (additionalInfoText !== "" && index === null){
 				additionalInfo = additionalInfoText;
 			}
 			else if(index !== null && specificAdditionalInfoText[index] !== ""){
 				additionalInfo = specificAdditionalInfoText[index];
-			}
-			else{
-				additionalInfo = "None";
 			}
 			console.log("test", specificAdditionalInfoText[index]);
 			const response = await fetch("https://sak-productivity-suite.herokuapp.com/get-lead-info", {
