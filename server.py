@@ -660,9 +660,17 @@ def send_connect():
         api = Linkedin(cookies=cookie_dict) # type: ignore
 
         profile_id = request.json['profileId'] # type: ignore
+
+        my_tuple = tuple(profile_id.strip("()").split(","))
+
+        actual_profile_urn, auth_type, auth_token = my_tuple 
+        # profile_urn_for_lead_profile = "profileId:"+actual_profile_urn
+        # auth_type_for_lead_profile = "authType:"+auth_type
+        # auth_token_for_lead_profile = "authToken:"+auth_token 
+
         text = request.json['text'] # type: ignore
         
-        error_boolean = api.add_connection(profile_id, text)
+        error_boolean = api.add_connection(actual_profile_urn, text)
         print(error_boolean)
         return jsonify(success=True, message=error_boolean)
     
