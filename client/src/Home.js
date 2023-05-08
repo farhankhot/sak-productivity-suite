@@ -221,13 +221,12 @@ function Home(props) {
 
 									const newIsLoadingMakingNote = [...isLoadingMakingNote];
 									newIsLoadingMakingNote[index] = false;
-									setMakingConnectNoteButtonDisabled(newIsLoadingMakingNote);
+									setIsLoadingMakingNote(newIsLoadingMakingNote);
 
 									const x = [...makingConnectNoteButtonDisabled];
 									x[index] = false;
 									setMakingConnectNoteButtonDisabled(x);						
 
-									setIsLoadingMakingNote(newIsLoadingMakingNote);
 									setAutoCreatingNotesDisabled(false);
 									setLoadingLeadsButtonDisabled(false);
 								}
