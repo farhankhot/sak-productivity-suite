@@ -207,7 +207,31 @@ function Home(props) {
 								console.log(allAreNone);
 								console.log(currentJobIdArray[i]);
 
-								if (allAreNone && currentJobIdArray.length > 1){
+								if (allAreNone && currentJobIdArray.length === 1){
+									clearInterval(jobIdCheck);
+									setIsLoadingAutoCreatingNotes(false);
+									setLoadingLeadsButtonDisabled(false);
+									setAutoCreatingNotesDisabled(false);
+
+									peopleInterestsButtonDisabled[index] = false;
+									companyInterestsButtonDisabled[index] = false;
+									// makingConnectNoteButtonDisabled[index] = false;
+									sendingConnectNoteButtonDisabled[index] = false;
+
+									const newIsLoadingMakingNote = [...isLoadingMakingNote];
+									newIsLoadingMakingNote[index] = false;
+									setMakingConnectNoteButtonDisabled(newIsLoadingMakingNote);
+
+									const x = [...makingConnectNoteButtonDisabled];
+									x[index] = false;
+									setMakingConnectNoteButtonDisabled(x);						
+
+									setIsLoadingMakingNote(newIsLoadingMakingNote);
+									setAutoCreatingNotesDisabled(false);
+									setLoadingLeadsButtonDisabled(false);
+								}
+
+								else if (allAreNone && currentJobIdArray.length > 1){
 									clearInterval(jobIdCheck);
 									setIsLoadingAutoCreatingNotes(false);
 									setLoadingLeadsButtonDisabled(false);
