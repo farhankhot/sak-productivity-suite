@@ -203,7 +203,7 @@ function Home(props) {
 							for(let i = 0; i < currentJobIdArray.length; i++){
 								// console.log(stopAutoCreatingNotesRef.current);
 								// console.log(currentJobIdArray.length);
-								console.log(i);
+								console.log(i, index);
 
 								const allAreNone = currentJobIdArray.every((val) => val === "None");
 								// console.log(allAreNone);
@@ -268,7 +268,8 @@ function Home(props) {
 									}
 								}
 
-								if (currentJobIdArray[i] != "None"){
+								else if (!allNone && currentJobIdArray[i] != "None"){
+									console.log("me 3");
 									if (stopAutoCreatingNotesRef.current) {
 										if (currentJobIdArray.length > 0){
 											try {
@@ -355,6 +356,7 @@ function Home(props) {
 											}
 											
 											else if (status === "finished") {
+												console.log("me 4");
 	
 												const resultArray = data.result;
 												console.log("Successfully gotten Connect note array: ", resultArray);
