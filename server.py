@@ -428,6 +428,8 @@ def search_zoominfo():
         company_name = request.json['companyName'] # type: ignore
         data = requests.get(f"http://167.99.250.232:5555/{company_name}")   
         # print(data.json())
+        if len(data.json()) == 0: # type: ignore
+            return jsonify(success=False, message="error")
         return data.json()
     except Exception as e:
         return jsonify(success=False, message=str(e))
@@ -442,7 +444,8 @@ def search_leads_in_db():
         location = request.json['location'] # type: ignore
     
         data = dbCon.search_leads(lead_name, title, current_company, location) # type: ignore
-        print(data, type(data))
+        if data == False:
+            return jsonify(success=False, message="error")    
         return jsonify(success=True, message=data)
     except Exception as e:
         return jsonify(success=False, message=str(e))
