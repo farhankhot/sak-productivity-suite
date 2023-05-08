@@ -144,7 +144,7 @@ function Home(props) {
 					sessionId: sessionId,
 					...(index === null ? {leadsArray: leadsArray} : {leadsArray: [leadsArray[index]]}),
 					...(index === null ? {memberUrnIdArray: memberUrnIdArray} : {memberUrnIdArray: [memberUrnIdArray[index]]}),
-					...(additionalInfo !== "" ? {additionalInfoText: additionalInfo}: {additionalInfoText: ""}),
+					additionalInfoText: additionalInfo,
 					...(interests !== "" ? {interests: interests} : {interests: ""})
 				})
 			});
