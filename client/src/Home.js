@@ -111,11 +111,11 @@ function Home(props) {
 			else {
 				peopleInterestsButtonDisabled[index] = false;
 				companyInterestsButtonDisabled[index] = false;
-				makingConnectNoteButtonDisabled[index] = false;
+				// makingConnectNoteButtonDisabled[index] = false;
 				sendingConnectNoteButtonDisabled[index] = false;
 
 				const newIsLoadingMakingNote = [...isLoadingMakingNote];
-				newIsLoadingMakingNote[index] = true;
+				newIsLoadingMakingNote[index] = false;
 				setMakingConnectNoteButtonDisabled(newIsLoadingMakingNote);
 
 				setIsLoadingMakingNote(newIsLoadingMakingNote);
