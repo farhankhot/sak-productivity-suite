@@ -111,16 +111,8 @@ function Home(props) {
 			else {
 				peopleInterestsButtonDisabled[index] = false;
 				companyInterestsButtonDisabled[index] = false;
-				// makingConnectNoteButtonDisabled[index] = false;
+				makingConnectNoteButtonDisabled[index] = false;
 				sendingConnectNoteButtonDisabled[index] = false;
-
-				const x = [...makingConnectNoteButtonDisabled];
-				x[index] = false;
-				setMakingConnectNoteButtonDisabled(x);
-
-				const newIsLoadingMakingNote = [...isLoadingMakingNote];
-				newIsLoadingMakingNote[index] = true;
-				setIsLoadingMakingNote(newIsLoadingMakingNote);
 
 				setAutoCreatingNotesDisabled(true);
 				setLoadingLeadsButtonDisabled(true);
@@ -183,18 +175,9 @@ function Home(props) {
 							else {
 								peopleInterestsButtonDisabled[index] = false;
 								companyInterestsButtonDisabled[index] = false;
-								// makingConnectNoteButtonDisabled[index] = false;
+								makingConnectNoteButtonDisabled[index] = false;
 								sendingConnectNoteButtonDisabled[index] = false;
 
-								const newIsLoadingMakingNote = [...isLoadingMakingNote];
-								newIsLoadingMakingNote[index] = false;
-								setMakingConnectNoteButtonDisabled(newIsLoadingMakingNote);
-
-								const x = [...makingConnectNoteButtonDisabled];
-								x[index] = false;
-								setMakingConnectNoteButtonDisabled(x);				
-
-								setIsLoadingMakingNote(newIsLoadingMakingNote);
 								setAutoCreatingNotesDisabled(false);
 								setLoadingLeadsButtonDisabled(false);
 							}
@@ -217,16 +200,8 @@ function Home(props) {
 
 									peopleInterestsButtonDisabled[index] = false;
 									companyInterestsButtonDisabled[index] = false;
-									// makingConnectNoteButtonDisabled[index] = false;
+									makingConnectNoteButtonDisabled[index] = false;
 									sendingConnectNoteButtonDisabled[index] = false;
-
-									const newIsLoadingMakingNote = [...isLoadingMakingNote];
-									newIsLoadingMakingNote[index] = false;
-									setIsLoadingMakingNote(newIsLoadingMakingNote);
-
-									const x = [...makingConnectNoteButtonDisabled];
-									x[index] = false;
-									setMakingConnectNoteButtonDisabled(x);						
 
 									setAutoCreatingNotesDisabled(false);
 									setLoadingLeadsButtonDisabled(false);
@@ -240,7 +215,6 @@ function Home(props) {
 									setAutoCreatingNotesDisabled(false);
 
 									if (index === null){
-										console.log("null 1");
 										for (let i = 0; i < 25; i++){
 											peopleInterestsButtonDisabled[i] = false;
 											companyInterestsButtonDisabled[i] = false;
@@ -251,25 +225,15 @@ function Home(props) {
 									else {
 										peopleInterestsButtonDisabled[index] = false;
 										companyInterestsButtonDisabled[index] = false;
-										// makingConnectNoteButtonDisabled[index] = false;
+										makingConnectNoteButtonDisabled[index] = false;
 										sendingConnectNoteButtonDisabled[index] = false;
 
-										const newIsLoadingMakingNote = [...isLoadingMakingNote];
-										newIsLoadingMakingNote[index] = false;
-										setMakingConnectNoteButtonDisabled(newIsLoadingMakingNote);
-
-										const x = [...makingConnectNoteButtonDisabled];
-										x[index] = false;
-										setMakingConnectNoteButtonDisabled(x);						
-
-										setIsLoadingMakingNote(newIsLoadingMakingNote);
 										setAutoCreatingNotesDisabled(false);
 										setLoadingLeadsButtonDisabled(false);
 									}
 								}
 
 								else if (!allAreNone && currentJobIdArray[i] != "None"){
-									console.log("me 3");
 									if (stopAutoCreatingNotesRef.current) {
 										if (currentJobIdArray.length > 0){
 											try {
@@ -313,18 +277,9 @@ function Home(props) {
 										else {
 											peopleInterestsButtonDisabled[index] = false;
 											companyInterestsButtonDisabled[index] = false;
-											// makingConnectNoteButtonDisabled[index] = false;
+											makingConnectNoteButtonDisabled[index] = false;
 											sendingConnectNoteButtonDisabled[index] = false;
 
-											const newIsLoadingMakingNote = [...isLoadingMakingNote];
-											newIsLoadingMakingNote[index] = false;
-											setMakingConnectNoteButtonDisabled(newIsLoadingMakingNote);
-
-											const x = [...makingConnectNoteButtonDisabled];
-											x[index] = false;
-											setMakingConnectNoteButtonDisabled(x);							
-
-											setIsLoadingMakingNote(newIsLoadingMakingNote);
 											setAutoCreatingNotesDisabled(false);
 											setLoadingLeadsButtonDisabled(false);
 
@@ -355,9 +310,7 @@ function Home(props) {
 												setError("An error has occurred");
 											}
 											
-											else if (status === "finished") {
-												console.log("me 4");
-	
+											else if (status === "finished") {	
 												const resultArray = data.result;
 												console.log("Successfully gotten Connect note array: ", resultArray);
 				
@@ -372,11 +325,6 @@ function Home(props) {
 													peopleInterestsButtonDisabled[i] = false;
 													companyInterestsButtonDisabled[i] = false;
 													makingConnectNoteButtonDisabled[i] = false;
-													
-													const newIsLoadingMakingNote = [...isLoadingMakingNote];
-													newIsLoadingMakingNote[i] = false;
-													setIsLoadingMakingNote(newIsLoadingMakingNote);
-
 													sendingConnectNoteButtonDisabled[i] = false;
 					
 													currentJobIdArray[i] = "None"
