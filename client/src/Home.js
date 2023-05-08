@@ -116,6 +116,8 @@ function Home(props) {
 
 				const newIsLoadingMakingNote = [...isLoadingMakingNote];
 				newIsLoadingMakingNote[index] = true;
+				setMakingConnectNoteButtonDisabled(newIsLoadingMakingNote);
+
 				setIsLoadingMakingNote(newIsLoadingMakingNote);
 				setAutoCreatingNotesDisabled(true);
 				setLoadingLeadsButtonDisabled(true);
@@ -181,6 +183,8 @@ function Home(props) {
 
 								const newIsLoadingMakingNote = [...isLoadingMakingNote];
 								newIsLoadingMakingNote[index] = false;
+								setMakingConnectNoteButtonDisabled(newIsLoadingMakingNote);
+
 								setIsLoadingMakingNote(newIsLoadingMakingNote);
 								setAutoCreatingNotesDisabled(false);
 								setLoadingLeadsButtonDisabled(false);
@@ -218,6 +222,8 @@ function Home(props) {
 
 										const newIsLoadingMakingNote = [...isLoadingMakingNote];
 										newIsLoadingMakingNote[index] = false;
+										setMakingConnectNoteButtonDisabled(newIsLoadingMakingNote);
+
 										setIsLoadingMakingNote(newIsLoadingMakingNote);
 										setAutoCreatingNotesDisabled(false);
 										setLoadingLeadsButtonDisabled(false);
@@ -273,6 +279,8 @@ function Home(props) {
 
 											const newIsLoadingMakingNote = [...isLoadingMakingNote];
 											newIsLoadingMakingNote[index] = false;
+											setMakingConnectNoteButtonDisabled(newIsLoadingMakingNote);
+
 											setIsLoadingMakingNote(newIsLoadingMakingNote);
 											setAutoCreatingNotesDisabled(false);
 											setLoadingLeadsButtonDisabled(false);
@@ -320,6 +328,11 @@ function Home(props) {
 													peopleInterestsButtonDisabled[i] = false;
 													companyInterestsButtonDisabled[i] = false;
 													makingConnectNoteButtonDisabled[i] = false;
+													
+													const newIsLoadingMakingNote = [...isLoadingMakingNote];
+													newIsLoadingMakingNote[index] = false;
+													setMakingConnectNoteButtonDisabled(newIsLoadingMakingNote);
+
 													sendingConnectNoteButtonDisabled[i] = false;
 					
 													currentJobIdArray[i] = "None"
@@ -333,7 +346,11 @@ function Home(props) {
 							
 													peopleInterestsButtonDisabled[index] = false;
 													companyInterestsButtonDisabled[index] = false;
-													makingConnectNoteButtonDisabled[index] = false;
+
+													const newIsLoadingMakingNote = [...isLoadingMakingNote];
+													newIsLoadingMakingNote[index] = false;
+													setMakingConnectNoteButtonDisabled(newIsLoadingMakingNote);
+
 													sendingConnectNoteButtonDisabled[index] = false;
 					
 													currentJobIdArray[i] = "None"
