@@ -336,7 +336,7 @@ function Home(props) {
 													makingConnectNoteButtonDisabled[index] = false;
 													sendingConnectNoteButtonDisabled[index] = false;
 					
-													currentJobIdArray[index] = "None"
+													currentJobIdArray[i] = "None"
 													console.log("current", currentJobIdArray.length);
 												}
 											}
