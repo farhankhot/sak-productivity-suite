@@ -131,9 +131,6 @@ function Home(props) {
 			else if(index !== null && specificAdditionalInfoText[index] !== ""){
 				additionalInfo = specificAdditionalInfoText[index];
 			}
-			else{
-				additionalInfo = "None";
-			}
 			console.log("test", specificAdditionalInfoText[index]);
 			const response = await fetch("https://sak-productivity-suite.herokuapp.com/get-lead-info", {
 				method: "POST",
@@ -144,7 +141,7 @@ function Home(props) {
 					sessionId: sessionId,
 					...(index === null ? {leadsArray: leadsArray} : {leadsArray: [leadsArray[index]]}),
 					...(index === null ? {memberUrnIdArray: memberUrnIdArray} : {memberUrnIdArray: [memberUrnIdArray[index]]}),
-					additionalInfoText: additionalInfo,
+					...(additionalInfo !== "" ? {additionalInfoText: additionalInfo}: {additionalInfoText: ""}),
 					...(interests !== "" ? {interests: interests} : {interests: ""})
 				})
 			});
