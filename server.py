@@ -248,7 +248,7 @@ def SalesNavigatorLeadsInfo(api):
         for page in range(0, number_of_pages):
 
             print(page, number_of_pages)
-            if (leads_list_total - current_count != 0):
+            if ( (leads_list_total - current_count) == 0):
                 break
 
             if (leads_list_total - current_count) < 25:
