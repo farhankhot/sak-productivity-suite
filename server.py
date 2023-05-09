@@ -253,6 +253,10 @@ def SalesNavigatorLeadsInfo(api):
                 if lead['currentPositions'][0]['companyName']:
                     company_name = lead['currentPositions'][0]['companyName']
             
+            pending_invitation = False
+            if 'pendingInvitation' in lead:
+                pending_invitation = lead['pendingInvitation']
+
             # Add to lead_list
             lead_list.append([
                 lead['fullName'],
@@ -260,6 +264,7 @@ def SalesNavigatorLeadsInfo(api):
                 company_name,
                 geo_region,
                 member_urn_id,
+                pending_invitation
             ])
             member_urn_id_list.append(member_urn_id)
 

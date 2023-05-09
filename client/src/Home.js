@@ -68,7 +68,7 @@ function Home(props) {
 
 				if (data.success === true){
 					const leadsArray = data.lead_list;
-					// console.log("Successfully gotten leads: ", data);
+					console.log("Successfully gotten leads: ", leadsArray);
 					const memberUrnIdArray = data.member_urn_id_list; 
 		
 					setLeadsArray(leadsArray);
@@ -628,6 +628,66 @@ function Home(props) {
 						<Accordion.Item eventKey = {index.toString()}
 							>
 							<Accordion.Header>{leadInfo[0]}, {leadInfo[1]}</Accordion.Header>
+							{leadInfo[5] === true ? (
+								<Accordion.Body>
+									<div>
+										<div style={{ display: 'flex', justifyContent: 'center', padding: '20px'}} >
+												
+											<Button className="myButton" onClick={ () => {
+												handleGettingPeopleInterests(sessionId, leadInfo[4], index)
+											}} disabled={isLoadingPeopleInterests[index] || peopleInterestsButtonDisabled[index] } style={{marginLeft: '10px'}}>
+												{isLoadingPeopleInterests[index] ? 
+												<>
+													<Spinner animation="border" size="sm" />
+													Loading...
+												</>: 'Get people interests'}
+											</Button>{' '}
+
+											<Button className="myButton" onClick={ () => {
+												handleGettingCompanyInterests(sessionId, leadInfo[4], index)
+											}} disabled={isLoadingCompanyInterests[index] || companyInterestsButtonDisabled[index] } style={{marginLeft: '20px'}}>
+												{isLoadingCompanyInterests[index] ? 
+												<>
+													<Spinner animation="border" size="sm" />
+													Loading...
+												</> : 'Get company interests'}
+											</Button>{' '}
+										</div>
+
+										{peopleInterestsArray[index].length > 0 && (
+										<ListGroup.Item>
+											{peopleInterestsArray[index].map((interest, i) => (
+											<Form.Check
+												disabled
+												key={i}
+												type="checkbox"
+												value={interest[0]}
+												label={interest[0]}
+												onChange={handleInterestsSelection(index)}
+											/>
+											))}
+										</ListGroup.Item>
+										)}
+
+										{companyInterestsArray[index].length > 0 && (
+										<ListGroup.Item>
+											{companyInterestsArray[index].map((interest, i) => (
+											<Form.Check
+												disabled
+												key={i}
+												type="checkbox"
+												value={interest[0]}
+												label={interest[0]}
+												onChange={handleInterestsSelection(index)}
+											/>
+											))}
+										</ListGroup.Item>
+										)}
+									</div>
+								</Accordion.Body>
+
+							): 
+
 							<Accordion.Body>
 								<div>
 									<Form.Group>
@@ -732,6 +792,7 @@ function Home(props) {
 									)}
 								</div>
 							</Accordion.Body>
+							}
 						</Accordion.Item>
 					))}
 				</Accordion>
