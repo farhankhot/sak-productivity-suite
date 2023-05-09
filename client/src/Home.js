@@ -630,6 +630,7 @@ function Home(props) {
 							<Accordion.Header>{leadInfo[0]}, {leadInfo[1]}</Accordion.Header>
 							{leadInfo[5] === true ? (
 								<Accordion.Body>
+									<h2>Connect note already sent</h2>
 									<div>
 										<div style={{ display: 'flex', justifyContent: 'center', padding: '20px'}} >
 												
