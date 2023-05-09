@@ -235,6 +235,7 @@ def SalesNavigatorLeadsInfo(api):
     leads_list_total = res.json()["paging"]["total"]
     if leads_list_total > 25:
         # Multiple pages
+        print("Multiple pages")
         pages_in_float = 25 / leads_list_total 
         number_of_pages = math.ceil(pages_in_float) 
 
