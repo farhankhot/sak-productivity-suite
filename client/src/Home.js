@@ -70,17 +70,22 @@ function Home(props) {
 				const data = await response.json();
 
 				if (data.success === true){
-					const leadsArray = data.lead_list;
-					console.log("Successfully gotten leads: ", leadsArray);
-					const memberUrnIdArray = data.member_urn_id_list;
-					const numberOfPages = data.number_of_pages;
-					console.log(numberOfPages);
-					setNumberOfPages(numberOfPages);
-					setNumberOfLeads((leadsArray.length)-1); 
-		
-					setLeadsArray(leadsArray);
-					setMemberUrnIdArray(memberUrnIdArray);
-					setShowCreateConnectNoteButton(true);	
+					try {
+						const leadsArray = data.lead_list;
+						console.log("Successfully gotten leads: ", leadsArray);
+						const memberUrnIdArray = data.member_urn_id_list;
+						const numberOfPages = data.number_of_pages;
+						console.log(numberOfPages);
+						setNumberOfPages(numberOfPages);
+						setNumberOfLeads((leadsArray.length)-1); 
+			
+						setLeadsArray(leadsArray);
+						setMemberUrnIdArray(memberUrnIdArray);
+						setShowCreateConnectNoteButton(true);		
+					}catch(error){
+						console.log("an error occurred");
+						setError("error occurred");
+					}
 				}
 				else{
 					console.log("an error occurred");
