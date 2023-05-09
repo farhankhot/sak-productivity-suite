@@ -308,6 +308,21 @@ function Home(props) {
 												currentJobIdArray[i] = "None";
 												console.log("job status is ", status);
 												setError("An error has occurred");
+
+												// Re-enable all the buttons
+												if (index === null) {							
+													peopleInterestsButtonDisabled[i] = false;
+													companyInterestsButtonDisabled[i] = false;
+													makingConnectNoteButtonDisabled[i] = false;
+													sendingConnectNoteButtonDisabled[i] = false;
+												}else {
+													peopleInterestsButtonDisabled[index] = false;
+													companyInterestsButtonDisabled[index] = false;
+													makingConnectNoteButtonDisabled[index] = false;
+													sendingConnectNoteButtonDisabled[index] = false;
+													isLoadingMakingNote[index] = false;
+												}
+
 											}
 											
 											else if (status === "finished") {	
