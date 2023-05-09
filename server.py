@@ -641,10 +641,11 @@ def get_leads():
         # print("get_leads cookie_dict: ", cookie_dict)
         
         api = Linkedin(cookies=cookie_dict) # type: ignore
-        lead_list, member_urn_id_list = SalesNavigatorLeadsInfo(api)
+        lead_list, member_urn_id_list, number_of_pages = SalesNavigatorLeadsInfo(api)
         dbCon.store_leads(lead_list)
 
-        return jsonify(success=True, lead_list=lead_list, member_urn_id_list=member_urn_id_list)
+        return jsonify(success=True, lead_list=lead_list, member_urn_id_list=member_urn_id_list,
+                       number_of_pages = number_of_pages)
     except Exception as e:
         return jsonify(success=False, message=str(e))
 
