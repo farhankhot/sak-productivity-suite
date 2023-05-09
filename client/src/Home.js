@@ -15,16 +15,17 @@ function Home(props) {
 	const {sessionId} = props;
 	// console.log("Home sessionId: ", sessionId);
 
+	const [numberOfLeads, setNumberOfLeads] = useState(25); // Set it at 25 at the start
 	const [isLoadingLeads, setIsLoadingLeads] = useState(false);
 	const [isLoadingAutoCreatingNotes, setIsLoadingAutoCreatingNotes] = useState(false);
-	const [isLoadingPeopleInterests, setIsLoadingPeopleInterests] = useState(Array.from({length: 26}, () => false));
-	const [isLoadingCompanyInterests, setIsLoadingCompanyInterests] = useState(Array.from({length: 26}, () => false));
-	const [isLoadingMakingNote, setIsLoadingMakingNote] = useState(Array.from({length: 26}, () => false));
-	const [isLoadingSendingNote, setIsLoadingSendingNote] = useState(Array.from({length: 26}, () => false));
+	const [isLoadingPeopleInterests, setIsLoadingPeopleInterests] = useState(Array.from({length: numberOfLeads}, () => false));
+	const [isLoadingCompanyInterests, setIsLoadingCompanyInterests] = useState(Array.from({length: numberOfLeads}, () => false));
+	const [isLoadingMakingNote, setIsLoadingMakingNote] = useState(Array.from({length: numberOfLeads}, () => false));
+	const [isLoadingSendingNote, setIsLoadingSendingNote] = useState(Array.from({length: numberOfLeads}, () => false));
 		
-	const [peopleInterestsArray, setPeopleInterestsArray] = useState(Array.from({length: 26}, () => []));
-	const [companyInterestsArray, setCompanyInterestsArray] = useState(Array.from({length: 26}, () => []));
-	const [selectedInterests, setSelectedInterests] = useState(Array.from({length: 26}, () => []));
+	const [peopleInterestsArray, setPeopleInterestsArray] = useState(Array.from({length: numberOfLeads}, () => []));
+	const [companyInterestsArray, setCompanyInterestsArray] = useState(Array.from({length: numberOfLeads}, () => []));
+	const [selectedInterests, setSelectedInterests] = useState(Array.from({length: numberOfLeads}, () => []));
 
 	const [showProfileArea, setShowProfileArea] = useState(false);
 
@@ -36,10 +37,10 @@ function Home(props) {
 
 	const [autoCreatingNotesDisabled, setAutoCreatingNotesDisabled] = useState(false);
 	const [loadingLeadsButtonDisabled, setLoadingLeadsButtonDisabled] = useState(false);
-	const [peopleInterestsButtonDisabled, setPeopleInterestsButtonDisabled] = useState(Array.from({length: 26}, () => false));
-	const [companyInterestsButtonDisabled, setCompanyInterestsButtonDisabled] = useState(Array.from({length: 26}, () => false));
-	const [makingConnectNoteButtonDisabled, setMakingConnectNoteButtonDisabled] = useState(Array.from({length: 26}, () => false));
-	const [sendingConnectNoteButtonDisabled, setSendingConnectNoteButtonDisabled] = useState(Array.from({length: 26}, () => false));
+	const [peopleInterestsButtonDisabled, setPeopleInterestsButtonDisabled] = useState(Array.from({length: numberOfLeads}, () => false));
+	const [companyInterestsButtonDisabled, setCompanyInterestsButtonDisabled] = useState(Array.from({length: numberOfLeads}, () => false));
+	const [makingConnectNoteButtonDisabled, setMakingConnectNoteButtonDisabled] = useState(Array.from({length: numberOfLeads}, () => false));
+	const [sendingConnectNoteButtonDisabled, setSendingConnectNoteButtonDisabled] = useState(Array.from({length: numberOfLeads}, () => false));
 
 	const [jobIdArray, setJobIdArray] = useState([]);
 
@@ -74,7 +75,8 @@ function Home(props) {
 					const memberUrnIdArray = data.member_urn_id_list;
 					const numberOfPages = data.number_of_pages;
 					console.log(numberOfPages);
-					setNumberOfPages(numberOfPages); 
+					setNumberOfPages(numberOfPages);
+					setNumberOfLeads(leadsArray.length); 
 		
 					setLeadsArray(leadsArray);
 					setMemberUrnIdArray(memberUrnIdArray);
