@@ -244,6 +244,7 @@ def SalesNavigatorLeadsInfo(api):
     member_urn_id_list = []
 
     for page in range(0, number_of_pages):
+        print(page, number_of_pages)
         if leads_list_total - current_count < 25:
             # This is the last page
             last_count = (leads_list_total - current_count)
