@@ -76,7 +76,7 @@ function Home(props) {
 					const numberOfPages = data.number_of_pages;
 					console.log(numberOfPages);
 					setNumberOfPages(numberOfPages);
-					setNumberOfLeads(leadsArray.length); 
+					setNumberOfLeads((leadsArray.length)-1); 
 		
 					setLeadsArray(leadsArray);
 					setMemberUrnIdArray(memberUrnIdArray);
