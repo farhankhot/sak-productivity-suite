@@ -242,7 +242,7 @@ def SalesNavigatorLeadsInfo(api):
     start = 0
     lead_list = []
     member_urn_id_list = []
-    print("nop", number_of_pages)
+
     for page in range(0, number_of_pages):
         print(page, number_of_pages)
         if leads_list_total - current_count < 25:
@@ -340,6 +340,8 @@ def SalesNavigatorLeadsInfo(api):
         
             current_count += 25
             start += 25
+
+        print(lead_list)
 
     # leads_list_unparsed = res.json()["elements"]
     # # print(leads_list_unparsed)
