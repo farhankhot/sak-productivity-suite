@@ -34,6 +34,13 @@ app = Flask(
 # Enables CORS (this is only needed when working with React.js, I don't know why)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
+from dotenv import load_dotenv
+load_dotenv()
+
+import os
+
+# openai.api_key = os.environ.get("OPENAI_API_KEY")
+
 # async def UseBingAI(prompt):
     
 #     # This is getting my own bing cookies
@@ -47,9 +54,11 @@ CORS(app, resources={r"/*": {"origins": "*"}})
 
 def UseChatGPT(prompt):
 
-    openai_key = "sk-BFk5W7jx2pZjz0Y1vhsjT3BlbkFJRXRp7HrXqrAZoVgnri8"
-    openai_key = openai_key + "T"
-    openai.api_key = openai_key
+    # openai_key = "sk-BFk5W7jx2pZjz0Y1vhsjT3BlbkFJRXRp7HrXqrAZoVgnri8"
+    # openai_key = openai_key + "T"
+    # openai.api_key = openai_key
+
+    openai.api_key = os.environ.get("OPENAI_API_KEY")
 
     completion = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
@@ -59,7 +68,7 @@ def UseChatGPT(prompt):
     )
     
     # print(completion['choices'][0]['message']['content']) # type: ignore
-    return acompletion['choices'][0]['message']['content'] # type: ignore 
+    return completion['choices'][0]['message']['content'] # type: ignore 
     
 def get_values_for_key(key, dictionary):
     values = []
