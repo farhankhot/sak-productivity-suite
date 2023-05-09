@@ -54,10 +54,6 @@ import os
 
 def UseChatGPT(prompt):
 
-    # openai_key = "sk-BFk5W7jx2pZjz0Y1vhsjT3BlbkFJRXRp7HrXqrAZoVgnri8"
-    # openai_key = openai_key + "T"
-    # openai.api_key = openai_key
-
     openai.api_key = os.environ.get("OPENAI_API_KEY")
 
     completion = openai.ChatCompletion.create(
