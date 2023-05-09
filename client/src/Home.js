@@ -17,14 +17,14 @@ function Home(props) {
 
 	const [isLoadingLeads, setIsLoadingLeads] = useState(false);
 	const [isLoadingAutoCreatingNotes, setIsLoadingAutoCreatingNotes] = useState(false);
-	const [isLoadingPeopleInterests, setIsLoadingPeopleInterests] = useState(Array.from({length: 25}, () => false));
-	const [isLoadingCompanyInterests, setIsLoadingCompanyInterests] = useState(Array.from({length: 25}, () => false));
-	const [isLoadingMakingNote, setIsLoadingMakingNote] = useState(Array.from({length: 25}, () => false));
-	const [isLoadingSendingNote, setIsLoadingSendingNote] = useState(Array.from({length: 25}, () => false));
+	const [isLoadingPeopleInterests, setIsLoadingPeopleInterests] = useState(Array.from({length: 26}, () => false));
+	const [isLoadingCompanyInterests, setIsLoadingCompanyInterests] = useState(Array.from({length: 26}, () => false));
+	const [isLoadingMakingNote, setIsLoadingMakingNote] = useState(Array.from({length: 26}, () => false));
+	const [isLoadingSendingNote, setIsLoadingSendingNote] = useState(Array.from({length: 26}, () => false));
 		
-	const [peopleInterestsArray, setPeopleInterestsArray] = useState(Array.from({length: 25}, () => []));
-	const [companyInterestsArray, setCompanyInterestsArray] = useState(Array.from({length: 25}, () => []));
-	const [selectedInterests, setSelectedInterests] = useState(Array.from({length: 25}, () => []));
+	const [peopleInterestsArray, setPeopleInterestsArray] = useState(Array.from({length: 26}, () => []));
+	const [companyInterestsArray, setCompanyInterestsArray] = useState(Array.from({length: 26}, () => []));
+	const [selectedInterests, setSelectedInterests] = useState(Array.from({length: 26}, () => []));
 
 	const [showProfileArea, setShowProfileArea] = useState(false);
 
@@ -36,10 +36,10 @@ function Home(props) {
 
 	const [autoCreatingNotesDisabled, setAutoCreatingNotesDisabled] = useState(false);
 	const [loadingLeadsButtonDisabled, setLoadingLeadsButtonDisabled] = useState(false);
-	const [peopleInterestsButtonDisabled, setPeopleInterestsButtonDisabled] = useState(Array.from({length: 25}, () => false));
-	const [companyInterestsButtonDisabled, setCompanyInterestsButtonDisabled] = useState(Array.from({length: 25}, () => false));
-	const [makingConnectNoteButtonDisabled, setMakingConnectNoteButtonDisabled] = useState(Array.from({length: 25}, () => false));
-	const [sendingConnectNoteButtonDisabled, setSendingConnectNoteButtonDisabled] = useState(Array.from({length: 25}, () => false));
+	const [peopleInterestsButtonDisabled, setPeopleInterestsButtonDisabled] = useState(Array.from({length: 26}, () => false));
+	const [companyInterestsButtonDisabled, setCompanyInterestsButtonDisabled] = useState(Array.from({length: 26}, () => false));
+	const [makingConnectNoteButtonDisabled, setMakingConnectNoteButtonDisabled] = useState(Array.from({length: 26}, () => false));
+	const [sendingConnectNoteButtonDisabled, setSendingConnectNoteButtonDisabled] = useState(Array.from({length: 26}, () => false));
 
 	const [jobIdArray, setJobIdArray] = useState([]);
 
