@@ -51,6 +51,8 @@ function Home(props) {
 
 	const [error, setError] = useState(null);
 
+	const [numberOfPages, setNumberOfPages] = useState(0);
+
 	const handleGettingLeads = async() => {
         try {
 			setIsLoadingLeads(true);
@@ -69,7 +71,10 @@ function Home(props) {
 				if (data.success === true){
 					const leadsArray = data.lead_list;
 					console.log("Successfully gotten leads: ", leadsArray);
-					const memberUrnIdArray = data.member_urn_id_list; 
+					const memberUrnIdArray = data.member_urn_id_list;
+					const numberOfPages = data.number_of_pages;
+					console.log(numberOfPages);
+					setNumberOfPages(numberOfPages); 
 		
 					setLeadsArray(leadsArray);
 					setMemberUrnIdArray(memberUrnIdArray);
@@ -124,11 +129,9 @@ function Home(props) {
 			}
 			let additionalInfo = "";
 			if (additionalInfoText !== "" && index === null){
-				console.log("me2");
 				additionalInfo = additionalInfoText;
 			}
 			else if(index !== null && specificAdditionalInfoText[index] !== undefined){
-				console.log("me");
 				additionalInfo = specificAdditionalInfoText[index];
 			}
 			console.log(additionalInfo);
@@ -190,9 +193,7 @@ function Home(props) {
 								console.log(i, index);
 
 								const allAreNone = currentJobIdArray.every((val) => val === "None");
-								// console.log(allAreNone);
-								// console.log(currentJobIdArray[i]);
-
+		
 								if (allAreNone && currentJobIdArray.length === 1){
 									clearInterval(jobIdCheck);
 									setIsLoadingAutoCreatingNotes(false);

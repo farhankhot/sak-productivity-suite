@@ -24,6 +24,8 @@ import requests
 
 import time
 
+import math
+
 q = Queue(connection=conn)
 
 app = Flask(
@@ -228,49 +230,159 @@ def SalesNavigatorLeadsInfo(api):
     # print(res.text)
     # print(res.json())
 
-    leads_list_unparsed = res.json()["elements"]
-    # print(leads_list_unparsed)
-    # print(api.get_profile("15647628"))
+    # Pagination
+    number_of_pages = 1
+    leads_list_total = res.json()["paging"]["total"]
+    if leads_list_total > 25:
+        # Multiple pages
+        pages_in_float = 25 / leads_list_total 
+        number_of_pages = math.ceil(pages_in_float) 
 
-    regex = r"urn:li:fs_salesProfile:(.+)" 
-
+    current_count = 0
+    start = 0
     lead_list = []
     member_urn_id_list = []
-    for lead in leads_list_unparsed:
-        match = re.search(regex, lead['entityUrn'])
-        # Only include a lead if they have a member_urn_id
-        if match:
-            member_urn_id = match.group(1)
-            # print(member_urn_id, type(member_urn_id))
-            # print(lead['fullName'], lead['currentPositions'])
-            title, company_name, geo_region = '', '', ''
 
-            # Checks if geoRegion, companyName, title are present
-            if 'geoRegion' in lead:
-                geo_region = lead['geoRegion']
+    for page in range(0, number_of_pages):
+        if leads_list_total - current_count < 25:
+            # This is the last page
+            last_count = leads_list_total - current_count
+            res = api._fetch(
+                f"/sales-api/salesApiPeopleSearch?q=peopleSearchQuery&query=(spotlightParam:(selectedType:ALL),doFetchSpotlights:true,doFetchHits:true,doFetchFilters:false,pivotParam:(com.linkedin.sales.search.LeadListPivotRequest:(list:urn%3Ali%3Afs_salesList%3A{latest_list_id},sortCriteria:LAST_ACTIVITY,sortOrder:DESCENDING)),list:(scope:LEAD,includeAll:false,excludeAll:false,includedValues:List((id:{latest_list_id}))))&start={start}&count={last_count}&decoration=%28entityUrn%2CprofilePictureDisplayImage%2CfirstName%2ClastName%2CfullName%2Cdegree%2CblockThirdPartyDataSharing%2CcrmStatus%2CgeoRegion%2ClastUpdatedTimeInListAt%2CpendingInvitation%2CnewListEntitySinceLastViewed%2Csaved%2CleadAssociatedAccount~fs_salesCompany%28entityUrn%2Cname%29%2CoutreachActivity%2Cmemorialized%2ClistCount%2CsavedAccount~fs_salesCompany%28entityUrn%2Cname%29%2CnotificationUrnOnLeadList%2CuniquePositionCompanyCount%2CcurrentPositions*%28title%2CcompanyName%2Ccurrent%2CcompanyUrn%29%2CmostRecentEntityNote%28body%2ClastModifiedAt%2CnoteId%2Cseat%2Centity%2CownerInfo%2Cownership%2Cvisibility%29%29",
+                base_request=True)
 
-            if len(lead['currentPositions']) > 0:
-                if lead['currentPositions'][0]['title']:
-                    title = lead['currentPositions'][0]['title']
-                if lead['currentPositions'][0]['companyName']:
-                    company_name = lead['currentPositions'][0]['companyName']
+            leads_list_unparsed = res.json()["elements"]
+            # print(leads_list_unparsed)
+            # print(api.get_profile("15647628"))
+
+            regex = r"urn:li:fs_salesProfile:(.+)" 
+
+            for lead in leads_list_unparsed:
+                match = re.search(regex, lead['entityUrn'])
+                # Only include a lead if they have a member_urn_id
+                if match:
+                    member_urn_id = match.group(1)
+                    # print(member_urn_id, type(member_urn_id))
+                    # print(lead['fullName'], lead['currentPositions'])
+                    title, company_name, geo_region = '', '', ''
+
+                    # Checks if geoRegion, companyName, title are present
+                    if 'geoRegion' in lead:
+                        geo_region = lead['geoRegion']
+
+                    if len(lead['currentPositions']) > 0:
+                        if lead['currentPositions'][0]['title']:
+                            title = lead['currentPositions'][0]['title']
+                        if lead['currentPositions'][0]['companyName']:
+                            company_name = lead['currentPositions'][0]['companyName']
+                    
+                    pending_invitation = False
+                    if 'pendingInvitation' in lead:
+                        pending_invitation = lead['pendingInvitation']
+
+                    # Add to lead_list
+                    lead_list.append([
+                        lead['fullName'],
+                        title,
+                        company_name,
+                        geo_region,
+                        member_urn_id,
+                        pending_invitation
+                    ])
+                    member_urn_id_list.append(member_urn_id)
+
+            # break
+        else:
+            res = api._fetch(
+                f"/sales-api/salesApiPeopleSearch?q=peopleSearchQuery&query=(spotlightParam:(selectedType:ALL),doFetchSpotlights:true,doFetchHits:true,doFetchFilters:false,pivotParam:(com.linkedin.sales.search.LeadListPivotRequest:(list:urn%3Ali%3Afs_salesList%3A{latest_list_id},sortCriteria:LAST_ACTIVITY,sortOrder:DESCENDING)),list:(scope:LEAD,includeAll:false,excludeAll:false,includedValues:List((id:{latest_list_id}))))&start={start}&count={current_count}&decoration=%28entityUrn%2CprofilePictureDisplayImage%2CfirstName%2ClastName%2CfullName%2Cdegree%2CblockThirdPartyDataSharing%2CcrmStatus%2CgeoRegion%2ClastUpdatedTimeInListAt%2CpendingInvitation%2CnewListEntitySinceLastViewed%2Csaved%2CleadAssociatedAccount~fs_salesCompany%28entityUrn%2Cname%29%2CoutreachActivity%2Cmemorialized%2ClistCount%2CsavedAccount~fs_salesCompany%28entityUrn%2Cname%29%2CnotificationUrnOnLeadList%2CuniquePositionCompanyCount%2CcurrentPositions*%28title%2CcompanyName%2Ccurrent%2CcompanyUrn%29%2CmostRecentEntityNote%28body%2ClastModifiedAt%2CnoteId%2Cseat%2Centity%2CownerInfo%2Cownership%2Cvisibility%29%29",
+                base_request=True)
             
-            pending_invitation = False
-            if 'pendingInvitation' in lead:
-                pending_invitation = lead['pendingInvitation']
+            leads_list_unparsed = res.json()["elements"]
+            # print(leads_list_unparsed)
+            # print(api.get_profile("15647628"))
 
-            # Add to lead_list
-            lead_list.append([
-                lead['fullName'],
-                title,
-                company_name,
-                geo_region,
-                member_urn_id,
-                pending_invitation
-            ])
-            member_urn_id_list.append(member_urn_id)
+            regex = r"urn:li:fs_salesProfile:(.+)" 
 
-    return lead_list, member_urn_id_list
+            for lead in leads_list_unparsed:
+                match = re.search(regex, lead['entityUrn'])
+                # Only include a lead if they have a member_urn_id
+                if match:
+                    member_urn_id = match.group(1)
+                    # print(member_urn_id, type(member_urn_id))
+                    # print(lead['fullName'], lead['currentPositions'])
+                    title, company_name, geo_region = '', '', ''
+
+                    # Checks if geoRegion, companyName, title are present
+                    if 'geoRegion' in lead:
+                        geo_region = lead['geoRegion']
+
+                    if len(lead['currentPositions']) > 0:
+                        if lead['currentPositions'][0]['title']:
+                            title = lead['currentPositions'][0]['title']
+                        if lead['currentPositions'][0]['companyName']:
+                            company_name = lead['currentPositions'][0]['companyName']
+                    
+                    pending_invitation = False
+                    if 'pendingInvitation' in lead:
+                        pending_invitation = lead['pendingInvitation']
+
+                    # Add to lead_list
+                    lead_list.append([
+                        lead['fullName'],
+                        title,
+                        company_name,
+                        geo_region,
+                        member_urn_id,
+                        pending_invitation
+                    ])
+                    member_urn_id_list.append(member_urn_id)
+        
+            current_count += 25
+            start += 25
+
+    # leads_list_unparsed = res.json()["elements"]
+    # # print(leads_list_unparsed)
+    # # print(api.get_profile("15647628"))
+
+    # regex = r"urn:li:fs_salesProfile:(.+)" 
+
+    # lead_list = []
+    # member_urn_id_list = []
+    # for lead in leads_list_unparsed:
+    #     match = re.search(regex, lead['entityUrn'])
+    #     # Only include a lead if they have a member_urn_id
+    #     if match:
+    #         member_urn_id = match.group(1)
+    #         # print(member_urn_id, type(member_urn_id))
+    #         # print(lead['fullName'], lead['currentPositions'])
+    #         title, company_name, geo_region = '', '', ''
+
+    #         # Checks if geoRegion, companyName, title are present
+    #         if 'geoRegion' in lead:
+    #             geo_region = lead['geoRegion']
+
+    #         if len(lead['currentPositions']) > 0:
+    #             if lead['currentPositions'][0]['title']:
+    #                 title = lead['currentPositions'][0]['title']
+    #             if lead['currentPositions'][0]['companyName']:
+    #                 company_name = lead['currentPositions'][0]['companyName']
+            
+    #         pending_invitation = False
+    #         if 'pendingInvitation' in lead:
+    #             pending_invitation = lead['pendingInvitation']
+
+    #         # Add to lead_list
+    #         lead_list.append([
+    #             lead['fullName'],
+    #             title,
+    #             company_name,
+    #             geo_region,
+    #             member_urn_id,
+    #             pending_invitation
+    #         ])
+    #         member_urn_id_list.append(member_urn_id)
+
+    return lead_list, member_urn_id_list, number_of_pages
 
 # TODO: Get interests at random
 def GetLeadInfo(cookie_dict, lead, profile_urn, additional_info_text="", interests=""):
