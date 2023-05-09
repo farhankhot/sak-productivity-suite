@@ -47,8 +47,6 @@ CORS(app, resources={r"/*": {"origins": "*"}})
 
 def UseChatGPT(prompt):
 
-    print("ss", prompt)
-
     openai_key = "sk-BFk5W7jx2pZjz0Y1vhsjT3BlbkFJRXRp7HrXqrAZoVgnri8"
     openai_key = openai_key + "T"
     openai.api_key = openai_key
@@ -60,10 +58,9 @@ def UseChatGPT(prompt):
         ]
     )
     
-    print(completion['choices'][0]['message']['content']) # type: ignore
+    # print(completion['choices'][0]['message']['content']) # type: ignore
+    return acompletion['choices'][0]['message']['content'] # type: ignore 
     
-    return completion['choices'][0]['message']['content'] # type: ignore
-
 def get_values_for_key(key, dictionary):
     values = []
     for k, v in dictionary.items():

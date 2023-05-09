@@ -209,7 +209,6 @@ function Home(props) {
 								}
 
 								else if (allAreNone && currentJobIdArray.length > 1){
-									console.log("more than 1");
 									clearInterval(jobIdCheck);
 									setIsLoadingAutoCreatingNotes(false);
 									setLoadingLeadsButtonDisabled(false);
@@ -252,11 +251,11 @@ function Home(props) {
 													const data = await response.json();
 													console.log("data from stopAutoCreatingNotesRef", data);
 												}else {
-													console.log("error occurred");
+													console.log("error occurred 9");
 													setError("error occurred");								
 												}
 											}catch(error){
-												console.log("error occurred");
+												console.log("error occurred 8");
 												setError("error occurred");					
 											}
 										}
@@ -348,12 +347,12 @@ function Home(props) {
 												}
 											}
 										}else{
-											console.log("error occurred");
+											console.log("error occurred 1");
 											setError("error occurred");						
 										}
 									}catch(error){
 										console.log("An error has occured (CheckJobStatus): ", error);
-										setError("error occurred");			
+										setError("error occurred 2");			
 									}
 								}
 							}
@@ -362,16 +361,16 @@ function Home(props) {
 				}
 				else{
 					console.log("an error occurred");
-					setError("error occurred");
+					setError("error occurred 3");
 				}
 			}
 			else {
 				console.log("error occurred");
-				setError("error occurred");
+				setError("error occurred 4");
 			}
 		}catch(error){
 			console.log("error occurred");
-			setError("error occurred");
+			setError("error occurred 5");
 		}
 	};
 
@@ -556,6 +555,7 @@ function Home(props) {
 			setIsLoadingSendingNote(newIsLoadingSendingNote);
 
 			setAutoCreatingNotesDisabled(false);
+			setSendingConnectNoteButtonDisabled[index] = true;
 		}
 	};
 	// ================ Send Connect Note(s) ===============================
