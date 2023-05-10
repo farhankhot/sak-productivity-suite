@@ -405,6 +405,12 @@ def SalesNavigatorLeadsInfo(api):
 
 # TODO: Get interests at random
 def GetLeadInfo(cookie_dict, lead, profile_urn, additional_info_text="", interests=""):
+
+    # interests fetch execution time: 4.0456929206848145 seconds
+    # interests people compile execution time: 0.0001327991485595703 seconds
+    # interests company compile execution time: 9.846687316894531e-05 seconds
+    # interests for loop execution time: 1.1920928955078125e-06 seconds
+    # company interests for loop execution time: 4.76837158203125e-06 seconds
     
     # print("additional info: ", additional_info_text)
     # print("profile_urn", profile_urn)
@@ -482,31 +488,25 @@ def GetLeadInfo(cookie_dict, lead, profile_urn, additional_info_text="", interes
 
         start_time = time.time()
         interests = api._fetch(f"/graphql?includeWebMetadata=True&variables=(profileUrn:urn%3Ali%3Afsd_profile%3A{profile_urn},sectionType:interests,tabIndex:1,locale:en_US)&&queryId=voyagerIdentityDashProfileComponents.38247e27f7b9b2ecbd8e8452e3c1a02c")
-        interests = interests.json()
-        interests_json = json.dumps(interests)
         end_time = time.time()
         print(f"interests fetch execution time: {end_time - start_time} seconds")
 
+        interests = interests.json()
+        interests_json = json.dumps(interests)
+        
         # print(interests_json)
-        start_time = time.time()
         pattern = re.compile(r'"(urn:li:fsd_profile:[^"]*)"')
         matches = re.findall(pattern, interests_json)
         people_the_profile_is_interested_in_set = set(matches)
         people_the_profile_is_interested_in = [s.split(':')[-1] for s in people_the_profile_is_interested_in_set]
-        end_time = time.time()
-        print(f"interests compile execution time: {end_time - start_time} seconds")
 
-        start_time = time.time()
         pattern_for_company = re.compile(r'"(urn:li:fsd_company:[^"]*)"')
         matches_for_company = re.findall(pattern_for_company, interests_json)
         companies_the_profile_is_interested_in_set = set(matches_for_company)
         companies_the_profile_is_interested_in = [s.split(':')[-1] for s in companies_the_profile_is_interested_in_set]
-        end_time = time.time()
-        print(f"interests company compile execution time: {end_time - start_time} seconds")
 
         # print(companies_the_profile_is_interested_in)
 
-        start_time = time.time()
         for i, profile_urn in enumerate(people_the_profile_is_interested_in):
             if i == 1:
                 break
@@ -515,10 +515,7 @@ def GetLeadInfo(cookie_dict, lead, profile_urn, additional_info_text="", interes
             last_name = temp['lastName']
             full_name = first_name + " " + last_name 
             lead_interests.append(full_name)
-        end_time = time.time()
-        print(f"interests for loop execution time: {end_time - start_time} seconds")
 
-        start_time = time.time()
         for i, company_id in enumerate(companies_the_profile_is_interested_in):
             if i == 1:
                 break
@@ -528,9 +525,6 @@ def GetLeadInfo(cookie_dict, lead, profile_urn, additional_info_text="", interes
         
         lead_info.append(lead_interests)
         interests = " ".join(str(x) for x in lead_info)
-        end_time = time.time()
-        print(f"company interests for loop execution time: {end_time - start_time} seconds")
-
     # ============= Getting interests =================================
 
     # ============= Get my info =================================
