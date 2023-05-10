@@ -404,14 +404,15 @@ def SalesNavigatorLeadsInfo(api):
     return lead_list, member_urn_id_list, number_of_pages
 
 # TODO: Get interests at random
-def GetLeadInfo(cookie_dict, lead, profile_urn, additional_info_text="", interests=""):
+def GetLeadInfo(api, lead, profile_urn, additional_info_text="", interests=""):
+# def GetLeadInfo(cookie_dict, lead, profile_urn, additional_info_text="", interests=""):
     
     # print("additional info: ", additional_info_text)
     # print("profile_urn", profile_urn)
 
     time.sleep(1)
 
-    api = Linkedin(cookies=cookie_dict) # type: ignore
+    # api = Linkedin(cookies=cookie_dict) # type: ignore
 
     my_tuple = tuple(profile_urn.strip("()").split(","))
 
@@ -628,7 +629,7 @@ def get_lead_info():
         # print(leads_list, member_urn_id_list)
 
         additional_info_text = request.json['additionalInfoText'] # type: ignore
-        print("additional_info_text is ", additional_info_text)
+        # print("additional_info_text is ", additional_info_text)
         interests = request.json['interests'] # type: ignore
 
         # print(interests)
@@ -638,8 +639,18 @@ def get_lead_info():
             # Testing
             if i == 4:
                 break
+
+            if conn.get(session_id) != None:
+                api_serialized = conn.get(session_id)
+                api = jsonpickle.decode(api_serialized)
+                data = q.enqueue(GetLeadInfo, api, leads_list[i], profile_urn, additional_info_text, interests, result_ttl = 1, job_timeout=600)
+
+            else:
+                cookie_dict = dbCon.get_cookie_from_user_sessions(session_id)
+                # print("get_leads cookie_dict: ", cookie_dict)            
+                api = Linkedin(cookies=cookie_dict) # type: ignore
+                data = q.enqueue(GetLeadInfo, cookie_dict, leads_list[i], profile_urn, additional_info_text, interests, result_ttl = 1, job_timeout=600)
     
-            data = q.enqueue(GetLeadInfo, cookie_dict, leads_list[i], profile_urn, additional_info_text, interests, result_ttl = 1, job_timeout=600)
             job_id = data.get_id()
             job_ids.append(job_id)
 
@@ -656,7 +667,6 @@ def get_leads():
         # print("get_leads session_id: ", session_id)
 
         if conn.get(session_id) != None:
-            print("i ran")
             api_serialized = conn.get(session_id)
             api = jsonpickle.decode(api_serialized)
         else:
