@@ -636,8 +636,8 @@ def get_lead_info():
 
         data = dbCon.search_my_info(session_id)
         print(data)
-        full_name = data[0] # type: ignore
-        occupation = data[1] # type: ignore
+        full_name = data[0][0] # type: ignore
+        occupation = data[0][1] # type: ignore
 
         # print(interests)
         job_ids=[]
