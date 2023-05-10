@@ -404,16 +404,17 @@ def SalesNavigatorLeadsInfo(api):
     return lead_list, member_urn_id_list, number_of_pages
 
 # TODO: Get interests at random
-def GetLeadInfo(api_serialized, lead, profile_urn, additional_info_text="", interests=""):
-# def GetLeadInfo(cookie_dict, lead, profile_urn, additional_info_text="", interests=""):
+def GetLeadInfo(cookie_dict, lead, profile_urn, additional_info_text="", interests=""):
     
     # print("additional info: ", additional_info_text)
     # print("profile_urn", profile_urn)
 
     time.sleep(1)
 
-    # api = Linkedin(cookies=cookie_dict) # type: ignore
-    api = jsonpickle.decode(api_serialized)
+    start_time = time.time()
+    api = Linkedin(cookies=cookie_dict) # type: ignore
+    end_time = time.time()
+    print(f"API creation execution time: {end_time - start_time} seconds")
 
     my_tuple = tuple(profile_urn.strip("()").split(","))
 
@@ -425,7 +426,9 @@ def GetLeadInfo(api_serialized, lead, profile_urn, additional_info_text="", inte
     lead_info = []
     # print(profile_urn)
     
-    # ============= Getting Relationships =============================        
+    # ============= Getting Relationships =============================       
+    start_time = time.time()
+ 
     res_for_shared_relationships = api._fetch(f"/sales-api/salesApiProfileHighlights/{actual_profile_urn}?decoration=%28sharedConnection%28sharedConnectionUrns*~fs_salesProfile%28entityUrn%2CfirstName%2ClastName%2CfullName%2CpictureInfo%2CprofilePictureDisplayImage%29%29%2CteamlinkInfo%28totalCount%29%2CsharedEducations*%28overlapInfo%2CentityUrn~fs_salesSchool%28entityUrn%2ClogoId%2Cname%2Curl%2CschoolPictureDisplayImage%29%29%2CsharedExperiences*%28overlapInfo%2CentityUrn~fs_salesCompany%28entityUrn%2CpictureInfo%2Cname%2CcompanyPictureDisplayImage%29%29%2CsharedGroups*%28entityUrn~fs_salesGroup%28entityUrn%2Cname%2ClargeLogoId%2CsmallLogoId%2CgroupPictureDisplayImage%29%29%29"
             ,base_request=True)
     # print("res_for_shared_relationships text", res_for_shared_relationships.text)
@@ -449,9 +452,13 @@ def GetLeadInfo(api_serialized, lead, profile_urn, additional_info_text="", inte
     
     # lead_info.append(lead_relationships)
     # print(lead_relationships)
+    end_time = time.time()
+    print(f"relationships execution time: {end_time - start_time} seconds")
     # ============= Getting Relationships =============================
 
     # ============= Getting Misc info =============================
+    start_time = time.time()
+
     lead_profile = api._fetch(f"/sales-api/salesApiProfiles/({profile_urn_for_lead_profile},{auth_type_for_lead_profile},{auth_token_for_lead_profile})?decoration=%28%0A%20%20entityUrn%2C%0A%20%20objectUrn%2C%0A%20%20firstName%2C%0A%20%20lastName%2C%0A%20%20fullName%2C%0A%20%20headline%2C%0A%20%20memberBadges%2C%0A%20%20pronoun%2C%0A%20%20degree%2C%0A%20%20profileUnlockInfo%2C%0A%20%20latestTouchPointActivity%2C%0A%20%20location%2C%0A%20%20listCount%2C%0A%20%20summary%2C%0A%20%20savedLead%2C%0A%20%20defaultPosition%2C%0A%20%20contactInfo%2C%0A%20%20crmStatus%2C%0A%20%20pendingInvitation%2C%0A%20%20unlocked%2C%0A%20%20flagshipProfileUrl%2C%0A%20%20fullNamePronunciationAudio%2C%0A%20%20memorialized%2C%0A%20%20numOfConnections%2C%0A%20%20numOfSharedConnections%2C%0A%20%20showTotalConnectionsPage%2C%0A%20%20profilePictureDisplayImage%2C%0A%20%20profileBackgroundPicture%2C%0A%20%20relatedColleagueCompanyId%2C%0A%20%20blockThirdPartyDataSharing%2C%0A%20%20noteCount%2C%0A%20%20positions*%28%0A%20%20%20%20companyName%2C%0A%20%20%20%20current%2C%0A%20%20%20%20new%2C%0A%20%20%20%20description%2C%0A%20%20%20%20endedOn%2C%0A%20%20%20%20posId%2C%0A%20%20%20%20startedOn%2C%0A%20%20%20%20title%2C%0A%20%20%20%20location%2C%0A%20%20%20%20richMedia*%2C%0A%20%20%20%20companyUrn~fs_salesCompany%28entityUrn%2Cname%2CcompanyPictureDisplayImage%29%0A%20%20%29%2C%0A%20%20educations*%28%0A%20%20%20%20degree%2C%0A%20%20%20%20eduId%2C%0A%20%20%20%20endedOn%2C%0A%20%20%20%20schoolName%2C%0A%20%20%20%20startedOn%2C%0A%20%20%20%20fieldsOfStudy*%2C%0A%20%20%20%20richMedia*%2C%0A%20%20%20%20school~fs_salesSchool%28entityUrn%2ClogoId%2Cname%2Curl%2CschoolPictureDisplayImage%29%0A%20%20%29%2C%0A%20%20languages*%0A%29"
                                 ,base_request=True)
     # print("lead_profile: ", lead_profile.json())
@@ -472,9 +479,13 @@ def GetLeadInfo(api_serialized, lead, profile_urn, additional_info_text="", inte
     else:
         lead_summary = ""
     
+    end_time = time.time()
+    print(f"misc execution time: {end_time - start_time} seconds")
     # ============= Getting Misc info =============================
 
     # ============= Getting interests =================================
+    start_time = time.time()
+
     lead_interests = []
     if interests == "":
 
@@ -514,14 +525,22 @@ def GetLeadInfo(api_serialized, lead, profile_urn, additional_info_text="", inte
         
         lead_info.append(lead_interests)
         interests = " ".join(str(x) for x in lead_info)
+    
+    end_time = time.time()
+    print(f"interests execution time: {end_time - start_time} seconds")
     # ============= Getting interests =================================
 
     # ============= Get my info =================================
+    start_time = time.time()
+
     # Check if my info is in the database, if it is use that. If not, use api
     my_prof = api.get_user_profile()
     my_prof_mini_profile = my_prof['miniProfile'] # type: ignore
     my_prof_full_name = my_prof_mini_profile['firstName'] + " " + my_prof_mini_profile['lastName']
     my_prof_occupation = my_prof_mini_profile['occupation'] 
+
+    end_time = time.time()
+    print(f"get my info execution time: {end_time - start_time} seconds")
     # ============= Get my info =================================
 
     full_lead_profile = f"You are {my_prof_full_name}, a {my_prof_occupation} at DTC Force, located in Toronto. DTC Force is a Salesforce implementation company. This is the profile of a person: Name: {lead[0]}"
@@ -616,7 +635,7 @@ def stop_jobs_in_array():
 def get_lead_info():
 
     try:
-        print(request.json)
+        # print(request.json)
 
         session_id = request.json['sessionId'] # type: ignore
         # print("get_lead_info session_id: ", session_id)
@@ -641,16 +660,7 @@ def get_lead_info():
             if i == 4:
                 break
 
-            if conn.get(session_id) != None:
-                api_serialized = conn.get(session_id)
-                
-                data = q.enqueue(GetLeadInfo, api_serialized, leads_list[i], profile_urn, additional_info_text, interests, result_ttl = 1, job_timeout=600)
-
-            else:
-                cookie_dict = dbCon.get_cookie_from_user_sessions(session_id)
-                # print("get_leads cookie_dict: ", cookie_dict)            
-                api = Linkedin(cookies=cookie_dict) # type: ignore
-                data = q.enqueue(GetLeadInfo, cookie_dict, leads_list[i], profile_urn, additional_info_text, interests, result_ttl = 1, job_timeout=600)
+            data = q.enqueue(GetLeadInfo, cookie_dict, leads_list[i], profile_urn, additional_info_text, interests, result_ttl = 1, job_timeout=600)
     
             job_id = data.get_id()
             job_ids.append(job_id)
@@ -667,13 +677,9 @@ def get_leads():
         session_id = request.json['sessionId'] # type: ignore
         # print("get_leads session_id: ", session_id)
 
-        if conn.get(session_id) != None:
-            api_serialized = conn.get(session_id)
-            api = jsonpickle.decode(api_serialized)
-        else:
-            cookie_dict = dbCon.get_cookie_from_user_sessions(session_id)
-            # print("get_leads cookie_dict: ", cookie_dict)            
-            api = Linkedin(cookies=cookie_dict) # type: ignore
+        cookie_dict = dbCon.get_cookie_from_user_sessions(session_id)
+        # print("get_leads cookie_dict: ", cookie_dict)            
+        api = Linkedin(cookies=cookie_dict) # type: ignore
 
         lead_list, member_urn_id_list, number_of_pages = SalesNavigatorLeadsInfo(api)
         dbCon.store_leads(lead_list)
@@ -859,11 +865,11 @@ def save_cookie():
         # and will return the cookie_dict to be passed in the LinkedIn API.
         session_id = dbCon.store_cookie_return_sessionid(cookie_dict)
 
-        # create a redis cache system, store the api object and get it before database hit
-        # and creating another API object
-        pickled_object = jsonpickle.encode(api)
-        # print(pickled_object)
-        conn.set(session_id, pickled_object) # type: ignore        
+        # # create a redis cache system, store the api object and get it before database hit
+        # # and creating another API object
+        # pickled_object = jsonpickle.encode(api)
+        # # print(pickled_object)
+        # conn.set(session_id, pickled_object) # type: ignore        
 
         return jsonify(success=True, message="success", session_id=session_id)
     except Exception as e:
