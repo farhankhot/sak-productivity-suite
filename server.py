@@ -146,7 +146,7 @@ def GetPeopleInterests(cookie_dict, profile_urn):
     person_interests = person_interests.json()
     person_interests_json = json.dumps(person_interests)
 
-    print(person_interests_json)
+    # print(person_interests_json)
 
     # ============= Getting interests of People =============================
     pattern = re.compile(r'"(urn:li:fsd_profile:[^"]*)"')
@@ -164,7 +164,7 @@ def GetPeopleInterests(cookie_dict, profile_urn):
         if i == 4:
             break
     
-        temp = api.get_profile_name(profile_urn)
+        temp = api.get_profile_name(profile_urn) # type: ignore
         first_name = temp['firstName']
         last_name = temp['lastName']
         full_name = first_name + " " + last_name 
@@ -473,6 +473,7 @@ def GetLeadInfo(cookie_dict, lead, profile_urn, additional_info_text="", interes
     # ============= Getting interests =================================
     lead_interests = []
     if interests == "":
+
         interests = api._fetch(f"/graphql?includeWebMetadata=True&variables=(profileUrn:urn%3Ali%3Afsd_profile%3A{profile_urn},sectionType:interests,tabIndex:1,locale:en_US)&&queryId=voyagerIdentityDashProfileComponents.38247e27f7b9b2ecbd8e8452e3c1a02c")
         interests = interests.json()
         interests_json = json.dumps(interests)
@@ -484,20 +485,17 @@ def GetLeadInfo(cookie_dict, lead, profile_urn, additional_info_text="", interes
         people_the_profile_is_interested_in_set = set(matches)
         people_the_profile_is_interested_in = [s.split(':')[-1] for s in people_the_profile_is_interested_in_set]
 
-        print("people the profile is interested in", people_the_profile_is_interested_in)
-
         pattern_for_company = re.compile(r'"(urn:li:fsd_company:[^"]*)"')
         matches_for_company = re.findall(pattern_for_company, interests_json)
         companies_the_profile_is_interested_in_set = set(matches_for_company)
         companies_the_profile_is_interested_in = [s.split(':')[-1] for s in companies_the_profile_is_interested_in_set]
 
-        print(companies_the_profile_is_interested_in)
+        # print(companies_the_profile_is_interested_in)
 
         for i, profile_urn in enumerate(people_the_profile_is_interested_in):
             if i == 1:
                 break
-            print(profile_urn)
-            temp = api.get_profile(profile_urn)
+            temp = api.get_profile_name(profile_urn) # type: ignore
             first_name = temp['firstName']
             last_name = temp['lastName']
             full_name = first_name + " " + last_name 
@@ -534,7 +532,7 @@ def GetLeadInfo(cookie_dict, lead, profile_urn, additional_info_text="", interes
     if len(lead_interests) > 0:
         full_lead_profile += " Interests: " + interests
     elif interests != "":
-        full_lead_profile += " Interests: " + interests
+        full_lead_profile += " Interests: " + interests + " Use the interests"
 
     if len(lead_relationships) > 0:
         full_lead_profile += " Mutual relationships: " + " ".join(str(x) for x in lead_relationships)
