@@ -15,7 +15,7 @@ function Home(props) {
 	const {sessionId} = props;
 	// console.log("Home sessionId: ", sessionId);
 
-	const [numberOfLeads, setNumberOfLeads] = useState(0); // Set it at 25 at the start
+	const [numberOfLeads, setNumberOfLeads] = useRef(0); // Set it at 25 at the start
 	const [isLoadingLeads, setIsLoadingLeads] = useState(false);
 	const [isLoadingAutoCreatingNotes, setIsLoadingAutoCreatingNotes] = useState(false);
 	const [isLoadingPeopleInterests, setIsLoadingPeopleInterests] = useState(null);
@@ -96,7 +96,8 @@ function Home(props) {
 						const numberOfPages = data.number_of_pages;
 						console.log(numberOfPages);
 						setNumberOfPages(numberOfPages);
-						setNumberOfLeads(leadsArray.length); 
+						// setNumberOfLeads(leadsArray.length); 
+						numberOfLeads.current = leadsArray.length;
 						console.log(numberOfLeads);
 			
 						setLeadsArray(leadsArray);
