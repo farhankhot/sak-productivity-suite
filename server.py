@@ -635,7 +635,7 @@ def get_lead_info():
         interests = request.json['interests'] # type: ignore
 
         data = dbCon.search_my_info(session_id)
-        print(data)
+        # print(data)
         full_name = data[0][0] # type: ignore
         occupation = data[0][1] # type: ignore
 
