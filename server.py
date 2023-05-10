@@ -26,7 +26,7 @@ import time
 
 import math
 
-# from worker import redis
+import jsonpickle
 
 q = Queue(connection=conn)
 
@@ -655,10 +655,14 @@ def get_leads():
         session_id = request.json['sessionId'] # type: ignore
         # print("get_leads session_id: ", session_id)
 
-        cookie_dict = dbCon.get_cookie_from_user_sessions(session_id)
-        # print("get_leads cookie_dict: ", cookie_dict)
-        
-        api = Linkedin(cookies=cookie_dict) # type: ignore
+        if conn.get(session_id) != None:
+            api_serialized = conn.get(session_id)
+            api = jsonpickle.decode(api_serialized)
+        else:
+            cookie_dict = dbCon.get_cookie_from_user_sessions(session_id)
+            # print("get_leads cookie_dict: ", cookie_dict)            
+            api = Linkedin(cookies=cookie_dict) # type: ignore
+
         lead_list, member_urn_id_list, number_of_pages = SalesNavigatorLeadsInfo(api)
         dbCon.store_leads(lead_list)
 
@@ -832,27 +836,26 @@ def send_message():
 
 @app.route('/save-cookie', methods=['POST'])
 def save_cookie():
-    # try:
-    cookies_list = request.json['cookie'] # type: ignore  
-    cookie_dict = cookies_list_to_cookie_dict(cookies_list)
+    try:
+        cookies_list = request.json['cookie'] # type: ignore  
+        cookie_dict = cookies_list_to_cookie_dict(cookies_list)
 
-    api = Linkedin(cookies=cookie_dict) # type: ignore
+        api = Linkedin(cookies=cookie_dict) # type: ignore
 
-    # Save the cookie_dict in DB and return a session_id for the user
-    # The session_id will be passed back by the user, it will be checked against the DB
-    # and will return the cookie_dict to be passed in the LinkedIn API.
-    session_id = dbCon.store_cookie_return_sessionid(cookie_dict)
+        # Save the cookie_dict in DB and return a session_id for the user
+        # The session_id will be passed back by the user, it will be checked against the DB
+        # and will return the cookie_dict to be passed in the LinkedIn API.
+        session_id = dbCon.store_cookie_return_sessionid(cookie_dict)
 
-    # create a redis cache system, store the api object and get it before database hit
-    # and creating another API object
-    import jsonpickle
-    pickled_object = jsonpickle.encode(api)
-    print(pickled_object)
-    conn.set(session_id, pickled_object) # type: ignore        
+        # create a redis cache system, store the api object and get it before database hit
+        # and creating another API object
+        pickled_object = jsonpickle.encode(api)
+        # print(pickled_object)
+        conn.set(session_id, pickled_object) # type: ignore        
 
-    return jsonify(success=True, message="success", session_id=session_id)
-    # except Exception as e:
-    #     return jsonify(success=False, message=str(e))
+        return jsonify(success=True, message="success", session_id=session_id)
+    except Exception as e:
+        return jsonify(success=False, message=str(e))
 
 @app.errorhandler(404)
 def not_found(e):
