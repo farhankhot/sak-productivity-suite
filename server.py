@@ -146,6 +146,8 @@ def GetPeopleInterests(cookie_dict, profile_urn):
     person_interests = person_interests.json()
     person_interests_json = json.dumps(person_interests)
 
+    print(person_interests_json)
+
     # ============= Getting interests of People =============================
     pattern = re.compile(r'"(urn:li:fsd_profile:[^"]*)"')
     matches = re.findall(pattern, person_interests_json)
@@ -520,7 +522,7 @@ def GetLeadInfo(cookie_dict, lead, profile_urn, additional_info_text="", interes
     my_prof_occupation = my_prof_mini_profile['occupation'] 
     # ============= Get my info =================================
 
-    full_lead_profile = f"You are {my_prof_full_name}, a {my_prof_occupation} at DTC Force, located in Toronto. This is the profile of a person: Name: {lead[0]}"
+    full_lead_profile = f"You are {my_prof_full_name}, a {my_prof_occupation} at DTC Force, located in Toronto. DTC Force is a Salesforce implementation company. This is the profile of a person: Name: {lead[0]}"
 
     if lead_headline != "":
         full_lead_profile += " About: " + lead_headline
