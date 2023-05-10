@@ -411,10 +411,7 @@ def GetLeadInfo(cookie_dict, lead, profile_urn, additional_info_text="", interes
 
     time.sleep(1)
 
-    start_time = time.time()
     api = Linkedin(cookies=cookie_dict) # type: ignore
-    end_time = time.time()
-    print(f"API creation execution time: {end_time - start_time} seconds")
 
     my_tuple = tuple(profile_urn.strip("()").split(","))
 
@@ -457,8 +454,6 @@ def GetLeadInfo(cookie_dict, lead, profile_urn, additional_info_text="", interes
     # ============= Getting Relationships =============================
 
     # ============= Getting Misc info =============================
-    start_time = time.time()
-
     lead_profile = api._fetch(f"/sales-api/salesApiProfiles/({profile_urn_for_lead_profile},{auth_type_for_lead_profile},{auth_token_for_lead_profile})?decoration=%28%0A%20%20entityUrn%2C%0A%20%20objectUrn%2C%0A%20%20firstName%2C%0A%20%20lastName%2C%0A%20%20fullName%2C%0A%20%20headline%2C%0A%20%20memberBadges%2C%0A%20%20pronoun%2C%0A%20%20degree%2C%0A%20%20profileUnlockInfo%2C%0A%20%20latestTouchPointActivity%2C%0A%20%20location%2C%0A%20%20listCount%2C%0A%20%20summary%2C%0A%20%20savedLead%2C%0A%20%20defaultPosition%2C%0A%20%20contactInfo%2C%0A%20%20crmStatus%2C%0A%20%20pendingInvitation%2C%0A%20%20unlocked%2C%0A%20%20flagshipProfileUrl%2C%0A%20%20fullNamePronunciationAudio%2C%0A%20%20memorialized%2C%0A%20%20numOfConnections%2C%0A%20%20numOfSharedConnections%2C%0A%20%20showTotalConnectionsPage%2C%0A%20%20profilePictureDisplayImage%2C%0A%20%20profileBackgroundPicture%2C%0A%20%20relatedColleagueCompanyId%2C%0A%20%20blockThirdPartyDataSharing%2C%0A%20%20noteCount%2C%0A%20%20positions*%28%0A%20%20%20%20companyName%2C%0A%20%20%20%20current%2C%0A%20%20%20%20new%2C%0A%20%20%20%20description%2C%0A%20%20%20%20endedOn%2C%0A%20%20%20%20posId%2C%0A%20%20%20%20startedOn%2C%0A%20%20%20%20title%2C%0A%20%20%20%20location%2C%0A%20%20%20%20richMedia*%2C%0A%20%20%20%20companyUrn~fs_salesCompany%28entityUrn%2Cname%2CcompanyPictureDisplayImage%29%0A%20%20%29%2C%0A%20%20educations*%28%0A%20%20%20%20degree%2C%0A%20%20%20%20eduId%2C%0A%20%20%20%20endedOn%2C%0A%20%20%20%20schoolName%2C%0A%20%20%20%20startedOn%2C%0A%20%20%20%20fieldsOfStudy*%2C%0A%20%20%20%20richMedia*%2C%0A%20%20%20%20school~fs_salesSchool%28entityUrn%2ClogoId%2Cname%2Curl%2CschoolPictureDisplayImage%29%0A%20%20%29%2C%0A%20%20languages*%0A%29"
                                 ,base_request=True)
     # print("lead_profile: ", lead_profile.json())
@@ -478,35 +473,40 @@ def GetLeadInfo(cookie_dict, lead, profile_urn, additional_info_text="", interes
         lead_summary = lead_profile_json["summary"]
     else:
         lead_summary = ""
-    
-    end_time = time.time()
-    print(f"misc execution time: {end_time - start_time} seconds")
     # ============= Getting Misc info =============================
 
     # ============= Getting interests =================================
-    start_time = time.time()
 
     lead_interests = []
     if interests == "":
 
+        start_time = time.time()
         interests = api._fetch(f"/graphql?includeWebMetadata=True&variables=(profileUrn:urn%3Ali%3Afsd_profile%3A{profile_urn},sectionType:interests,tabIndex:1,locale:en_US)&&queryId=voyagerIdentityDashProfileComponents.38247e27f7b9b2ecbd8e8452e3c1a02c")
         interests = interests.json()
         interests_json = json.dumps(interests)
+        end_time = time.time()
+        print(f"interests fetch execution time: {end_time - start_time} seconds")
 
         # print(interests_json)
-
+        start_time = time.time()
         pattern = re.compile(r'"(urn:li:fsd_profile:[^"]*)"')
         matches = re.findall(pattern, interests_json)
         people_the_profile_is_interested_in_set = set(matches)
         people_the_profile_is_interested_in = [s.split(':')[-1] for s in people_the_profile_is_interested_in_set]
+        end_time = time.time()
+        print(f"interests compile execution time: {end_time - start_time} seconds")
 
+        start_time = time.time()
         pattern_for_company = re.compile(r'"(urn:li:fsd_company:[^"]*)"')
         matches_for_company = re.findall(pattern_for_company, interests_json)
         companies_the_profile_is_interested_in_set = set(matches_for_company)
         companies_the_profile_is_interested_in = [s.split(':')[-1] for s in companies_the_profile_is_interested_in_set]
+        end_time = time.time()
+        print(f"interests company compile execution time: {end_time - start_time} seconds")
 
         # print(companies_the_profile_is_interested_in)
 
+        start_time = time.time()
         for i, profile_urn in enumerate(people_the_profile_is_interested_in):
             if i == 1:
                 break
@@ -515,7 +515,10 @@ def GetLeadInfo(cookie_dict, lead, profile_urn, additional_info_text="", interes
             last_name = temp['lastName']
             full_name = first_name + " " + last_name 
             lead_interests.append(full_name)
-        
+        end_time = time.time()
+        print(f"interests for loop execution time: {end_time - start_time} seconds")
+
+        start_time = time.time()
         for i, company_id in enumerate(companies_the_profile_is_interested_in):
             if i == 1:
                 break
@@ -525,22 +528,18 @@ def GetLeadInfo(cookie_dict, lead, profile_urn, additional_info_text="", interes
         
         lead_info.append(lead_interests)
         interests = " ".join(str(x) for x in lead_info)
-    
-    end_time = time.time()
-    print(f"interests execution time: {end_time - start_time} seconds")
+        end_time = time.time()
+        print(f"company interests for loop execution time: {end_time - start_time} seconds")
+
     # ============= Getting interests =================================
 
     # ============= Get my info =================================
-    start_time = time.time()
-
+    # TAKES 5 SECONDS, CAN BE OPTIMIZED
     # Check if my info is in the database, if it is use that. If not, use api
     my_prof = api.get_user_profile()
     my_prof_mini_profile = my_prof['miniProfile'] # type: ignore
     my_prof_full_name = my_prof_mini_profile['firstName'] + " " + my_prof_mini_profile['lastName']
     my_prof_occupation = my_prof_mini_profile['occupation'] 
-
-    end_time = time.time()
-    print(f"get my info execution time: {end_time - start_time} seconds")
     # ============= Get my info =================================
 
     full_lead_profile = f"You are {my_prof_full_name}, a {my_prof_occupation} at DTC Force, located in Toronto. DTC Force is a Salesforce implementation company. This is the profile of a person: Name: {lead[0]}"
