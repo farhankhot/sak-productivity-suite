@@ -817,7 +817,7 @@ function Home(props) {
 											</Button>
 									</div>
 
-									{leadsArray.length > 0 && peopleInterestsArray[index].length > 0 && (
+									{peopleInterestsArray[index] && peopleInterestsArray[index].length > 0 && (
 										<ListGroup.Item>
 											{peopleInterestsArray[index].map((interest, i) => (
 											<Form.Check
@@ -831,7 +831,7 @@ function Home(props) {
 										</ListGroup.Item>
 									)}
 
-									{leadsArray.length > 0 && companyInterestsArray[index].length > 0 && (
+									{companyInterestsArray[index] && companyInterestsArray[index].length > 0 && (
 									<ListGroup.Item>
 										{companyInterestsArray[index].map((interest, i) => (
 										<Form.Check
