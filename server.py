@@ -247,7 +247,7 @@ def SalesNavigatorLeadsInfo(api):
 
         for page in range(0, number_of_pages):
 
-            print(page, number_of_pages)
+            # print(page, number_of_pages)
             if ( (leads_list_total - current_count) == 0):
                 break
 
@@ -494,6 +494,7 @@ def GetLeadInfo(cookie_dict, lead, profile_urn, additional_info_text="", interes
         for i, profile_urn in enumerate(people_the_profile_is_interested_in):
             if i == 1:
                 break
+            print(profile_urn)
             temp = api.get_profile(profile_urn)
             first_name = temp['firstName']
             last_name = temp['lastName']

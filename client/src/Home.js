@@ -18,14 +18,6 @@ function Home(props) {
 	const [isLoadingLeads, setIsLoadingLeads] = useState(false);
 	const [isLoadingAutoCreatingNotes, setIsLoadingAutoCreatingNotes] = useState(false);
 
-	// const [isLoadingPeopleInterests, setIsLoadingPeopleInterests] = useState(Array.from({length: 100}, () => false));
-	// const [isLoadingCompanyInterests, setIsLoadingCompanyInterests] = useState(Array.from({length: 100}, () => false));
-	// const [isLoadingMakingNote, setIsLoadingMakingNote] = useState(Array.from({length: 100}, () => false));
-	// const [isLoadingSendingNote, setIsLoadingSendingNote] = useState(Array.from({length: 100}, () => false));		
-	// const [peopleInterestsArray, setPeopleInterestsArray] = useState(Array.from({length: 100}, () => []));
-	// const [companyInterestsArray, setCompanyInterestsArray] = useState(Array.from({length: 100}, () => []));
-	// const [selectedInterests, setSelectedInterests] = useState(Array.from({length: 100}, () => []));
-
 	const [isLoadingPeopleInterests, setIsLoadingPeopleInterests] = useState([]);
 	const [isLoadingCompanyInterests, setIsLoadingCompanyInterests] = useState([]);
 	const [isLoadingMakingNote, setIsLoadingMakingNote] = useState([]);
@@ -44,16 +36,11 @@ function Home(props) {
 
 	const [autoCreatingNotesDisabled, setAutoCreatingNotesDisabled] = useState(false);
 	const [loadingLeadsButtonDisabled, setLoadingLeadsButtonDisabled] = useState(false);
-	// const [peopleInterestsButtonDisabled, setPeopleInterestsButtonDisabled] = useState(Array.from({length: 100}, () => false));
-	// const [companyInterestsButtonDisabled, setCompanyInterestsButtonDisabled] = useState(Array.from({length: 100}, () => false));
-	// const [makingConnectNoteButtonDisabled, setMakingConnectNoteButtonDisabled] = useState(Array.from({length: 100}, () => false));
-	// const [sendingConnectNoteButtonDisabled, setSendingConnectNoteButtonDisabled] = useState(Array.from({length: 100}, () => false));
 
 	const [peopleInterestsButtonDisabled, setPeopleInterestsButtonDisabled] = useState([]);
 	const [companyInterestsButtonDisabled, setCompanyInterestsButtonDisabled] = useState([]);
 	const [makingConnectNoteButtonDisabled, setMakingConnectNoteButtonDisabled] = useState([]);
 	const [sendingConnectNoteButtonDisabled, setSendingConnectNoteButtonDisabled] = useState([]);
-
 
 	const [jobIdArray, setJobIdArray] = useState([]);
 
@@ -104,7 +91,6 @@ function Home(props) {
 						console.log("Successfully gotten leads: ", leadsArray);
 						const memberUrnIdArray = data.member_urn_id_list;
 						const numberOfPages = data.number_of_pages;
-						// console.log(numberOfPages);
 						setNumberOfPages(numberOfPages);
 						const numberOfLeads = leadsArray.length;
 						setNumberOfLeads(numberOfLeads);
@@ -832,17 +818,17 @@ function Home(props) {
 									)}
 
 									{companyInterestsArray[index] && companyInterestsArray[index].length > 0 && (
-									<ListGroup.Item>
-										{companyInterestsArray[index].map((interest, i) => (
-										<Form.Check
-											key={i}
-											type="checkbox"
-											value={interest[0]}
-											label={interest[0]}
-											onChange={handleInterestsSelection(index)}
-										/>
-										))}
-									</ListGroup.Item>
+										<ListGroup.Item>
+											{companyInterestsArray[index].map((interest, i) => (
+											<Form.Check
+												key={i}
+												type="checkbox"
+												value={interest[0]}
+												label={interest[0]}
+												onChange={handleInterestsSelection(index)}
+											/>
+											))}
+										</ListGroup.Item>
 									)}
 								</div>
 							</Accordion.Body>
