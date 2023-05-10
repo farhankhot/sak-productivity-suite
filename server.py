@@ -26,6 +26,8 @@ import time
 
 import math
 
+from worker import redis
+
 q = Queue(connection=conn)
 
 app = Flask(
@@ -407,7 +409,7 @@ def GetLeadInfo(cookie_dict, lead, profile_urn, additional_info_text="", interes
     # print("additional info: ", additional_info_text)
     # print("profile_urn", profile_urn)
 
-    time.sleep(3)
+    time.sleep(1)
 
     api = Linkedin(cookies=cookie_dict) # type: ignore
 
@@ -840,6 +842,12 @@ def save_cookie():
         # The session_id will be passed back by the user, it will be checked against the DB
         # and will return the cookie_dict to be passed in the LinkedIn API.
         session_id = dbCon.store_cookie_return_sessionid(cookie_dict)
+
+        # create a redis cache system, store the api object and get it before database hit
+        # and creating another API object
+        pickled_object = json.dumps(api)
+        redis.set(session_id, pickled_object) # type: ignore
+        
 
         return jsonify(success=True, message="success", session_id=session_id)
     except Exception as e:
