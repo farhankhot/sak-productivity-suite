@@ -97,6 +97,7 @@ function Home(props) {
 						console.log(numberOfPages);
 						setNumberOfPages(numberOfPages);
 						setNumberOfLeads(leadsArray.length); 
+						console.log(numberOfLeads);
 			
 						setLeadsArray(leadsArray);
 						setMemberUrnIdArray(memberUrnIdArray);
