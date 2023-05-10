@@ -845,7 +845,8 @@ def save_cookie():
 
         # create a redis cache system, store the api object and get it before database hit
         # and creating another API object
-        pickled_object = json.dumps(api)
+        import jsonpickle
+        pickled_object = jsonpickle.encode(api)
         print(pickled_object)
         redis.set(session_id, pickled_object) # type: ignore        
 

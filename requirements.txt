@@ -9,3 +9,4 @@ psycopg2==2.9.5
 git+https://github.com/farhankhot/linkedin-api.git
 pytz==2023.2
 python-dotenv==1.0.0
+jsonpickle==3.0.1
