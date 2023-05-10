@@ -56,6 +56,7 @@ function Home(props) {
 
 	useEffect( () => {
 		if (numberOfLeads !== 0){
+			console.log("dddd");
 			setIsLoadingPeopleInterests(Array.from({length: numberOfLeads}, () => false));
 			setIsLoadingCompanyInterests(Array.from({length: numberOfLeads}, () => false));
 			setIsLoadingMakingNote(Array.from({length: numberOfLeads}, () => false));
@@ -93,7 +94,7 @@ function Home(props) {
 						const numberOfPages = data.number_of_pages;
 						console.log(numberOfPages);
 						setNumberOfPages(numberOfPages);
-						setNumberOfLeads((leadsArray.length)-1); 
+						setNumberOfLeads(leadsArray.length); 
 			
 						setLeadsArray(leadsArray);
 						setMemberUrnIdArray(memberUrnIdArray);
