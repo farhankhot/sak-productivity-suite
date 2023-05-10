@@ -482,14 +482,14 @@ def GetLeadInfo(cookie_dict, lead, profile_urn, additional_info_text="", interes
         people_the_profile_is_interested_in_set = set(matches)
         people_the_profile_is_interested_in = [s.split(':')[-1] for s in people_the_profile_is_interested_in_set]
 
-        # print(people_the_profile_is_interested_in)
+        print("people the profile is interested in", people_the_profile_is_interested_in)
 
         pattern_for_company = re.compile(r'"(urn:li:fsd_company:[^"]*)"')
         matches_for_company = re.findall(pattern_for_company, interests_json)
         companies_the_profile_is_interested_in_set = set(matches_for_company)
         companies_the_profile_is_interested_in = [s.split(':')[-1] for s in companies_the_profile_is_interested_in_set]
 
-        # print(companies_the_profile_is_interested_in)
+        print(companies_the_profile_is_interested_in)
 
         for i, profile_urn in enumerate(people_the_profile_is_interested_in):
             if i == 1:
