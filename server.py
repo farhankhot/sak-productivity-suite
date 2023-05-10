@@ -156,19 +156,26 @@ def GetPeopleInterests(cookie_dict, profile_urn):
     people_the_profile_is_interested_in = [s.split(':')[-1] for s in people_the_profile_is_interested_in_set]
 
     # print(people_the_profile_is_interested_in)
-
-    # Get the profile urn, get the name and store in another list
-    final_people_the_profile_is_interested_in = []
     for i, profile_urn in enumerate(people_the_profile_is_interested_in):
 
         if i == 4:
             break
     
-        temp = api.get_profile(profile_urn)
-        first_name = temp['firstName']
-        last_name = temp['lastName']
-        full_name = first_name + " " + last_name 
-        final_people_the_profile_is_interested_in.append([full_name, profile_urn])
+        temp = api.get_profile_name(profile_urn)
+        print(temp)
+
+    # Get the profile urn, get the name and store in another list
+    final_people_the_profile_is_interested_in = []
+    # for i, profile_urn in enumerate(people_the_profile_is_interested_in):
+
+    #     if i == 4:
+    #         break
+    
+    #     temp = api.get_profile(profile_urn)
+    #     first_name = temp['firstName']
+    #     last_name = temp['lastName']
+    #     full_name = first_name + " " + last_name 
+    #     final_people_the_profile_is_interested_in.append([full_name, profile_urn])
 
     # print(final_people_the_profile_is_interested_in)
     # print(len(final_people_the_profile_is_interested_in))
