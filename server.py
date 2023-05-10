@@ -404,7 +404,7 @@ def SalesNavigatorLeadsInfo(api):
     return lead_list, member_urn_id_list, number_of_pages
 
 # TODO: Get interests at random
-def GetLeadInfo(cookie_dict, lead, profile_urn, additional_info_text="", interests=""):
+def GetLeadInfo(cookie_dict, my_full_name, my_occupation, lead, profile_urn, additional_info_text="", interests=""):
 
     # interests fetch execution time: 4.0456929206848145 seconds
     # interests people compile execution time: 0.0001327991485595703 seconds
@@ -483,60 +483,52 @@ def GetLeadInfo(cookie_dict, lead, profile_urn, additional_info_text="", interes
 
     # ============= Getting interests =================================
 
-    lead_interests = []
-    if interests == "":
+    # lead_interests = []
+    # if interests == "":
 
-        start_time = time.time()
-        interests = api._fetch(f"/graphql?includeWebMetadata=True&variables=(profileUrn:urn%3Ali%3Afsd_profile%3A{profile_urn},sectionType:interests,tabIndex:1,locale:en_US)&&queryId=voyagerIdentityDashProfileComponents.38247e27f7b9b2ecbd8e8452e3c1a02c")
-        end_time = time.time()
-        print(f"interests fetch execution time: {end_time - start_time} seconds")
+    #     start_time = time.time()
+    #     interests = api._fetch(f"/graphql?includeWebMetadata=True&variables=(profileUrn:urn%3Ali%3Afsd_profile%3A{profile_urn},sectionType:interests,tabIndex:1,locale:en_US)&&queryId=voyagerIdentityDashProfileComponents.38247e27f7b9b2ecbd8e8452e3c1a02c")
+    #     end_time = time.time()
+    #     print(f"interests fetch execution time: {end_time - start_time} seconds")
 
-        interests = interests.json()
-        interests_json = json.dumps(interests)
+    #     interests = interests.json()
+    #     interests_json = json.dumps(interests)
         
-        # print(interests_json)
-        pattern = re.compile(r'"(urn:li:fsd_profile:[^"]*)"')
-        matches = re.findall(pattern, interests_json)
-        people_the_profile_is_interested_in_set = set(matches)
-        people_the_profile_is_interested_in = [s.split(':')[-1] for s in people_the_profile_is_interested_in_set]
+    #     # print(interests_json)
+    #     pattern = re.compile(r'"(urn:li:fsd_profile:[^"]*)"')
+    #     matches = re.findall(pattern, interests_json)
+    #     people_the_profile_is_interested_in_set = set(matches)
+    #     people_the_profile_is_interested_in = [s.split(':')[-1] for s in people_the_profile_is_interested_in_set]
 
-        pattern_for_company = re.compile(r'"(urn:li:fsd_company:[^"]*)"')
-        matches_for_company = re.findall(pattern_for_company, interests_json)
-        companies_the_profile_is_interested_in_set = set(matches_for_company)
-        companies_the_profile_is_interested_in = [s.split(':')[-1] for s in companies_the_profile_is_interested_in_set]
+    #     pattern_for_company = re.compile(r'"(urn:li:fsd_company:[^"]*)"')
+    #     matches_for_company = re.findall(pattern_for_company, interests_json)
+    #     companies_the_profile_is_interested_in_set = set(matches_for_company)
+    #     companies_the_profile_is_interested_in = [s.split(':')[-1] for s in companies_the_profile_is_interested_in_set]
 
-        # print(companies_the_profile_is_interested_in)
+    #     # print(companies_the_profile_is_interested_in)
 
-        for i, profile_urn in enumerate(people_the_profile_is_interested_in):
-            if i == 1:
-                break
-            temp = api.get_profile_name(profile_urn) # type: ignore
-            first_name = temp['firstName']
-            last_name = temp['lastName']
-            full_name = first_name + " " + last_name 
-            lead_interests.append(full_name)
+    #     for i, profile_urn in enumerate(people_the_profile_is_interested_in):
+    #         if i == 1:
+    #             break
+    #         temp = api.get_profile_name(profile_urn) # type: ignore
+    #         first_name = temp['firstName']
+    #         last_name = temp['lastName']
+    #         full_name = first_name + " " + last_name 
+    #         lead_interests.append(full_name)
 
-        for i, company_id in enumerate(companies_the_profile_is_interested_in):
-            if i == 1:
-                break
-            temp = api.get_company(company_id)
-            company_name = temp['universalName']
-            lead_interests.append([company_name, company_id])
+    #     for i, company_id in enumerate(companies_the_profile_is_interested_in):
+    #         if i == 1:
+    #             break
+    #         temp = api.get_company(company_id)
+    #         company_name = temp['universalName']
+    #         lead_interests.append([company_name, company_id])
         
-        lead_info.append(lead_interests)
-        interests = " ".join(str(x) for x in lead_info)
+    #     lead_info.append(lead_interests)
+    #     interests = " ".join(str(x) for x in lead_info)
     # ============= Getting interests =================================
 
-    # ============= Get my info =================================
-    # TAKES 5 SECONDS, CAN BE OPTIMIZED
-    # Check if my info is in the database, if it is use that. If not, use api
-    my_prof = api.get_user_profile()
-    my_prof_mini_profile = my_prof['miniProfile'] # type: ignore
-    my_prof_full_name = my_prof_mini_profile['firstName'] + " " + my_prof_mini_profile['lastName']
-    my_prof_occupation = my_prof_mini_profile['occupation'] 
-    # ============= Get my info =================================
 
-    full_lead_profile = f"You are {my_prof_full_name}, a {my_prof_occupation} at DTC Force, located in Toronto. DTC Force is a Salesforce implementation company. This is the profile of a person: Name: {lead[0]}"
+    full_lead_profile = f"You are {my_full_name}, a {my_occupation} at DTC Force, located in Toronto. DTC Force is a Salesforce implementation company. This is the profile of a person: Name: {lead[0]}"
 
     if lead_headline != "":
         full_lead_profile += " About: " + lead_headline
@@ -544,10 +536,7 @@ def GetLeadInfo(cookie_dict, lead, profile_urn, additional_info_text="", interes
         full_lead_profile += " Summary: " + lead_summary
     if lead_location != "":
         full_lead_profile += " Location: " + lead_location
-    
-    if len(lead_interests) > 0:
-        full_lead_profile += " Interests: " + interests
-    elif interests != "":
+    if interests != "":
         full_lead_profile += " Interests: " + interests + " Use the interests"
 
     if len(lead_relationships) > 0:
@@ -645,6 +634,10 @@ def get_lead_info():
         # print("additional_info_text is ", additional_info_text)
         interests = request.json['interests'] # type: ignore
 
+        data = dbCon.search_my_info(session_id)
+        full_name = data[0] # type: ignore
+        occupation = data[1] # type: ignore
+
         # print(interests)
         job_ids=[]
         for i, profile_urn in enumerate(member_urn_id_list):
@@ -653,7 +646,7 @@ def get_lead_info():
             if i == 4:
                 break
 
-            data = q.enqueue(GetLeadInfo, cookie_dict, leads_list[i], profile_urn, additional_info_text, interests, result_ttl = 1, job_timeout=600)
+            data = q.enqueue(GetLeadInfo, full_name, occupation, cookie_dict, leads_list[i], profile_urn, additional_info_text, interests, result_ttl = 1, job_timeout=600)
     
             job_id = data.get_id()
             job_ids.append(job_id)
@@ -858,11 +851,13 @@ def save_cookie():
         # and will return the cookie_dict to be passed in the LinkedIn API.
         session_id = dbCon.store_cookie_return_sessionid(cookie_dict)
 
-        # # create a redis cache system, store the api object and get it before database hit
-        # # and creating another API object
-        # pickled_object = jsonpickle.encode(api)
-        # # print(pickled_object)
-        # conn.set(session_id, pickled_object) # type: ignore        
+        # ============= Get my info =================================
+        my_prof = api.get_user_profile()
+        my_prof_mini_profile = my_prof['miniProfile'] # type: ignore
+        my_prof_full_name = my_prof_mini_profile['firstName'] + " " + my_prof_mini_profile['lastName']
+        my_prof_occupation = my_prof_mini_profile['occupation'] 
+        dbCon.store_my_info(session_id, my_prof_full_name, my_prof_occupation)
+        # ============= Get my info =================================
 
         return jsonify(success=True, message="success", session_id=session_id)
     except Exception as e:

@@ -96,3 +96,36 @@ def search_leads(lead_name, title, current_company, location):
     except (Exception, psycopg2.Error) as error:
         print("Error while connecting to PostgreSQL", error)
         return False
+
+def store_my_info(session_id, full_name, occupation): 
+     
+    try:
+        cursor = connection.cursor()
+
+        insert_query = """ INSERT INTO socialmedia.my_info(session_id, full_name, occupation) VALUES (%s, %s, %s); """
+        record_to_insert = (session_id, full_name, occupation)
+        cursor.execute(insert_query, record_to_insert)
+        connection.commit()
+        print("Record inserted in store_my_info successfully")
+        return True
+    
+    except (Exception, psycopg2.Error) as error:
+        print("Error while connecting to PostgreSQL", error)
+        return False
+    
+def search_my_info(session_id):
+
+    try:
+        cursor = connection.cursor()
+        t = [f'%{session_id}%']
+        cursor.execute("SELECT full_name, occupation FROM socialmedia.my_info WHERE session_id LIKE %s", t) # type: ignore
+        results = cursor.fetchall()
+        print(results[0])
+        if results:
+            return results 
+        else:
+            return False
+            
+    except (Exception, psycopg2.Error) as error:
+        print("Error while connecting to PostgreSQL", error)
+        return False
