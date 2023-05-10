@@ -18,14 +18,14 @@ function Home(props) {
 	const [numberOfLeads, setNumberOfLeads] = useState(25); // Set it at 25 at the start
 	const [isLoadingLeads, setIsLoadingLeads] = useState(false);
 	const [isLoadingAutoCreatingNotes, setIsLoadingAutoCreatingNotes] = useState(false);
-	const [isLoadingPeopleInterests, setIsLoadingPeopleInterests] = useState(Array.from({length: numberOfLeads}, () => false));
-	const [isLoadingCompanyInterests, setIsLoadingCompanyInterests] = useState(Array.from({length: numberOfLeads}, () => false));
-	const [isLoadingMakingNote, setIsLoadingMakingNote] = useState(Array.from({length: numberOfLeads}, () => false));
-	const [isLoadingSendingNote, setIsLoadingSendingNote] = useState(Array.from({length: numberOfLeads}, () => false));
+	const [isLoadingPeopleInterests, setIsLoadingPeopleInterests] = useState(null);
+	const [isLoadingCompanyInterests, setIsLoadingCompanyInterests] = useState(null);
+	const [isLoadingMakingNote, setIsLoadingMakingNote] = useState(null);
+	const [isLoadingSendingNote, setIsLoadingSendingNote] = useState(null);
 		
-	const [peopleInterestsArray, setPeopleInterestsArray] = useState(Array.from({length: numberOfLeads}, () => []));
-	const [companyInterestsArray, setCompanyInterestsArray] = useState(Array.from({length: numberOfLeads}, () => []));
-	const [selectedInterests, setSelectedInterests] = useState(Array.from({length: numberOfLeads}, () => []));
+	const [peopleInterestsArray, setPeopleInterestsArray] = useState(null);
+	const [companyInterestsArray, setCompanyInterestsArray] = useState(null);
+	const [selectedInterests, setSelectedInterests] = useState(null);
 
 	const [showProfileArea, setShowProfileArea] = useState(false);
 
@@ -37,10 +37,10 @@ function Home(props) {
 
 	const [autoCreatingNotesDisabled, setAutoCreatingNotesDisabled] = useState(false);
 	const [loadingLeadsButtonDisabled, setLoadingLeadsButtonDisabled] = useState(false);
-	const [peopleInterestsButtonDisabled, setPeopleInterestsButtonDisabled] = useState(Array.from({length: numberOfLeads}, () => false));
-	const [companyInterestsButtonDisabled, setCompanyInterestsButtonDisabled] = useState(Array.from({length: numberOfLeads}, () => false));
-	const [makingConnectNoteButtonDisabled, setMakingConnectNoteButtonDisabled] = useState(Array.from({length: numberOfLeads}, () => false));
-	const [sendingConnectNoteButtonDisabled, setSendingConnectNoteButtonDisabled] = useState(Array.from({length: numberOfLeads}, () => false));
+	const [peopleInterestsButtonDisabled, setPeopleInterestsButtonDisabled] = useState(null);
+	const [companyInterestsButtonDisabled, setCompanyInterestsButtonDisabled] = useState(null);
+	const [makingConnectNoteButtonDisabled, setMakingConnectNoteButtonDisabled] = useState(null);
+	const [sendingConnectNoteButtonDisabled, setSendingConnectNoteButtonDisabled] = useState(null);
 
 	const [jobIdArray, setJobIdArray] = useState([]);
 
@@ -53,6 +53,22 @@ function Home(props) {
 	const [error, setError] = useState(null);
 
 	const [numberOfPages, setNumberOfPages] = useState(0);
+
+	useEffect( () => {
+		if (numberOfLeads !== 0){
+			setIsLoadingPeopleInterests(Array.from({length: numberOfLeads}, () => false));
+			setIsLoadingCompanyInterests(Array.from({length: numberOfLeads}, () => false));
+			setIsLoadingMakingNote(Array.from({length: numberOfLeads}, () => false));
+			setIsLoadingSendingNote(Array.from({length: numberOfLeads}, () => false));
+			setPeopleInterestsArray(Array.from({length: numberOfLeads}, () => []));
+			setCompanyInterestsArray(Array.from({length: numberOfLeads}, () => []));
+			setSelectedInterests(Array.from({length: numberOfLeads}, () => []));
+			setPeopleInterestsButtonDisabled(Array.from({length: numberOfLeads}, () => false));
+			setCompanyInterestsButtonDisabled(Array.from({length: numberOfLeads}, () => false));
+			setMakingConnectNoteButtonDisabled(Array.from({length: numberOfLeads}, () => false));
+			setSendingConnectNoteButtonDisabled(Array.from({length: numberOfLeads}, () => false));
+		}
+	}, [numberOfLeads]);
 
 	const handleGettingLeads = async() => {
         try {
@@ -788,17 +804,17 @@ function Home(props) {
 									</div>
 
 									{peopleInterestsArray[index].length > 0 && (
-									<ListGroup.Item>
-										{peopleInterestsArray[index].map((interest, i) => (
-										<Form.Check
-											key={i}
-											type="checkbox"
-											value={interest[0]}
-											label={interest[0]}
-											onChange={handleInterestsSelection(index)}
-										/>
-										))}
-									</ListGroup.Item>
+										<ListGroup.Item>
+											{peopleInterestsArray[index].map((interest, i) => (
+											<Form.Check
+												key={i}
+												type="checkbox"
+												value={interest[0]}
+												label={interest[0]}
+												onChange={handleInterestsSelection(index)}
+											/>
+											))}
+										</ListGroup.Item>
 									)}
 
 									{companyInterestsArray[index].length > 0 && (
