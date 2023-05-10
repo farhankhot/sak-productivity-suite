@@ -55,6 +55,8 @@ function Home(props) {
 	const [numberOfPages, setNumberOfPages] = useState(0);
 
 	useEffect( () => {
+		
+		console.log(numberOfLeads);
 		if (numberOfLeads !== 0){
 			console.log("dddd");
 			setIsLoadingPeopleInterests(Array.from({length: numberOfLeads}, () => false));
