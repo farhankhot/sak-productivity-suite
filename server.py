@@ -404,7 +404,7 @@ def SalesNavigatorLeadsInfo(api):
     return lead_list, member_urn_id_list, number_of_pages
 
 # TODO: Get interests at random
-def GetLeadInfo(api, lead, profile_urn, additional_info_text="", interests=""):
+def GetLeadInfo(api_serialized, lead, profile_urn, additional_info_text="", interests=""):
 # def GetLeadInfo(cookie_dict, lead, profile_urn, additional_info_text="", interests=""):
     
     # print("additional info: ", additional_info_text)
@@ -413,6 +413,7 @@ def GetLeadInfo(api, lead, profile_urn, additional_info_text="", interests=""):
     time.sleep(1)
 
     # api = Linkedin(cookies=cookie_dict) # type: ignore
+    api = jsonpickle.decode(api_serialized)
 
     my_tuple = tuple(profile_urn.strip("()").split(","))
 
@@ -642,8 +643,8 @@ def get_lead_info():
 
             if conn.get(session_id) != None:
                 api_serialized = conn.get(session_id)
-                api = jsonpickle.decode(api_serialized)
-                data = q.enqueue(GetLeadInfo, api, leads_list[i], profile_urn, additional_info_text, interests, result_ttl = 1, job_timeout=600)
+                
+                data = q.enqueue(GetLeadInfo, api_serialized, leads_list[i], profile_urn, additional_info_text, interests, result_ttl = 1, job_timeout=600)
 
             else:
                 cookie_dict = dbCon.get_cookie_from_user_sessions(session_id)
