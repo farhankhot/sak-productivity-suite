@@ -26,7 +26,7 @@ import time
 
 import math
 
-from worker import redis
+# from worker import redis
 
 q = Queue(connection=conn)
 
@@ -848,7 +848,7 @@ def save_cookie():
     import jsonpickle
     pickled_object = jsonpickle.encode(api)
     print(pickled_object)
-    redis.set(session_id, pickled_object) # type: ignore        
+    conn.set(session_id, pickled_object) # type: ignore        
 
     return jsonify(success=True, message="success", session_id=session_id)
     # except Exception as e:
