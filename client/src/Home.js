@@ -15,7 +15,7 @@ function Home(props) {
 	const {sessionId} = props;
 	// console.log("Home sessionId: ", sessionId);
 
-	const [numberOfLeads, setNumberOfLeads] = useState(null); // Set it at 25 at the start
+	const [numberOfLeads, setNumberOfLeads] = useState(0); // Set it at 25 at the start
 	const [isLoadingLeads, setIsLoadingLeads] = useState(false);
 	const [isLoadingAutoCreatingNotes, setIsLoadingAutoCreatingNotes] = useState(false);
 	const [isLoadingPeopleInterests, setIsLoadingPeopleInterests] = useState(null);
@@ -55,7 +55,7 @@ function Home(props) {
 	const [numberOfPages, setNumberOfPages] = useState(0);
 
 	useEffect( () => {
-		if (numberOfLeads !== null){
+		if (numberOfLeads !== 0){
 			console.log("dddd");
 			setIsLoadingPeopleInterests(Array.from({length: numberOfLeads}, () => false));
 			setIsLoadingCompanyInterests(Array.from({length: numberOfLeads}, () => false));
@@ -648,7 +648,7 @@ function Home(props) {
 			</div>
 
 			<div style={{ display: 'flex', justifyContent: 'flex-end', paddingRight: '10px' }}>
-				{numberOfLeads !== null && leadsArray.length > 0 && 
+				{numberOfLeads !== 0 && leadsArray.length > 0 && 
 					<Form.Group>
 						<Form.Label>Add request</Form.Label>
 						<Form.Control
@@ -664,7 +664,7 @@ function Home(props) {
 
 			<div className="mx-auto" style={{ maxWidth: '800px', paddingBottom: '20px'}}>
 				<Accordion alwaysOpen>
-					{numberOfLeads !== null && leadsArray.map((leadInfo, index) => (
+					{numberOfLeads !== 0 && leadsArray.map((leadInfo, index) => (
 						<Accordion.Item eventKey = {index.toString()}
 							>
 							<Accordion.Header>{leadInfo[0]}, {leadInfo[1]}</Accordion.Header>
