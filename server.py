@@ -656,6 +656,7 @@ def get_leads():
         # print("get_leads session_id: ", session_id)
 
         if conn.get(session_id) != None:
+            print("i ran")
             api_serialized = conn.get(session_id)
             api = jsonpickle.decode(api_serialized)
         else:
