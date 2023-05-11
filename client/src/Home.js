@@ -209,20 +209,40 @@ function Home(props) {
 								setLoadingLeadsButtonDisabled(false);
 							}
 						}
+
 						else {
-							for(let i = 0; i < currentJobIdArray.length; i++){
-								// console.log(stopAutoCreatingNotesRef.current);
-								// console.log(currentJobIdArray.length);
-								// console.log(i, index);
+							
+							const allAreNone = currentJobIdArray.every((val) => val === "None");
+							if (allAreNone && currentJobIdArray.length === 1){
+								clearInterval(jobIdCheck);
+								setIsLoadingAutoCreatingNotes(false);
+								setLoadingLeadsButtonDisabled(false);
+								setAutoCreatingNotesDisabled(false);
 
-								const allAreNone = currentJobIdArray.every((val) => val === "None");
-		
-								if (allAreNone && currentJobIdArray.length === 1){
-									clearInterval(jobIdCheck);
-									setIsLoadingAutoCreatingNotes(false);
-									setLoadingLeadsButtonDisabled(false);
-									setAutoCreatingNotesDisabled(false);
+								peopleInterestsButtonDisabled[index] = false;
+								companyInterestsButtonDisabled[index] = false;
+								makingConnectNoteButtonDisabled[index] = false;
+								sendingConnectNoteButtonDisabled[index] = false;
 
+								setAutoCreatingNotesDisabled(false);
+								setLoadingLeadsButtonDisabled(false);
+							}
+
+							else if (allAreNone && currentJobIdArray.length > 1){
+								clearInterval(jobIdCheck);
+								setIsLoadingAutoCreatingNotes(false);
+								setLoadingLeadsButtonDisabled(false);
+								setAutoCreatingNotesDisabled(false);
+
+								if (index === null){
+									for (let i = 0; i < 25; i++){
+										peopleInterestsButtonDisabled[i] = false;
+										companyInterestsButtonDisabled[i] = false;
+										makingConnectNoteButtonDisabled[i] = false;
+										sendingConnectNoteButtonDisabled[i] = false;
+									}
+								}
+								else {
 									peopleInterestsButtonDisabled[index] = false;
 									companyInterestsButtonDisabled[index] = false;
 									makingConnectNoteButtonDisabled[index] = false;
@@ -231,175 +251,208 @@ function Home(props) {
 									setAutoCreatingNotesDisabled(false);
 									setLoadingLeadsButtonDisabled(false);
 								}
-
-								else if (allAreNone && currentJobIdArray.length > 1){
-									clearInterval(jobIdCheck);
-									setIsLoadingAutoCreatingNotes(false);
-									setLoadingLeadsButtonDisabled(false);
-									setAutoCreatingNotesDisabled(false);
-
-									if (index === null){
-										for (let i = 0; i < 25; i++){
-											peopleInterestsButtonDisabled[i] = false;
-											companyInterestsButtonDisabled[i] = false;
-											makingConnectNoteButtonDisabled[i] = false;
-											sendingConnectNoteButtonDisabled[i] = false;
-										}
-									}
-									else {
-										peopleInterestsButtonDisabled[index] = false;
-										companyInterestsButtonDisabled[index] = false;
-										makingConnectNoteButtonDisabled[index] = false;
-										sendingConnectNoteButtonDisabled[index] = false;
-
-										setAutoCreatingNotesDisabled(false);
-										setLoadingLeadsButtonDisabled(false);
-									}
-								}
-
-								else if (!allAreNone && currentJobIdArray[i] != "None"){
-									if (stopAutoCreatingNotesRef.current) {
-										if (currentJobIdArray.length > 0){
+							}
+							else {
+								let i = 0;
+								while (i < currentJobIdArray.length){
+									// for(let i = 0; i < currentJobIdArray.length; i++){
+										// console.log(stopAutoCreatingNotesRef.current);
+										// console.log(currentJobIdArray.length);
+										// console.log(i, index);
+		
+										// const allAreNone = currentJobIdArray.every((val) => val === "None");
+				
+										// if (allAreNone && currentJobIdArray.length === 1){
+										// 	clearInterval(jobIdCheck);
+										// 	setIsLoadingAutoCreatingNotes(false);
+										// 	setLoadingLeadsButtonDisabled(false);
+										// 	setAutoCreatingNotesDisabled(false);
+		
+										// 	peopleInterestsButtonDisabled[index] = false;
+										// 	companyInterestsButtonDisabled[index] = false;
+										// 	makingConnectNoteButtonDisabled[index] = false;
+										// 	sendingConnectNoteButtonDisabled[index] = false;
+		
+										// 	setAutoCreatingNotesDisabled(false);
+										// 	setLoadingLeadsButtonDisabled(false);
+										// }
+		
+										// else if (allAreNone && currentJobIdArray.length > 1){
+										// 	clearInterval(jobIdCheck);
+										// 	setIsLoadingAutoCreatingNotes(false);
+										// 	setLoadingLeadsButtonDisabled(false);
+										// 	setAutoCreatingNotesDisabled(false);
+		
+										// 	if (index === null){
+										// 		for (let i = 0; i < 25; i++){
+										// 			peopleInterestsButtonDisabled[i] = false;
+										// 			companyInterestsButtonDisabled[i] = false;
+										// 			makingConnectNoteButtonDisabled[i] = false;
+										// 			sendingConnectNoteButtonDisabled[i] = false;
+										// 		}
+										// 	}
+										// 	else {
+										// 		peopleInterestsButtonDisabled[index] = false;
+										// 		companyInterestsButtonDisabled[index] = false;
+										// 		makingConnectNoteButtonDisabled[index] = false;
+										// 		sendingConnectNoteButtonDisabled[index] = false;
+		
+										// 		setAutoCreatingNotesDisabled(false);
+										// 		setLoadingLeadsButtonDisabled(false);
+										// 	}
+										// }
+		
+										// else if (!allAreNone && currentJobIdArray[i] != "None"){
+										
+										if (!allAreNone && currentJobIdArray[i] != "None"){
+		
+											// STOPS THE AUTO CREATING NOTES
+											if (stopAutoCreatingNotesRef.current) {
+												if (currentJobIdArray.length > 0){
+													try {
+														const response = await fetch("https://sak-productivity-suite.herokuapp.com/stop-jobs-in-array", {
+															method: "POST",
+															headers: {
+																"Content-Type": "application/json"
+															},
+															body: JSON.stringify({
+																sessionId: sessionId,
+																jobIdArray: currentJobIdArray
+															})
+														});
+														if (response.ok){
+															const data = await response.json();
+															console.log("data from stopAutoCreatingNotesRef", data);
+														}
+														else {
+															console.log("error occurred 9");
+															setError("error occurred");								
+														}
+													}catch(error){
+														console.log("error occurred 8");
+														setError("error occurred");					
+													}
+												}
+												
+												clearInterval(jobIdCheck);
+												
+												setIsLoadingAutoCreatingNotes(false);
+												setLoadingLeadsButtonDisabled(false);
+												setAutoCreatingNotesDisabled(false);
+		
+												if (index === null) {
+													for (let i = 0; i < 25; i++){
+														peopleInterestsButtonDisabled[i] = false;
+														companyInterestsButtonDisabled[i] = false;
+														makingConnectNoteButtonDisabled[i] = false;
+														sendingConnectNoteButtonDisabled[i] = false;
+													}
+												}
+												else {
+													peopleInterestsButtonDisabled[index] = false;
+													companyInterestsButtonDisabled[index] = false;
+													makingConnectNoteButtonDisabled[index] = false;
+													sendingConnectNoteButtonDisabled[index] = false;
+		
+													setAutoCreatingNotesDisabled(false);
+													setLoadingLeadsButtonDisabled(false);
+		
+													// console.log("index", index);
+												}
+												// Set back to false if this button is clicked again
+												stopAutoCreatingNotesRef.current = false;
+												break;
+											}
+							
 											try {
-												const response = await fetch("https://sak-productivity-suite.herokuapp.com/stop-jobs-in-array", {
+												const response = await fetch("https://sak-productivity-suite.herokuapp.com/job-status", {
 													method: "POST",
 													headers: {
 														"Content-Type": "application/json"
 													},
 													body: JSON.stringify({
-														sessionId: sessionId,
-														jobIdArray: currentJobIdArray
+														jobId: currentJobIdArray[i]
 													})
 												});
+		
 												if (response.ok){
 													const data = await response.json();
-													console.log("data from stopAutoCreatingNotesRef", data);
-												}
-												else {
-													console.log("error occurred 9");
-													setError("error occurred");								
+													const status = data.status;
+													const res = data.result;
+												
+													console.log("Status of ", i, status, res);
+													if (status === "failed" || res === undefined){
+														currentJobIdArray[i] = "None";
+														console.log("job status is ", status);
+														setError("An error has occurred");
+		
+														// Re-enable all the buttons
+														if (index === null) {							
+															peopleInterestsButtonDisabled[i] = false;
+															companyInterestsButtonDisabled[i] = false;
+															makingConnectNoteButtonDisabled[i] = false;
+															sendingConnectNoteButtonDisabled[i] = false;
+														}else {
+															peopleInterestsButtonDisabled[index] = false;
+															companyInterestsButtonDisabled[index] = false;
+															makingConnectNoteButtonDisabled[index] = false;
+															sendingConnectNoteButtonDisabled[index] = false;
+															isLoadingMakingNote[index] = false;
+														}
+														i += 1;
+													}
+													
+													else if (status === "finished") {	
+														const resultArray = data.result;
+														console.log("Successfully gotten Connect note array: ", resultArray);
+						
+														const newConnectNoteArray = [...connectNoteArray];
+			
+														if (index === null) {
+															newConnectNoteArray[i] = resultArray;
+															setConnectNoteArray(newConnectNoteArray);
+							
+															setShowProfileArea(true);
+									
+															peopleInterestsButtonDisabled[i] = false;
+															companyInterestsButtonDisabled[i] = false;
+															makingConnectNoteButtonDisabled[i] = false;
+															sendingConnectNoteButtonDisabled[i] = false;
+							
+															currentJobIdArray[i] = "None"
+															// console.log("current", currentJobIdArray.length);
+															
+														}else {
+															newConnectNoteArray[index] = resultArray;
+															setConnectNoteArray(newConnectNoteArray);
+							
+															setShowProfileArea(true);
+															// console.log("index", index);
+									
+															peopleInterestsButtonDisabled[index] = false;
+															companyInterestsButtonDisabled[index] = false;
+															makingConnectNoteButtonDisabled[index] = false;
+															sendingConnectNoteButtonDisabled[index] = false;
+															isLoadingMakingNote[index] = false;
+							
+															currentJobIdArray[i] = "None"
+															// console.log("current", currentJobIdArray.length);
+															
+														}
+														i += 1;
+													}
+												}else{
+													console.log("error occurred 1");
+													setError("error occurred");						
 												}
 											}catch(error){
-												console.log("error occurred 8");
-												setError("error occurred");					
+												console.log("An error has occured (CheckJobStatus): ", error);
+												setError("error occurred 2");			
 											}
 										}
-										
-										clearInterval(jobIdCheck);
-										
-										setIsLoadingAutoCreatingNotes(false);
-										setLoadingLeadsButtonDisabled(false);
-										setAutoCreatingNotesDisabled(false);
-
-										if (index === null) {
-											for (let i = 0; i < 25; i++){
-												peopleInterestsButtonDisabled[i] = false;
-												companyInterestsButtonDisabled[i] = false;
-												makingConnectNoteButtonDisabled[i] = false;
-												sendingConnectNoteButtonDisabled[i] = false;
-											}
-										}
-										else {
-											peopleInterestsButtonDisabled[index] = false;
-											companyInterestsButtonDisabled[index] = false;
-											makingConnectNoteButtonDisabled[index] = false;
-											sendingConnectNoteButtonDisabled[index] = false;
-
-											setAutoCreatingNotesDisabled(false);
-											setLoadingLeadsButtonDisabled(false);
-
-											// console.log("index", index);
-										}
-										// Set back to false if this button is clicked again
-										stopAutoCreatingNotesRef.current = false;
-										break;
-									}
-					
-									try {
-										const response = await fetch("https://sak-productivity-suite.herokuapp.com/job-status", {
-											method: "POST",
-											headers: {
-												"Content-Type": "application/json"
-											},
-											body: JSON.stringify({
-												jobId: currentJobIdArray[i]
-											})
-										});
-
-										if (response.ok){
-											const data = await response.json();
-											const status = data.status;
-											const res = data.result;
-										
-											console.log("Status of ", i, status, res);
-											if (status === "failed" || res === undefined){
-												currentJobIdArray[i] = "None";
-												console.log("job status is ", status);
-												setError("An error has occurred");
-
-												// Re-enable all the buttons
-												if (index === null) {							
-													peopleInterestsButtonDisabled[i] = false;
-													companyInterestsButtonDisabled[i] = false;
-													makingConnectNoteButtonDisabled[i] = false;
-													sendingConnectNoteButtonDisabled[i] = false;
-												}else {
-													peopleInterestsButtonDisabled[index] = false;
-													companyInterestsButtonDisabled[index] = false;
-													makingConnectNoteButtonDisabled[index] = false;
-													sendingConnectNoteButtonDisabled[index] = false;
-													isLoadingMakingNote[index] = false;
-												}
-
-											}
-											
-											else if (status === "finished") {	
-												const resultArray = data.result;
-												console.log("Successfully gotten Connect note array: ", resultArray);
-				
-												const newConnectNoteArray = [...connectNoteArray];
-	
-												if (index === null) {
-													newConnectNoteArray[i] = resultArray;
-													setConnectNoteArray(newConnectNoteArray);
-					
-													setShowProfileArea(true);
-							
-													peopleInterestsButtonDisabled[i] = false;
-													companyInterestsButtonDisabled[i] = false;
-													makingConnectNoteButtonDisabled[i] = false;
-													sendingConnectNoteButtonDisabled[i] = false;
-					
-													currentJobIdArray[i] = "None"
-													// console.log("current", currentJobIdArray.length);
-												}else {
-													newConnectNoteArray[index] = resultArray;
-													setConnectNoteArray(newConnectNoteArray);
-					
-													setShowProfileArea(true);
-													// console.log("index", index);
-							
-													peopleInterestsButtonDisabled[index] = false;
-													companyInterestsButtonDisabled[index] = false;
-													makingConnectNoteButtonDisabled[index] = false;
-													sendingConnectNoteButtonDisabled[index] = false;
-													isLoadingMakingNote[index] = false;
-					
-													currentJobIdArray[i] = "None"
-													// console.log("current", currentJobIdArray.length);
-												}
-											}
-										}else{
-											console.log("error occurred 1");
-											setError("error occurred");						
-										}
-									}catch(error){
-										console.log("An error has occured (CheckJobStatus): ", error);
-										setError("error occurred 2");			
 									}
 								}
 							}
-						}
 					}, 500);				  
 				}
 				else{
