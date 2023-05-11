@@ -200,15 +200,18 @@ function Home(props) {
 								// console.log(job_list);
 
 								let isFinished = true;
-								for (let jobId in job_list[0]){
-									if (job_list[0][jobId]["status"] === "finished"){
-										let idx = job_list[0][jobId]["idx"];
+								const sortedJobList = job_list[0].sort((a, b) => a.idx - b.idx);
+
+								for (let jobId in sortedJobList){
+									const job = sortedJobList[jobId];
+									if (job.status === "finished"){
+										// let idx = job_list[0][jobId]["idx"];
 										// console.log(job_list[0][jobId]["idx"], job_list[0][jobId]["result"]);
-										
+										const idx = job.idx;
 
 										let newConnectNoteArray = [...connectNoteArray];
 										newConnectNoteArray[idx] = job_list[0][jobId]["result"];
-										console.log(newConnectNoteArray[idx]);
+										// console.log(newConnectNoteArray[idx]);
 										setConnectNoteArray(newConnectNoteArray);
 										
 										peopleInterestsButtonDisabled[idx] = false;
