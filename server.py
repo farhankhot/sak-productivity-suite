@@ -704,7 +704,9 @@ def job_status():
         job_id = request.json['jobId'] # type: ignore
         job = q.fetch_job(job_id)
         job_status = job.get_status() # type: ignore
-        result = job.result # type: ignore    
+        result = job.result # type: ignore
+        if result is None:
+            return jsonify(success=False, status="failed", message="An error has occurred")    
         if job.is_failed: # type: ignore
             return jsonify(success=False, status=job_status, message="An error has occurred")
         return jsonify(success=True, status=job_status, result=result)
