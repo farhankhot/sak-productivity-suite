@@ -210,7 +210,7 @@ function Home(props) {
 										const idx = job.idx;
 
 										let newConnectNoteArray = [...connectNoteArray];
-										newConnectNoteArray[idx] = job_list[0][jobId]["result"];
+										newConnectNoteArray[idx] = job.result;
 										// console.log(newConnectNoteArray[idx]);
 										setConnectNoteArray(newConnectNoteArray);
 										
