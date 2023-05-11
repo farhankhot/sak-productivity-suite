@@ -201,6 +201,7 @@ function Home(props) {
 
 								let isFinished = true;
 								const sortedJobList = job_list[0].sort((a, b) => a.idx - b.idx);
+								console.log(sortedJobList);
 
 								for (let jobId in sortedJobList){
 									const job = sortedJobList[jobId];
