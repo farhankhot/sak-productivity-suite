@@ -202,7 +202,7 @@ function Home(props) {
 								let isFinished = true;
 								for (let jobId in job_list[0]){
 									if (job_list[0][jobId]["status"] === "finished"){
-										const idx = job_list[0][jobId]["idx"];
+										let idx = job_list[0][jobId]["idx"];
 										// console.log(job_list[0][jobId]["idx"], job_list[0][jobId]["result"]);
 										
 
