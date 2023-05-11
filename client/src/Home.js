@@ -275,10 +275,10 @@ function Home(props) {
 													const data = await response.json();
 													console.log("data from stopAutoCreatingNotesRef", data);
 												}
-												// else {
-												// 	console.log("error occurred 9");
-												// 	setError("error occurred");								
-												// }
+												else {
+													console.log("error occurred 9");
+													setError("error occurred");								
+												}
 											}catch(error){
 												console.log("error occurred 8");
 												setError("error occurred");					
@@ -329,7 +329,8 @@ function Home(props) {
 										if (response.ok){
 											const data = await response.json();
 											const status = data.status;
-											console.log("Status of ", i, status, data.result);
+											const res = data.result;
+											console.log("Status of ", i, status, res);
 											if (status === "failed"){
 												currentJobIdArray[i] = "None";
 												console.log("job status is ", status);
