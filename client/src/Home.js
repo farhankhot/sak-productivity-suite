@@ -198,9 +198,8 @@ function Home(props) {
 								console.log("Response okay", data);
 								const job_list = data.job_list;
 								console.log(job_list);
-								for (let j = 0; j < job_list.length; j++){
-									console.log(j);
-									if (job_list[j]["status"] === "finished"){
+								for (let j = 0; j < job_list[0].length; j++){
+									if (job_list[0][j]["status"] === "finished"){
 										// Get its idx and display it
 										console.log(job_list[j]["idx"], job_list[j]["result"]);
 									}
