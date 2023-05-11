@@ -307,7 +307,7 @@ function Home(props) {
 											setAutoCreatingNotesDisabled(false);
 											setLoadingLeadsButtonDisabled(false);
 
-											console.log("index", index);
+											// console.log("index", index);
 										}
 										// Set back to false if this button is clicked again
 										stopAutoCreatingNotesRef.current = false;
@@ -373,7 +373,7 @@ function Home(props) {
 													setConnectNoteArray(newConnectNoteArray);
 					
 													setShowProfileArea(true);
-													console.log("index", index);
+													// console.log("index", index);
 							
 													peopleInterestsButtonDisabled[index] = false;
 													companyInterestsButtonDisabled[index] = false;
@@ -382,7 +382,7 @@ function Home(props) {
 													isLoadingMakingNote[index] = false;
 					
 													currentJobIdArray[i] = "None"
-													console.log("current", currentJobIdArray.length);
+													// console.log("current", currentJobIdArray.length);
 												}
 											}
 										}else{
