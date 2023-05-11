@@ -254,7 +254,31 @@ function Home(props) {
 							}
 							else {
 								let i = 0;
-								while (i < currentJobIdArray.length){
+								if (i === (currentJobIdArray.length - 1)){
+									clearInterval(jobIdCheck);
+									setIsLoadingAutoCreatingNotes(false);
+									setLoadingLeadsButtonDisabled(false);
+									setAutoCreatingNotesDisabled(false);
+
+									if (index === null){
+										for (let i = 0; i < 25; i++){
+											peopleInterestsButtonDisabled[i] = false;
+											companyInterestsButtonDisabled[i] = false;
+											makingConnectNoteButtonDisabled[i] = false;
+											sendingConnectNoteButtonDisabled[i] = false;
+										}
+									}
+									else {
+										peopleInterestsButtonDisabled[index] = false;
+										companyInterestsButtonDisabled[index] = false;
+										makingConnectNoteButtonDisabled[index] = false;
+										sendingConnectNoteButtonDisabled[index] = false;
+
+										setAutoCreatingNotesDisabled(false);
+										setLoadingLeadsButtonDisabled(false);
+									}
+								}
+								// while (i < currentJobIdArray.length){
 									// for(let i = 0; i < currentJobIdArray.length; i++){
 										// console.log(stopAutoCreatingNotesRef.current);
 										// console.log(currentJobIdArray.length);
@@ -361,7 +385,7 @@ function Home(props) {
 												}
 												// Set back to false if this button is clicked again
 												stopAutoCreatingNotesRef.current = false;
-												break;
+												// break;
 											}
 							
 											try {
@@ -451,7 +475,7 @@ function Home(props) {
 											}
 										}
 									}
-								}
+								// }
 							}
 					}, 500);				  
 				}
