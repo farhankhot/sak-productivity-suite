@@ -196,6 +196,14 @@ function Home(props) {
 							if (response.ok){
 								const data = await response.json();
 								console.log("Response okay", data);
+								const job_list = data.job_list;
+								console.log(job_list);
+								for (let j = 0; j < job_list.length; j++){
+									if (job_list[i]["status"] === "finished"){
+										// Get its idx and display it
+										console.log(job_list[i]["idx"], job_list[i]["result"]);
+									}
+								}
 							}
 							else {
 								console.log("error occurred 9");

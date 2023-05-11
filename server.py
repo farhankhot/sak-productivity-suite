@@ -565,19 +565,21 @@ def GetLeadInfo(cookie_dict, my_full_name, my_occupation, lead, profile_urn, add
 
 @app.route('/send-job-array', methods=['POST'])
 def send_job_array():
+    # TODO: Error handling
     
     job_id_list = request.json['jobIdArray'] # type: ignore
     
     print(job_id_list, type(job_id_list))
 
-    # for i, job_id in enumerate(job_id_list):
-    #     if job_id != "None":
-    #         job = Job.fetch(job_id, connection=conn)
-    #         job.cancel()
-    #         job.delete()
+    for job_dict in job_id_list:
+        job_status = job.get_status() # type: ignore
+        for job_id, job_info in job_dict.items():
+            idx = job_dict[job_id]['idx']
+            job = q.fetch_job(job_id)
+            if job.is_finished: # type: ignore
+                job_dict[job_id] = {'idx': idx, 'status': 'finished', 'result': job.result} # type: ignore
 
-    return jsonify(success=True, message="success")
-
+    return jsonify(success=True, message="success", job_list = job_id_list)
 
 @app.route('/search-zoominfo', methods=['POST'])
 def search_zoominfo():
@@ -667,7 +669,7 @@ def get_lead_info():
             data = q.enqueue(GetLeadInfo, cookie_dict, full_name, occupation, leads_list[i], profile_urn, additional_info_text, interests, result_ttl = 1, job_timeout=600)
     
             job_id = data.get_id()
-            job_ids[job_id] = {'status': 'queued', 'result': None}
+            job_ids[job_id] = {'idx': i, 'status': 'queued', 'result': None}
 
         return jsonify(success=True, message=[job_ids])
     except Exception as e:
