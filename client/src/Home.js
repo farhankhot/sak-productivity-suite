@@ -328,6 +328,7 @@ function Home(props) {
 										if (response.ok){
 											const data = await response.json();
 											const status = data.status;
+											console.log("Status of ", i, status);
 											if (status === "failed"){
 												currentJobIdArray[i] = "None";
 												console.log("job status is ", status);
