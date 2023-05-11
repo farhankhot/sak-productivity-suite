@@ -415,7 +415,7 @@ def GetLeadInfo(cookie_dict, my_full_name, my_occupation, lead, profile_urn, add
     # print("additional info: ", additional_info_text)
     # print("profile_urn", profile_urn)
 
-    time.sleep(1)
+    time.sleep(3)
 
     api = Linkedin(cookies=cookie_dict) # type: ignore
 
