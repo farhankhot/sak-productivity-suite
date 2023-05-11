@@ -572,7 +572,6 @@ def send_job_array():
     print(job_id_list, type(job_id_list))
 
     for job_dict in job_id_list:
-        job_status = job.get_status() # type: ignore
         for job_id, job_info in job_dict.items():
             idx = job_dict[job_id]['idx']
             job = q.fetch_job(job_id)
