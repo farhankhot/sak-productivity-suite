@@ -213,7 +213,7 @@ function Home(props) {
 							for(let i = 0; i < currentJobIdArray.length; i++){
 								// console.log(stopAutoCreatingNotesRef.current);
 								// console.log(currentJobIdArray.length);
-								console.log(i, index);
+								// console.log(i, index);
 
 								const allAreNone = currentJobIdArray.every((val) => val === "None");
 		
