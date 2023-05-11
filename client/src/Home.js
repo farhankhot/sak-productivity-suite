@@ -218,7 +218,7 @@ function Home(props) {
 										isFinished = false;
 									}
 								}
-
+								console.log(isFinished);
 								if(isFinished){
 									for (let i = 0; i < numberOfLeads; i++){
 										peopleInterestsButtonDisabled[i] = false;
