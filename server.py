@@ -640,17 +640,17 @@ def get_lead_info():
         occupation = data[0][1] # type: ignore
 
         # print(interests)
-        job_ids=[]
+        job_ids={}
         for i, profile_urn in enumerate(member_urn_id_list):
 
             # Testing
-            # if i == 4:
-            #     break
+            if i == 1:
+                break
 
             data = q.enqueue(GetLeadInfo, cookie_dict, full_name, occupation, leads_list[i], profile_urn, additional_info_text, interests, result_ttl = 1, job_timeout=600)
     
             job_id = data.get_id()
-            job_ids.append(job_id)
+            job_ids[job_id] = {'status': 'queued', 'result': None}
 
         return jsonify(success=True, message=job_ids)
     except Exception as e:
