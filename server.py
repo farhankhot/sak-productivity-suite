@@ -661,7 +661,7 @@ def get_lead_info():
         for i, profile_urn in enumerate(member_urn_id_list):
 
             # Testing
-            if i == 1:
+            if i == 3:
                 break
 
             data = q.enqueue(GetLeadInfo, cookie_dict, full_name, occupation, leads_list[i], profile_urn, additional_info_text, interests, result_ttl = 1, job_timeout=600)
