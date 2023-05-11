@@ -190,13 +190,12 @@ function Home(props) {
 									"Content-Type": "application/json"
 								},
 								body: JSON.stringify({
-									sessionId: sessionId,
 									jobIdArray: currentJobIdArray
 								})
 							});
 							if (response.ok){
 								const data = await response.json();
-								console.log("data from stopAutoCreatingNotesRef", data);
+								console.log("Response okay", data);
 							}
 							else {
 								console.log("error occurred 9");
