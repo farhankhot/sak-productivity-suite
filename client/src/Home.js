@@ -240,7 +240,7 @@ function Home(props) {
 								setError("error occurred");								
 							}
 						}catch(error){
-							console.log("error occurred 8");
+							console.log("error occurred 8", error);
 							setError("error occurred");					
 						}
 
