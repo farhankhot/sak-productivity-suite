@@ -225,6 +225,7 @@ function Home(props) {
 										companyInterestsButtonDisabled[i] = false;
 										makingConnectNoteButtonDisabled[i] = false;
 										sendingConnectNoteButtonDisabled[i] = false;
+										setAutoCreatingNotesDisabled(false);
 									}
 								}								
 							}
