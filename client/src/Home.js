@@ -198,10 +198,10 @@ function Home(props) {
 								console.log("Response okay", data);
 								const job_list = data.job_list;
 								console.log(job_list);
-								for (let j = 0; j < job_list[0].length; j++){
-									if (job_list[0][j]["status"] === "finished"){
+								for (let jobId in job_list[0]){
+									if (job_list[0][jobId]["status"] === "finished"){
 										// Get its idx and display it
-										console.log(job_list[j]["idx"], job_list[j]["result"]);
+										console.log(job_list[0][jobId]["index"], job_list[0][jobId]["result"]);
 									}
 								}
 							}
