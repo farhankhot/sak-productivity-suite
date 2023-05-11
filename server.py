@@ -548,7 +548,7 @@ def GetLeadInfo(cookie_dict, my_full_name, my_occupation, lead, profile_urn, add
 
     # connect_note = asyncio.run(UseBingAI(prompt))
     connect_note = UseChatGPT(full_lead_profile)
-    # print(connect_note)
+    print(connect_note)
     # connect_note = "hi," + leads_list[lead_idx][0]
     return connect_note
 
