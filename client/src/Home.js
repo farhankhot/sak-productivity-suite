@@ -274,10 +274,11 @@ function Home(props) {
 												if (response.ok){
 													const data = await response.json();
 													console.log("data from stopAutoCreatingNotesRef", data);
-												}else {
-													console.log("error occurred 9");
-													setError("error occurred");								
 												}
+												// else {
+												// 	console.log("error occurred 9");
+												// 	setError("error occurred");								
+												// }
 											}catch(error){
 												console.log("error occurred 8");
 												setError("error occurred");					
