@@ -613,17 +613,16 @@ def search_leads_in_db():
 @app.route('/stop-jobs-in-array', methods=['POST'])
 def stop_jobs_in_array():    
 
-    job_id_list = request.json['jobIdArray'] # type: ignore
-    # job_id_list = job_id_list['message']
-    print("job_id_list", job_id_list)
+    job_list = request.json['jobIdArray'] # type: ignore
+    # print("job_id_list", job_list)
+    job_ids = [key for job in job_list for key in job.keys()]
 
-    # print(job_id_list)
+    # print(job_ids)
 
-    for i, job_id in enumerate(job_id_list):
-        if job_id != "None":
-            job = Job.fetch(job_id, connection=conn)
-            job.cancel()
-            job.delete()
+    for i, job_id in enumerate(job_ids):
+        job = Job.fetch(job_id, connection=conn)
+        job.cancel()
+        job.delete()
 
     return jsonify(success=True, message="success")
 
