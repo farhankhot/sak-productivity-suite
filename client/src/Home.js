@@ -199,6 +199,7 @@ function Home(props) {
 								const job_list = data.job_list;
 
 								const isFinished = job_list[0].every(job => job.status === 'finished');
+								console.log(isFinished);
 								if (isFinished) {
 									// All jobs are finished
 									// Enable every button
