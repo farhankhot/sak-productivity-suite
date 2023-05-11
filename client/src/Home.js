@@ -205,9 +205,9 @@ function Home(props) {
 										const idx = job_list[0][jobId]["idx"];
 										console.log(job_list[0][jobId]["idx"], job_list[0][jobId]["result"]);
 										
-										// const newConnectNoteArray = [...connectNoteArray];
-										connectNoteArray[idx] = job_list[0][jobId]["result"];
-										// setConnectNoteArray(newConnectNoteArray);
+										let newConnectNoteArray = [...connectNoteArray];
+										newConnectNoteArray[idx] = job_list[0][jobId]["result"];
+										setConnectNoteArray(newConnectNoteArray);
 										
 										peopleInterestsButtonDisabled[idx] = false;
 										companyInterestsButtonDisabled[idx] = false;
