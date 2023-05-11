@@ -668,7 +668,7 @@ def get_lead_info():
             if i == 2:
                 break
 
-            data = q.enqueue(GetLeadInfo, cookie_dict, full_name, occupation, leads_list[i], profile_urn, additional_info_text, interests, result_ttl = 1, job_timeout=600)
+            data = q.enqueue(GetLeadInfo, cookie_dict, full_name, occupation, leads_list[i], profile_urn, additional_info_text, interests, job_timeout=600)
     
             job_id = data.get_id()
             job_ids[job_id] = {'idx': i, 'status': 'queued', 'result': None}
