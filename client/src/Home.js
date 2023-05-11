@@ -195,25 +195,41 @@ function Home(props) {
 							});
 							if (response.ok){
 								const data = await response.json();
-								console.log("Response okay", data);
+								// console.log("Response okay", data);
 								const job_list = data.job_list;
-								console.log(job_list);
-								for (let jobId in job_list[0]){
-									if (job_list[0][jobId]["status"] === "finished"){
-										const idx = job_list[0][jobId]["idx"];
-										// console.log(job_list[0][jobId]["idx"], job_list[0][jobId]["result"]);
-										
-										const newConnectNoteArray = [...connectNoteArray];
-										newConnectNoteArray[idx] = job_list[0][jobId]["result"];
-										setConnectNoteArray(newConnectNoteArray);
-										
-										peopleInterestsButtonDisabled[idx] = false;
-										companyInterestsButtonDisabled[idx] = false;
-										makingConnectNoteButtonDisabled[idx] = false;
-										sendingConnectNoteButtonDisabled[idx] = false;
-												
+
+								const isFinished = job_list[0].every(job => job.status === 'finished');
+								if (isFinished) {
+									// All jobs are finished
+									// Enable every button
+									for (let i = 0; i < numberOfLeads; i++){
+										peopleInterestsButtonDisabled[i] = false;
+										companyInterestsButtonDisabled[i] = false;
+										makingConnectNoteButtonDisabled[i] = false;
+										sendingConnectNoteButtonDisabled[i] = false;
+									}
+	
+								} else {
+
+									// console.log(job_list);
+									for (let jobId in job_list[0]){
+										if (job_list[0][jobId]["status"] === "finished"){
+											const idx = job_list[0][jobId]["idx"];
+											// console.log(job_list[0][jobId]["idx"], job_list[0][jobId]["result"]);
+											
+											const newConnectNoteArray = [...connectNoteArray];
+											newConnectNoteArray[idx] = job_list[0][jobId]["result"];
+											setConnectNoteArray(newConnectNoteArray);
+											
+											peopleInterestsButtonDisabled[idx] = false;
+											companyInterestsButtonDisabled[idx] = false;
+											makingConnectNoteButtonDisabled[idx] = false;
+											sendingConnectNoteButtonDisabled[idx] = false;
+													
+										}
 									}
 								}
+
 							}
 							else {
 								console.log("error occurred 9");
