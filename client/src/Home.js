@@ -204,7 +204,7 @@ function Home(props) {
 										isFinished = false;
 									}
 								}
-
+								console.log(isFinished);
 								if (isFinished) {
 									// All jobs are finished
 									// Enable every button
