@@ -226,6 +226,7 @@ function Home(props) {
 										makingConnectNoteButtonDisabled[i] = false;
 										sendingConnectNoteButtonDisabled[i] = false;
 										setAutoCreatingNotesDisabled(false);
+										setIsLoadingAutoCreatingNotes(false);
 									}
 								}								
 							}
