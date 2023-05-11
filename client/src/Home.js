@@ -241,7 +241,6 @@ function Home(props) {
 								// console.log(job_list);
 
 								let isFinished = true;
-								// const sortedJobList = job_list[0].sort((a, b) => a.idx - b.idx);
 								const sortedJobList = Object.values(job_list[0]).sort((a, b) => a.idx - b.idx);
 
 								console.log(sortedJobList);
@@ -550,6 +549,73 @@ function Home(props) {
 		}catch(error){
 			console.log("error occurred");
 			setError("error occurred 5");
+		}
+	};
+
+	// This button goes through the lead list and creates a Connect note for them
+	const handleMakingConnectNote = async(sessionId, index = null) => {
+		try {
+			
+			peopleInterestsButtonDisabled[index] = false;
+			companyInterestsButtonDisabled[index] = false;
+			makingConnectNoteButtonDisabled[index] = true;
+			sendingConnectNoteButtonDisabled[index] = false;
+			isLoadingMakingNote[index] = true;
+
+			setAutoCreatingNotesDisabled(true);
+			setLoadingLeadsButtonDisabled(true);
+			
+			let interests = "";
+			if (selectedInterests[index].length !== 0){
+				interests = selectedInterests[index].toString();
+			}
+			let additionalInfo = "";
+			if(index !== null && specificAdditionalInfoText[index] !== undefined){
+				additionalInfo = specificAdditionalInfoText[index];
+			}
+			// console.log(additionalInfo);
+			// console.log("test", specificAdditionalInfoText[index]);
+			const response = await fetch("https://sak-productivity-suite.herokuapp.com/get-lead-info", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify({
+					sessionId: sessionId,
+					...(index === null ? {leadsArray: leadsArray} : {leadsArray: [leadsArray[index]]}),
+					...(index === null ? {memberUrnIdArray: memberUrnIdArray} : {memberUrnIdArray: [memberUrnIdArray[index]]}),
+					additionalInfoText: additionalInfo,
+					...(interests !== "" ? {interests: interests} : {interests: ""})
+				})
+			});
+
+			if (response.ok){
+				const data = await response.json();
+				if (data.success === true){
+					console.log(jobId);
+					const jobId = data.message;
+	
+					CheckJobStatus(jobId, (resultArray) => {
+						let newConnectNoteArray = [...connectNoteArray];
+						newConnectNoteArray[index] = resultArray;
+						setConnectNoteArray(newConnectNoteArray);
+						
+						peopleInterestsButtonDisabled[index] = false;
+						companyInterestsButtonDisabled[index] = false;
+						makingConnectNoteButtonDisabled[index] = false;
+						sendingConnectNoteButtonDisabled[index] = false;
+						
+						setAutoCreatingNotesDisabled(false);
+						setLoadingLeadsButtonDisabled(false);
+					});			  
+				}
+			}else{
+				console.log("error occurred");
+				setError("error occurred");
+			}
+		}catch(error){
+			console.log("error occurred");
+			setError("error occurred");
 		}
 	};
 
@@ -911,18 +977,8 @@ function Home(props) {
 												</> : 'Get company interests'}
 											</Button>{' '}
 
-											{/* <Button className="myButton" onClick={ () => {
-												handleMakingConnectNote(leadInfo[0], index)
-											}} disabled={isLoadingMakingNote[index] || makingConnectNoteButtonDisabled[index] } style={{marginLeft: '30px'}}>
-												{isLoadingMakingNote[index] ? 
-												<>
-													<Spinner animation="border" size="sm" />
-													 Making note...
-												</> : 'Make Connect Note'}
-											</Button>{' '} */}
-
 											<Button className="myButton" onClick={ () => {
-												handleAutoCreatingNotes(sessionId, index)
+												handleMakingConnectNote(sessionId, index)
 											}} disabled={isLoadingMakingNote[index] || makingConnectNoteButtonDisabled[index] } style={{marginLeft: '30px'}}>
 												{isLoadingMakingNote[index] ? 
 												<>
@@ -930,7 +986,6 @@ function Home(props) {
 													 Making note...
 												</> : 'Make Connect Note'}
 											</Button>{' '}
-
 
 											<Button className="myButton" onClick={ () => {
 												handleSendingConnectNote(sessionId, leadInfo[4], index)

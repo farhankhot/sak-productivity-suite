@@ -653,6 +653,13 @@ def get_lead_info():
         occupation = data[0][1] # type: ignore
 
         # print(interests)
+
+        if len(member_urn_id_list) == 1:
+            data = q.enqueue(GetLeadInfo, cookie_dict, full_name, occupation, leads_list[0], member_urn_id_list[0], additional_info_text, interests, job_timeout=600)
+    
+            job_id = data.get_id()
+            return jsonify(success=True, message=job_id)
+
         job_ids={}
         for i, profile_urn in enumerate(member_urn_id_list):
 
