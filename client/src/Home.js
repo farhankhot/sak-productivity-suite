@@ -604,7 +604,7 @@ function Home(props) {
 						companyInterestsButtonDisabled[index] = false;
 						makingConnectNoteButtonDisabled[index] = false;
 						sendingConnectNoteButtonDisabled[index] = false;
-						
+						isLoadingMakingNote[index] = false;
 						setAutoCreatingNotesDisabled(false);
 						setLoadingLeadsButtonDisabled(false);
 					});			  
