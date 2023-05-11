@@ -415,8 +415,6 @@ def GetLeadInfo(cookie_dict, my_full_name, my_occupation, lead, profile_urn, add
     # print("additional info: ", additional_info_text)
     # print("profile_urn", profile_urn)
 
-    time.sleep(3)
-
     api = Linkedin(cookies=cookie_dict) # type: ignore
 
     my_tuple = tuple(profile_urn.strip("()").split(","))
@@ -547,6 +545,7 @@ def GetLeadInfo(cookie_dict, my_full_name, my_occupation, lead, profile_urn, add
     full_lead_profile += " Write a connect note to them. Make it casual but eyecatching. Do not use more than 50 words."
 
     # connect_note = asyncio.run(UseBingAI(prompt))
+    time.sleep(3)
     connect_note = UseChatGPT(full_lead_profile)
     print(connect_note)
     # connect_note = "hi," + leads_list[lead_idx][0]
