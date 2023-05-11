@@ -182,6 +182,46 @@ function Home(props) {
 					let currentJobIdArray = [...jobIdArray.message];
 					console.log(currentJobIdArray);
 
+					if (stopAutoCreatingNotesRef.current) {
+						try {
+							const response = await fetch("https://sak-productivity-suite.herokuapp.com/stop-jobs-in-array", {
+								method: "POST",
+								headers: {
+									"Content-Type": "application/json"
+								},
+								body: JSON.stringify({
+									sessionId: sessionId,
+									jobIdArray: currentJobIdArray
+								})
+							});
+							if (response.ok){
+								const data = await response.json();
+								console.log("data from stopAutoCreatingNotesRef", data);
+							}
+							else {
+								console.log("error occurred 9");
+								setError("error occurred");								
+							}
+						}catch(error){
+							console.log("error occurred 8");
+							setError("error occurred");					
+						}
+												
+						clearInterval(jobIdCheck);
+						
+						setIsLoadingAutoCreatingNotes(false);
+						setLoadingLeadsButtonDisabled(false);
+						setAutoCreatingNotesDisabled(false);
+
+						for (let i = 0; i < numberOfLeads; i++){
+							peopleInterestsButtonDisabled[i] = false;
+							companyInterestsButtonDisabled[i] = false;
+							makingConnectNoteButtonDisabled[i] = false;
+							sendingConnectNoteButtonDisabled[i] = false;
+						}
+						stopAutoCreatingNotesRef.current = false;
+					}
+
 					const jobIdCheck = setInterval( async () => {
 						try {
 							const response = await fetch("https://sak-productivity-suite.herokuapp.com/send-job-array", {
@@ -235,6 +275,7 @@ function Home(props) {
 										sendingConnectNoteButtonDisabled[i] = false;
 										setAutoCreatingNotesDisabled(false);
 										setIsLoadingAutoCreatingNotes(false);
+										loadingLeadsButtonDisabled(false);
 									}
 								}								
 							}
