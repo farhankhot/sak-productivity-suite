@@ -200,8 +200,14 @@ function Home(props) {
 								console.log(job_list);
 								for (let jobId in job_list[0]){
 									if (job_list[0][jobId]["status"] === "finished"){
-										// Get its idx and display it
-										console.log(job_list[0][jobId]["index"], job_list[0][jobId]["result"]);
+										const idx = job_list[0][jobId]["idx"];
+										console.log(job_list[0][jobId]["idx"], job_list[0][jobId]["result"]);
+										
+										peopleInterestsButtonDisabled[idx] = false;
+										companyInterestsButtonDisabled[idx] = false;
+										makingConnectNoteButtonDisabled[idx] = false;
+										sendingConnectNoteButtonDisabled[idx] = false;
+												
 									}
 								}
 							}
