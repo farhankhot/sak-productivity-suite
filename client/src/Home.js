@@ -555,7 +555,7 @@ function Home(props) {
 	// This button goes through the lead list and creates a Connect note for them
 	const handleMakingConnectNote = async(sessionId, index = null) => {
 		try {
-			
+		
 			peopleInterestsButtonDisabled[index] = false;
 			companyInterestsButtonDisabled[index] = false;
 			makingConnectNoteButtonDisabled[index] = true;
