@@ -204,7 +204,7 @@ function Home(props) {
 										// console.log(job_list[0][jobId]["idx"], job_list[0][jobId]["result"]);
 										
 										const newConnectNoteArray = [...connectNoteArray];
-										newConnectNoteArray[i] = job_list[0][jobId]["result"];
+										newConnectNoteArray[idx] = job_list[0][jobId]["result"];
 										setConnectNoteArray(newConnectNoteArray);
 										
 										peopleInterestsButtonDisabled[idx] = false;
