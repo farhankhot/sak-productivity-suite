@@ -575,6 +575,7 @@ def send_job_array():
         for job_id, job_info in job_dict.items():
             idx = job_dict[job_id]['idx']
             job = q.fetch_job(job_id)
+            print(job)
             if job.is_finished: # type: ignore
                 job_dict[job_id] = {'idx': idx, 'status': 'finished', 'result': job.result} # type: ignore
 
