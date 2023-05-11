@@ -611,17 +611,11 @@ def search_leads_in_db():
         return jsonify(success=False, message=str(e))
 
 @app.route('/stop-jobs-in-array', methods=['POST'])
-def stop_jobs_in_array():
-    
-    session_id = request.json['sessionId'] # type: ignore
-    # print("get_lead_info session_id: ", session_id)
-
-    cookie_dict = dbCon.get_cookie_from_user_sessions(session_id)
-    # print("get_lead_info cookie_dict: ", cookie_dict)
+def stop_jobs_in_array():    
 
     job_id_list = request.json['jobIdArray'] # type: ignore
     # job_id_list = job_id_list['message']
-    # print("job_id_list", job_id_list)
+    print("job_id_list", job_id_list)
 
     # print(job_id_list)
 
