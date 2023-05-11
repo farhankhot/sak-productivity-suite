@@ -576,7 +576,9 @@ def send_job_array():
             idx = job_dict[job_id]['idx']
             job = q.fetch_job(job_id)
             print(job)
-            if job.is_finished: # type: ignore
+            if job is None:
+                continue
+            if job and job.is_finished: # type: ignore
                 job_dict[job_id] = {'idx': idx, 'status': 'finished', 'result': job.result} # type: ignore
 
     return jsonify(success=True, message="success", job_list = job_id_list)
