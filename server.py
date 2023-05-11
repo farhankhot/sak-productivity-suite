@@ -562,6 +562,23 @@ def GetLeadInfo(cookie_dict, my_full_name, my_occupation, lead, profile_urn, add
 #     return jsonify(success=True, message="killed all jobs")
 # ========== For testing ==================
 
+
+@app.route('/send-job-array', methods=['POST'])
+def send_job_array():
+    
+    job_id_list = request.json['jobIdArray'] # type: ignore
+    
+    print(job_id_list, type(job_id_list))
+
+    # for i, job_id in enumerate(job_id_list):
+    #     if job_id != "None":
+    #         job = Job.fetch(job_id, connection=conn)
+    #         job.cancel()
+    #         job.delete()
+
+    return jsonify(success=True, message="success")
+
+
 @app.route('/search-zoominfo', methods=['POST'])
 def search_zoominfo():
     try:

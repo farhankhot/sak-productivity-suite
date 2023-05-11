@@ -182,7 +182,31 @@ function Home(props) {
 					let currentJobIdArray = [...jobIdArray.message];
 					console.log(currentJobIdArray);
 
-					// const jobIdCheck = setInterval( async () => {
+					const jobIdCheck = setInterval( async () => {
+						try {
+							const response = await fetch("https://sak-productivity-suite.herokuapp.com/send-job-array", {
+								method: "POST",
+								headers: {
+									"Content-Type": "application/json"
+								},
+								body: JSON.stringify({
+									sessionId: sessionId,
+									jobIdArray: currentJobIdArray
+								})
+							});
+							if (response.ok){
+								const data = await response.json();
+								console.log("data from stopAutoCreatingNotesRef", data);
+							}
+							else {
+								console.log("error occurred 9");
+								setError("error occurred");								
+							}
+						}catch(error){
+							console.log("error occurred 8");
+							setError("error occurred");					
+						}
+
 
 					// 	let i = 0;
 					// 	if (i === (currentJobIdArray.length - 1)){
@@ -430,7 +454,7 @@ function Home(props) {
 					// 			}
 					// 		}
 					// 	}
-					// }, 500);				  
+					}, 5000);				  
 				}
 				else{
 					console.log("an error occurred");
