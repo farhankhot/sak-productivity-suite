@@ -59,16 +59,18 @@ import os
 def UseChatGPT(prompt):
 
     openai.api_key = os.environ.get("OPENAI_API_KEY")
-
-    completion = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
-        messages = [
-            {"role": "user", "content": prompt}
-        ]
-    )
-    
-    # print(completion['choices'][0]['message']['content']) # type: ignore
-    return completion['choices'][0]['message']['content'] # type: ignore 
+    try:
+        completion = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages = [
+                {"role": "user", "content": prompt}
+            ]
+        )
+        
+        # print(completion['choices'][0]['message']['content']) # type: ignore
+        return completion['choices'][0]['message']['content'] # type: ignore 
+    except:
+        return "The model is currently overloaded with requests. Try again in a minute."
     
 def get_values_for_key(key, dictionary):
     values = []
