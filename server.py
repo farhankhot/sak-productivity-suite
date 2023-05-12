@@ -26,8 +26,6 @@ import time
 
 import math
 
-import jsonpickle
-
 q = Queue(connection=conn)
 
 app = Flask(
@@ -42,19 +40,6 @@ from dotenv import load_dotenv
 load_dotenv()
 
 import os
-
-# openai.api_key = os.environ.get("OPENAI_API_KEY")
-
-# async def UseBingAI(prompt):
-    
-#     # This is getting my own bing cookies
-#     bot = Chatbot(cookie_path='./cookie.json') # type: ignore
-
-#     ans_json = await bot.ask(prompt=prompt)
-#     ans = ans_json['item']['messages'][1]['text']
-    
-#     await bot.close()
-#     return ans
 
 def UseChatGPT(prompt):
 
@@ -303,10 +288,7 @@ def SalesNavigatorLeadsInfo(api):
                             pending_invitation
                         ])
                         member_urn_id_list.append(member_urn_id)
-
-                # break
             else:
-                print("i ran")
                 if page == 0:
                     res = api._fetch(
                         f"/sales-api/salesApiPeopleSearch?q=peopleSearchQuery&query=(spotlightParam:(selectedType:ALL),doFetchSpotlights:true,doFetchHits:true,doFetchFilters:false,pivotParam:(com.linkedin.sales.search.LeadListPivotRequest:(list:urn%3Ali%3Afs_salesList%3A{latest_list_id},sortCriteria:LAST_ACTIVITY,sortOrder:DESCENDING)),list:(scope:LEAD,includeAll:false,excludeAll:false,includedValues:List((id:{latest_list_id}))))&start={start}&count={25}&decoration=%28entityUrn%2CprofilePictureDisplayImage%2CfirstName%2ClastName%2CfullName%2Cdegree%2CblockThirdPartyDataSharing%2CcrmStatus%2CgeoRegion%2ClastUpdatedTimeInListAt%2CpendingInvitation%2CnewListEntitySinceLastViewed%2Csaved%2CleadAssociatedAccount~fs_salesCompany%28entityUrn%2Cname%29%2CoutreachActivity%2Cmemorialized%2ClistCount%2CsavedAccount~fs_salesCompany%28entityUrn%2Cname%29%2CnotificationUrnOnLeadList%2CuniquePositionCompanyCount%2CcurrentPositions*%28title%2CcompanyName%2Ccurrent%2CcompanyUrn%29%2CmostRecentEntityNote%28body%2ClastModifiedAt%2CnoteId%2Cseat%2Centity%2CownerInfo%2Cownership%2Cvisibility%29%29",
@@ -359,7 +341,7 @@ def SalesNavigatorLeadsInfo(api):
                 current_count += 25
                 start += 25
 
-            print(lead_list)
+            # print(lead_list)
     else:
         leads_list_unparsed = res.json()["elements"]
         # print(leads_list_unparsed)
@@ -481,53 +463,6 @@ def GetLeadInfo(cookie_dict, my_full_name, my_occupation, lead, profile_urn, add
         lead_summary = ""
     # ============= Getting Misc info =============================
 
-    # ============= Getting interests =================================
-
-    # lead_interests = []
-    # if interests == "":
-
-    #     start_time = time.time()
-    #     interests = api._fetch(f"/graphql?includeWebMetadata=True&variables=(profileUrn:urn%3Ali%3Afsd_profile%3A{profile_urn},sectionType:interests,tabIndex:1,locale:en_US)&&queryId=voyagerIdentityDashProfileComponents.38247e27f7b9b2ecbd8e8452e3c1a02c")
-    #     end_time = time.time()
-    #     print(f"interests fetch execution time: {end_time - start_time} seconds")
-
-    #     interests = interests.json()
-    #     interests_json = json.dumps(interests)
-        
-    #     # print(interests_json)
-    #     pattern = re.compile(r'"(urn:li:fsd_profile:[^"]*)"')
-    #     matches = re.findall(pattern, interests_json)
-    #     people_the_profile_is_interested_in_set = set(matches)
-    #     people_the_profile_is_interested_in = [s.split(':')[-1] for s in people_the_profile_is_interested_in_set]
-
-    #     pattern_for_company = re.compile(r'"(urn:li:fsd_company:[^"]*)"')
-    #     matches_for_company = re.findall(pattern_for_company, interests_json)
-    #     companies_the_profile_is_interested_in_set = set(matches_for_company)
-    #     companies_the_profile_is_interested_in = [s.split(':')[-1] for s in companies_the_profile_is_interested_in_set]
-
-    #     # print(companies_the_profile_is_interested_in)
-
-    #     for i, profile_urn in enumerate(people_the_profile_is_interested_in):
-    #         if i == 1:
-    #             break
-    #         temp = api.get_profile_name(profile_urn) # type: ignore
-    #         first_name = temp['firstName']
-    #         last_name = temp['lastName']
-    #         full_name = first_name + " " + last_name 
-    #         lead_interests.append(full_name)
-
-    #     for i, company_id in enumerate(companies_the_profile_is_interested_in):
-    #         if i == 1:
-    #             break
-    #         temp = api.get_company(company_id)
-    #         company_name = temp['universalName']
-    #         lead_interests.append([company_name, company_id])
-        
-    #     lead_info.append(lead_interests)
-    #     interests = " ".join(str(x) for x in lead_info)
-    # ============= Getting interests =================================
-
-
     full_lead_profile = f"You are {my_full_name}, a {my_occupation} at DTC Force, located in Toronto. DTC Force is a Salesforce implementation company. This is the profile of a person: Name: {lead[0]}"
 
     if lead_headline != "":
@@ -554,7 +489,6 @@ def GetLeadInfo(cookie_dict, my_full_name, my_occupation, lead, profile_urn, add
     return connect_note
 
 # ================================================ ROUTES START =============================================
-
 # ========== For testing ==================
 # @app.route('/kill-all-jobs', methods=['POST'])
 # def kill_all_jobs():
@@ -562,7 +496,6 @@ def GetLeadInfo(cookie_dict, my_full_name, my_occupation, lead, profile_urn, add
 #     print("killed all jobs")
 #     return jsonify(success=True, message="killed all jobs")
 # ========== For testing ==================
-
 
 @app.route('/send-job-array', methods=['POST'])
 def send_job_array():
