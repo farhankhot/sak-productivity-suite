@@ -257,7 +257,7 @@ function Home(props) {
 										sendingConnectNoteButtonDisabled[i] = false;
 										setAutoCreatingNotesDisabled(false);
 										setIsLoadingAutoCreatingNotes(false);
-										loadingLeadsButtonDisabled(false);
+										setLoadingLeadsButtonDisabled(false);
 									}
 									clearInterval(jobIdCheck);
 								}								
