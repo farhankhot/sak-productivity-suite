@@ -122,39 +122,22 @@ function Home(props) {
 	// This button goes through the lead list and creates a Connect note for them
 	const handleAutoCreatingNotes = async(sessionId, index = null) => {
 		try {
-			if (index === null){
-				setIsLoadingAutoCreatingNotes(true);
-				setLoadingLeadsButtonDisabled(true);
-				setAutoCreatingNotesDisabled(true);
-				// This disables all other buttons when Auto Create notes button is clicked
-				// I could create a copy of each array, change element and set it. But for now, this works
-				for (let i = 0; i < numberOfLeads; i++){
-					peopleInterestsButtonDisabled[i] = true;
-					companyInterestsButtonDisabled[i] = true;
-					makingConnectNoteButtonDisabled[i] = true;
-					sendingConnectNoteButtonDisabled[i] = true;
-				}
-			}
-			else {
-				peopleInterestsButtonDisabled[index] = false;
-				companyInterestsButtonDisabled[index] = false;
-				makingConnectNoteButtonDisabled[index] = true;
-				sendingConnectNoteButtonDisabled[index] = false;
-				isLoadingMakingNote[index] = true;
+			
+			setIsLoadingAutoCreatingNotes(true);
+			setLoadingLeadsButtonDisabled(true);
+			setAutoCreatingNotesDisabled(true);
 
-				setAutoCreatingNotesDisabled(true);
-				setLoadingLeadsButtonDisabled(true);
+			for (let i = 0; i < numberOfLeads; i++){
+				peopleInterestsButtonDisabled[i] = true;
+				companyInterestsButtonDisabled[i] = true;
+				makingConnectNoteButtonDisabled[i] = true;
+				sendingConnectNoteButtonDisabled[i] = true;
 			}
+			
 			let interests = "";
-			if (index !== null && selectedInterests[index].length !== 0){
-				interests = selectedInterests[index].toString();
-			}
 			let additionalInfo = "";
-			if (additionalInfoText !== "" && index === null){
+			if (additionalInfoText !== ""){
 				additionalInfo = additionalInfoText;
-			}
-			else if(index !== null && specificAdditionalInfoText[index] !== undefined){
-				additionalInfo = specificAdditionalInfoText[index];
 			}
 			// console.log(additionalInfo);
 			// console.log("test", specificAdditionalInfoText[index]);
@@ -175,11 +158,11 @@ function Home(props) {
 			if (response.ok){
 				const jobIdArray = await response.json();
 				if (jobIdArray.success === true){
-					console.log(jobIdArray);
+					// console.log(jobIdArray);
 					setJobIdArray(jobIdArray);
 
 					let currentJobIdArray = [...jobIdArray.message];
-					console.log(currentJobIdArray);
+					// console.log(currentJobIdArray);
 
 					const jobIdCheck = setInterval( async () => {
 
@@ -242,7 +225,7 @@ function Home(props) {
 								let isFinished = true;
 								const sortedJobList = Object.values(job_list[0]).sort((a, b) => a.idx - b.idx);
 
-								console.log(sortedJobList);
+								// console.log(sortedJobList);
 
 								for (let jobId in sortedJobList){
 									const job = sortedJobList[jobId];
@@ -276,6 +259,7 @@ function Home(props) {
 										setIsLoadingAutoCreatingNotes(false);
 										loadingLeadsButtonDisabled(false);
 									}
+									clearInterval(jobIdCheck);
 								}								
 							}
 							else {
