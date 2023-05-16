@@ -3,7 +3,6 @@
 # LinkedIn, not Linkedin
 
 import re
-# import asyncio
 import json
 
 from linkedin_api import Linkedin
@@ -389,6 +388,8 @@ def SalesNavigatorLeadsInfo(api):
 
 # TODO: Get interests at random
 def GetLeadInfo(cookie_dict, my_full_name, my_occupation, lead, profile_urn, additional_info_text="", interests=""):
+
+    time.sleep(1) # necessary to evade LinkedIn blockers
 
     # interests fetch execution time: 4.0456929206848145 seconds
     # interests people compile execution time: 0.0001327991485595703 seconds
