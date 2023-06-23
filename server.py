@@ -791,11 +791,10 @@ def send_message():
 
         api = Linkedin(cookies=cookie_dict) # type: ignore
 
-        profile_id = request.json['profileId'][:-2] # type: ignore
-        print("PROFILE_ID", profile_id)
+        thread_id = request.json['thread_id'] # type: ignore
         text = request.json['text'] # type: ignore
         try:
-            data = api.send_message(message_body = text, recipients=[profile_id])
+            data = api.send_message(message_body = text, conversation_urn_id=thread_id)
             print(data)
         except Exception as e:
             print(str(e))

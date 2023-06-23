@@ -102,7 +102,7 @@ function DisplayThread() {
 				},
 				body: JSON.stringify({
 					sessionId: sessionId,
-					profileId: threadId,
+					threadId: threadId,
 					text: replyTextArea
 				})
 			});
