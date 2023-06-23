@@ -792,7 +792,9 @@ def send_message():
         api = Linkedin(cookies=cookie_dict) # type: ignore
 
         profile_id = request.json['profileId'] # type: ignore
+        print("PROFILE_ID", profile_id)
         text = request.json['text'] # type: ignore
+        print("TEXT", text)
         data = api.send_message(message_body = text, recipients=[profile_id])
         print(data)
 
