@@ -108,6 +108,7 @@ function DisplayThread() {
 			});
 			if (response.ok){
 				const data = await response.json();
+				console.log(data);
 				if (data.success === true) {
 					console.log("Successfully sent the message to the person", data.message);
 				}else{
@@ -116,7 +117,7 @@ function DisplayThread() {
 				}
 			}else {
 				console.log("error occurred");
-				setError("error occurred");
+				setError("error occurred 1");
 			}
 		}catch(error){
 			console.log(error);
