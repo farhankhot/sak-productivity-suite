@@ -784,7 +784,11 @@ def send_connect():
 @app.route('/send-message', methods=['POST'])
 def send_message():
     try:
-        cookie_dict = request.json['cookie'] # type: ignore
+        session_id = request.json['sessionId'] # type: ignore
+        # print("get_convo_messages session_id: ", session_id)
+
+        cookie_dict = dbCon.get_cookie_from_user_sessions(session_id)
+
         api = Linkedin(cookies=cookie_dict) # type: ignore
 
         profile_id = request.json['profileId'] # type: ignore
