@@ -794,10 +794,11 @@ def send_message():
         profile_id = request.json['profileId'] # type: ignore
         print("PROFILE_ID", profile_id)
         text = request.json['text'] # type: ignore
-        print("TEXT", text)
-        data = api.send_message(message_body = text, recipients=[profile_id])
-        print(data)
-
+        try:
+            data = api.send_message(message_body = text, recipients=[profile_id])
+            print(data)
+        except Exception as e:
+            print(str(e))
         return jsonify(success=True, message='sent message')
     except Exception as e:
         return jsonify(success=False, message=str(e))
