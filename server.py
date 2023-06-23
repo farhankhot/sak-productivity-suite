@@ -791,7 +791,7 @@ def send_message():
 
         api = Linkedin(cookies=cookie_dict) # type: ignore
 
-        thread_id = request.json['thread_id'] # type: ignore
+        thread_id = request.json['threadId'] # type: ignore
         print(thread_id)
         text = request.json['text'] # type: ignore
         try:
